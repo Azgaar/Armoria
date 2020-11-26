@@ -1,4 +1,5 @@
 <script>
+  import {fade} from 'svelte/transition';
   import COA from './COA.svelte';
   export let matrices, matrix, edit, coas, w, h, grad, diaper, shield, colors, scale, border, borderWidth;
 
@@ -67,11 +68,11 @@
   }
 </script>
 
-<div id="gallery" style="margin-top: 28px; font-size: {Math.ceil(w/20)}px">
+<div id="gallery" style="margin-top: 28px; font-size: {Math.ceil(w/20)}px" transition:fade>
   {#each coas as c, i}
     <div>
       {#key c}
-        <COA edit={false} {c} {i} {w} {h} {grad} {diaper} {shield} {colors} {border} {borderWidth}/>
+        <COA {edit} {c} {i} {w} {h} {grad} {diaper} {shield} {colors} {border} {borderWidth}/>
       {/key}
         <div class="control">
         <svg on:click={() => regenerate(i)}><use href="#dice-icon"></use></svg>

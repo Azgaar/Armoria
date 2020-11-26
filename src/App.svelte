@@ -53,12 +53,12 @@
 </script>
 
 <main style="background-color: {background}">
-	<Navbar bind:matrix bind:size bind:grad bind:diaper bind:shield bind:colors bind:background bind:scale bind:border bind:borderWidth bind:showAbout/>
+	<Navbar bind:matrix bind:size bind:grad bind:diaper bind:shield bind:colors bind:background bind:scale bind:border bind:borderWidth bind:showAbout bind:edit/>
 	<About bind:showAbout/>
 	{#if edit.on}
 		{#key edit.c}
-			<Editor c={edit.c} {edit} {grad} {diaper} {shield} {colors} {border} {borderWidth}/>
-			{/key}
+			<Editor {edit} {grad} {diaper} {shield} {colors} {border} {borderWidth}/>
+		{/key}
 	{:else}
 		<Gallery bind:matrices bind:matrix bind:edit {coas} {w} {h} {grad} {diaper} {shield} {colors} {scale} {border} {borderWidth}/>
 	{/if}

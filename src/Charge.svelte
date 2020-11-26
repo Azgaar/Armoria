@@ -1,5 +1,5 @@
 <script>
-  export let charge, i, shield, colors, t;
+  export let charge, i, shield, colors, t, edit;
 
   const shields = {
     // shieldSpecific position: [x, y] (relative to center)
@@ -70,10 +70,43 @@
     const scale = c.sinister || c.reversed ? `${c.sinister ? "-" : ""}${size}, ${c.reversed ? "-" : ""}${size}` : size;
     return `translate(${x}, ${y}) scale(${scale})`;
   }
+
+  function addDrag() {
+    if (!edit.on) return;
+    let dragStartX, dragStartY, objInitLeft, objInitTop;
+    let inDrag = false;
+    let dragTarget = this;
+
+    const grid = 20;
+
+    dragTarget.addEventListener("mousedown", function(e) {
+      inDrag = true;
+      objInitLeft = dragTarget.offsetLeft || 0;
+      objInitTop = dragTarget.offsetTop || 0;
+      dragStartX = e.pageX;
+      dragStartY = e.pageY;
+    });
+
+    document.addEventListener("mousemove", function(e) {
+      if (!inDrag) {return;}
+      const x = Math.round((objInitLeft + e.pageX - dragStartX) / grid) * grid;
+      const y = Math.round((objInitTop + e.pageY - dragStartY) / grid) * grid;
+      dragTarget.setAttribute("transform", `translate(${x},${y})`);
+    });
+
+    document.addEventListener("mouseup", () => inDrag = false);
+  }
 </script>
 
-<g class="charge" {i} charge={getCharge(charge.charge)} transform={getChargeTransform(charge)} stroke="#000">
+<g class="charge" {i} class:editable={edit.on} charge={getCharge(charge.charge)} transform={getChargeTransform(charge)} stroke="#000" on:click={addDrag}>
   {#each [...charge.p] as p}
     <use href="#{charge.charge}" transform={getElTransform(charge, p)} transform-origin="center" fill="{colors[t]}"></use>
   {/each}
 </g>
+
+<style>
+  .editable:hover {
+    outline: 1px dashed #333;
+    cursor: pointer;
+  }
+</style>

@@ -11,6 +11,7 @@ body {
 	font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 	font-size: 14px;
 	overflow: hidden;
+	overscroll-behavior: none;
 }
 
 a {

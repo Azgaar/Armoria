@@ -1,5 +1,5 @@
 <script>
-  export let ordinary, shieldPath, colors, t;
+  export let ordinary, shieldPath, colors, t, edit;
 
   function transformOrdinary(o) {
     if (!o.x && !o.y && !o.size) return null;
@@ -12,18 +12,51 @@
     const line = document.getElementById(lineId) ? document.getElementById(lineId) : document.getElementById("straight");
     return template.innerHTML.replace(/{line}/g, line.getAttribute("d")).replace(/dpath/g, "d");
   }
+
+  function addDrag() {
+    if (!edit.on) return;
+    let dragStartX, dragStartY, objInitLeft, objInitTop;
+    let inDrag = false;
+    let dragTarget = this;
+
+    const grid = 10;
+
+    dragTarget.addEventListener("mousedown", function(e) {
+      inDrag = true;
+      objInitLeft = dragTarget.offsetLeft || 0;
+      objInitTop = dragTarget.offsetTop || 0;
+      dragStartX = e.pageX;
+      dragStartY = e.pageY;
+    });
+
+    document.addEventListener("mousemove", function(e) {
+      if (!inDrag) {return;}
+      const x = Math.round((objInitLeft + e.pageX - dragStartX) / grid) * grid;
+      const y = Math.round((objInitTop + e.pageY - dragStartY) / grid) * grid;
+      dragTarget.setAttribute("transform", `translate(${x},${y})`);
+    });
+
+    document.addEventListener("mouseup", () => inDrag = false);
+  }
 </script>
 
 {#if ordinary.ordinary === "bordure"}
-  <g class="ordinary">
+  <g class="ordinary" class:editable={edit.on} on:click={addDrag}>
     <path d={shieldPath} fill="none" stroke={colors[t]} stroke-width="16.7%"/>
   </g>
 {:else if ordinary.ordinary === "orle"}
-  <g class="ordinary">
+  <g class="ordinary" class:editable={edit.on} on:click={addDrag}>
     <path d={shieldPath} fill="none" stroke={colors[t]} stroke-width="5%" transform="scale(.85)" transform-origin="center"/>
   </g>
 {:else}
-  <g class="ordinary" transform={transformOrdinary(ordinary)} transform-origin="center" fill={colors[t]}>
+  <g class="ordinary" class:editable={edit.on} transform={transformOrdinary(ordinary)} transform-origin="center" fill={colors[t]} on:click={addDrag}>
     {@html getTemplate(ordinary.ordinary, ordinary.variant)}
   </g>
 {/if}
+
+<style>
+  .editable:hover {
+    outline: 1px dashed #333;
+    cursor: pointer;
+  }
+</style>

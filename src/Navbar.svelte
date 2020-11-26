@@ -1,6 +1,7 @@
 <script>
+  import {fade} from 'svelte/transition';
   import Tooltip from './Tooltip.svelte';
-	export let matrix, size, grad, diaper, shield, colors, background, scale, border, borderWidth, showAbout;
+	export let matrix, size, grad, diaper, shield, colors, background, scale, border, borderWidth, showAbout, edit;
 
   const shields = ["heater", "oldFrench", "spanish", "french", "swiss", "wedged", "italian", "kite", "renaissance", "baroque", "polish", "german", "diamond", "round", "vesicaPiscis", "square", "flag", "pennon", "guidon", "banner", "dovetail", "gonfalon", "pennant"];
   const paths = shields.map(id => document.getElementById(id).innerHTML);
@@ -23,7 +24,7 @@
   }
 
   async function download() {
-    const coas = document.getElementById("main").querySelectorAll("svg.coa");
+    const coas = document.querySelectorAll("svg.coa");
     let width = +coas[0].getAttribute("width");
     let height = +coas[0].getAttribute("height");
     const numberX = coas.length > 1 ? Math.floor(window.innerWidth / width) : 1;
@@ -231,6 +232,9 @@
       </div>
     </div>
     <bt on:click={() => showAbout = 1}>About</bt>
+    {#if edit.on}
+      <bt id="back" on:click={() => edit.on = 0} transition:fade>Back to gallery</bt>
+    {/if}
   </ul>
 </div>
 
@@ -259,7 +263,7 @@
 
   bt {
     cursor: pointer;
-    transition: background 0.1s ease, box-shadow 0.1s ease, color 0.1s ease, -webkit-box-shadow 0.1s ease;
+    transition: background-color .1s;
   }
 
   bt:hover, bl:hover {
@@ -370,5 +374,10 @@
 
   span {
     cursor: pointer;
+  }
+
+  #back {
+    position: absolute;
+    right: 0;
   }
 </style>
