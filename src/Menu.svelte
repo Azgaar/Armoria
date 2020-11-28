@@ -714,10 +714,6 @@
     cursor: pointer;
   }
 
-  button {
-    cursor: pointer;
-  }
-
   fieldset {
     margin-bottom: .8em;
   }

@@ -1,70 +1,20 @@
 <script>
-  import {fade} from 'svelte/transition';
   import COA from './COA.svelte';
-  export let matrices, matrix, edit, coas, w, h, grad, diaper, shield, colors, scale, border, borderWidth;
+  import {fade} from 'svelte/transition';
+  import {download} from './download.js';
+  import {history, matrices, matrix, state} from './stores';
+  export let coas, w, h;
 
   function regenerate(i) {
-    coas[i] = Armoria.history.length;
-    matrix++;
-    matrices[matrix] = coas;
+    coas[i] = $history.length;
+    $matrix++;
+    $matrices[$matrix] = coas;
   }
 
-  async function download(i) {
-    const coa = document.getElementById("coa"+i);
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    const width = Math.round(coa.getAttribute("width") * scale);
-    const height = Math.round(coa.getAttribute("height") * scale);
-    canvas.width = width;
-    canvas.height = height;
-    ctx.fillStyle = options.background;
-    ctx.fillRect(0, 0, width, height);
-
-    const url = await getURL(coa);
-    const img = new Image();
-    img.src = url;
-    img.onload = () => {
-      URL.revokeObjectURL(url);
-      ctx.drawImage(img, 0, 0, width, height);
-      drawCanvas(canvas);
-    }
-  }
-
-  async function getURL(svg) {
-    const clone = svg.cloneNode(true); // clone svg
-    const d = clone.getElementsByTagName("defs")[0];
-
-    d.insertAdjacentHTML("beforeend", defs.getElementById(shield).outerHTML);
-    if (grad) d.insertAdjacentHTML("beforeend", defs.getElementById(grad).outerHTML);
-    if (diaper) d.insertAdjacentHTML("beforeend", defs.getElementById(diaper).outerHTML);
-    clone.querySelectorAll(".charge[charge]").forEach(el => {
-      const charge = el.getAttribute("charge");
-      d.insertAdjacentHTML("beforeend", defs.getElementById(charge).outerHTML);
-    });
-    const fieldPattern = clone.getElementById("field").getAttribute("fill").split("(#")[1]?.split(")")[0];
-    if (fieldPattern) d.insertAdjacentHTML("beforeend", document.getElementById(fieldPattern).outerHTML);
-    const divisionPattern = clone.getElementById("division")?.querySelector("rect").getAttribute("fill").split("(#")[1]?.split(")")[0];
-    if (divisionPattern) d.insertAdjacentHTML("beforeend", document.getElementById(divisionPattern).outerHTML);
-
-    const serialized = (new XMLSerializer()).serializeToString(clone);
-    const blob = new Blob([serialized], {type: 'image/svg+xml;charset=utf-8'});
-    const url = window.URL.createObjectURL(blob);
-    return url;
-  }
-
-  function drawCanvas(canvas) {
-    const link = document.createElement("a");
-    link.download = "armoria_download.png";
-    canvas.toBlob(function(blob) {
-      link.href = window.URL.createObjectURL(blob);
-      document.body.appendChild(link);
-      link.click();
-      setTimeout(function() {
-        canvas.remove();
-        window.URL.revokeObjectURL(link.href);
-      }, 5000);
-    });
+  function editCOA(c, i) {
+    $state.edit = 1;
+    $state.c = c;
+    $state.i = i;
   }
 </script>
 
@@ -72,11 +22,11 @@
   {#each coas as c, i}
     <div>
       {#key c}
-        <COA {edit} {c} {i} {w} {h} {grad} {diaper} {shield} {colors} {border} {borderWidth}/>
+        <COA {c} {i} {w} {h}/>
       {/key}
         <div class="control">
         <svg on:click={() => regenerate(i)}><use href="#dice-icon"></use></svg>
-        <svg on:click={() => edit = {on:1, c, i}}><use href="#pencil-icon"></use></svg>
+        <svg on:click={() => editCOA(c, i)}><use href="#pencil-icon"></use></svg>
         <svg on:click={() => download(i)}><use href="#download-icon"></use></svg>
       </div>
     </div>

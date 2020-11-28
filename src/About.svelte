@@ -1,10 +1,10 @@
 <script>
-    export let showAbout;
+  import {state} from './stores';
 </script>
 
-<div id="about" class:showAbout>
+<div id="about">
     <div class="overlay-content">
-    <span on:click={() => showAbout = 0} class="close">&times;</span>
+    <span on:click={() => $state.about = 0} class="close">&times;</span>
     <span>About</span>
     <span>Services</span>
     <span>Clients</span>
@@ -14,7 +14,7 @@
 
 <style>
   #about {
-    height: 0%;
+    height: 100%;
     width: 100%;
     position: fixed;
     z-index: 1;
@@ -24,20 +24,12 @@
     transition: .5s;
   }
 
-  #about.showAbout {
-    height: 100%;
-  }
-
   .overlay-content {
     position: relative;
-    top: 0;
+    top: 100%;
     margin-top: -35%;
     text-align: center;
     user-select: none;
-  }
-
-  #about.showAbout > .overlay-content {
-    top: 100%;
   }
 
   #about span {
@@ -54,13 +46,9 @@
 
   #about span.close {
     position: fixed;
-    top: -5em;
+    top: 0em;
     right: .5em;
     font-size: 4em;
-  }
-
-  #about.showAbout span.close {
-    top: 0em;
   }
 
   @media screen and (max-height: 450px) {

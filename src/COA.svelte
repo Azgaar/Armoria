@@ -1,16 +1,23 @@
 <script>
   import Ordinary from './Ordinary.svelte';
   import Charge from './Charge.svelte';
-  export let edit, c, i, w, h, grad, diaper, shield, colors, border, borderWidth;
+  import {generate} from './generator.js';
+  import {grad, diaper, shield, colors, border, borderWidth, history, patterns} from './stores';
+  export let c, i, w, h;
 
-  const coa = Armoria.history[c] || Armoria.getCOA();
+  const coa = $history[c] || generate();
+  if (!$history[c]) $history[c] = coa;
   const {ordinary, division, charges = []} = coa;
-  $: shieldPath = document.querySelector("#defs g#shields > #"+shield+" > path").getAttribute("d");
+
+  $: coaShield = coa.shield || $shield;
+  $: shieldPath = document.querySelector(`#defs g#shields > #${coaShield} > path`).getAttribute("d");
+  $: coaDiaper = coa.diaper || $diaper;
+  $: diaperType = coaDiaper ? getDieperType() : null;
+  $: strokeWidth = $borderWidth;
+  $: coaGrad = coa.grad || $grad;
+  $: coaColors = $colors;
   $: console.log("coa rendering:", i, " - ", c);
 
-  $: strokeWidth = borderWidth * (edit.on ? 1 : 2);
-
-  const diaperType = diaper ? getDieperType() : null;
   function getDieperType() {
     const f = !coa.t1.includes("-");
     const d = !coa.t3 || !coa.t3.includes("-");
@@ -29,8 +36,8 @@
 
   // get color or link to pattern
   function clr(tincture) {
-    if (colors[tincture]) return colors[tincture];
-    patterns[patterns.length] = tincture;
+    if (coaColors[tincture]) return coaColors[tincture];
+    $patterns[$patterns.length] = tincture;
     return "url(#"+tincture+")";
   }
 </script>
@@ -43,44 +50,44 @@
       </clipPath>
     {/if}
   </defs>
-  <g id="shield" clip-path="url(#{shield})">
+  <g id="shield" clip-path="url(#{coaShield})">
 
     <!-- field layer -->
-    <rect id="field" x=0 y=0 width=200 height=200 fill="{colors[coa.t1] || clr(coa.t1)}"/>
-    {#if ordinary?.counter}<Ordinary {ordinary} {shieldPath} {colors} t={coa.t3} {edit}/>{/if}
-    {#if ordinary?.crop}<Ordinary {ordinary} {shieldPath} {colors} t={coa.t2} {edit}/>{/if}
-    {#if diaperType === "field"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{diaper})"/>{/if}
+    <rect id="field" x=0 y=0 width=200 height=200 fill="{coaColors[coa.t1] || clr(coa.t1)}"/>
+    {#if ordinary?.counter}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t3}/>{/if}
+    {#if ordinary?.crop}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t2}/>{/if}
+    {#if diaperType === "field"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})"/>{/if}
     {#each charges as charge, i}
       {#if charge.type === "field"}
-        <Charge {charge} {i} {shield} {colors} t={charge.t} {edit}/>
+        <Charge {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>
       {:else if charge.type === "counter"}
-        <Charge {charge} {i} {shield} {colors} t={coa.t3} {edit}/>
+        <Charge {charge} {i} shield={coaShield} colors={coaColors} t={coa.t3}/>
       {/if}
     {/each}
 
     <!-- division layer -->
     {#if division}
       <g id="division" clip-path="url(#divisionClip{i})">
-        <rect x=0 y=0 width=200 height=200 fill="{colors[coa.t3] || clr(coa.t3)}"/>
-        {#if ordinary?.counter}<Ordinary {ordinary} {shieldPath} {colors} t={coa.t1} {edit}/>{/if}
-        {#if diaperType === "division"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{diaper})"/>{/if}
+        <rect x=0 y=0 width=200 height=200 fill="{coaColors[coa.t3] || clr(coa.t3)}"/>
+        {#if ordinary?.counter}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t1}/>{/if}
+        {#if diaperType === "division"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})"/>{/if}
         {#each charges as charge, i}
           {#if charge.type === "division"}
-            <Charge {charge} {i} {shield} {colors} t={charge.t} {edit}/>
+            <Charge {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>
           {:else if charge.type === "counter"}
-            <Charge {charge} {i} {shield} {colors} t={coa.t1} {edit}/>
+            <Charge {charge} {i} shield={coaShield} colors={coaColors} t={coa.t1}/>
           {/if}
         {/each}
       </g>
     {/if}
 
     <!-- overall layer -->
-    {#if ordinary && !ordinary.crop && !ordinary.counter}<Ordinary {ordinary} {shieldPath} {colors} t={coa.t2} {edit}/>{/if}
-    {#if diaperType === "overall"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{diaper})"/>{/if}
-    {#each charges as charge, i}{#if !charge.type}<Charge {charge} {i} {shield} {colors} t={charge.t} {edit}/>{/if}{/each}
+    {#if ordinary && !ordinary.crop && !ordinary.counter}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t2}/>{/if}
+    {#if diaperType === "overall"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})"/>{/if}
+    {#each charges as charge, i}{#if !charge.type}<Charge {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>{/if}{/each}
   </g>
 
-  <path class="grad" d={shieldPath} fill="url(#{grad})" stroke={border} stroke-width={strokeWidth}/>
+  <path class="grad" d={shieldPath} fill="url(#{coaGrad})" stroke={$border} stroke-width={strokeWidth}/>
 </svg>
 
 <style>

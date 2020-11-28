@@ -1,7 +1,7 @@
 <script>
-  import {quartInOut} from 'svelte/easing';
   import COA from './COA.svelte';
-  export let edit, grad, diaper, shield, colors, border, borderWidth;
+  import {quartInOut} from 'svelte/easing';
+  import {state} from './stores';
 
   const min = Math.min(window.innerWidth, window.innerHeight);
   const ratio = window.innerHeight / window.innerWidth;
@@ -23,7 +23,9 @@
 </script>
 
 <div id="editor">
-  <COA {edit} c={edit.c} i={edit.i} w={s} h={s} {grad} {diaper} {shield} {colors} {border} {borderWidth}/>
+  {#key $state.c}
+    <COA c={$state.c} i={$state.i} w={s} h={s}/>
+  {/key}
   <div id="menu" in:rolling style="width:{width}%; height:{height}">
     <ul on:click={showSection}>
       <div class="section" class:expanded={false}>Field</div>

@@ -1,5 +1,6 @@
 <script>
-  export let ordinary, shieldPath, colors, t, edit;
+  import {state} from "./stores"
+  export let ordinary, shieldPath, colors, t;
 
   function transformOrdinary(o) {
     if (!o.x && !o.y && !o.size) return null;
@@ -14,7 +15,7 @@
   }
 
   function addDrag() {
-    if (!edit.on) return;
+    if (!$state.edit) return;
     let dragStartX, dragStartY, objInitLeft, objInitTop;
     let inDrag = false;
     let dragTarget = this;
@@ -41,15 +42,15 @@
 </script>
 
 {#if ordinary.ordinary === "bordure"}
-  <g class="ordinary" class:editable={edit.on} on:click={addDrag}>
+  <g class="ordinary" class:editable={$state.edit} on:click={addDrag}>
     <path d={shieldPath} fill="none" stroke={colors[t]} stroke-width="16.7%"/>
   </g>
 {:else if ordinary.ordinary === "orle"}
-  <g class="ordinary" class:editable={edit.on} on:click={addDrag}>
+  <g class="ordinary" class:editable={$state.edit} on:click={addDrag}>
     <path d={shieldPath} fill="none" stroke={colors[t]} stroke-width="5%" transform="scale(.85)" transform-origin="center"/>
   </g>
 {:else}
-  <g class="ordinary" class:editable={edit.on} transform={transformOrdinary(ordinary)} transform-origin="center" fill={colors[t]} on:click={addDrag}>
+  <g class="ordinary" class:editable={$state.editn} transform={transformOrdinary(ordinary)} transform-origin="center" fill={colors[t]} on:click={addDrag}>
     {@html getTemplate(ordinary.ordinary, ordinary.variant)}
   </g>
 {/if}
