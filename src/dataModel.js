@@ -14,8 +14,7 @@ export const tinctures = {
   },
   patterns: { // patterns including furs
     field: {semy:1, vair:2, vairInPale:1, vairEnPointe:2, ermine:2, chequy:4, lozengy:2, fusily:1, pally: 4, barry: 4, gemelles:1, bendy:3, bendySinister:2, palyBendy:1, pappellony:2, masoned:3, fretty:2},
-    division: {semy:1, vair:3, vairInPale:2, vairEnPointe:3, ermine:4, chequy:3, lozengy:1, fusily:1,
-    pally: 5, barry: 5, bendy:2, bendySinister:1, pappellony:1, masoned:3, fretty:1}
+    division: {semy:1, vair:3, vairInPale:2, vairEnPointe:3, ermine:4, chequy:3, lozengy:1, fusily:1, pally: 5, barry: 5, bendy:2, bendySinister:1, pappellony:1, masoned:3, fretty:1}
   }
 };
 
@@ -30,7 +29,6 @@ export const positions = {
     perCross: {e:4, jlmo:1, jj:1, jo:2, jl:1},
     perChevron: {e:1, jlh:1, dfk:1, dfkh:2, bdefh:1},
     perChevronReversed: {e:1, mok:2, dfh:2, dfkh:1, bdefh:1},
-    // perChevronReversed: {e:1, mo:2, dfh:2},
     perSaltire: {bhdf:8, e:3, abcdefgzi:1, bh:1, df:1, beh:1, behdf:1, ABCDEFGHIKL:1},
     perPile: {ee:3, be:2, abceh:1, abcabc:1, jleh:1}
   },
@@ -88,7 +86,9 @@ export const positions = {
     label: {defgzi:2, eh:3, defdefhmo:1, egiegi:1, pqn:5}
   },
   // charges
-  inescutcheon: {e:3, jln:1},
+  inescutcheonHeater: {e:3, jln:1},
+  inescutcheonOldFrench: {e:3, jln:1},
+  inescutcheonSpanish: {e:3, jln:1},
   mascle: {e:15, abcdefgzi:3, beh:3, bdefh:4, acegi:1, kn:3, joe:2, abc:3, jlh:8, jleh:1, df:3, abcpqh:4, pqe:3, eknpq:3},
   lionRampant: {e:10, def:2, abc:2, bdefh:1, kn:1, jlh:2, abcpqh:1},
   lionPassant:{e:10, def:1, abc:1, bdefh:1, jlh:1, abcpqh:1},
@@ -131,20 +131,17 @@ export const ordinaries = {
 };
 
 export const charges = {
-  types: {conventional:30, plants:1, animals:3, birds:2, aquatic:1, fantastic:3, agriculture:1, arms:1, bodyparts:1, miscellaneous:3},
-  single: {conventional:12, plants:2, animals:11, birds:4, aquatic:2, fantastic:7, agriculture:1, arms:5, bodyparts:1, miscellaneous:8},
-  semy: {lozenge:2, fusil:4, mascle:4, rustre:2, lozengeFaceted:1, lozengePloye:1, roundel:2, annulet:1,
-    mullet:4, mulletPierced:1, mulletFaceted:1, mullet4:2, mullet6:3,
-    mullet6Pierced:1, mullet6Faceted:1, mullet7:1, mullet8:1, mullet10:1, estoile:1, sun:1, fleurDeLis:5, crescent:2,
-    delf: 1, billet:6, triangle:3, trianglePierced:1, goutte:5, heart:5, pique:1, trefle:1, сarreau:1, cross:7},
+  types: {conventional:30, crosses:8, animals:3, birds:2, aquatic:1, fantastic:3, plants:1, agriculture:1, arms:1, bodyparts:1, miscellaneous:3, inescutcheon:3},
+  single: {conventional:12, crosses:8, plants:2, animals:11, birds:4, aquatic:2, fantastic:7, agriculture:1, arms:5, bodyparts:1, miscellaneous:8, inescutcheon:5},
+  semy: {conventional:12, crosses:3, plants:1},
   conventional: {lozenge:2, fusil:4, mascle:4, rustre:2, lozengeFaceted:3, lozengePloye:1, roundel:7, annulet:4,
-    mullet:5, mulletPierced:1, mulletFaceted:1, mullet4:3, mullet6:4,
-    mullet6Pierced:1, mullet6Faceted:1, mullet7:1, mullet8:1, mullet10:1, estoile:1, sun:3,
-    inescutcheon:7, billet:5, triangle:3, trianglePierced:1, goutte:4, heart:4, pique:2, trefle:2, сarreau:1,
-    fleurDeLis:6, sunInSplendour:1, crescent:5, fountain:1, compassRose:1, cross:12, fountain:1},
-  inescutcheon: {heater:2, oldFrench:1, spanish:4},
-  cross: {hummetty:15, voided:1, pattee:3, potent:2, clechy:3, crosslet:1, bottony:1, fleury:3, patonce:1, pommy:1, gamma:1, arrowed:1,
-    fitchy:1, cercelee:1, moline:2, fourchy:1, avellane:1, erminee:1, maltese:3, celtic:1, occitan:1, saltire:3, tau:1},
+    mullet:5, mulletPierced:1, mulletFaceted:1, mullet4:3, mullet6:4, mullet6Pierced:1, mullet6Faceted:1, mullet7:1, mullet8:1, mullet10:1,
+    estoile:1, billet:5, triangle:3, trianglePierced:1, goutte:4, heart:4, pique:2, trefle:2, сarreau:1,
+    fleurDeLis:6, sun:3, sunInSplendour:1, crescent:5, fountain:1, compassRose:1, fountain:1},
+  inescutcheon: {inescutcheonHeater:2, inescutcheonOldFrench:1, inescutcheonSpanish:4},
+  crosses: {crossHummetty:15, crossVoided:1, crossPattee:3, crossPotent:2, crossClechy:3, crosslet:1, crossBottony:1, crossFleury:3,
+    crossPatonce:1, crossPommy:1, crossGamma:1, crossArrowed:1, crossFitchy:1, crossCercelee:1, crossMoline:2, crossFourchy:1,
+    crossAvellane:1, crossErminee:1, crossMaltese:3, crossCeltic:1, crossOccitan:1, crossSaltire:3, crossTau:1},
   animals:{lionRampant:4, lionPassant:1, wolfPassant:1, greyhoundСourant:1, boarRampant:1, horseRampant:1, horseSalient:1, bullPassant:1, bullHeadCaboshed:1, deerHeadCaboshed:1},
   fantastic:{dragonPassant:3, wyvern:2, griffinPassant:1, griffinRampant:1, eagleTwoHeards:2, unicornRampant:1, pegasus:1, serpent:1},
   birds:{eagle:9, raven:2, cock:3, parrot:1, swan:2, swanErased:1, heron:1},

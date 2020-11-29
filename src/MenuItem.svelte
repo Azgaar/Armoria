@@ -1,17 +1,13 @@
 <script>
   import Ordinary from './Ordinary.svelte';
   import Charge from './Charge.svelte';
-  import {grad, diaper, shield, colors, border, borderWidth, patterns} from './stores';
-  export let coa, i, w, h;
+  import {shield, colors, patterns} from './stores';
+  export let coa, title, itemSize;
 
   const {ordinary, division, charges = []} = coa;
 
   $: coaShield = coa.shield || $shield;
   $: shieldPath = document.querySelector(`#defs g#shields > #${coaShield} > path`).getAttribute("d");
-  $: coaDiaper = coa.diaper || $diaper;
-  $: diaperType = coaDiaper ? getDieperType() : null;
-  $: strokeWidth = $borderWidth;
-  $: coaGrad = coa.grad || $grad;
   $: coaColors = $colors;
 
   function getDieperType() {
@@ -38,10 +34,11 @@
   }
 </script>
 
-<svg id="coa{i}" class="coa" xmlns="http://www.w3.org/2000/svg" width={w} height={h} viewBox="0 0 200 200" on:click={() => console.log(coa)}>
+<svg class="menuItem" xmlns="http://www.w3.org/2000/svg" width={itemSize} height={itemSize} viewBox="0 0 200 200">
+  <title>{title}</title>
   <defs>
     {#if division}
-      <clipPath id="divisionClip{i}">
+      <clipPath id="divisionClip">
         {@html getTemplate(division, coa.line)}
       </clipPath>
     {/if}
@@ -52,7 +49,6 @@
     <rect id="field" x=0 y=0 width=200 height=200 fill="{coaColors[coa.t1] || clr(coa.t1)}"/>
     {#if ordinary?.counter}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t3}/>{/if}
     {#if ordinary?.crop}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t2}/>{/if}
-    {#if diaperType === "field"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})"/>{/if}
     {#each charges as charge, i}
       {#if charge.type === "field"}
         <Charge {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>
@@ -63,10 +59,9 @@
 
     <!-- division layer -->
     {#if division}
-      <g id="division" clip-path="url(#divisionClip{i})">
+      <g id="division" clip-path="url(#divisionClip)">
         <rect x=0 y=0 width=200 height=200 fill="{coaColors[coa.t3] || clr(coa.t3)}"/>
         {#if ordinary?.counter}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t1}/>{/if}
-        {#if diaperType === "division"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})"/>{/if}
         {#each charges as charge, i}
           {#if charge.type === "division"}
             <Charge {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>
@@ -79,19 +74,8 @@
 
     <!-- overall layer -->
     {#if ordinary && !ordinary.crop && !ordinary.counter}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t2}/>{/if}
-    {#if diaperType === "overall"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})"/>{/if}
     {#each charges as charge, i}{#if !charge.type}<Charge {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>{/if}{/each}
   </g>
 
-  <path class="grad" d={shieldPath} fill="url(#{coaGrad})" stroke={$border} stroke-width={strokeWidth}/>
+  <path d={shieldPath} fill="url(#spotlight)" stroke="#333"/>
 </svg>
-
-<style>
-	.grad, .diaper {
-		pointer-events: none;
-	}
-
-  /* svg {
-    outline: 1px solid #000;
-  } */
-</style>

@@ -6,12 +6,11 @@
   import Patterns from './Patterns.svelte';
   import {background, size, history, matrices, matrix, state} from './stores.js';
 
-  let n, w, h, coas = [];
-
+  let n, w, h, gallery = [];
+  $: [n, w, h] = defineGallerySize($size);
   $: {
-    [n, w, h] = defineGallerySize($size);
-
     const l = $history.length;
+    // reroll is clicked
     if (!$matrices[$matrix]) {
       if ($state.edit) {
         // generate new coa
@@ -23,16 +22,16 @@
       }
     }
 
-    // update coa being edited
+    // update if of edited coa
     if ($state.edit) $state.c = $matrices[$matrix][$state.i];
 
+    // add additional coas to matrix if size is smaller
     if ($matrices[$matrix].length < n) {
-      // add additional coas to matrix if size is smaller
       const m = $matrices[$matrix];
       $matrices[$matrix] = [...Array(n).keys()].map(i => m[i] || l+i);
     }
 
-    coas = $matrices[$matrix].slice(0, n);
+    gallery = $matrices[$matrix].slice(0, n);
     console.log(`matrix update ${$matrix}: ${$matrices[$matrix]}`);
   };
 
@@ -52,7 +51,7 @@
   <Navbar/>
   {#if $state.about}<About/>{/if}
   {#if $state.edit}<Editor/>
-  {:else}<Gallery {coas} {w} {h}/>{/if}
+  {:else}<Gallery {gallery} {w} {h}/>{/if}
   <div id="patterns" style="position: absolute">
     <svg width=0 height=0 xmlns="http://www.w3.org/2000/svg">
       <defs><Patterns/></defs>

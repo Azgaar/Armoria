@@ -1,32 +1,42 @@
 <script>
   import COA from './COA.svelte';
   import {fade} from 'svelte/transition';
+  import {generate} from './generator.js';
   import {download} from './download.js';
   import {history, matrices, matrix, state} from './stores';
-  export let coas, w, h;
+  export let gallery, w, h;
+
+  $:coas = gallery.map(c => {
+    let coa = $history[c] || generate();
+    if (!$history[c]) $history[c] = coa;
+    return coa;
+  });
 
   function regenerate(i) {
-    coas[i] = $history.length;
+    const coa = generate();
+    gallery[i] = $history.length;
     $matrix++;
-    $matrices[$matrix] = coas;
+    $matrices[$matrix] = gallery;
+    $history.push(coa);
+    coas[i] = coa;
   }
 
-  function editCOA(c, i) {
+  function editCOA(i) {
     $state.edit = 1;
-    $state.c = c;
+    $state.c = gallery[i];
     $state.i = i;
   }
 </script>
 
 <div id="gallery" style="margin-top: 28px; font-size: {Math.ceil(w/20)}px" transition:fade>
-  {#each coas as c, i}
+  {#each coas as coa, i}
     <div>
-      {#key c}
-        <COA {c} {i} {w} {h}/>
+      {#key coa}
+        <COA {coa} {i} {w} {h}/>
       {/key}
         <div class="control">
         <svg on:click={() => regenerate(i)}><use href="#dice-icon"></use></svg>
-        <svg on:click={() => editCOA(c, i)}><use href="#pencil-icon"></use></svg>
+        <svg on:click={() => editCOA(i)}><use href="#pencil-icon"></use></svg>
         <svg on:click={() => download(i)}><use href="#download-icon"></use></svg>
       </div>
     </div>

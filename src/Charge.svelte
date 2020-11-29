@@ -23,7 +23,7 @@
     return null;
   }
 
-  function getElTransform(c, p) {
+  function getElTransform(shieldPositions, c, p) {
     const [x, y] = shieldPositions[p];
     const size = c.size || 1;
     const scale = c.sinister || c.reversed ? `${c.sinister ? "-" : ""}${size}, ${c.reversed ? "-" : ""}${size}` : size;
@@ -66,7 +66,7 @@
 
 <g class="charge" {i} class:editable={$state.edit} charge={getCharge(charge.charge)} transform={getChargeTransform(charge)} stroke="#000" on:click={addDrag}>
   {#each [...charge.p] as p}
-    <use href="#{charge.charge}" transform={getElTransform(charge, p)} transform-origin="center" fill="{colors[t]}"></use>
+    <use href="#{charge.charge}" transform={getElTransform(shieldPositions, charge, p)} transform-origin="center" fill="{colors[t]}"></use>
   {/each}
 </g>
 

@@ -25,7 +25,7 @@
     const internal = defs.querySelector("#"+p.charge);
 
     if (internal) {
-      html = internal.innerHTML;
+      html = internal.outerHTML;
     } else {
       const extSVG = await fetch("charges/"+p.charge+".svg");
       const text = await extSVG.text();
@@ -115,12 +115,12 @@
       <rect x=0 y=55 width=25 height=10 fill={$colors[p.t1]}/>
     </pattern>
   {:else if p.type === "bendy"}
-    <pattern id={p.id} width=.36 height=.36 viewBox="0 0 50 50" patternTransform="rotate(45)">
+    <pattern id={p.id} width={.36 * p.mod} height={.36 * p.mod} viewBox="0 0 50 50" patternTransform="rotate(45)">
       <rect x=0 y=0 width=50 height=50 fill={$colors[p.t2]}/>
       <line x1=0 y1=37.5 x2=50 y2=37.5 stroke={$colors[p.t1]} stroke-width=25 />
     </pattern>
   {:else if p.type === "bendySinister"}
-    <pattern id={p.id} width=.36 height=.36 viewBox="0 0 50 50" patternTransform="rotate(-45)">
+    <pattern id={p.id} width={.36 * p.mod} height={.36 * p.mod} viewBox="0 0 50 50" patternTransform="rotate(-45)">
       <rect x=0 y=0 width=50 height=50 fill={$colors[p.t2]}/>
       <line x1=0 y1=37.5 x2=50 y2=37.5 stroke={$colors[p.t1]} stroke-width=25 />
     </pattern>

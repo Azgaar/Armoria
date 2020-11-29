@@ -72,7 +72,7 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
       // add central charge if charge is in bordure
       coa.charges[0].charge = rw(charges.conventional);
       coa.charges.push({"charge":rw(charges[rw(charges.single)]), t:getTincture("charge", tinctures.f, coa.t1, charge), p:"e"});
-    } else if (charge === "inescutcheon" && P(.8)) {
+    } else if (P(.8) && charge.slice(0,12) === "inescutcheon") {
       // add charge to inescutcheon
       coa.charges.push({"charge":rw(charges[rw(charges.types)]), t:getTincture("charge", [], t, charge), p, size:.5});
     } else if (division && !ordinary) {
@@ -113,18 +113,6 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
       c.size = size;
 
     }
-
-    // specify type of charge if multiple are available
-    coa.charges?.forEach((c,i) => {
-      if (c.charge === "inescutcheon") {
-        //const shield = ["heater", "oldFrench"].includes(options.shield) ? options.shield : "spanish";
-        //c.charge += capitalize(shield);
-        c.charge += capitalize("spanish");
-        return;
-      }
-      if (!charges[c.charge]) return;
-      c.charge += capitalize(rw(charges[c.charge]));
-    });
   }
 
   return coa;
@@ -177,11 +165,7 @@ function definePattern(pattern, element, size = "") {
     else if (P(.25)) {t1 = "sable"; t2 = "or";}
     else if (P(.15)) {t1 = "gules"; t2 = "argent";}
   }
-  else if (pattern === "semy") {
-    let charge = rw(charges.semy);
-    if (charges[charge]) charge = charge + capitalize(rw(charges[charge]));
-    pattern += "_of_"+charge;
-  }
+  else if (pattern === "semy") pattern += "_of_" + rw(charges[rw(charges.semy)]);
 
   if (!t1 || !t2) {
     const startWithMetal = P(.7);
@@ -216,7 +200,7 @@ function getType(t) {
 
 // UTILS
 // return random value from weighted array {"key1":weight1, "key2":weight2}
-function rw(object) {
+export function rw(object) {
   const array = [];
   for (const key in object) {
     for (let i=0; i < object[key]; i++) {
@@ -229,9 +213,4 @@ function rw(object) {
 // probability shorthand
 function P(probability) {
   return Math.random() < probability;
-}
-
-// return string with 1st char capitalized
-function capitalize(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
 }
