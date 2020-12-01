@@ -27,32 +27,31 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
   }
 
   if (ordinary) {
-    const o = coa.ordinary = {ordinary};
-    coa.t2 = getTincture("charge", tinctures.f, coa.t1);
-    if (linedOrdinary) o.variant = tinctures.pattern || (division && P(.7)) ? "straight" : rw(lines);
+    coa.ordinary = {ordinary, t: getTincture("charge", tinctures.f, coa.t1)};
+    if (linedOrdinary) coa.ordinary.line = tinctures.pattern || (division && P(.7)) ? "straight" : rw(lines);
     if (division && !charge && !tinctures.pattern && P(.5) && ordinary !== "bordure" && ordinary !== "orle") {
-      if (P(.8)) o.counter = 1; // 40%
-      else o.crop = 1; // 10%
+      if (P(.8)) coa.ordinary.counter = 1; // 40%
+      else coa.ordinary.crop = 1; // 10%
     }
   }
 
   if (charge) {
-    let p = "e", t = "gules";
+    let p = "e", t = "gules", ordinaryT = coa.ordinary?.t;
     if (positions.ordinariesOn[ordinary] && P(.8)) {
       // place charge over ordinary (use tincture of field type)
       p = rw(positions.ordinariesOn[ordinary]);
-      while (charges.natural[charge] === coa.t2) selectCharge();
-      t = !tinctures.pattern && P(.3) ? coa.t1 : getTincture("charge", [], coa.t2, charge);
+      while (charges.natural[charge] === ordinaryT) selectCharge();
+      t = !tinctures.pattern && P(.3) ? coa.t1 : getTincture("charge", [], ordinaryT, charge);
     } else if (positions.ordinariesOff[ordinary] && P(.95)) {
       // place charge out of ordinary (use tincture of ordinary type)
       p = rw(positions.ordinariesOff[ordinary]);
       while (charges.natural[charge] === coa.t1) selectCharge();
-      t = !tinctures.pattern && P(.3) ? coa.t2 : getTincture("charge", tinctures.f, coa.t1, charge);
+      t = !tinctures.pattern && P(.3) ? ordinaryT : getTincture("charge", tinctures.f, coa.t1, charge);
     } else if (positions.divisions[division]) {
       // place charge in fields made by division
       p = rw(positions.divisions[division]);
       while (charges.natural[charge] === coa.t1) selectCharge();
-      t = getTincture("charge", coa.t2 ? tinctures.f.concat(coa.t2) : tinctures.f, coa.t1, charge);
+      t = getTincture("charge", ordinaryT ? tinctures.f.concat(ordinaryT) : tinctures.f, coa.t1, charge);
     } else if (positions[charge]) {
       // place charge-suitable position
       p = rw(positions[charge]);
@@ -62,7 +61,7 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
       // place in standard position (use new tincture)
       p = tinctures.pattern ? "e" : charges.conventional[charge] ? rw(positions.conventional) : rw(positions.complex);
       while (charges.natural[charge] === coa.t1) selectCharge();
-      t = getTincture("charge", tinctures.f.concat(coa.t2), coa.t1, charge);
+      t = getTincture("charge", tinctures.f.concat(ordinaryT), coa.t1, charge);
     }
 
     if (charges.natural[charge]) t = charges.natural[charge]; // natural tincture

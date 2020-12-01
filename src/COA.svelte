@@ -51,7 +51,7 @@
     <!-- field layer -->
     <rect id="field" x=0 y=0 width=200 height=200 fill="{coaColors[coa.t1] || clr(coa.t1)}"/>
     {#if ordinary?.counter}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t3}/>{/if}
-    {#if ordinary?.crop}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t2}/>{/if}
+    {#if ordinary?.crop}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
     {#if diaperType === "field"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})"/>{/if}
     {#each charges as charge, i}
       {#if charge.type === "field"}
@@ -78,7 +78,7 @@
     {/if}
 
     <!-- overall layer -->
-    {#if ordinary && !ordinary.crop && !ordinary.counter}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t2}/>{/if}
+    {#if ordinary && !ordinary.crop && !ordinary.counter}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
     {#if diaperType === "overall"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})"/>{/if}
     {#each charges as charge, i}{#if !charge.type}<Charge {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>{/if}{/each}
   </g>

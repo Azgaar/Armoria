@@ -51,7 +51,7 @@
   </g>
 {:else}
   <g class="ordinary" class:editable={$state.editn} transform={transformOrdinary(ordinary)} transform-origin="center" fill={colors[t]} on:click={addDrag}>
-    {@html getTemplate(ordinary.ordinary, ordinary.variant)}
+    {@html getTemplate(ordinary.ordinary, ordinary.line)}
   </g>
 {/if}
 

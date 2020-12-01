@@ -4,20 +4,13 @@
   import {shield, colors, patterns} from './stores';
   export let coa, title, itemSize;
 
-  const {ordinary, division, charges = []} = coa;
+  let {ordinary, division, charges = []} = coa;
+  if (ordinary?.ordinary === "no") ordinary = null;
+  let i = Math.floor(1e6 * Math.random());
 
   $: coaShield = coa.shield || $shield;
   $: shieldPath = document.querySelector(`#defs g#shields > #${coaShield} > path`).getAttribute("d");
   $: coaColors = $colors;
-
-  function getDieperType() {
-    const f = !coa.t1.includes("-");
-    const d = !coa.t3 || !coa.t3.includes("-");
-    if (f && d) return "overall";
-    if (f) return "field";
-    if (d) return "division";
-    return null;
-  }
 
   function getTemplate(templateId, lineId) {
     if (!lineId) return document.getElementById(templateId)?.innerHTML;
@@ -37,8 +30,8 @@
 <svg class="menuItem" xmlns="http://www.w3.org/2000/svg" width={itemSize} height={itemSize} viewBox="0 0 200 200">
   <title>{title}</title>
   <defs>
-    {#if division}
-      <clipPath id="divisionClip">
+    {#if division && division !== "no"}
+      <clipPath id="divisionClipMenu{i}">
         {@html getTemplate(division, coa.line)}
       </clipPath>
     {/if}
@@ -48,7 +41,7 @@
     <!-- field layer -->
     <rect id="field" x=0 y=0 width=200 height=200 fill="{coaColors[coa.t1] || clr(coa.t1)}"/>
     {#if ordinary?.counter}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t3}/>{/if}
-    {#if ordinary?.crop}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t2}/>{/if}
+    {#if ordinary?.crop}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
     {#each charges as charge, i}
       {#if charge.type === "field"}
         <Charge {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>
@@ -58,8 +51,8 @@
     {/each}
 
     <!-- division layer -->
-    {#if division}
-      <g id="division" clip-path="url(#divisionClip)">
+    {#if division && division !== "no"}
+      <g id="division" clip-path="url(#divisionClipMenu{i})">
         <rect x=0 y=0 width=200 height=200 fill="{coaColors[coa.t3] || clr(coa.t3)}"/>
         {#if ordinary?.counter}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t1}/>{/if}
         {#each charges as charge, i}
@@ -73,9 +66,9 @@
     {/if}
 
     <!-- overall layer -->
-    {#if ordinary && !ordinary.crop && !ordinary.counter}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t2}/>{/if}
+    {#if ordinary && !ordinary.crop && !ordinary.counter}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
     {#each charges as charge, i}{#if !charge.type}<Charge {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>{/if}{/each}
   </g>
 
-  <path d={shieldPath} fill="url(#spotlight)" stroke="#333"/>
+  <path d={shieldPath} fill="url(#spotlight)" stroke="#333" stroke-width="2"/>
 </svg>
