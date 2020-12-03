@@ -16,6 +16,41 @@ export const matrices = writable([[]]);
 export const matrix = writable(0);
 export const state = writable({edit:0, about:0});
 
+const createCounter = () => {
+  const {subscribe, set, update} = writable([undefined, -1]);
+  let history = [], position = -1;
+
+  return {
+    subscribe,
+    value: () => history[position],
+    length: () => history.length,
+    reset: () => {
+      history = [], position = -1;
+      set([undefined, -1])
+    },
+
+    add(value) {
+      if (position < history.length - 1) history = history.slice(0, position + 1);
+      history.push(value);
+      position += 1;
+      set([history[position], position])
+    },
+
+    undo: () => update(p => {
+      if (position > 0) position -= 1;
+      return [history[position], position];
+    }),
+
+    redo: () => update(p => {
+      if (position < history.length - 1) position += 1;
+      return [history[position], position];
+    }),
+
+    toString() {return `Value: ${history}, Position: ${position}`; }
+  }
+}
+export const changes = createCounter();
+
 export const loadedCharges = writable([]);
 export const patterns = writable([]);
 

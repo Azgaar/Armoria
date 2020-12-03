@@ -2,7 +2,7 @@
   import Tooltip from './Tooltip.svelte';
   import {fade} from 'svelte/transition';
   import {download} from './download.js';
-  import {size, grad, diaper, shield, colors, background, scale, border, borderWidth, matrix, state} from './stores';
+  import {size, grad, diaper, shield, colors, background, scale, border, borderWidth, matrix, state, changes} from './stores';
 
   const shields = ["heater", "oldFrench", "spanish", "french", "swiss", "wedged", "italian", "kite", "renaissance", "baroque", "polish", "german", "diamond", "round", "vesicaPiscis", "square", "flag", "pennon", "guidon", "banner", "dovetail", "gonfalon", "pennant"];
   const paths = shields.map(id => document.getElementById(id).innerHTML);
@@ -12,6 +12,8 @@
   const tinctures = ["argent", "or", "gules", "sable", "azure", "vert", "purpure"];
   const defaultColors = {argent: "#fafafa", or: "#ffe066", gules: "#d7374a", sable: "#333333", azure: "#377cd7", vert: "#26c061", purpure: "#522d5b"};
   let locked = localStorage.getItem("Armoria");
+  
+  $: position = $changes[1];
 
   function getRandomColor() {
     const letters = '0123456789ABCDEF';
@@ -39,6 +41,7 @@
       <bd style="color: #333">Rollback</bd>
     {/if}
     <bt on:click={() => $matrix += 1}>Reroll</bt>
+
     <bt on:click={() => download()}>Download</bt>
     <div class="container"><bl>Options</bl>
 
@@ -157,7 +160,23 @@
         {/if}
       </div>
     </div>
+    
     <bt on:click={() => $state.about = 1}>About</bt>
+    
+    {#if $state.edit}
+      {#if position > 0}
+        <bt on:click={() => changes.undo()}>Undo</bt>
+      {:else}
+        <bd style="color: #333">Undo</bd>
+      {/if}
+
+      {#if position < changes.length() - 1}
+        <bt on:click={() => changes.redo()}>Redo</bt>
+      {:else}
+        <bd style="color: #333">Redo</bd>
+      {/if}
+    {/if}
+
     {#if $state.edit}
       <bt id="back" on:click={() => $state.edit = 0} transition:fade>Back to gallery</bt>
     {/if}

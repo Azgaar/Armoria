@@ -4,9 +4,10 @@
   import Editor from './Editor.svelte';
   import Gallery from './Gallery.svelte';
   import Patterns from './Patterns.svelte';
-  import {background, size, history, matrices, matrix, state} from './stores.js';
+  import {generate} from './generator.js';
+  import {background, size, history, matrices, matrix, state, changes} from './stores.js';
 
-  let n, w, h, gallery = [];
+  let n, w, h, gallery = [], coa;
   $: [n, w, h] = defineGallerySize($size);
   $: {
     const l = $history.length;
@@ -23,7 +24,12 @@
     }
 
     // update if of edited coa
-    if ($state.edit) $state.c = $matrices[$matrix][$state.i];
+    if ($state.edit) {
+      $state.c = $matrices[$matrix][$state.i];
+      coa = $history[$state.c] || generate();
+      if (!$history[$state.c]) $history.push(coa);
+      changes.reset();
+    }
 
     // add additional coas to matrix if size is smaller
     if ($matrices[$matrix].length < n) {
@@ -50,7 +56,7 @@
 <main style="background-color: {$background}">
   <Navbar/>
   {#if $state.about}<About/>{/if}
-  {#if $state.edit}<Editor/>
+  {#if $state.edit}<Editor {coa} c={$state.c}/>
   {:else}<Gallery {gallery} {w} {h}/>{/if}
   <div id="patterns" style="position: absolute">
     <svg width=0 height=0 xmlns="http://www.w3.org/2000/svg">

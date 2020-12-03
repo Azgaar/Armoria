@@ -2,9 +2,10 @@
   import COA from './COA.svelte';
   import MenuItem from './MenuItem.svelte';
   import {quartInOut} from 'svelte/easing';
-  import {generate, rw} from './generator.js';
-  import {history, state} from './stores';
+  import {rw} from './generator.js';
+  import {changes} from './stores';
   import {charges, tinctures as tData, divisions, ordinaries, lines} from "./dataModel.js";
+  export let coa, c;
 
   const min = Math.min(window.innerWidth, window.innerHeight);
   const ratio = window.innerHeight / window.innerWidth;
@@ -19,60 +20,63 @@
   const chargeTypes = Object.keys(charges.types);
   const ordinariesList = ["no"].concat(Object.keys(ordinaries.lined)).concat(Object.keys(ordinaries.straight));
 
-  let coa, fieldType, fieldT1, fieldT2, fieldPattern = "vair", semyType = "conventional", fieldCharge = "lozenge", fieldSize;
+  let menu = {}, change = 1;
   let divisionType, division, divisionLine, divisionT1, divisionT2, divisionPattern = "vair", divisionSemyType = "conventional", divisionCharge = "lozenge", divisionSize;
   let ordinary, ordinaryLine, ordinaryT;
 
-  $: console.log(JSON.stringify(coa))
-  
+  // on reroll
   $: {
-    // generate coa or get if from history
-    coa = $history[$state.c] || generate();
-    if (!$history[$state.c]) $history[$state.c] = coa;
+    menu = {};
+    defineMenuState(c);
+  }
 
-    // define initial menu state
-    if (!fieldType) {
-      fieldType = isSemy(coa.t1) ? "semy" : isPattern(coa.t1) ? "pattern" : "tincture";
-      const split = coa.t1.split("-"); // parsed tincture
-      fieldT1 = fieldType === "tincture" ? coa.t1 : split[1];
-      if (fieldType !== "tincture") fieldT2 = split[2];
-      if (!fieldT2) fieldT2 = selectSecondTincture(fieldT1, "field");
-      if (fieldType === "pattern") fieldPattern = split[0];
-      if (fieldType === "semy") {
-        fieldCharge = split[0].split("_of_")[1];
-        semyType = chargeTypes.find(type => type[fieldCharge]);
-      }
-      fieldSize = split[3] || "standard";
-    }
+  // on coa change
+  $: {
+    if (change) changes.add(JSON.stringify(coa));
+    change = 1;
+  }
 
-    if (!division) {
-      division = coa.division || "no";
-      divisionLine = coa.line || "straight";
-      divisionType = isSemy(coa.t3) ? "semy" : isPattern(coa.t3) ? "pattern" : "tincture";
-      const split = coa.division ? coa.t3.split("-") : []; // parsed tincture
-      divisionT1 = divisionType === "tincture" ? coa.t3 || selectSecondTincture(fieldT1, "division") : split[1];
-      divisionT2 = divisionType !== "tincture" ? split[2] : selectSecondTincture(divisionT1, "division");
-      if (divisionType === "pattern") divisionPattern = split[0];
-      if (divisionType === "semy") {
-        divisionCharge = split[0].split("_of_")[1];
-        divisionSemyType = chargeTypes.find(type => type[divisionCharge]);
-      }
-      divisionSize = split[3] || "standard";
+  // on undo or redo
+  $: {
+    if (changes.length()) {
+      coa = JSON.parse($changes[0]);
+      defineMenuState();
+      change = 0;
     }
+  }
 
-    if (!ordinary) {
-      ordinary = coa.ordinary?.ordinary || "no";
-      ordinaryLine = coa.ordinary?.line || "straight";
-      ordinaryT = coa.ordinary?.t || rw(tData["colours"]["charge"]);
+  // define initial menu state, run only once
+  function defineMenuState() {
+    const field = coa.t1.split("-"); // parsed field tincture
+    const fieldType = isSemy(coa.t1) ? "semy" : isPattern(coa.t1) ? "pattern" : "tincture";
+    if (fieldType === "tincture") menu.field = {type: fieldType, t1: coa.t1, t2: selectSecondTincture(coa.t1, "field")}
+    else if (fieldType === "pattern") menu.field = {type: fieldType, t1: field[1], t2: field[2], pattern: field[0], size: field[3] || "standard"}
+    else menu.field = {type: fieldType, t1: field[1], t2: field[2], charge: getSemyCharge(field), semy: getSemyType(field), size: field[3] || "standard"}
+
+    division = coa.division || "no";
+    divisionLine = coa.line || "straight";
+    divisionType = isSemy(coa.t3) ? "semy" : isPattern(coa.t3) ? "pattern" : "tincture";
+    const split = coa.division ? coa.t3.split("-") : []; // parsed tincture
+    divisionT1 = divisionType === "tincture" ? coa.t3 || selectSecondTincture(menu.field.t1, "division") : split[1];
+    divisionT2 = divisionType !== "tincture" ? split[2] : selectSecondTincture(divisionT1, "division");
+    if (divisionType === "pattern") divisionPattern = split[0];
+    if (divisionType === "semy") {
+      divisionCharge = split[0].split("_of_")[1];
+      divisionSemyType = chargeTypes.find(type => type[divisionCharge]);
     }
+    divisionSize = split[3] || "standard";
+
+    ordinary = coa.ordinary?.ordinary || "no";
+    ordinaryLine = coa.ordinary?.line || "straight";
+    ordinaryT = coa.ordinary?.t || rw(tData["colours"]["charge"]);
   }
 
   // field attributes changed
   $: {
-    if (fieldType === "tincture") coa.t1 = fieldT1; else {
-      const attr0 = fieldType === "semy" ? "semy_of_" + fieldCharge : fieldPattern;
-      const attibutes = [attr0, fieldT1, fieldT2];
-      if (fieldSize !== "standard") attibutes.push(fieldSize);
+    if (menu.field.type === "tincture") coa.t1 = menu.field.t1; else {
+      const type = menu.field.type === "semy" ? "semy_of_" + menu.field.charge : menu.field.pattern;
+      const attibutes = [type, menu.field.t1, menu.field.t2];
+      if (menu.field.size !== "standard") attibutes.push(menu.field.size);
       coa.t1 = attibutes.join("-");
     }
   }
@@ -112,6 +116,19 @@
     return string?.slice(0,4) === "semy";
   }
 
+  function getSemyCharge(array) {
+    return array[0].split("_of_")[1];
+  }
+
+  function getChargeType(charge) {
+    return chargeTypes.find(type => type[charge]);
+  }
+
+  function getSemyType(array) {
+    const charge = getSemyCharge(array);
+    return getChargeType(charge);
+  }
+
   function rolling(node, {duration = 1000}) {
     return {duration, css: t => `width: ${quartInOut(t) * width}%`}
   }
@@ -142,22 +159,22 @@
 
 <div id="editor">
   {#key coa}
-    <COA {coa} i={$state.i} w={coaSize} h={coaSize}/>
+    <COA {coa} i="Edit" w={coaSize} h={coaSize}/>
   {/key}
   <div id="menu" in:rolling style="width:{width}%; height:{height}">
     <ul>
       <div class="section" class:expanded={false} on:click={showSection}>Field</div>
       <div class="panel">
         <div class="subsection">Type:
-          <select bind:value={fieldType} on:input={updateSection}>
+          <select bind:value={menu.field.type} on:input={updateSection}>
             <option value="tincture">Tincture</option>
             <option value="pattern">Pattern</option>
             <option value="semy">Semy</option>
           </select>
 
-          {#if fieldType !== "tincture"}
+          {#if menu.field.type !== "tincture"}
             <span class="leftMargin">Size:</span>
-            <select bind:value={fieldSize}>
+            <select bind:value={menu.field.size}>
               <option value="big">Big</option>
               <option value="standard">Standard</option>
               <option value="small">Small</option>
@@ -170,46 +187,46 @@
         <div class="subsection">
           <div>Tincture:</div>
           {#each tinctures as coa}
-            <div class=item class:selected={fieldT1 === coa.t1} on:click={() => fieldT1 = coa.t1}>
+            <div class=item class:selected={menu.field.t1 === coa.t1} on:click={() => menu.field.t1 = coa.t1}>
               <MenuItem {coa} title={cap(coa.t1)} {itemSize}/>
             </div>
           {/each}
         </div>
 
-        {#if fieldType !== "tincture"}
+        {#if menu.field.type !== "tincture"}
           <div class="subsection">
             <div>Tincture 2:</div>
             {#each tinctures as coa}
-              <div class=item class:selected={fieldT2 === coa.t1} on:click={() => fieldT2 = coa.t1}>
+              <div class=item class:selected={menu.field.t2 === coa.t1} on:click={() => menu.field.t2 = coa.t1}>
                 <MenuItem {coa} title={cap(coa.t1)} {itemSize}/>
               </div>
             {/each}
           </div>
         {/if}
 
-        {#if fieldType === "pattern"}
+        {#if menu.field.type === "pattern"}
           <div class="subsection">
             <div>Pattern:</div>
-            {#each patterns.map(p => new Object({t1: `${p}-${fieldT1}-${fieldT2}-${fieldSize}`, pattern: p})) as coa}
-              <div class=item class:selected={fieldPattern === coa.pattern} on:click={() => fieldPattern = coa.pattern}>
+            {#each patterns.map(p => new Object({t1: `${p}-${menu.field.t1}-${menu.field.t2}-${menu.field.size}`, pattern: p})) as coa}
+              <div class=item class:selected={menu.field.pattern === coa.pattern} on:click={() => menu.field.pattern = coa.pattern}>
                 <MenuItem {coa} title={cap(coa.pattern)} {itemSize}/>
               </div>
             {/each}
           </div>
         {/if}
 
-        {#if fieldType === "semy"}
+        {#if menu.field.type === "semy"}
           <div class="subsection">
             <div>Charge:
-              <select bind:value={semyType}>
+              <select bind:value={menu.field.semy}>
                 {#each chargeTypes as type}
                   <option value={type}>{cap(type)}</option>
                 {/each}
               </select>
             </div>
 
-            {#each Object.keys(charges[semyType]).map(c => new Object({t1: `semy_of_${c}-${fieldT1}-${fieldT2}-${fieldSize}`, charge: c})) as coa}
-              <div class=item class:selected={fieldCharge === coa.charge} on:click={() => fieldCharge = coa.charge}>
+            {#each Object.keys(charges[menu.field.semy]).map(c => new Object({t1: `semy_of_${c}-${menu.field.t1}-${menu.field.t2}-${menu.field.size}`, charge: c})) as coa}
+              <div class=item class:selected={menu.field.charge === coa.charge} on:click={() => menu.field.charge = coa.charge}>
                 <MenuItem {coa} title={cap(coa.charge)} {itemSize}/>
               </div>
             {/each}
