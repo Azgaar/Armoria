@@ -1,3 +1,4 @@
+import {rw, P} from './utils.js';
 import {charges, divisions, lines, ordinaries, positions, tinctures} from "./dataModel.js";
 
 // main generation routine
@@ -21,9 +22,9 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
   if (charge) selectCharge();
 
   if (division) {
-    coa.division = division;
-    coa.t3 = getTincture("division", tinctures.f, P(.98) ? coa.t1 : null);
-    if (divisions[division]) coa.line = tinctures.pattern || (ordinary && P(.7)) ? "straight" : rw(divisions[division]);
+    const t = getTincture("division", tinctures.f, P(.98) ? coa.t1 : null);
+    coa.division = {division, t};
+    if (divisions[division]) coa.division.line = tinctures.pattern || (ordinary && P(.7)) ? "straight" : rw(divisions[division]);
   }
 
   if (ordinary) {
@@ -97,8 +98,9 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
       else if (allowCounter && p.length > 1) coa.charges[0].type = "counter"; // countercharged, 40%
     }
 
-    coa.charges.forEach(c => defineChargeSize(c));
-    function defineChargeSize(c) {
+    coa.charges.forEach(c => defineChargeAttributes(c));
+    function defineChargeAttributes(c) {
+      // define size
       let size = c.size || 1;
       if (c.p === "e" && (ordinary === "bordure" || ordinary === "orle")) size *= 1.1;
       else if (c.p === "e") size *= 1.5;
@@ -111,6 +113,9 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
       else if (c.p.length > 1) size *= .5; // 2
       c.size = size;
 
+      // define orientation
+      if (P(.1) && charges.sinister.includes(c.charge)) c.sinister = 1;
+      if (P(.1) && charges.reversed.includes(c.charge)) c.reversed = 1;
     }
   }
 
@@ -195,21 +200,4 @@ function getType(t) {
   const tincture = t.includes("-") ? t.split("-")[1] : t;
   if (tincture === "argent" || tincture === "or") return "metals";
   return "colours";
-}
-
-// UTILS
-// return random value from weighted array {"key1":weight1, "key2":weight2}
-export function rw(object) {
-  const array = [];
-  for (const key in object) {
-    for (let i=0; i < object[key]; i++) {
-      array.push(key);
-    }
-  };
-  return array[Math.floor(Math.random() * array.length)];
-}
-
-// probability shorthand
-function P(probability) {
-  return Math.random() < probability;
 }

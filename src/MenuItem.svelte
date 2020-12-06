@@ -6,6 +6,7 @@
 
   let {ordinary, division, charges = []} = coa;
   if (ordinary?.ordinary === "no") ordinary = null;
+  let tDiv = division ? division.t : "";
   let i = Math.floor(1e6 * Math.random());
 
   $: coaShield = coa.shield || $shield;
@@ -30,9 +31,9 @@
 <svg class="menuItem" xmlns="http://www.w3.org/2000/svg" width={itemSize} height={itemSize} viewBox="0 0 200 200">
   <title>{title}</title>
   <defs>
-    {#if division && division !== "no"}
+    {#if division && division.division !== "no"}
       <clipPath id="divisionClipMenu{i}">
-        {@html getTemplate(division, coa.line)}
+        {@html getTemplate(division.division, division.line)}
       </clipPath>
     {/if}
   </defs>
@@ -40,20 +41,20 @@
 
     <!-- field layer -->
     <rect id="field" x=0 y=0 width=200 height=200 fill="{coaColors[coa.t1] || clr(coa.t1)}"/>
-    {#if ordinary?.counter}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t3}/>{/if}
+    {#if ordinary?.counter && division}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={tDiv}/>{/if}
     {#if ordinary?.crop}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
     {#each charges as charge, i}
       {#if charge.type === "field"}
         <Charge {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>
-      {:else if charge.type === "counter"}
-        <Charge {charge} {i} shield={coaShield} colors={coaColors} t={coa.t3}/>
+      {:else if charge.type === "counter" && division}
+        <Charge {charge} {i} shield={coaShield} colors={coaColors} t={tDiv}/>
       {/if}
     {/each}
 
     <!-- division layer -->
-    {#if division && division !== "no"}
+    {#if division && division.division !== "no"}
       <g id="division" clip-path="url(#divisionClipMenu{i})">
-        <rect x=0 y=0 width=200 height=200 fill="{coaColors[coa.t3] || clr(coa.t3)}"/>
+        <rect x=0 y=0 width=200 height=200 fill="{coaColors[tDiv] || clr(tDiv)}"/>
         {#if ordinary?.counter}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t1}/>{/if}
         {#each charges as charge, i}
           {#if charge.type === "division"}

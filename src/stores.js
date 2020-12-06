@@ -1,4 +1,5 @@
-import {readable, writable} from 'svelte/store';
+import {writable} from 'svelte/store';
+import {ra, rw} from './utils.js';
 
 const options = defineInitialOptions();
 export const size = writable(options.size);
@@ -22,8 +23,9 @@ const createCounter = () => {
 
   return {
     subscribe,
-    value: () => history[position],
+
     length: () => history.length,
+
     reset: () => {
       history = [], position = -1;
       set([undefined, -1])
@@ -46,7 +48,7 @@ const createCounter = () => {
       return [history[position], position];
     }),
 
-    toString() {return `Value: ${history}, Position: ${position}`; }
+    toString: () => `value: ${history}; position: ${position}`
   }
 }
 export const changes = createCounter();
@@ -69,20 +71,4 @@ function defineInitialOptions() {
   if (!options.background) options.background = "#333333";
   if (!options.scale) options.scale = 1;
   return options;
-}
-
-// return random value from the array
-function ra(array) {
-  return array[Math.floor(Math.random() * array.length)];
-}
-
-// return random value from weighted array {"key1":weight1, "key2":weight2}
-function rw(object) {
-  const array = [];
-  for (const key in object) {
-    for (let i=0; i < object[key]; i++) {
-      array.push(key);
-    }
-  };
-  return array[Math.floor(Math.random() * array.length)];
 }

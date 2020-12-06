@@ -151,7 +151,11 @@ export const charges = {
   arms:{sword:5, hatchet:2, lochaberAxe:1, mallet:1},
   bodyparts:{hand:1},
   miscellaneous:{crown:3, key:1, buckle:1, bugleHorn:1, horseshoe:3, stagsAttires:1, cowHorns:2, wing:1, wingSword:1, lute:1, harp:1, wheel:2, boat:1},
-  natural: {fountain:"azure", garb:"or", raven:"sable"} // charges to use predefined colours
+  natural: {fountain:"azure", garb:"or", raven:"sable"}, // charges to use predefined colours
+  sinister: ["crossGamma", "lionRampant", "lionPassant", "wolfPassant", "greyhoundСourant", "boarRampant", "horseRampant", "horseSalient", "bullPassant",
+    "eagle", "raven", "cock", "parrot", "swan", "swanErased", "heron", "pike", "dragonPassant", "wyvern", "griffinPassant", "griffinRampant", "unicornRampant",
+    "pegasus", "serpent", "hatchet", "lochaberAxe", "hand", "wing", "wingSword", "lute", "harp"], // charges that can be sinister
+  reversed: ["goutte", "mullet", "mullet7", "crescent", "crossTau", "cancer", "sword", "hand", "horseshoe"] // charges that can be reversed
 }
 
 export const shields = {

@@ -52,7 +52,7 @@
               <bt class:selected={$size === s[0]} on:click={() => $size = s[0]}>{s[1]}</bt>
             {/each}
           </div>
-          <bl><Tooltip tip="Set gallery size">Size</Tooltip></bl>
+          <bl><Tooltip tip="Set gallery size">Gallery Size</Tooltip></bl>
         </div>
 
         <div class="container">
