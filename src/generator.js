@@ -113,6 +113,9 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
       else if (c.p.length > 1) size *= .5; // 2
       c.size = size;
 
+      // define position
+      c.p = [...new Set(c.p)].join("");
+
       // define orientation
       if (P(.1) && charges.sinister.includes(c.charge)) c.sinister = 1;
       if (P(.1) && charges.reversed.includes(c.charge)) c.reversed = 1;

@@ -1,5 +1,5 @@
 <script>
-  export let checked;
+  export let checked = false;
   const id = "switch" + Math.floor(1e6 * Math.random());
 </script>
 

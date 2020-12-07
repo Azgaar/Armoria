@@ -18,18 +18,20 @@ export const tinctures = {
   }
 };
 
+export const positionsArray = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "kn", "df", "pq", "beh", "jei", "abc", "jln", "jlh", "def", "joe", "pqe", "lme", "bhdf", "jleh", "behdf", "acegi", "bdefh", "eknpq", "abcpqh", "abcdefgzi", "ABCDEFGHIJK"];
+
 export const positions = {
-  conventional: {e:20, abcdefgzi:3, beh:3, behdf:2, acegi:1, kn:3, bhdf:1, jei:1, abc:3, jln:8, jlh:4, jleh:1, def:3, abcpqh:4, ABCDEFGHIKL:1},
+  conventional: {e:20, abcdefgzi:3, beh:3, behdf:2, acegi:1, kn:3, bhdf:1, jei:1, abc:3, jln:8, jlh:4, jleh:1, def:3, abcpqh:4, ABCDEFGHIJK:1},
   complex: {e:40, beh:1, kn:1, jei:1, abc:2, jln:8, jlh:2, def:1, abcpqh:1},
   divisions: {
-    perPale: {e:15, pq:5, jo:2, jl:2, ABCDEFGHIKL:1},
-    perFess: {e:12, kn:4, jkl:2, gizgiz:1, jlh:3, kmo:1, ABCDEFGHIKL:1},
+    perPale: {e:15, pq:5, jo:2, jl:2, ABCDEFGHIJK:1},
+    perFess: {e:12, kn:4, jkl:2, gizgiz:1, jlh:3, kmo:1, ABCDEFGHIJK:1},
     perBend: {e:5, lm:5, bcfdgh:1},
     perBendSinister: {e:1, jo:1},
     perCross: {e:4, jlmo:1, jj:1, jo:2, jl:1},
     perChevron: {e:1, jlh:1, dfk:1, dfkh:2, bdefh:1},
     perChevronReversed: {e:1, mok:2, dfh:2, dfkh:1, bdefh:1},
-    perSaltire: {bhdf:8, e:3, abcdefgzi:1, bh:1, df:1, beh:1, behdf:1, ABCDEFGHIKL:1},
+    perSaltire: {bhdf:8, e:3, abcdefgzi:1, bh:1, df:1, beh:1, behdf:1, ABCDEFGHIJK:1},
     perPile: {ee:3, be:2, abceh:1, abcabc:1, jleh:1}
   },
   ordinariesOn: {
@@ -42,7 +44,7 @@ export const positions = {
     bendSinister: {ee:1, lm:1, lem:4},
     bendlet: {joejoejoe:1},
     bendletSinister: {lemlemlem:1},
-    bordure: {ABCDEFGHIKL:1},
+    bordure: {ABCDEFGHIJK:1},
     chief: {abc:5, bb:1},
     quarter: {jjj:1},
     canton: {yyyy:1},
@@ -169,7 +171,7 @@ export const shields = {
               p:[-37.5, 0], q:[37.5, 0], r:[0, 37.5],
               A:[-66.2, -66.6], B:[-22, -66.6], C:[22, -66.6], D:[66.2, -66.6],
               E:[66.2, -20], F:[55.5, 26], G:[33, 62], H:[0, 89.5],
-              I:[-66.2, -20], K:[-55.5, 26], L:[-33, 62]},
+              I:[-33, 62], J:[-55.5, 26], K:[-66.2, -20]},
   oldFrench:  {a:[-43.75, -50], b:[0, -50], c:[43.75, -50],
               d:[-43.75, 0], e:[0, 0], f:[43.75, 0],
               g:[-37.5, 50], h:[0, 50], i:[37.5, 50],
@@ -179,7 +181,7 @@ export const shields = {
               p:[-37.5, 0], q:[37.5, 0], r:[0, 37.5],
               A:[-66.2, -66.6], B:[-22, -66.6], C:[22, -66.6], D:[66.2, -66.6],
               E:[66.2, -20], F:[64, 26], G:[45, 62], H:[0, 91.5],
-              I:[-66.2, -20], K:[-64, 26], L:[-45, 62]},
+              I:[-45, 62], J:[-64, 26], K:[-66.2, -20]},
   spanish:    {a:[-43.75, -50], b:[0, -50], c:[43.75, -50],
               d:[-43.75, 0], e:[0, 0], f:[43.75, 0],
               g:[-43.75, 50], h:[0, 50], i:[43.75, 50],
@@ -189,7 +191,7 @@ export const shields = {
               p:[-37.5, 0], q:[37.5, 0], r:[0, 37.5],
               A:[-66.2, -66.6], B:[-22, -66.6], C:[22, -66.6], D:[66.2, -66.6],
               E:[66.4, -20], F:[66.4, 26], G:[49, 70], H:[0, 92],
-              I:[-66.4, -20], K:[-66.4, 26], L:[-49, 70]},
+              I:[-49, 70], J:[-66.4, 26], K:[-66.4, -20]},
   wedged:     {a:[-43.75, -50], b:[0, -50], c:[43.75, -50], // copy of heater, need to change
               d:[-43.75, 0], e:[0, 0], f:[43.75, 0],
               g:[-32.25, 37.5], h:[0, 50], i:[32.25, 37.5],
@@ -199,5 +201,5 @@ export const shields = {
               p:[-37.5, 0], q:[37.5, 0], r:[0, 37.5],
               A:[-66.2, -66.6], B:[-22, -66.6], C:[22, -66.6], D:[66.2, -66.6],
               E:[66.2, -20], F:[55.5, 26], G:[33, 62], H:[0, 89.5],
-              I:[-66.2, -20], K:[-55.5, 26], L:[-33, 62]},
+              I:[-33, 62], J:[-55.5, 26], K:[-66.2, -20]}
 };

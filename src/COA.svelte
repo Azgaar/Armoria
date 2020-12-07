@@ -1,6 +1,7 @@
 <script>
   import Ordinary from './Ordinary.svelte';
   import Charge from './Charge.svelte';
+  import Positions from './Positions.svelte';
   import {grad, diaper, shield, colors, border, borderWidth, patterns} from './stores';
   export let coa, i, w, h;
 
@@ -84,6 +85,8 @@
     {#if diaperType === "overall"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})"/>{/if}
     {#each charges as charge, i}{#if !charge.type}<Charge {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>{/if}{/each}
   </g>
+
+  {#if i === "Edit"}<Positions/>{/if}
 
   <path class="grad" d={shieldPath} fill="url(#{coaGrad})" stroke={$border} stroke-width={strokeWidth}/>
 </svg>

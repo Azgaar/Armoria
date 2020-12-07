@@ -8,8 +8,8 @@
   import {slide} from 'svelte/transition';
   import {quartInOut} from 'svelte/easing';
   import {rw} from './utils.js';
-  import {changes} from './stores';
-  import {charges, tinctures, divisions, ordinaries, lines} from "./dataModel.js";
+  import {changes, state} from './stores';
+  import {charges, tinctures, divisions, ordinaries, lines, positionsArray, shields} from "./dataModel.js";
   export let coa, c;
 
   const min = Math.min(window.innerWidth, window.innerHeight);
@@ -146,6 +146,12 @@
       return getChargeType(charge);
     }
 
+    function selectSecondTincture(t1, type) {
+      const metal = t1 === "argent" || t1 === "or";
+      const tincturesType = metal ? tinctures["colours"] : tinctures["metals"];
+      return rw(tincturesType[type]);
+    }
+
     return menu;
   }
 
@@ -221,12 +227,6 @@
   function updateSection(e) {
     const panel = e.currentTarget.closest(".panel");
     setTimeout(() => panel.style.maxHeight = panel.scrollHeight + "px", 100);
-  }
-
-  function selectSecondTincture(t1, type) {
-    const metal = t1 === "argent" || t1 === "or";
-    const tincturesType = metal ? tinctures["colours"] : tinctures["metals"];
-    return rw(tincturesType[type]);
   }
 
   function cap(string = "no") {
@@ -404,15 +404,6 @@
               {/each}
             </select>
 
-            <span style="margin-left: 1em">Size:</span>
-            <input type="number" min=.1 max=2 step=.01 bind:value={charge.size}/>
-
-            <span style="margin-left: 1em">Sinister:</span>
-            <Switch bind:checked={charge.sinister}/>
-
-            <span style="margin-left: 1em">Reversed:</span>
-            <Switch bind:checked={charge.reversed}/>
-
             <b on:click={() => removeCharge(i)} class="removeButton" title="Remove charge">✖</b>
           </div>
 
@@ -425,6 +416,26 @@
 
         <div class="subsection">
           <EditorTincture bind:t1={charge.t} {itemSize}/>
+        </div>
+
+        <div class="subsection">
+          Positions:
+          <input style="margin-left: .6em; width: 8.6em" bind:value={charge.p} on:input={() => $state.positions = charge.p} on:focus={() => $state.positions = charge.p} on:blur={() => $state.positions = 0}/>
+
+          <select class="pseudoSelect" bind:value={charge.p} on:input={() => $state.positions = charge.p} on:focus={() => $state.positions = charge.p} on:blur={() => $state.positions = 0}>
+            {#each positionsArray as position}
+              <option value={position}>{position}</option>
+            {/each}
+          </select>
+
+          <span style="margin-left: 1em">Size:</span>
+          <input type="number" min=.1 max=2 step=.01 bind:value={charge.size}/>
+
+          <span style="margin-left: 1em">Sinister:</span>
+          <Switch bind:checked={charge.sinister}/>
+
+          <span style="margin-left: 1em">Reversed:</span>
+          <Switch bind:checked={charge.reversed}/>
         </div>
       </div>
     {/each}
@@ -526,6 +537,12 @@
 
   .removeButton:active {
     transform: translateY(1px);
+  }
+
+  select.pseudoSelect {
+    width: 1.3em;
+    margin-left: -1.6em;
+    border: 0;
   }
 
   :global(.item) {

@@ -4,6 +4,7 @@
   export let charge, i, shield, colors, t;
 
   $: shieldPositions = shields[shield] || shields.spanish;
+  $: positions = [...new Set(charge.p)].filter(p => shieldPositions[p]);
 
   const defs = document.getElementById("charges");
   function getCharge(charge) {
@@ -65,7 +66,7 @@
 </script>
 
 <g class="charge" {i} class:editable={$state.edit} charge={getCharge(charge.charge)} transform={getChargeTransform(charge)} stroke="#000" on:click={addDrag}>
-  {#each [...charge.p] as p}
+  {#each positions as p}
     <use href="#{charge.charge}" transform={getElTransform(shieldPositions, charge, p)} transform-origin="center" fill="{colors[t]}"></use>
   {/each}
 </g>
