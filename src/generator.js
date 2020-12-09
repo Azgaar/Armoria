@@ -31,8 +31,9 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
     coa.ordinary = {ordinary, t: getTincture("charge", tinctures.f, coa.t1)};
     if (linedOrdinary) coa.ordinary.line = tinctures.pattern || (division && P(.7)) ? "straight" : rw(lines);
     if (division && !charge && !tinctures.pattern && P(.5) && ordinary !== "bordure" && ordinary !== "orle") {
-      if (P(.8)) coa.ordinary.counter = 1; // 40%
-      else coa.ordinary.crop = 1; // 10%
+      if (P(.8)) coa.ordinary.divided = "counter"; // 40%
+      else if (P(.6)) coa.ordinary.divided = "field"; // 6%
+      else coa.ordinary.divided = "division"; // 4%
     }
   }
 
@@ -80,13 +81,13 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
 
       // dimidiation: second charge at division basic positons
       if (P(.3) && ["perPale", "perFess"].includes(division) && coa.line === "straight") {
-        coa.charges[0].type = "field";
+        coa.charges[0].layer = "field";
         if (P(.95)) {
           const p2 = p === "e" || P(.5) ? "e" : rw(positions.divisions[division]);
-          coa.charges.push({"charge":rw(charges[rw(charges.single)]), t:getTincture("charge", tinctures.f, coa.t3, charge), p: p2, type:"division"});
+          coa.charges.push({"charge":rw(charges[rw(charges.single)]), t:getTincture("charge", tinctures.f, coa.t3, charge), p: p2, layer:"division"});
         }
       }
-      else if (allowCounter && P(.4)) coa.charges[0].type = "counter"; // countercharged, 40%
+      else if (allowCounter && P(.4)) coa.charges[0].layer = "counter"; // countercharged, 40%
       else if (["perPale", "perFess", "perBend", "perBendSinister"].includes(division)) { // place 2 charges in division standard positions
         const [p1, p2] = division === "perPale" ? ["pp", "qq"] :
                          division === "perFess" ? ["kk", "nn"] :
@@ -95,7 +96,7 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
         coa.charges[0].p = p1;
         coa.charges.push({"charge":rw(charges[rw(charges.single)]), t:getTincture("charge", tinctures.f, coa.t3, charge), p: p2});
       }
-      else if (allowCounter && p.length > 1) coa.charges[0].type = "counter"; // countercharged, 40%
+      else if (allowCounter && p.length > 1) coa.charges[0].layer = "counter"; // countercharged, 40%
     }
 
     coa.charges.forEach(c => defineChargeAttributes(c));
@@ -117,8 +118,8 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
       c.p = [...new Set(c.p)].join("");
 
       // define orientation
-      if (P(.1) && charges.sinister.includes(c.charge)) c.sinister = 1;
-      if (P(.1) && charges.reversed.includes(c.charge)) c.reversed = 1;
+      if (P(.05) && charges.sinister.includes(c.charge)) c.sinister = 1;
+      if (P(.05) && charges.reversed.includes(c.charge)) c.reversed = 1;
     }
   }
 

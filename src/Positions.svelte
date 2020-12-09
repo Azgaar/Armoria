@@ -34,7 +34,7 @@
   }
 
   text {
-    font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font-family: 'Roboto', 'Helvetica Neue', Arial, Helvetica, sans-serif;
     text-anchor: middle;
     font-size: 5px;
     fill: #ddd;
@@ -46,14 +46,14 @@
   }
 
   .green {
-    fill: rgb(8, 57, 8);
+    fill: rgb(12, 80, 12);
   }
 
   .blue {
-    fill: rgb(8, 8, 57);
+    fill: rgb(12, 12, 80);
   }
 
   .red {
-    fill: rgb(57, 8, 8);
+    fill: rgb(80, 12, 12);
   }
 </style>

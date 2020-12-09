@@ -8,8 +8,8 @@
   import {slide} from 'svelte/transition';
   import {quartInOut} from 'svelte/easing';
   import {rw} from './utils.js';
-  import {changes, state} from './stores';
-  import {charges, tinctures, divisions, ordinaries, lines, positionsArray, shields} from "./dataModel.js";
+  import {changes, state, grid} from './stores';
+  import {charges, tinctures, divisions, ordinaries, lines, positionsArray} from "./dataModel.js";
   export let coa, c;
 
   const min = Math.min(window.innerWidth, window.innerHeight);
@@ -23,7 +23,7 @@
   const chargeTypes = Object.keys(charges.types);
   const ordinariesList = ["no"].concat(Object.keys(ordinaries.lined)).concat(Object.keys(ordinaries.straight));
 
-  let menu = {}, change = 1;
+  let menu = {}, change = 0;
 
   // on reroll
   $: defineMenuState(c);
@@ -101,11 +101,17 @@
     // Ordinary
     menu.ordinary = getOrdinary();
     function getOrdinary() {
-      const ordinary = coa.ordinary ? coa.ordinary.ordinary : "no";
-      const line = coa.ordinary ? coa.ordinary.line : "straight";
-      const t = coa.ordinary ? coa.ordinary.t : rw(tinctures["colours"]["charge"]);
+      let ordinary = "no", line = "straight", t, divided = "";
+      if (coa.ordinary) {
+        ordinary = coa.ordinary.ordinary;
+        line = coa.ordinary.line || "straight";
+        t = coa.ordinary.t;
+        divided = coa.ordinary.divided || "";
+      } else {
+        t = rw(tinctures["colours"]["charge"]);
+      }
 
-      return {ordinary, line, t}
+      return {ordinary, line, t, divided}
     }
 
     // Charges
@@ -115,11 +121,13 @@
       const charges = coa.charges.map(c => {
         const {charge, t, p, size} = c;
         const type = getChargeType(charge);
+        const layer = c.layer || "";
         const sinister = c.sinister || false;
         const reversed = c.reversed || false;
         const x = c.x || 0;
         const y = c.y || 0;
-        return {charge, type, t, p, size, sinister, reversed, x, y};
+        const angle = c.angle || 0;
+        return {charge, type, layer, t, p, size, sinister, reversed, x, y, angle};
       });
 
       return charges;
@@ -159,7 +167,7 @@
     const type = rw(charges.single);
     const charge = rw(charges[type]);
     const t = rw(tinctures[rw(tinctures.charge)].charge);
-    const с = {charge, t, p: "e", type, size: 1.5};
+    const с = {charge, t, p: "e", type, size: 1.5, sinister: false, reversed: false, x: 0, y: 0, angle: 0, layer: ""};
     menu.charges = [...menu.charges, с];
   }
 
@@ -195,8 +203,9 @@
   // ordinary attributes changed
   $: {
     if (menu.ordinary && menu.ordinary.ordinary !== "no") {
-      coa.ordinary = {ordinary: menu.ordinary.ordinary, t: menu.ordinary.t, line: menu.ordinary.line};
-      if (!ordinaries.lined[menu.ordinary.ordinary]) delete coa.ordinary.line;
+      coa.ordinary = {ordinary: menu.ordinary.ordinary, t: menu.ordinary.t};
+      if (ordinaries.lined[menu.ordinary.ordinary]) coa.ordinary.line = menu.ordinary.line;
+      if (coa.division) coa.ordinary.divided = menu.ordinary.divided;
     } else delete coa.ordinary;
   }
 
@@ -205,12 +214,14 @@
     if (menu.charges.length) {
       coa.charges = menu.charges.map(c => {
         const item = {charge: c.charge, t: c.t, p: c.p, size: c.size};
+        if (c.layer) item.layer = c.layer;
         if (c.sinister) item.sinister = 1;
         if (c.reversed) item.reversed = 1;
         if (c.x || c.y) {item.x = c.x; item.y = c.y;}
+        if (c.angle) item.angle = c.angle;
         return item;
       });
-    }
+    } else delete coa.charges;
   }
 
   function rolling(node, {duration = 1000}) {
@@ -365,8 +376,20 @@
     <!-- Ordinary -->
     <div class="section" on:click={showSection}>Ordinary</div>
     <div class="panel">
+      {#if coa.division}
+        <div class="subsection" on:click={updateSection}>
+          Divided:
+          <select bind:value={menu.ordinary.divided}>
+            <option value="">No (standard)</option>
+            <option value=field>Crop by main field</option>
+            <option value=division>Crop by division</option>
+            <option value=counter>Сountercharged</option>
+          </select>
+        </div>
+      {/if}
+
       <div class="subsection" on:click={updateSection}>
-        {#each ordinariesList.map(ordinary => new Object({t1: coa.t1, ordinary: {ordinary, line: menu.ordinary.line, t: menu.ordinary.t}})) as coa (coa)}
+        {#each ordinariesList.map(ordinary => new Object({t1: coa.t1, division: coa.division, ordinary: {ordinary, line: menu.ordinary.line, t: menu.ordinary.t, divided: menu.ordinary.divided}})) as coa (coa)}
           <div class=item class:selected={menu.ordinary.ordinary === coa.ordinary.ordinary} on:click={() => menu.ordinary.ordinary = coa.ordinary.ordinary}>
             <MenuItem {coa} title={cap(coa.ordinary.ordinary)} {itemSize}/>
           </div>
@@ -376,15 +399,15 @@
       {#if ordinaries.lined[menu.ordinary.ordinary]}
         <div class="subsection">
           <div>Line:</div>
-          {#each Object.keys(lines).map(line => new Object({t1: coa.t1, ordinary: {ordinary: menu.ordinary.ordinary, line, t: menu.ordinary.t}})) as coa (coa)}
+          {#each Object.keys(lines).map(line => new Object({t1: coa.t1, division: coa.division, ordinary: {ordinary: menu.ordinary.ordinary, line, t: menu.ordinary.t, divided: menu.ordinary.divided}})) as coa (coa)}
             <div class=item class:selected={menu.ordinary.line === coa.ordinary.line} on:click={() => menu.ordinary.line = coa.ordinary.line}>
               <MenuItem {coa} title={cap(coa.ordinary.line)} {itemSize}/>
             </div>
           {/each}
         </div>
       {/if}
-    
-      {#if coa.ordinary}
+
+      {#if coa.ordinary && menu.ordinary.divided !== "counter"}
         <div class="subsection">
           <EditorTincture bind:t1={menu.ordinary.t} {itemSize}/>
         </div>
@@ -404,6 +427,16 @@
               {/each}
             </select>
 
+            {#if coa.division}
+              <span style="margin-left: 1em">Divided:</span>
+              <select bind:value={charge.layer}>
+                <option value="">No (standard)</option>
+                <option value=field>Crop by main field</option>
+                <option value=division>Crop by division</option>
+                <option value=counter>Сountercharged</option>
+              </select>
+            {/if}
+
             <b on:click={() => removeCharge(i)} class="removeButton" title="Remove charge">✖</b>
           </div>
 
@@ -414,9 +447,11 @@
           {/each}
         </div>
 
-        <div class="subsection">
-          <EditorTincture bind:t1={charge.t} {itemSize}/>
-        </div>
+        {#if charge.layer !== "counter"}
+          <div class="subsection">
+            <EditorTincture bind:t1={charge.t} {itemSize}/>
+          </div>
+        {/if}
 
         <div class="subsection">
           Positions:
@@ -436,6 +471,15 @@
 
           <span style="margin-left: 1em">Reversed:</span>
           <Switch bind:checked={charge.reversed}/>
+        </div>
+
+        <div class="subsection">
+          <span>Rotation:</span>
+          <input style="margin-left: 1em" type="number" min=-180 max=180 bind:value={charge.angle}/>
+
+          <span style="margin-left: 1em">Shift:</span>
+          <input type="number" min=-100 max=100 step={$grid} bind:value={charge.x}/>
+          <input type="number" min=-100 max=100 step={$grid} bind:value={charge.y}/>
         </div>
       </div>
     {/each}
@@ -559,7 +603,7 @@
     transform: translateY(1px);
   }
 
-  :global(.selected) {
+  :global(.item.selected) {
     background-color: #ffffff15;
   }
 </style>

@@ -23,6 +23,7 @@
   // get color or link to pattern
   function clr(tincture) {
     if (coaColors[tincture]) return coaColors[tincture];
+    if (!tincture) debugger;
     $patterns[$patterns.length] = tincture;
     return "url(#"+tincture+")";
   }
@@ -41,13 +42,15 @@
 
     <!-- field layer -->
     <rect id="field" x=0 y=0 width=200 height=200 fill="{coaColors[coa.t1] || clr(coa.t1)}"/>
-    {#if ordinary?.counter && division}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={tDiv}/>{/if}
-    {#if ordinary?.crop}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
+    {#if division && ordinary?.divided}
+      {#if ordinary.divided === "counter"}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={tDiv}/>{/if}
+      {#if ordinary.divided === "field"}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
+    {/if}
     {#each charges as charge, i}
-      {#if charge.type === "field"}
-        <Charge {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>
-      {:else if charge.type === "counter" && division}
-        <Charge {charge} {i} shield={coaShield} colors={coaColors} t={tDiv}/>
+      {#if charge.layer === "field"}
+        <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>
+      {:else if charge.layer === "counter" && division}
+        <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={tDiv}/>
       {/if}
     {/each}
 
@@ -55,20 +58,29 @@
     {#if division && division.division !== "no"}
       <g id="division" clip-path="url(#divisionClipMenu{i})">
         <rect x=0 y=0 width=200 height=200 fill="{coaColors[tDiv] || clr(tDiv)}"/>
-        {#if ordinary?.counter}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t1}/>{/if}
+        {#if ordinary?.divided}
+          {#if ordinary.divided === "counter"}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t1}/>{/if}
+          {#if ordinary.divided === "division"}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
+        {/if}
         {#each charges as charge, i}
-          {#if charge.type === "division"}
-            <Charge {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>
-          {:else if charge.type === "counter"}
-            <Charge {charge} {i} shield={coaShield} colors={coaColors} t={coa.t1}/>
+          {#if charge.layer === "division"}
+            <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>
+          {:else if charge.layer === "counter"}
+            <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={coa.t1}/>
           {/if}
         {/each}
       </g>
     {/if}
 
     <!-- overall layer -->
-    {#if ordinary && !ordinary.crop && !ordinary.counter}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
-    {#each charges as charge, i}{#if !charge.type}<Charge {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>{/if}{/each}
+    {#if ordinary && !ordinary.divided}
+      <Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>
+    {/if}
+    {#each charges as charge, i}
+      {#if !charge.layer}
+        <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>
+      {/if}
+    {/each}
   </g>
 
   <path d={shieldPath} fill="url(#spotlight)" stroke="#333" stroke-width="2"/>

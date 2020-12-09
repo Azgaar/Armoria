@@ -1,34 +1,41 @@
 <script>
   import Tooltip from './Tooltip.svelte';
+  import Lock from './Lock.svelte';
   import {fade} from 'svelte/transition';
   import {download} from './download.js';
-  import {size, grad, diaper, shield, colors, background, scale, border, borderWidth, matrix, state, changes} from './stores';
+  import {size, grad, diaper, shield, colors, background, scale, border, borderWidth, grid, matrix, state, changes} from './stores';
 
   const shields = ["heater", "oldFrench", "spanish", "french", "swiss", "wedged", "italian", "kite", "renaissance", "baroque", "polish", "german", "diamond", "round", "vesicaPiscis", "square", "flag", "pennon", "guidon", "banner", "dovetail", "gonfalon", "pennant"];
   const paths = shields.map(id => document.getElementById(id).innerHTML);
-  const sizes = [[80, "Extra Small"], [100, "Small"], [150, "Medium"], [200, "Large"], [300, "Extra Large"], [400, "Giant"]];
+  const sizes = [[80, "Giant"], [100, "Huge"], [150, "Large"], [200, "Medium"], [300, "Small"], [400, "Tiny"]];
   const gradients = ["luster", "spotlight", "backlight"];
   const diapers = ["nourse", "tessellation"];
   const tinctures = ["argent", "or", "gules", "sable", "azure", "vert", "purpure"];
   const defaultColors = {argent: "#fafafa", or: "#ffe066", gules: "#d7374a", sable: "#333333", azure: "#377cd7", vert: "#26c061", purpure: "#522d5b"};
-  let locked = localStorage.getItem("Armoria");
-  
+
   $: position = $changes[1];
+  // save options on change
+  $: lock("size", $size);
+  $: lock("grad", $grad);
+  $: lock("diaper", $diaper);
+  $: lock("shield", $shield);
+  $: lock("colors", JSON.stringify($colors));
+  $: lock("background", $background);
+  $: lock("scale", $scale);
+  $: lock("border", $border);
+  $: lock("borderWidth", $borderWidth);
+  $: lock("grid", $grid);
+
+  // don't lock options on load
+  const loaded = [];
+  function lock(key, value) {
+    if (loaded.includes(key)) localStorage.setItem(key, value);
+    else loaded.push(key);
+  }
 
   function getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    $background = "#" + [0,0,0,0,0,0].map(i => letters[Math.floor(Math.random() * 16)]).join("");
-  }
-
-  function lock() {
-    const options = {};
-    localStorage.setItem("Armoria", JSON.stringify(options));
-    locked = true;
-  }
-
-  function reset() {
-    localStorage.removeItem("Armoria");
-    locked = false;
+    const l = '0123456789ABCDEF';
+    $background = "#"+[0,0,0,0,0,0].map(() => l[Math.floor(Math.random() * 16)]).join("");
   }
 </script>
 
@@ -49,10 +56,13 @@
         <div class="container">
           <div class="dropdown level2">
             {#each sizes as s}
-              <bt class:selected={$size === s[0]} on:click={() => $size = s[0]}>{s[1]}</bt>
+              <bt class:selected={$size == s[0]} on:click={() => $size = s[0]}>{s[1]}</bt>
             {/each}
           </div>
-          <bl><Tooltip tip="Set gallery size">Gallery Size</Tooltip></bl>
+          <bl>
+            <Lock key=size/>
+            <Tooltip tip="Gallery size">Gallery</Tooltip>
+          </bl>
         </div>
 
         <div class="container">
@@ -69,7 +79,8 @@
             {/each}
           </div>
           <bl>
-            <Tooltip tip="Set hue of tinctures and metals. Edit COA to change tincture or metal itself">Colors</Tooltip>
+            <Lock key=colors/>
+            <Tooltip tip="Hue of tinctures and metals. Edit COA to change tincture or metal itself">Colors</Tooltip>
           </bl>
         </div>
 
@@ -82,7 +93,10 @@
               </bt>
             {/each}
           </div>
-          <bl>Shield</bl>
+          <bl>
+            <Lock key=shield/>
+            <Tooltip tip="Shield or banner form. Some forms do not work well with auto-generated heralrdy">Shield</Tooltip>
+          </bl>
         </div>
 
         <div class="container">
@@ -92,7 +106,10 @@
               <bt class:selected={g === $grad} on:click={() => $grad = g}>{g}</bt>
             {/each}
           </div>
-          <bl>Gradient</bl>
+          <bl>
+            <Lock key=grad/>
+            <Tooltip tip="Gradient (overlay) style to be applied over coat of arms">Gradient</Tooltip>
+          </bl>
         </div>
 
         <div class="container">
@@ -102,7 +119,9 @@
               <bt class:selected={d === $diaper} on:click={() => $diaper = d}>{d}</bt>
             {/each}
           </div>
-          <bl>Damasking</bl>
+          <bl>
+            <Lock key=diaper/>
+            <Tooltip tip="Diaper (subtle backing on coat of arms) style">Damasking</Tooltip></bl>
         </div>
 
         <div class="container">
@@ -119,7 +138,23 @@
               <input class="right" type="number" min=0 max=4 step=.1 bind:value={$borderWidth}/>
             </bl>
           </div>
-          <bl>Border</bl>
+          <bl>
+            <Lock key=border/>
+            <Tooltip tip="Border style for coat of arms">Border</Tooltip>
+          </bl>
+        </div>
+
+        <div class="container">
+          <div class="dropdown level2">
+            <bl class="wide">
+              <input type="range" min=1 max=50 step=1 bind:value={$grid}/>
+              <input type="number" min=1 max=50 step=1 bind:value={$grid}/>
+            </bl>
+          </div>
+          <bl>
+            <Lock key=grid/>
+            <Tooltip tip="Edit mode grid size (affects elements dragging)">Grid</Tooltip>
+          </bl>
         </div>
 
         <div class="container">
@@ -136,7 +171,10 @@
               <input type="color" bind:value={$background}/>
             </bl>
           </div>
-          <bl>Background</bl>
+          <bl>
+            <Lock key=background/>
+            <Tooltip tip="Background color">Background</Tooltip>
+          </bl>
         </div>
 
         <div class="container">
@@ -147,21 +185,12 @@
             </bl>
           </div>
           <bl>
+            <Lock key=scale/>
             <Tooltip tip="Downloaded image size, 1 is default size, 2 - 2x size, etc.">Scale</Tooltip>
           </bl>
         </div>
-
-        {#if locked}
-          <bt on:click={reset}><Tooltip tip="Remove saved options. Refresh the page to apply default settings">Reset</Tooltip></bt>
-        {:else}
-          <bt on:click={lock}>
-            <Tooltip tip="Save options to auto-apply them on page reload">Lock</Tooltip>
-          </bt>
-        {/if}
       </div>
     </div>
-    
-    <bt on:click={() => $state.about = 1}>About</bt>
     
     {#if $state.edit}
       {#if position > 0}
@@ -180,6 +209,8 @@
     {#if $state.edit}
       <bt id="back" on:click={() => $state.edit = 0} transition:fade>Back to gallery</bt>
     {/if}
+
+    <bt on:click={() => $state.about = 1}>About</bt>
   </ul>
 </div>
 
