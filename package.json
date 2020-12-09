@@ -4,7 +4,8 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public"
+    "start": "sirv public",
+    "deploy": "gh-pages -d public"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^14.0.0",
