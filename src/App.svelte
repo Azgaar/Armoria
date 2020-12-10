@@ -6,6 +6,7 @@
   import Patterns from './Patterns.svelte';
   import {generate} from './generator.js';
   import {background, size, history, matrices, matrix, state, changes} from './stores.js';
+  import {download} from './download.js';
 
   let n, w, h, gallery = [], coa;
   $: [n, w, h] = defineGallerySize($size);
@@ -52,19 +53,22 @@
     return [numberX * numberY, w, h];
   }
 
-  // add undo and redo keyboard shortcuts
+  // keyboard shortcuts
   function handleKeydown(event) {
-    if ($state.edit) {
-      if (event.key === 'z') {
-        changes.undo();
-      }
-      else if (event.key === 'Z') {
-        changes.redo();
-      }
-      else {
-        return
-      }
-    }
+    const code = event.code;
+    const reserved = ["Backspace", "Enter", "KeyZ", "KeyX", "KeyD", "F1"];
+    if (!reserved.includes(code)) return;
+
+    const active = document.activeElement.tagName;
+    if (active === "INPUT" || active === "SELECT") return;
+
+    event.preventDefault();
+    if (code === "Backspace" && $matrix > 0) $matrix -= 1; else // Rollback
+    if (code === "Enter") $matrix += 1; else // Reroll
+    if (code === "KeyZ") changes.undo(); else // Undo
+    if (code === "KeyX") changes.redo(); else // Redo
+    if (code === "KeyD") download(); else // Download
+    if (code === "F1") $state.about = !$state.about; // About
   }
 </script>
 

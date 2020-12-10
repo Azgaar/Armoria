@@ -34,7 +34,7 @@
   }
 
   text {
-    font-family: 'Roboto', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font-family: monospace;
     text-anchor: middle;
     font-size: 5px;
     fill: #ddd;

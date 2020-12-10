@@ -14,10 +14,9 @@
   const min = Math.min(window.innerWidth, window.innerHeight);
   const ratio = window.innerHeight / window.innerWidth;
   const coaSize = Math.round(min * .9);
-  let width = window.innerWidth < 600 || ratio > 1 ? 100 : Math.round((1.05 - ratio) * 100); // 56.25;
+  let width = window.innerWidth < 600 || ratio > 1 ? 100 : Math.round((1.05 - ratio) * 100);
   if (width / 100 * window.innerWidth < 300) width = 100;
-  const background = width === 100 ? "none" : "#11111180";
-  const itemSize = Math.round(width * 1.473);
+  const itemSize = width / 1000 * window.innerWidth - 3; // ~10 items in row
 
   const patterns = ["vair", "vairInPale", "vairEnPointe", "ermine", "chequy", "lozengy", "fusily", "pally", "barry", "gemelles", "bendy", "bendySinister", "palyBendy", "pappellony", "masoned", "fretty"];
   const chargeTypes = Object.keys(charges.types);
@@ -246,7 +245,7 @@
   {#key coa}
     <COA {coa} i="Edit" w={coaSize} h={coaSize}/>
   {/key}
-  <div id="menu" in:fly={{x:500, duration:1000}} style="width:{width}%; background-color: {background}">
+  <div id="menu" in:fly={{x:500, duration:1000}} style="width:{width}%">
     <!-- Field -->
     <div class="section" class:expanded={false} on:click={showSection}>Field</div>
     <div class="panel">
@@ -500,6 +499,14 @@
     scrollbar-width: thin;
     transition: .5s;
     height: calc(100% - 45px);
+    position: absolute;
+  }
+
+  @media only screen and (orientation: landscape) {
+    #menu {
+      position: relative;
+      background-color: #11111180;
+    }
   }
 
   #menu::-webkit-scrollbar {

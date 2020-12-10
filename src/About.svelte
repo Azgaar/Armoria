@@ -38,41 +38,26 @@
     transform: translate(-50%, -50%);
   }
 
-  .buttons {
-    padding: 4em 0 1em 0;
+  a, span {
+    display: inline-block;
+    cursor: pointer;
+    color: #ddd;
+  }
+
+  a:hover, span:hover {
+    color: #fff;
   }
 
   .buttons > a {
-    margin: 3em;
+    margin: 2em;
     font-size: 1.2em;
-    color: #cfcfcf;
   }
 
-  #about span {
-    display: block;
-    cursor: pointer;
-    padding: .4em;
-    font-size: 2.2em;
-    color: #818181;
-  }
-
-  #about span:hover {
-    color: #f1f1f1;
-  }
-
-  #about span.close {
+  span.close {
     position: fixed;
     top: 0em;
     right: .5em;
     font-size: 4em;
-  }
-
-  @media screen and (max-height: 450px) {
-    #about span {font-size: 1em}
-    #about .close {
-      font-size: 2em;
-      top: 1ex;
-      right: 2em;
-    }
+    padding: .2em 0;
   }
 </style>

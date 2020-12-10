@@ -15,6 +15,22 @@
 
   const wideScreen = window.innerWidth > 600;
 
+  const icons = {
+    options: "☰",
+    rollback: "⭯",
+    reroll: "⭮",
+    download : "⇩",
+    undo: "⤺",
+    redo: "⤻",
+    back: "⮪",
+    about: "A"
+  }
+
+  function label(i) {
+    if (wideScreen) return i;
+    return icons[i] || i;
+  }
+
   $: position = $changes[1];
   // save options on change
   $: lock("size", $size);
@@ -49,26 +65,22 @@
         <path fill="#fff" stroke="none" d="m 46,3 0.6,1.4 c -1.5,0.7 -2.6,1.4 -3.3,2.2 -0.7,0.7 -1.2,1.5 -1.5,2.4 -0.3,0.9 -0.4,2.2 -0.4,3.9 0,0.6 0,1.3 0,2.2 l 0.5,23.2 c 0,2.5 0.3,4.2 0.8,5 0.4,0.6 0.8,0.8 1.3,0.8 0.6,0 1.5,-0.6 2.8,-1.8 l 0.9,1.1 -5.8,4.9 -1.9,1.6 C 38.4,49.2 37.2,48.2 36.5,46.9 35.8,45.7 35.3,36.7 35.2,34 c -7.6,0.1 -20.2,0 -20.2,0 0,0 -7.4,9.1 -7.4,11.1 0,0.6 0.2,1.1 0.6,1.8 0.5,0.9 0.8,1.4 0.8,1.7 0,0.4 -0.1,0.7 -0.4,1 -0.3,0.3 -0.6,0.4 -1.1,0.4 -0.5,0 -0.9,-0.2 -1.2,-0.6 -0.5,-0.6 -0.7,-1.3 -0.7,-2.2 0,-1 0.3,-2.1 0.8,-3.3 C 8.8,39.9 11.3,36.7 14.1,32.9 11.1,30.7 9,28.5 7.8,26.4 6.6,24.4 6,22.1 6,19.5 c 0,-3 0.8,-5.7 2.3,-8.3 1.5,-2.5 3.8,-4.5 6.9,-6 3.1,-1.5 6.2,-2.2 9.4,-2.2 4.9,0 9.7,1.7 14.3,5.1 1.1,-1.2 2.2,-2.1 3.2,-2.9 1,-0.8 2.4,-1.5 4,-2.3 z M 30.7,10.2 c -2.6,-1.3 -5.2,-1.9 -7.8,-1.9 -2.7,0 -5.3,0.6 -7.8,1.8 -2.4,1.2 -4.2,2.8 -5.4,4.7 -1.2,1.9 -1.8,3.9 -1.8,5.9 0,4.2 2.3,8 6.9,11.3 L 25.2,17.7 c -1.6,-0.8 -2.9,-1.3 -4.2,-1.3 -1.7,0 -3.1,0.8 -4.2,2.4 -0.4,0.7 -1,0.5 -1.1,-0.2 0,-0.6 0.3,-1.5 1,-2.7 0.7,-1.1 1.6,-2.1 2.9,-2.8 1.3,-0.7 2.6,-1.1 4,-1.1 1.4,0 3.1,0.4 4.9,1.1 z m 4,3.2 C 34,12.4 32.8,11.5 32,11 L 18.4,29.4 h 16.7 z"/>
       </svg>
     {/if}
-    {#if $matrix}
-    <bt on:click={() => $matrix -= 1}>{wideScreen ? "Rollback" : "⭯"}</bt>
-    {:else}
-      <bd style="color: #333">{wideScreen ? "Rollback" : "⭯"}</bd>
-    {/if}
-    <bt on:click={() => $matrix += 1}>{wideScreen ? "Reroll" : "⭮"}</bt>
 
-    <bt on:click={() => download()}>Download</bt>
-    <div class="container"><bl>Options</bl>
+    <div class="container"><bl>{label("options")}</bl>
 
       <div class="dropdown level1">
         <div class="container">
-          <div class="dropdown level2">
-            {#each sizes as s}
-              <bt class:selected={$size == s[0]} on:click={() => $size = s[0]}>{s[1]}</bt>
+          <div class="dropdown level2 columns3 iconed">
+            {#each shields as sh, i}
+              <bt on:click={() => $shield = sh}>
+                <svg class=shield class:selected={sh === $shield} width=26 height=26 viewBox="0 0 200 200">{@html paths[i]}</svg>
+                {sh.split(/(?=[A-Z])/).join(" ")}
+              </bt>
             {/each}
           </div>
           <bl>
-            <Lock key=size/>
-            <Tooltip tip="Gallery size">Gallery</Tooltip>
+            <Lock key=shield/>
+            <Tooltip tip="Shield or banner form. Some forms do not work well with auto-generated heralrdy">Shield</Tooltip>
           </bl>
         </div>
 
@@ -88,21 +100,6 @@
           <bl>
             <Lock key=colors/>
             <Tooltip tip="Hue of tinctures and metals. Edit COA to change tincture or metal itself">Colors</Tooltip>
-          </bl>
-        </div>
-
-        <div class="container">
-          <div class="dropdown level2 columns3 iconed">
-            {#each shields as sh, i}
-              <bt on:click={() => $shield = sh}>
-                <svg class=shield class:selected={sh === $shield} width=26 height=26 viewBox="0 0 200 200">{@html paths[i]}</svg>
-                {sh.split(/(?=[A-Z])/).join(" ")}
-              </bt>
-            {/each}
-          </div>
-          <bl>
-            <Lock key=shield/>
-            <Tooltip tip="Shield or banner form. Some forms do not work well with auto-generated heralrdy">Shield</Tooltip>
           </bl>
         </div>
 
@@ -153,6 +150,18 @@
 
         <div class="container">
           <div class="dropdown level2">
+            {#each sizes as s}
+              <bt class:selected={$size == s[0]} on:click={() => $size = s[0]}>{s[1]}</bt>
+            {/each}
+          </div>
+          <bl>
+            <Lock key=size/>
+            <Tooltip tip="Gallery size">Gallery</Tooltip>
+          </bl>
+        </div>
+
+        <div class="container">
+          <div class="dropdown level2">
             <bl class="wide">
               <input type="range" min=1 max=50 step=1 bind:value={$grid}/>
               <input type="number" min=1 max=50 step=1 bind:value={$grid}/>
@@ -198,27 +207,51 @@
         </div>
       </div>
     </div>
+
+    {#if $matrix}
+    <bt on:click={() => $matrix -= 1}>
+      <Tooltip tip="Roll to the previous list. Hotkey: Backspace">{label("rollback")}</Tooltip>
+    </bt>
+    {:else}
+      <bd style="color: #333">{label("rollback")}</bd>
+    {/if}
+
+    <bt on:click={() => $matrix += 1}>
+      <Tooltip tip="Regenerate coat of arms. Hotkey: Enter">{label("reroll")}</Tooltip>
+    </bt>
+
+    <bt on:click={() => download()}>
+      <Tooltip tip="Download png image. Set size in options. Hotkey: D">{label("download")}</Tooltip>
+    </bt>
     
     {#if $state.edit}
       {#if position > 0}
-        <bt on:click={() => changes.undo()}>Undo</bt>
+        <bt on:click={() => changes.undo()}>
+          <Tooltip tip="Revert the latest change. Hotkey: Z">{label("undo")}</Tooltip>
+        </bt>
       {:else}
-        <bd style="color: #333">Undo</bd>
+        <bd style="color: #333">{label("undo")}</bd>
       {/if}
 
       {#if position < changes.length() - 1}
-        <bt on:click={() => changes.redo()}>Redo</bt>
+        <bt on:click={() => changes.redo()}>
+          <Tooltip tip="Restore next change. Hotkey: X">{label("redo")}</Tooltip>
+        </bt>
       {:else}
-        <bd style="color: #333">Redo</bd>
+        <bd style="color: #333">{label("redo")}</bd>
       {/if}
     {/if}
 
     {#if $state.edit}
-      <bt id="back" on:click={() => $state.edit = 0} transition:fade>Back to gallery</bt>
+      <bt id="back" on:click={() => $state.edit = 0} transition:fade>
+        <Tooltip tip="Get back to Gallery">{label("back")}</Tooltip>
+      </bt>
     {/if}
 
     {#if wideScreen || !$state.edit}
-      <bt on:click={() => $state.about = 1}>About</bt>
+      <bt on:click={() => $state.about = 1}>
+        <Tooltip tip="Show about screen. Hotkey: F1">{label("about")}</Tooltip>
+      </bt>
     {/if}
   </ul>
 </div>
@@ -239,8 +272,8 @@
   }
 
   .logo {
-    margin-left: 1em;
-    /* background-color: #35bdb2; */
+    margin: 0 .5em 0 1em;
+    background-color: #35bdb2;
   }
 
   bt, bl, bd {
@@ -339,6 +372,22 @@
     column-count: 3;
   }
 
+  @media only screen and (max-width: 640px) {
+    .columns3 {
+      column-count: 1;
+    }
+
+    .dropdown bt, .dropdown bl {
+      padding: 8px 16px;
+    }
+  }
+
+  @media only screen and (max-height: 640px) {
+    .dropdown bt, .dropdown bl {
+      padding: 8px 16px;
+    }
+  }
+
   .dropdown.iconed {
     text-indent: 1.8em;
   }
@@ -363,11 +412,5 @@
   #back {
     position: absolute;
     right: 0;
-  }
-
-  @media screen and (max-height: 640px) {
-    bt, bl, bd {
-      padding: 1em .6em;
-    }
   }
 </style>

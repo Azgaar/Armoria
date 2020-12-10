@@ -24,9 +24,12 @@
     gyronny: ["M0,0 l200,200 M200,100 h-200 M100,0 v200 M0,200 l200,-200", "M0,0 l200,200 v-100 h-200 h-100 M100,0 v200, h-100 l200,-200 h-100"],
     chevronny: ["", "M0,80 100,-15 200,80 200,120 100,25 0,120z M0,160 100,65 200,160 200,200 100,105 0,200z M0,240 100,145 200,240 0,240z"],
   }
+
+  let size = window.innerWidth < 600 ? window.innerWidth * .9 : 500;
+  if (window.innerHeight < 600) size *= .5;
 </script>
 
-<svg width=500 height=500 viewBox="0 0 200 200">
+<svg width={size} height={size} viewBox="0 0 200 200">
   <g clip-path="url(#heater)" stroke="#fff" stroke-width=.5>
     <path stroke-width=1 d="M25,25 h150 v50 a150,150,0,0,1,-75,125 a150,150,0,0,1,-75,-125 z" in:draw="{{duration}}"/>
     <path d={paths[division][0]} in:draw="{{delay: duration}}"/>
