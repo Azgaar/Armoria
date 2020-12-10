@@ -1,14 +1,19 @@
 <script>
+  import AnimatedCOA from './AnimatedCOA.svelte';
   import {state} from './stores';
+  import {fade, fly} from 'svelte/transition';
+  const duration = 1000;
 </script>
 
-<div id="about">
-    <div class="overlay-content">
-    <span on:click={() => $state.about = 0} class="close">&times;</span>
-    <span>About</span>
-    <span>Services</span>
-    <span>Clients</span>
-    <span>Contact</span>
+<div id="about" transition:fade>
+  <span on:click={() => $state.about = 0} class="close">&times;</span>
+  <div id="aboutCont">
+    <AnimatedCOA {duration}/>
+    <div class=buttons in:fly="{{y:200, delay: duration, duration}}">
+      <a target=_blank href=https://discord.com/invite/X7E84HU>Discord</a>
+      <a target=_blank href=https://github.com/Azgaar/Armoria>GitHub</a>
+      <a target=_blank href=https://www.patreon.com/azgaar>Patreon</a>
+    </div>
   </div>
 </div>
 
@@ -22,14 +27,25 @@
     top: 0;
     background-color: rgba(0,0,0, 0.9);
     transition: .5s;
-  }
-
-  .overlay-content {
-    position: relative;
-    top: 100%;
-    margin-top: -35%;
     text-align: center;
     user-select: none;
+  }
+
+  #aboutCont {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .buttons {
+    padding: 4em 0 1em 0;
+  }
+
+  .buttons > a {
+    margin: 3em;
+    font-size: 1.2em;
+    color: #cfcfcf;
   }
 
   #about span {

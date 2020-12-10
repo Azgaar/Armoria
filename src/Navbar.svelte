@@ -13,6 +13,8 @@
   const tinctures = ["argent", "or", "gules", "sable", "azure", "vert", "purpure"];
   const defaultColors = {argent: "#fafafa", or: "#ffe066", gules: "#d7374a", sable: "#333333", azure: "#377cd7", vert: "#26c061", purpure: "#522d5b"};
 
+  const wideScreen = window.innerWidth > 600;
+
   $: position = $changes[1];
   // save options on change
   $: lock("size", $size);
@@ -41,13 +43,18 @@
 
 <div id="navbar">
   <ul>
-    <bd><img alt="Armoria" src="../logo.png"><b>Armoria</b></bd>
-    {#if $matrix}
-      <bt on:click={() => $matrix -= 1}>Rollback</bt>
-    {:else}
-      <bd style="color: #333">Rollback</bd>
+    {#if wideScreen}
+      <svg class=logo width=35 height=35 viewBox="-2 -1 55 55">
+        <title>Armoria: Heralrdy Generator</title>
+        <path fill="#fff" stroke="none" d="m 46,3 0.6,1.4 c -1.5,0.7 -2.6,1.4 -3.3,2.2 -0.7,0.7 -1.2,1.5 -1.5,2.4 -0.3,0.9 -0.4,2.2 -0.4,3.9 0,0.6 0,1.3 0,2.2 l 0.5,23.2 c 0,2.5 0.3,4.2 0.8,5 0.4,0.6 0.8,0.8 1.3,0.8 0.6,0 1.5,-0.6 2.8,-1.8 l 0.9,1.1 -5.8,4.9 -1.9,1.6 C 38.4,49.2 37.2,48.2 36.5,46.9 35.8,45.7 35.3,36.7 35.2,34 c -7.6,0.1 -20.2,0 -20.2,0 0,0 -7.4,9.1 -7.4,11.1 0,0.6 0.2,1.1 0.6,1.8 0.5,0.9 0.8,1.4 0.8,1.7 0,0.4 -0.1,0.7 -0.4,1 -0.3,0.3 -0.6,0.4 -1.1,0.4 -0.5,0 -0.9,-0.2 -1.2,-0.6 -0.5,-0.6 -0.7,-1.3 -0.7,-2.2 0,-1 0.3,-2.1 0.8,-3.3 C 8.8,39.9 11.3,36.7 14.1,32.9 11.1,30.7 9,28.5 7.8,26.4 6.6,24.4 6,22.1 6,19.5 c 0,-3 0.8,-5.7 2.3,-8.3 1.5,-2.5 3.8,-4.5 6.9,-6 3.1,-1.5 6.2,-2.2 9.4,-2.2 4.9,0 9.7,1.7 14.3,5.1 1.1,-1.2 2.2,-2.1 3.2,-2.9 1,-0.8 2.4,-1.5 4,-2.3 z M 30.7,10.2 c -2.6,-1.3 -5.2,-1.9 -7.8,-1.9 -2.7,0 -5.3,0.6 -7.8,1.8 -2.4,1.2 -4.2,2.8 -5.4,4.7 -1.2,1.9 -1.8,3.9 -1.8,5.9 0,4.2 2.3,8 6.9,11.3 L 25.2,17.7 c -1.6,-0.8 -2.9,-1.3 -4.2,-1.3 -1.7,0 -3.1,0.8 -4.2,2.4 -0.4,0.7 -1,0.5 -1.1,-0.2 0,-0.6 0.3,-1.5 1,-2.7 0.7,-1.1 1.6,-2.1 2.9,-2.8 1.3,-0.7 2.6,-1.1 4,-1.1 1.4,0 3.1,0.4 4.9,1.1 z m 4,3.2 C 34,12.4 32.8,11.5 32,11 L 18.4,29.4 h 16.7 z"/>
+      </svg>
     {/if}
-    <bt on:click={() => $matrix += 1}>Reroll</bt>
+    {#if $matrix}
+    <bt on:click={() => $matrix -= 1}>{wideScreen ? "Rollback" : "⭯"}</bt>
+    {:else}
+      <bd style="color: #333">{wideScreen ? "Rollback" : "⭯"}</bd>
+    {/if}
+    <bt on:click={() => $matrix += 1}>{wideScreen ? "Reroll" : "⭮"}</bt>
 
     <bt on:click={() => download()}>Download</bt>
     <div class="container"><bl>Options</bl>
@@ -88,7 +95,7 @@
           <div class="dropdown level2 columns3 iconed">
             {#each shields as sh, i}
               <bt on:click={() => $shield = sh}>
-                <svg class:selected={sh === $shield} width=26 height=26 viewBox="0 0 200 200">{@html paths[i]}</svg>
+                <svg class=shield class:selected={sh === $shield} width=26 height=26 viewBox="0 0 200 200">{@html paths[i]}</svg>
                 {sh.split(/(?=[A-Z])/).join(" ")}
               </bt>
             {/each}
@@ -210,7 +217,9 @@
       <bt id="back" on:click={() => $state.edit = 0} transition:fade>Back to gallery</bt>
     {/if}
 
-    <bt on:click={() => $state.about = 1}>About</bt>
+    {#if wideScreen || !$state.edit}
+      <bt on:click={() => $state.about = 1}>About</bt>
+    {/if}
   </ul>
 </div>
 
@@ -227,6 +236,11 @@
     overflow: hidden;
     background-color: #1b1c1d;
     z-index: 1;
+  }
+
+  .logo {
+    margin-left: 1em;
+    /* background-color: #35bdb2; */
   }
 
   bt, bl, bd {
@@ -248,12 +262,6 @@
 
   bt:active, span:active {
     transform: translateY(1px);
-  }
-
-  bd img {
-    vertical-align: middle;
-    margin: -.8em 1.2em;
-    width: 2.5em;
   }
 
   input[type="color"] {
@@ -335,7 +343,7 @@
     text-indent: 1.8em;
   }
 
-  svg {
+  .shield {
     position: absolute;
     fill: none;
     stroke: #fff;
@@ -343,7 +351,7 @@
     margin: -0.4em 0 0 -2.2em;
   }
 
-  svg.selected {
+  .shield.selected {
     fill: #777;
     stroke: #333;
   }
@@ -355,5 +363,11 @@
   #back {
     position: absolute;
     right: 0;
+  }
+
+  @media screen and (max-height: 640px) {
+    bt, bl, bd {
+      padding: 1em .6em;
+    }
   }
 </style>

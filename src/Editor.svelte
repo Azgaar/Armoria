@@ -5,8 +5,7 @@
   import EditorSize from './EditorSize.svelte';
   import EditorTincture from './EditorTincture.svelte';
   import Switch from './Switch.svelte';
-  import {slide} from 'svelte/transition';
-  import {quartInOut} from 'svelte/easing';
+  import {slide, fly} from 'svelte/transition';
   import {rw} from './utils.js';
   import {changes, state, grid} from './stores';
   import {charges, tinctures, divisions, ordinaries, lines, positionsArray} from "./dataModel.js";
@@ -15,8 +14,9 @@
   const min = Math.min(window.innerWidth, window.innerHeight);
   const ratio = window.innerHeight / window.innerWidth;
   const coaSize = Math.round(min * .9);
-  const width = window.innerWidth < 600 || ratio > 1 ? 100 : Math.round((1.05 - ratio) * 100); // 56.25;
-  const height = width === 100 ? null : "calc(100% - 45px)";
+  let width = window.innerWidth < 600 || ratio > 1 ? 100 : Math.round((1.05 - ratio) * 100); // 56.25;
+  if (width / 100 * window.innerWidth < 300) width = 100;
+  const background = width === 100 ? "none" : "#11111180";
   const itemSize = Math.round(width * 1.473);
 
   const patterns = ["vair", "vairInPale", "vairEnPointe", "ermine", "chequy", "lozengy", "fusily", "pally", "barry", "gemelles", "bendy", "bendySinister", "palyBendy", "pappellony", "masoned", "fretty"];
@@ -224,10 +224,6 @@
     } else delete coa.charges;
   }
 
-  function rolling(node, {duration = 1000}) {
-    return {duration, css: t => `width: ${quartInOut(t) * width}%`}
-  }
-
   function showSection(e) {
     e.target.classList.toggle("expanded");
     const panel = e.target.nextElementSibling;
@@ -250,7 +246,7 @@
   {#key coa}
     <COA {coa} i="Edit" w={coaSize} h={coaSize}/>
   {/key}
-  <div id="menu" in:rolling style="width:{width}%; height:{height}">
+  <div id="menu" in:fly={{x:500, duration:1000}} style="width:{width}%; background-color: {background}">
     <!-- Field -->
     <div class="section" class:expanded={false} on:click={showSection}>Field</div>
     <div class="panel">
@@ -494,18 +490,16 @@
     height: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
     user-select: none;
   }
 
   #menu {
-    position: fixed;
-    top: 45px;
-    right: 0;
-    background-color: #11111180;
     overflow-x: hidden;
     overflow-y: auto;
     scrollbar-width: thin;
     transition: .5s;
+    height: calc(100% - 45px);
   }
 
   #menu::-webkit-scrollbar {

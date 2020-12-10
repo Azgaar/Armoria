@@ -8,6 +8,32 @@
   const {ordinary, division, charges = []} = coa;
   const tDiv = division ? division.t : "";
 
+  const viewBox = {
+    heater: "0 10 200 200",
+    oldFrench: "0 10 200 200",
+    spanish: "0 10 200 200",
+    french: "0 10 200 200",
+    swiss: "0 10 200 200",
+    wedged: "0 10 200 200",
+    italian: "0 0 200 200",
+    kite: "0 -10 200 220",
+    renaissance: "0 0 200 210",
+    baroque: "0 0 200 210",
+    polish: "0 -10 200 220",
+    german: "0 0 200 200",
+    diamond: "0 -10 200 220",
+    round: "0 0 200 200",
+    vesicaPiscis: "0 -10 200 220",
+    square: "0 0 200 200",
+    flag: "12.5 0 200 200",
+    pennon: "12.5 0 200 200",
+    guidon: "12.5 0 200 200",
+    banner: "0 10 200 200",
+    dovetail: "0 10 200 200",
+    gonfalon: "0 10 200 200",
+    pennant: "0 10 200 200"
+  }
+
   $: coaShield = coa.shield || $shield;
   $: shieldPath = document.querySelector(`#defs g#shields > #${coaShield} > path`).getAttribute("d");
   $: coaDiaper = coa.diaper || $diaper;
@@ -41,7 +67,7 @@
   }
 </script>
 
-<svg id="coa{i}" class="coa" xmlns="http://www.w3.org/2000/svg" width={w} height={h} viewBox="0 0 200 200" on:click={() => console.log(coa)}>
+<svg id="coa{i}" class="coa" xmlns="http://www.w3.org/2000/svg" width={w} height={h} viewBox={viewBox[coaShield]} on:click={() => console.log(coa)}>
   <defs>
     {#if division}
       <clipPath id="divisionClip{i}">
