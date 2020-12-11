@@ -10,9 +10,9 @@
   <div id="aboutCont">
     <AnimatedCOA {duration}/>
     <div class=buttons in:fly="{{y:200, delay: duration, duration}}">
-      <a target=_blank href=https://discord.com/invite/X7E84HU>Discord</a>
-      <a target=_blank href=https://github.com/Azgaar/Armoria>GitHub</a>
-      <a target=_blank href=https://www.patreon.com/azgaar>Patreon</a>
+      <a target=_blank href=https://discord.com/invite/X7E84HU><span translate="no">Discord</span></a>
+      <a target=_blank href=https://github.com/Azgaar/Armoria><span translate="no">GitHub</span></a>
+      <a target=_blank href=https://www.patreon.com/azgaar><span translate="no">Patreon</span></a>
     </div>
   </div>
 </div>

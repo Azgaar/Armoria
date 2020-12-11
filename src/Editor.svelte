@@ -235,6 +235,11 @@
     setTimeout(() => panel.style.maxHeight = panel.scrollHeight + "px", 100);
   }
 
+  function showPositions(c) {
+    $state.transform = `rotate(${c.angle||0}) translate(${c.x||0} ${c.y||0})`;
+    $state.positions = c.p;
+  }
+
   function cap(string = "no") {
     const split = string.split(/(?=[A-Z])/).join(" ");
     return split.charAt(0).toUpperCase() + split.slice(1);
@@ -287,7 +292,6 @@
             </select>
           </div>
 
-          {console.log(menu.field.semy, menu, coa)}
           {#each Object.keys(charges[menu.field.semy]).map(c => new Object({t1: `semy_of_${c}-${menu.field.t1}-${menu.field.t2}-${menu.field.size}`, charge: c})) as coa (coa)}
             <div class=item class:selected={menu.field.charge === coa.charge} on:click={() => menu.field.charge = coa.charge}>
               <MenuItem {coa} title={cap(coa.charge)} {itemSize}/>
@@ -450,9 +454,9 @@
 
         <div class="subsection">
           Positions:
-          <input style="margin-left: .6em; width: 8.6em" bind:value={charge.p} on:input={() => $state.positions = charge.p} on:focus={() => $state.positions = charge.p} on:blur={() => $state.positions = 0}/>
+          <input style="margin-left: .6em; width: 8.6em" bind:value={charge.p} on:input={() => showPositions(charge)} on:focus={() => showPositions(charge)} on:blur={() => $state.positions = 0}/>
 
-          <select class="pseudoSelect" bind:value={charge.p} on:input={() => $state.positions = charge.p} on:focus={() => $state.positions = charge.p} on:blur={() => $state.positions = 0}>
+          <select class="pseudoSelect" bind:value={charge.p} on:input={() => showPositions(charge)} on:focus={() => showPositions(charge)} on:blur={() => $state.positions = 0}>
             {#each positionsArray as position}
               <option value={position}>{position}</option>
             {/each}
