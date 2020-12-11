@@ -102,7 +102,7 @@
         </pattern>
       </g>
       <g id="lines">
-        <path id="straight" d="m 0,100 v 15 h 200 v -15 z"/>
+        <path id="straight" d="m 0,100 v15 h 200 v -15 z"/>
         <path id="engrailed" d="m 0,95 a 6.25,6.25 0 0 0 12.5,0 6.25,6.25 0 0 0 12.5,0 6.25,6.25 0 0 0 12.5,0 6.25,6.25 0 0 0 12.5,0 6.25,6.25 0 0 0 12.5,0 6.25,6.25 0 0 0 12.5,0 6.25,6.25 0 0 0 12.5,0 6.25,6.25 0 0 0 12.5,0 6.25,6.25 0 0 0 12.5,0 6.25,6.25 0 0 0 12.5,0 6.25,6.25 0 0 0 12.5,0 6.25,6.25 0 0 0 12.5,0 6.25,6.25 0 0 0 12.5,0 6.25,6.25 0 0 0 12.5,0 6.25,6.25 0 0 0 12.5,0 6.25,6.25 0 0 0 12.5,0 v 20 H 0 Z"/>
         <path id="invecked" d="M0,102.5 a6.25,6.25,0,0,1,12.5,0 a6.25,6.25,0,0,1,12.5,0 a6.25,6.25,0,0,1,12.5,0 a6.25,6.25,0,0,1,12.5,0 a6.25,6.25,0,0,1,12.5,0 a6.25,6.25,0,0,1,12.5,0 a6.25,6.25,0,0,1,12.5,0 a6.25,6.25,0,0,1,12.5,0 a6.25,6.25,0,0,1,12.5,0 a6.25,6.25,0,0,1,12.5,0 a6.25,6.25,0,0,1,12.5,0 a6.25,6.25,0,0,1,12.5,0 a6.25,6.25,0,0,1,12.5,0 a6.25,6.25,0,0,1,12.5,0 a6.25,6.25,0,0,1,12.5,0 a6.25,6.25,0,0,1,12.5,0 v12.5 H0 z"/>
         <path id="embattled" d="M 0,105 H 2.5 V 95 h 15 v 10 h 15 V 95 h 15 v 10 h 15 V 95 h 15 v 10 h 15 V 95 h 15 v 10 h 15 V 95 h 15 v 10 h 15 V 95 h 15 v 10 h 15 V 95 h 15 v 10 h 2.5 v 10 H 0 Z"/>
@@ -147,12 +147,12 @@
           <rect x=115 y=0 width=85 height=200 />
         </template>
         <template id="perBend">
-          <path dpath="{line}" transform="rotate(45) scale(1.06)" transform-origin="center"/>
-          <rect x=0 y=115 width=200 height=85 transform="rotate(45)" transform-origin="center"/>
+          <path dpath="{line}" transform="rotate(45) scale(1.1)" transform-origin="center"/>
+          <rect x=0 y=115 width=200 height=85 transform="rotate(45) scale(1.1)" transform-origin="center"/>
         </template>
         <template id="perBendSinister">
-          <path dpath="{line}" transform="rotate(-45) scale(1.06)" transform-origin="center"/>
-          <rect x=0 y=115 width=200 height=85 transform="rotate(-45)" transform-origin="center"/>
+          <path dpath="{line}" transform="rotate(-45) scale(1.1)" transform-origin="center"/>
+          <rect x=0 y=115 width=200 height=85 transform="rotate(-45) scale(1.1)" transform-origin="center"/>
         </template>
         <template id="perChevron">
           <path dpath="{line}" transform="translate(-70.7,70.7) rotate(-45) scale(-1,1)" transform-origin="center"/>
@@ -185,37 +185,37 @@
         <!-- Lined Ordinaries -->
         <template id="fess">
           <path dpath="{line}" transform="translate(0,-25)"/>
-          <rect x=0 y=90 width=200 height=20 />
+          <rect x=0 y=88 width=200 height=24 />
           <path dpath="{line}" transform="translate(0,25) rotate(180.00001)" transform-origin="center"/>
         </template>
         <template id="pale">
           <path dpath="{line}" transform="rotate(-90) translate(0,-25)" transform-origin="center"/>
-          <rect x=90 y=0 width=20 height=200 />
+          <rect x=88 y=0 width=24 height=200 />
           <path dpath="{line}" transform="rotate(90) translate(0,-25)" transform-origin="center"/>
         </template>
         <template id="bend">
-          <path dpath="{line}" transform="rotate(45) translate(0,-25)" transform-origin="center"/>
-          <rect x=-50 y=90 width=300 height=20 transform="rotate(45)" transform-origin="center"/>
-          <path dpath="{line}" transform="rotate(225) translate(0,-25)" transform-origin="center"/>
+          <path dpath="{line}" transform="rotate(45) translate(0,-25) scale(1.1,1)" transform-origin="center"/>
+          <rect x=0 y=88 width=200 height=24 transform="rotate(45) scale(1.1,1)" transform-origin="center"/>
+          <path dpath="{line}" transform="rotate(225) translate(0,-25) scale(1.1,1)" transform-origin="center"/>
         </template>
         <template id="bendSinister">
-          <path dpath="{line}" transform="rotate(-45) translate(0,-25)" transform-origin="center"/>
-          <rect x=-50 y=90 width=300 height=20 transform="rotate(-45)" transform-origin="center"/>
-          <path dpath="{line}" transform="rotate(-225) translate(0,-25)" transform-origin="center"/>
+          <path dpath="{line}" transform="rotate(-45) translate(0,-25) scale(1.1,1)" transform-origin="center"/>
+          <rect x=0 y=88 width=200 height=24 transform="rotate(-45) scale(1.1,1)" transform-origin="center"/>
+          <path dpath="{line}" transform="rotate(-225) translate(0,-25) scale(1.1,1)" transform-origin="center"/>
         </template>
         <template id="chief">
-          <rect x=0 y=0 width=200 height=60 />
+          <rect x=0 y=0 width=200 height=62 />
           <path dpath="{line}" transform="translate(0,-25) rotate(180.00001)" transform-origin="center"/>
         </template>
         <template id="bar">
           <path dpath="{line}" transform="translate(0,-12.5) scale(1,.5)" transform-origin="center"/>
-          <rect x=0 y=95 width=200 height=10 />
+          <rect x=0 y=94 width=200 height=12 />
           <path dpath="{line}" transform="translate(0,12.5) rotate(180.00001) scale(1,.5)" transform-origin="center"/>
         </template>
         <template id="gemelle">
           <path dpath="{line}" transform="translate(0,-25) scale(1,.5)" transform-origin="center"/>
-          <rect x=0 y=82.5 width=200 height=12.5 />
-          <rect x=0 y=105 width=200 height=12.5 />
+          <rect x=0 y=82 width=200 height=12.5 />
+          <rect x=0 y=105.5 width=200 height=12.5 />
           <path dpath="{line}" transform="translate(0,25) rotate(180.00001) scale(1,.5)" transform-origin="center"/>
         </template>
         <template id="fessCotissed">
@@ -231,24 +231,24 @@
           <path dpath="{line}" transform="translate(0,40) rotate(180.0001) scale(1,.5)" transform-origin="center"/>
         </template>
         <template id="bendlet">
-          <path dpath="{line}" transform="rotate(45) translate(0,-16)" transform-origin="center"/>
-          <rect x=-50 y=94 width=300 height=12 transform="rotate(45)" transform-origin="center"/>
-          <path dpath="{line}" transform="rotate(225) translate(0,-16)" transform-origin="center"/>
+          <path dpath="{line}" transform="rotate(45) translate(0,-16) scale(1.1,1)" transform-origin="center"/>
+          <rect x=0 y=94 width=200 height=12 transform="rotate(45) scale(1.1,1)" transform-origin="center"/>
+          <path dpath="{line}" transform="rotate(225) translate(0,-16) scale(1.1,1)" transform-origin="center"/>
         </template>
         <template id="bendletSinister">
-          <path dpath="{line}" transform="rotate(-45) translate(0,-16)" transform-origin="center"/>
-          <rect x=-50 y=94 width=300 height=12 transform="rotate(-45)" transform-origin="center"/>
-          <path dpath="{line}" transform="rotate(-225) translate(0,-16)" transform-origin="center"/>
+          <path dpath="{line}" transform="rotate(-45) translate(0,-16) scale(1.1,1)" transform-origin="center"/>
+          <rect x=0 y=94 width=200 height=12 transform="rotate(-45) scale(1.1,1)" transform-origin="center"/>
+          <path dpath="{line}" transform="rotate(-225) translate(0,-16) scale(1.1,1)" transform-origin="center"/>
         </template>
         <template id="terrace">
-          <rect x=0 y=165 width=200 height=35 />
+          <rect x=0 y=164 width=200 height=36 />
           <path dpath="{line}" transform="translate(0,50)"/>
         </template>
         <template id="cross">
-          <path dpath="{line}" transform="translate(0,-15)" transform-origin="center"/>
-          <path dpath="{line}" transform="rotate(180) translate(0,-15)" transform-origin="center"/>
-          <path dpath="{line}" transform="rotate(-90) translate(0,-15)" transform-origin="center"/>
-          <path dpath="{line}" transform="rotate(-270) translate(0,-15)" transform-origin="center"/>
+          <path dpath="{line}" transform="translate(0,-14.5)" transform-origin="center"/>
+          <path dpath="{line}" transform="rotate(180) translate(0,-14.5)" transform-origin="center"/>
+          <path dpath="{line}" transform="rotate(-90) translate(0,-14.5)" transform-origin="center"/>
+          <path dpath="{line}" transform="rotate(-270) translate(0,-14.5)" transform-origin="center"/>
         </template>
         <template id="crossParted">
           <path dpath="{line}" transform="translate(0,-20)" transform-origin="center"/>
@@ -257,10 +257,10 @@
           <path dpath="{line}" transform="rotate(-270) translate(0,-20)" transform-origin="center"/>
         </template>
         <template id="saltire">
-          <path dpath="{line}" transform="rotate(45) translate(0,-15) scale(1.1,1)" transform-origin="center"/>
-          <path dpath="{line}" transform="rotate(225) translate(0,-15) scale(1.1,1)" transform-origin="center"/>
-          <path dpath="{line}" transform="rotate(-45) translate(0,-15) scale(1.1,1)" transform-origin="center"/>
-          <path dpath="{line}" transform="rotate(-225) translate(0,-15) scale(1.1,1)" transform-origin="center"/>
+          <path dpath="{line}" transform="rotate(45) translate(0,-14.5) scale(1.1,1)" transform-origin="center"/>
+          <path dpath="{line}" transform="rotate(225) translate(0,-14.5) scale(1.1,1)" transform-origin="center"/>
+          <path dpath="{line}" transform="rotate(-45) translate(0,-14.5) scale(1.1,1)" transform-origin="center"/>
+          <path dpath="{line}" transform="rotate(-225) translate(0,-14.5) scale(1.1,1)" transform-origin="center"/>
         </template>
         <template id="saltireParted">
           <path dpath="{line}" transform="rotate(45) translate(0,-20) scale(1.1,1)" transform-origin="center"/>
