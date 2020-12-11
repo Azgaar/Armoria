@@ -5,9 +5,10 @@
   import EditorSize from './EditorSize.svelte';
   import EditorTincture from './EditorTincture.svelte';
   import Switch from './Switch.svelte';
+  import Tooltip from './Tooltip.svelte';
   import {slide, fly} from 'svelte/transition';
   import {rw} from './utils.js';
-  import {changes, state, grid} from './stores';
+  import {changes, state, grid, showGrid} from './stores';
   import {charges, tinctures, divisions, ordinaries, lines, positionsArray} from "./dataModel.js";
   export let coa, c;
 
@@ -223,6 +224,10 @@
     } else delete coa.charges;
   }
 
+  // on grid change
+  $: localStorage.setItem("grid", $grid);
+  $: localStorage.setItem("showGrid", $showGrid);
+
   function showSection(e) {
     e.target.classList.toggle("expanded");
     const panel = e.target.nextElementSibling;
@@ -238,6 +243,10 @@
   function showPositions(c) {
     $state.transform = `rotate(${c.angle||0}) translate(${c.x||0} ${c.y||0})`;
     $state.positions = c.p;
+  }
+
+  function updateGrid(c) {
+    $state.transform = `rotate(${c.angle||0}) translate(${c.x||0} ${c.y||0})`;
   }
 
   function cap(string = "no") {
@@ -453,7 +462,7 @@
         {/if}
 
         <div class="subsection">
-          Positions:
+          <Tooltip tip="Points on shield to place a charge">Positions:</Tooltip>
           <input style="margin-left: .6em; width: 8.6em" bind:value={charge.p} on:input={() => showPositions(charge)} on:focus={() => showPositions(charge)} on:blur={() => $state.positions = 0}/>
 
           <select class="pseudoSelect" bind:value={charge.p} on:input={() => showPositions(charge)} on:focus={() => showPositions(charge)} on:blur={() => $state.positions = 0}>
@@ -462,23 +471,27 @@
             {/each}
           </select>
 
-          <span style="margin-left: 1em">Size:</span>
+          <Tooltip tip="Charge size"><span style="margin-left: 1em">Size:</span></Tooltip>
           <input type="number" min=.1 max=2 step=.01 bind:value={charge.size}/>
 
-          <span style="margin-left: 1em">Sinister:</span>
+          <Tooltip tip="Turn charge to the left"><span style="margin-left: 1em">Sinister:</span></Tooltip>
           <Switch bind:checked={charge.sinister}/>
 
-          <span style="margin-left: 1em">Reversed:</span>
+          <Tooltip tip="Show charge upside down"><span style="margin-left: 1em">Reversed:</span></Tooltip>
           <Switch bind:checked={charge.reversed}/>
         </div>
 
         <div class="subsection">
-          <span>Rotation:</span>
-          <input style="margin-left: 1em" type="number" min=-180 max=180 bind:value={charge.angle}/>
+          <Tooltip tip="Charge rotation{charge.p.length > 1 ? '. To rotate elements sepately create a new charge' : ''}">Rotation:</Tooltip>
+          <input style="margin-left: 1em" type="number" min=-180 max=180 bind:value={charge.angle} on:input={() => updateGrid(charge)}/>
 
-          <span style="margin-left: 1em">Shift:</span>
-          <input type="number" min=-100 max=100 step={$grid} bind:value={charge.x}/>
-          <input type="number" min=-100 max=100 step={$grid} bind:value={charge.y}/>
+          <Tooltip tip="Charge shift{charge.p.length > 1 ? '. To shift elements sepately create a new charge' : ''}"><span style="margin-left: 1em">Shift:</span></Tooltip>
+          <input type="number" min=-100 max=100 step={$grid} bind:value={charge.x} on:input={() => updateGrid(charge)}/>
+          <input type="number" min=-100 max=100 step={$grid} bind:value={charge.y} on:input={() => updateGrid(charge)}/>
+
+          <Tooltip tip="Grid size: define position shift and drag step"><span style="margin-left: 1em">Step:</span></Tooltip>
+          <input type="number" min=1 max=50 bind:value={$grid}/>
+          <Switch bind:checked={$showGrid}/>
         </div>
       </div>
     {/each}
@@ -592,6 +605,10 @@
     width: 1.3em;
     margin-left: -1.6em;
     border: 0;
+  }
+
+  input[type="number"] {
+    width: 4em;
   }
 
   :global(.item) {

@@ -11,7 +11,9 @@ export const background = writable(options.background);
 export const scale = writable(options.scale);
 export const border = writable(options.border);
 export const borderWidth = writable(options.borderWidth);
+
 export const grid = writable(options.grid);
+export const showGrid = writable(options.showGrid);
 
 export const history = writable([]);
 export const matrices = writable([[]]);
@@ -71,7 +73,9 @@ function defineInitialOptions() {
   const borderWidth = +stored("borderWidth") || 1;
   const background = stored("background") || "#333333";
   const scale = +stored("scale") || 2;
-  const grid = +stored("grid") || 20;
 
-  return {size, diaper, grad, shield, colors, border, borderWidth, background, scale, grid};
+  const grid = +stored("grid") || 20;
+  const showGrid = storedObj("showGrid") || 0;
+
+  return {size, diaper, grad, shield, colors, border, borderWidth, background, scale, grid, showGrid};
 }

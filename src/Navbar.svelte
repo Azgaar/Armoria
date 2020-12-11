@@ -3,7 +3,7 @@
   import Lock from './Lock.svelte';
   import {fade} from 'svelte/transition';
   import {download} from './download.js';
-  import {size, grad, diaper, shield, colors, background, scale, border, borderWidth, grid, matrix, state, changes} from './stores';
+  import {size, grad, diaper, shield, colors, background, scale, border, borderWidth, matrix, state, changes} from './stores';
 
   const shields = ["heater", "oldFrench", "spanish", "french", "swiss", "wedged", "italian", "kite", "renaissance", "baroque", "polish", "german", "diamond", "round", "vesicaPiscis", "square", "flag", "pennon", "guidon", "banner", "dovetail", "gonfalon", "pennant"];
   const paths = shields.map(id => document.getElementById(id).innerHTML);
@@ -42,7 +42,6 @@
   $: lock("scale", $scale);
   $: lock("border", $border);
   $: lock("borderWidth", $borderWidth);
-  $: lock("grid", $grid);
 
   // don't lock options on load
   const loaded = [];
@@ -157,19 +156,6 @@
           <bl>
             <Lock key=size/>
             <Tooltip tip="Gallery size">Gallery</Tooltip>
-          </bl>
-        </div>
-
-        <div class="container">
-          <div class="dropdown level2">
-            <bl class="wide">
-              <input type="range" min=1 max=50 step=1 bind:value={$grid}/>
-              <input type="number" min=1 max=50 step=1 bind:value={$grid}/>
-            </bl>
-          </div>
-          <bl>
-            <Lock key=grid/>
-            <Tooltip tip="Edit mode grid size (affects elements dragging)">Grid</Tooltip>
           </bl>
         </div>
 

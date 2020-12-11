@@ -23,7 +23,6 @@
     display: block;
     width: 48px;
     height: 24px;
-    text-indent: -150%;
     color: transparent;
   }
 

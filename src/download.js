@@ -37,6 +37,12 @@ async function getURL(svg) {
   const clone = svg.cloneNode(true); // clone svg
   const d = clone.getElementsByTagName("defs")[0];
 
+  // remove grid if any
+  const grid = clone.getElementById("grid");
+  const gridPattern = clone.getElementById("gridPattern");
+  if (grid) grid.remove();
+  if (gridPattern) gridPattern.remove();
+
   const sh = get(shield), gr = get(grad), di = get(diaper);
   d.insertAdjacentHTML("beforeend", defs.getElementById(sh).outerHTML);
   if (gr) d.insertAdjacentHTML("beforeend", defs.getElementById(gr).outerHTML);

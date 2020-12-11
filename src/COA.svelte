@@ -1,6 +1,7 @@
 <script>
   import Ordinary from './Ordinary.svelte';
   import Charge from './Charge.svelte';
+  import Grid from './Grid.svelte';
   import Positions from './Positions.svelte';
   import {grad, diaper, shield, colors, border, borderWidth, patterns} from './stores';
   export let coa, i, w, h;
@@ -9,6 +10,7 @@
   const tDiv = division ? division.t : "";
 
   const viewBox = {
+    no: "0 0 200 200",
     heater: "0 10 200 200",
     oldFrench: "0 10 200 200",
     spanish: "0 10 200 200",
@@ -83,7 +85,7 @@
       {#if ordinary.divided === "counter"}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={tDiv}/>{/if}
       {#if ordinary.divided === "field"}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
     {/if}
-    {#if diaperType === "field"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})"/>{/if}
+    {#if diaperType === "field"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})" style="pointer-events: none"/>{/if}
     {#each charges as charge, i}
       {#if charge.layer === "field"}
         <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>
@@ -100,7 +102,7 @@
           {#if ordinary.divided === "counter"}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t1}/>{/if}
           {#if ordinary.divided === "division"}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
         {/if}
-        {#if diaperType === "division"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})"/>{/if}
+        {#if diaperType === "division"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})" style="pointer-events: none"/>{/if}
         {#each charges as charge, i}
           {#if charge.layer === "division"}
             <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>
@@ -115,7 +117,7 @@
     {#if ordinary && !ordinary.divided}
       <Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>
     {/if}
-    {#if diaperType === "overall"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})"/>{/if}
+    {#if diaperType === "overall"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})" style="pointer-events: none"/>{/if}
     {#each charges as charge, i}
       {#if !charge.layer}
         <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>
@@ -123,17 +125,10 @@
     {/each}
   </g>
 
-  {#if i === "Edit"}<Positions/>{/if}
+  {#if i === "Edit"}
+    <Grid/>
+    <Positions/>
+  {/if}
 
-  <path class="grad" d={shieldPath} fill="url(#{coaGrad})" stroke={$border} stroke-width={strokeWidth}/>
+  <path class="grad" d={shieldPath} fill="url(#{coaGrad})" stroke={$border} stroke-width={strokeWidth} style="pointer-events: none"/>
 </svg>
-
-<style>
-	.grad, .diaper {
-		pointer-events: none;
-	}
-
-  /* svg {
-    outline: 1px solid #000;
-  } */
-</style>

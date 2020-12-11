@@ -1,5 +1,5 @@
 <script>
-  import {state, shield, grid} from "./stores";
+  import {state, shield} from "./stores";
   import {shields} from "./dataModel.js";
   import {fade} from 'svelte/transition';
 
@@ -14,19 +14,12 @@
 </script>
 
 {#if $state.positions}
-  <g transform={$state.transform || null} transform-origin=center in:fade>
-    <defs>
-      <pattern id=grid width={$grid} height={$grid} patternUnits="userSpaceOnUse">
-        <path d="M 100 0 L 0 0 0 100" fill="none" stroke="#000" opacity=.3 stroke-width=.5/>
-      </pattern>
-    </defs>
-    <rect x=-200 y=-200 width=400 height=400 fill="url(#grid)"/>
-
-    <g id=positions transform="translate(100, 100)">
+  <g transform={$state.transform || null} transform-origin=center>
+    <g id=positions transform="translate(100, 100)" transition:fade|local>
       {#each points as p}
         <g id={p[0]} class={getClass(p[0])}>
           <circle cx={p[1][0]} cy={p[1][1]} r=3 class:active={$state.positions.includes(p[0])}/>
-          <text x={p[1][0]} y={p[1][1]} class:active={$state.positions.includes(p[0])}>{p[0]}</text>
+          <text style="dominant-baseline: central" x={p[1][0]} y={p[1][1]} class:active={$state.positions.includes(p[0])}>{p[0]}</text>
         </g>
       {/each}
     </g>
@@ -47,7 +40,6 @@
     text-anchor: middle;
     font-size: 5px;
     fill: #ddd;
-    dominant-baseline: central;
   }
 
   text.active {
