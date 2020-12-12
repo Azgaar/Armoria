@@ -102,19 +102,9 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
     coa.charges.forEach(c => defineChargeAttributes(c));
     function defineChargeAttributes(c) {
       // define size
-      let size = c.size || 1;
-      if (c.p === "e" && (ordinary === "bordure" || ordinary === "orle")) size *= 1.1;
-      else if (c.p === "e") size *= 1.5;
-      else if (["pp", "qq", "kn", "kk", "nn", "oo", "jj"].includes(c.p)) size *= .7;
-      else if (c.p === "jln" || c.p === "jlh") size *= .7;
-      else if (c.p.length > 10) size *= .18; // >10 (bordure)
-      else if (c.p.length > 7) size *= .3; // 8, 9, 10
-      else if (c.p.length > 5) size *= .4; // 6, 7
-      else if (c.p.length > 3) size *= .4; // 4 or 5
-      else if (c.p.length > 1) size *= .5; // 2
-      c.size = size;
+      c.size = (c.size || 1) * getSize(c.p, ordinary);
 
-      // define position
+      // clean-up position
       c.p = [...new Set(c.p)].join("");
 
       // define orientation
@@ -124,6 +114,18 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
   }
 
   return coa;
+}
+
+export const getSize = (p, o) => {
+  if (p === "e" && (o === "bordure" || o === "orle")) return 1.1;
+  if (p === "e") return 1.5;
+  if (["p", "q", "pp", "qq", "pq", "kn", "n", "n", "kk", "nn", "oo", "jj"].includes(p)) return .7;
+  if (p === "jln" || p === "jlh") return .7;
+  if (p === "abcpqh") return .5;
+  if (p.length > 10) return .18; // >10 (bordure)
+  if (p.length > 7) return .3; // 8, 9, 10
+  if (p.length > 4) return .4; // 5, 6, 7
+  return .5; // 1, 2, 3, 4
 }
 
 // select tincture: element type (field, division, charge), all field tinctures, field type to follow RoT

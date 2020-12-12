@@ -9,7 +9,8 @@
   import {slide, fly} from 'svelte/transition';
   import {rw} from './utils.js';
   import {changes, state, grid, showGrid} from './stores';
-  import {charges, tinctures, divisions, ordinaries, lines, positionsArray} from "./dataModel.js";
+  import {charges, tinctures, divisions, ordinaries, lines, positionsSelect} from "./dataModel.js";
+  import {getSize} from './generator.js';
   export let coa, c;
 
   const min = Math.min(window.innerWidth, window.innerHeight);
@@ -465,14 +466,14 @@
           <Tooltip tip="Points on shield to place a charge">Positions:</Tooltip>
           <input style="margin-left: .6em; width: 8.6em" bind:value={charge.p} on:input={() => showPositions(charge)} on:focus={() => showPositions(charge)} on:blur={() => $state.positions = 0}/>
 
-          <select class="pseudoSelect" bind:value={charge.p} on:input={() => showPositions(charge)} on:focus={() => showPositions(charge)} on:blur={() => $state.positions = 0}>
-            {#each positionsArray as position}
+          <select class="pseudoSelect" bind:value={charge.p} on:change={() => {charge.size = getSize(charge.p, menu.ordinary.ordinary); showPositions(charge);}} on:focus={() => showPositions(charge)} on:blur={() => $state.positions = 0}>
+            {#each positionsSelect as position}
               <option value={position}>{position}</option>
             {/each}
           </select>
 
           <Tooltip tip="Charge size"><span style="margin-left: 1em">Size:</span></Tooltip>
-          <input type="number" min=.1 max=2 step=.01 bind:value={charge.size}/>
+          <input type=number min=.1 max=2 step=.01 bind:value={charge.size}/>
 
           <Tooltip tip="Turn charge to the left"><span style="margin-left: 1em">Sinister:</span></Tooltip>
           <Switch bind:checked={charge.sinister}/>

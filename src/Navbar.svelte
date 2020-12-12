@@ -5,7 +5,7 @@
   import {download} from './download.js';
   import {size, grad, diaper, shield, colors, background, scale, border, borderWidth, matrix, state, changes} from './stores';
 
-  const shields = ["heater", "oldFrench", "spanish", "french", "swiss", "wedged", "italian", "kite", "renaissance", "baroque", "polish", "german", "diamond", "round", "vesicaPiscis", "square", "flag", "pennon", "guidon", "banner", "dovetail", "gonfalon", "pennant"];
+  const shields = ["heater", "oldFrench", "spanish", "french", "swiss", "wedged", "italian", "round", "renaissance", "baroque", "polish", "german", "diamond", "kite", "vesicaPiscis", "square", "flag", "pennon", "guidon", "banner", "dovetail", "gonfalon", "pennant"];
   const paths = shields.map(id => document.getElementById(id).innerHTML);
   const sizes = [[80, "Giant"], [100, "Huge"], [150, "Large"], [200, "Medium"], [300, "Small"], [400, "Tiny"]];
   const gradients = ["luster", "spotlight", "backlight"];

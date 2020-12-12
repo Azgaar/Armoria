@@ -9,6 +9,7 @@
   function getClass(p) {
     if ("abcdefghi".includes(p)) return "green";
     if ("ABCDEFGHIJK".includes(p)) return "red";
+    if ("zy".includes(p)) return "yellow";
     return "blue";
   }
 </script>
@@ -28,11 +29,11 @@
 
 <style>
   circle {
-    opacity: .5;
+    opacity: .6;
   }
 
   circle.active {
-    opacity: .9;
+    opacity: 1;
   }
 
   text {
@@ -56,5 +57,9 @@
 
   .red {
     fill: rgb(80, 12, 12);
+  }
+
+  .yellow {
+    fill: rgb(84, 84, 0);
   }
 </style>
