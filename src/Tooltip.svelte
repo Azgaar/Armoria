@@ -1,7 +1,7 @@
 <script>
   // Source: https://github.com/Abreu00/svelte-tooltip
   export let tip = "", top = false, bottom = false, left = false, active = false, color = "#222";
-  let right = top || bottom || left ? false : true; // default side 
+  let right = top || bottom || left ? false : true; // default side
   let style = `background-color: ${color};`;
 </script>
 
@@ -26,9 +26,7 @@
   }
   .tooltip {
     position: absolute;
-    font-family: inherit;
     display: inline-block;
-    white-space: nowrap;
     color: inherit;
     opacity: 0;
     visibility: hidden;
@@ -37,6 +35,8 @@
     transition-property: opacity;
     transition-duration: 150ms;
     z-index: 10;
+    width: max-content;
+    max-width: 50vw;
   }
 
   .default-tip {
