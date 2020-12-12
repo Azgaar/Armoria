@@ -61,11 +61,15 @@ export const loadedCharges = writable([]);
 export const patterns = writable([]);
 
 function defineInitialOptions() {
-  const stored = v => localStorage.getItem(v);
-  const storedObj = v => localStorage.getItem(v) ? JSON.parse(localStorage.getItem(v)) : null;
+  const stored = key => {
+    const value = localStorage.getItem(key);
+    if (value === "null") return null;
+    return value;
+  };
+  const storedObj = key => localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : null;
 
   const size = +stored("size") || 200;
-  const diaper = stored("diaper") || "nourse";
+  const diaper = stored("diaper") || null;
   const grad = stored("grad") || ra(["luster", "spotlight", "backlight"]);
   const shield = stored("shield") || rw({heater:60, oldFrench:20, spanish:30, french:5, swiss:2, wedged:2, italian:1, renaissance:1, baroque:1, polish:1, round:1, square:1, vesicaPiscis:1});
   const colors = storedObj("colors") || {argent: "#fafafa", or: "#ffe066", gules: "#d7374a", sable: "#333333", azure: "#377cd7", vert: "#26c061", purpure: "#522d5b"};
@@ -74,7 +78,7 @@ function defineInitialOptions() {
   const background = stored("background") || "#333333";
   const scale = +stored("scale") || 2;
 
-  const grid = +stored("grid") || 20;
+  const grid = +stored("grid") || 1;
   const showGrid = storedObj("showGrid") || 0;
 
   return {size, diaper, grad, shield, colors, border, borderWidth, background, scale, grid, showGrid};
