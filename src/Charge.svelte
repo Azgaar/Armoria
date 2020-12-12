@@ -37,13 +37,23 @@
     const [a0, x0, y0] = parseTransform(el.getAttribute("transform"));
     const x1 = e.pageX, y1 = e.pageY;
 
+    const angle = -a0 * (Math.PI / 180);
+    const cosAngle = Math.cos(angle);
+    const sinAngle = Math.sin(angle);
+
     document.addEventListener("mousemove", drag);
     document.addEventListener("mouseup", dragStop, {once: true});
 
     function drag(e) {
       document.body.style.cursor = "move";
-      c.x = Math.round((x0 + e.pageX - x1) / $grid) * $grid;
-      c.y = Math.round((y0 + e.pageY - y1) / $grid) * $grid;
+      const dx = x0 + e.pageX - x1;
+      const dy = y0 + e.pageY - y1;
+
+      const relX = (dx * cosAngle) - (dy * sinAngle);
+      const relY = (dx * sinAngle) + (dy * cosAngle);
+
+      c.x = Math.round(relX / $grid) * $grid;
+      c.y = Math.round(relY / $grid) * $grid;
       const tr = getChargeTransform(c);
       if (tr) el.setAttribute("transform", tr); else el.removeAttribute("transform");
     }
