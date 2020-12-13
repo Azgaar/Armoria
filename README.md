@@ -2,90 +2,48 @@
 
 Armoria is a procedural heraldry generator and editor by Azgaar.
 
-## Get started
+Project is under development, alpha version is available on [Github Pages](https://azgaar.github.io/Armoria/).
 
-Install the dependencies.
+[![Gallery View](public/preview.png)](public/preview.png)
 
-```bash
-cd svelte-app
-npm install
+[![Editor View](https://cdn.discordapp.com/attachments/587406457725779968/787792526907015234/preview2.png)](https://cdn.discordapp.com/attachments/587406457725779968/787792526907015234/preview2.png)
+
+Join our [Reddit community](https://www.reddit.com/r/FantasyMapGenerator) and [Discord server](https://discordapp.com/invite/X7E84HU) to share your creations, discuss the Tool, suggest ideas and get the most recent updates. You can support the project on [Patreon](https://www.patreon.com/azgaar).
+
+## For Developers
+
+The tool is almost zero-dependency vanilla JS with just [Svelte](https://github.com/sveltejs/svelte) to build UI. Svelte is a bit specific framework that compiles components to vanilla JS.
+
+I am not a profi in web-development or Svelte, so help from professional developers and Rull Requests are welcomed.
+
+### Installation
+
+Clone repository and install the dependencies.
+
+```sh
+$ git clone https://github.com/Azgaar/Armoria.git
+$ cd Armoria
+$ npm install
 ```
 
-...then start [Rollup](https://rollupjs.org):
+### Usage
 
-```bash
-npm run dev
+Run `dev` to start Rollup and build in dev mode
+
+```sh
+$ npm run dev
 ```
 
-Navigate to [localhost:5000](http://localhost:5000). You should see your app running. Edit a component file in `src`, save it, and reload the page to see your changes.
+Navigate to [localhost:5000](http://localhost:5000). You should see the app running.
 
-By default, the server will only respond to requests from localhost. To allow connections from other computers, edit the `sirv` commands in package.json to include the option `--host 0.0.0.0`.
+Edit a component file in `src`, save it, and reload the page to see your changes.
 
-If you're using [Visual Studio Code](https://code.visualstudio.com/) we recommend installing the official extension [Svelte for VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode). If you are using other editors you may need to install a plugin in order to get syntax highlighting and intellisense.
-
-## Building and running in production mode
-
-To create an optimised version of the app:
-
-```bash
-npm run build
-```
-
-You can run the newly built app with `npm run start`. This uses [sirv](https://github.com/lukeed/sirv), which is included in your package.json's `dependencies` so that the app will work when you deploy to platforms like [Heroku](https://heroku.com).
-
-
-## Single-page app mode
-
-By default, sirv will only respond to requests that match files in `public`. This is to maximise compatibility with static fileservers, allowing you to deploy your app anywhere.
-
-If you're building a single-page app (SPA) with multiple routes, sirv needs to be able to respond to requests for *any* path. You can make it so by editing the `"start"` command in package.json:
-
-```js
-"start": "sirv public --single"
-```
-
-## Using TypeScript
-
-This template comes with a script to set up a TypeScript development environment, you can run it immediately after cloning the template with:
-
-```bash
-node scripts/setupTypeScript.js
-```
-
-Or remove the script via:
-
-```bash
-rm scripts/setupTypeScript.js
-```
-
-## Deploying to the web
-
-### With [Vercel](https://vercel.com)
-
-Install `vercel` if you haven't already:
-
-```bash
-npm install -g vercel
-```
-
-Then, from within your project folder:
-
-```bash
-cd public
-vercel deploy --name my-project
-```
-
-### With [surge](https://surge.sh/)
-
-Install `surge` if you haven't already:
-
-```bash
-npm install -g surge
-```
-
-Then, from within your project folder:
+To create an optimised version of the app run:
 
 ```bash
 npm run build
-surge public my-project.surge.sh
 ```
+
+## License
+
+MIT

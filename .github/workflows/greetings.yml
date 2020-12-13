@@ -1,0 +1,13 @@
+name: Greetings
+
+on: [pull_request, issues]
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: 'Hello, fellow tester! Thanks for raising the issue, I will review it as soon as possible.'
+        pr-message: 'Hello and thanks for the pull request! I am very glad that you are interested in the project. Please make sure your PR works fine and inline with best practices. Not that I am following them, but still :)'
