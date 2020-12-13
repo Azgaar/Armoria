@@ -18,22 +18,22 @@
     swiss: "0 10 200 200",
     wedged: "0 10 200 200",
     italian: "0 0 200 200",
-    kite: "0 -10 200 220",
-    renaissance: "0 0 200 210",
-    baroque: "0 0 200 210",
-    polish: "0 -10 200 220",
+    kite: "0 0 200 200",
+    renaissance: "0 0 200 200",
+    baroque: "0 10 200 200",
+    polish: "0 0 200 200",
     german: "0 0 200 200",
-    diamond: "0 -10 200 220",
+    diamond: "0 0 200 200",
     round: "0 0 200 200",
-    vesicaPiscis: "0 -10 200 220",
+    vesicaPiscis: "0 0 200 200",
     square: "0 0 200 200",
-    flag: "12.5 0 200 200",
-    pennon: "12.5 0 200 200",
-    guidon: "12.5 0 200 200",
+    flag: "0 0 200 200",
+    pennon: "2.5 0 200 200",
+    guidon: "2.5 0 200 200",
     banner: "0 10 200 200",
     dovetail: "0 10 200 200",
     gonfalon: "0 10 200 200",
-    pennant: "0 10 200 200"
+    pennant: "0 0 200 200"
   }
 
   $: coaShield = coa.shield || $shield;

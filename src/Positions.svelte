@@ -8,7 +8,7 @@
 
   function getClass(p) {
     if ("abcdefghi".includes(p)) return "green";
-    if ("ABCDEFGHIJK".includes(p)) return "red";
+    if ("ABCDEFGHIJKL".includes(p)) return "red";
     if ("zy".includes(p)) return "yellow";
     return "blue";
   }
