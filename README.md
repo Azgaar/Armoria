@@ -4,9 +4,8 @@ Armoria is a procedural heraldry generator and editor by Azgaar.
 
 Project is under development, alpha version is available on [Github Pages](https://azgaar.github.io/Armoria/).
 
-[![Gallery View](public/preview.png)](public/preview.png)
-
-[![Editor View](https://cdn.discordapp.com/attachments/587406457725779968/787792526907015234/preview2.png)](https://cdn.discordapp.com/attachments/587406457725779968/787792526907015234/preview2.png)
+![Gallery View](public/preview.png)
+![Editor View](https://cdn.discordapp.com/attachments/587406457725779968/787792526907015234/preview2.png)
 
 Join our [Reddit community](https://www.reddit.com/r/FantasyMapGenerator) and [Discord server](https://discordapp.com/invite/X7E84HU) to share your creations, discuss the Tool, suggest ideas and get the most recent updates. You can support the project on [Patreon](https://www.patreon.com/azgaar).
 
@@ -14,11 +13,11 @@ Join our [Reddit community](https://www.reddit.com/r/FantasyMapGenerator) and [D
 
 The tool is almost zero-dependency vanilla JS with just [Svelte](https://github.com/sveltejs/svelte) to build UI. Svelte is a bit specific framework that compiles components to vanilla JS.
 
-I am not a profi in web-development or Svelte, so help from professional developers and Rull Requests are welcomed.
+I am not a profi in web-development or Svelte, so help from professional developers and Rull Requests is welcomed.
 
 ### Installation
 
-Clone repository and install the dependencies.
+Clone the repository and install the dependencies.
 
 ```sh
 $ git clone https://github.com/Azgaar/Armoria.git
