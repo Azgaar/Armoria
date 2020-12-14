@@ -86,13 +86,15 @@
       {#if ordinary.divided === "field"}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
     {/if}
     {#if diaperType === "field"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})" style="pointer-events: none"/>{/if}
-    {#each charges as charge, i}
-      {#if charge.layer === "field"}
-        <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>
-      {:else if charge.layer === "counter" && division}
-        <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={tDiv}/>
-      {/if}
-    {/each}
+    {#if division}
+      {#each charges as charge, i}
+        {#if charge.layer === "field"}
+          <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>
+        {:else if charge.layer === "counter"}
+          <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={tDiv}/>
+        {/if}
+      {/each}
+    {/if}
 
     <!-- division layer -->
     {#if division}
@@ -103,13 +105,15 @@
           {#if ordinary.divided === "division"}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
         {/if}
         {#if diaperType === "division"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})" style="pointer-events: none"/>{/if}
-        {#each charges as charge, i}
-          {#if charge.layer === "division"}
-            <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>
-          {:else if charge.layer === "counter"}
-            <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={coa.t1}/>
-          {/if}
-        {/each}
+        {#if division}
+          {#each charges as charge, i}
+            {#if charge.layer === "division"}
+              <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>
+            {:else if charge.layer === "counter"}
+              <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={coa.t1}/>
+            {/if}
+          {/each}
+        {/if}
       </g>
     {/if}
 
@@ -119,7 +123,7 @@
     {/if}
     {#if diaperType === "overall"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})" style="pointer-events: none"/>{/if}
     {#each charges as charge, i}
-      {#if !charge.layer}
+      {#if !charge.layer || !division}
         <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={charge.t}/>
       {/if}
     {/each}
