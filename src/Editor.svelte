@@ -176,6 +176,19 @@
     menu.charges = menu.charges.filter((e, i) => i !== index);
   }
 
+  function copyCharge(charge) {
+    const c = JSON.parse(JSON.stringify(charge));
+    menu.charges = [...menu.charges, c];
+  }
+
+  function moveUp(i) {
+    [menu.charges[i], menu.charges[i+1]] = [menu.charges[i+1], menu.charges[i]];
+  }
+
+  function moveDown(i) {
+    [menu.charges[i], menu.charges[i-1]] = [menu.charges[i-1], menu.charges[i]];
+  }
+
   // field attributes changed
   $: {
     if (menu.field.type === "tincture") coa.t1 = menu.field.t1; else {
@@ -446,7 +459,16 @@
               </select>
             {/if}
 
-            <b on:click={() => removeCharge(i)} class="removeButton" title="Remove charge">✖</b>
+            <b class="controlButton" on:click={() => removeCharge(i)} title="Remove charge">✖</b>
+            <b class="controlButton" on:click={() => copyCharge(charge)} title="Copy charge">🗗</b>
+            {#if menu.charges.length > 1}
+              {#if i}
+                <b class="controlButton" on:click={() => moveDown(i)} title="Move charge down">🠗</b>
+              {/if}
+              {#if i+1 < menu.charges.length}
+                <b class="controlButton" on:click={() => moveUp(i)} title="Move charge up">🠕</b>
+              {/if}
+            {/if}
           </div>
 
           {#each Object.keys(charges[charge.type]).map(c => new Object({c, t1: coa.t1, charges: [{charge:c, t: charge.t, p:"e", size: 1.5, sinister: charge.sinister, reversed: charge.reversed}]})) as coa (coa)}
@@ -592,13 +614,14 @@
     background-color: #00000080;
   }
 
-  .removeButton {
+  .controlButton {
     float: right;
-    margin: .3em -0.1em 0 0;
+    padding: .1em;
+    margin: .2em 0 0 .5em;
     cursor: pointer;
   }
 
-  .removeButton:active {
+  .controlButton:active {
     transform: translateY(1px);
   }
 

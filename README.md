@@ -45,4 +45,4 @@ npm run build
 
 ## License
 
-MIT
+The code is distributed under MIT. Simple svg shapes and charges are self-made and available under CC0. Complex charges are historical, svg renders are coming from WappenWiki(http://wappenwiki.org) and available for non-commercial use under CC3. Source info is added to svg files as a comment. All images are manually optimized by me.

@@ -9,7 +9,7 @@
   const paths = shields.map(id => document.getElementById(id).innerHTML);
   const sizes = [[80, "Giant"], [100, "Huge"], [150, "Large"], [200, "Medium"], [300, "Small"], [400, "Tiny"]];
   const gradients = ["luster", "spotlight", "backlight"];
-  const diapers = ["nourse", "tessellation"];
+  const diapers = ["nourse", "tessellation", "sennwald", "sulzbach"];
   const tinctures = ["argent", "or", "gules", "sable", "azure", "vert", "purpure"];
   const defaultColors = {argent: "#fafafa", or: "#ffe066", gules: "#d7374a", sable: "#333333", azure: "#377cd7", vert: "#26c061", purpure: "#522d5b"};
 
