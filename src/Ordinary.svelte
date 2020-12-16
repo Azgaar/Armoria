@@ -58,11 +58,11 @@
 </script>
 
 {#if ordinary.ordinary === "bordure"}
-  <g class="ordinary" class:editable={$state.edit} on:mousedown={function(e) {if ($state.edit) drag(e, ordinary, coa)}}>
+  <g class="ordinary" class:editable={$state.edit} transform={getTransform(ordinary)} transform-origin="center" on:mousedown={function(e) {if ($state.edit) addDrag(e, ordinary)}}>
     <path d={shieldPath} fill="none" stroke={colors[t]} stroke-width="16.7%"/>
   </g>
 {:else if ordinary.ordinary === "orle"}
-  <g class="ordinary" class:editable={$state.edit} on:mousedown={function(e) {if ($state.edit) drag(e, ordinary, coa)}}>
+  <g class="ordinary" class:editable={$state.edit} transform={getTransform(ordinary)} transform-origin="center" on:mousedown={function(e) {if ($state.edit) addDrag(e, ordinary)}}>
     <path d={shieldPath} fill="none" stroke={colors[t]} stroke-width="5%" transform="scale(.85)" transform-origin="center"/>
   </g>
 {:else}
