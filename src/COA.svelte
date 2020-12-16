@@ -82,8 +82,8 @@
     <!-- field layer -->
     <rect id="field" x=0 y=0 width=200 height=200 fill="{coaColors[coa.t1] || clr(coa.t1)}"/>
     {#if division && ordinary?.divided}
-      {#if ordinary.divided === "counter"}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={tDiv}/>{/if}
-      {#if ordinary.divided === "field"}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
+      {#if ordinary.divided === "counter"}<Ordinary {coa} {shieldPath} colors={coaColors} t={tDiv}/>{/if}
+      {#if ordinary.divided === "field"}<Ordinary {coa} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
     {/if}
     {#if diaperType === "field"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})" style="pointer-events: none"/>{/if}
     {#if division}
@@ -101,8 +101,8 @@
       <g id="division" clip-path="url(#divisionClip{i})">
         <rect x=0 y=0 width=200 height=200 fill="{coaColors[tDiv] || clr(tDiv)}"/>
         {#if ordinary?.divided}
-          {#if ordinary.divided === "counter"}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t1}/>{/if}
-          {#if ordinary.divided === "division"}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
+          {#if ordinary.divided === "counter"}<Ordinary {coa} {shieldPath} colors={coaColors} t={coa.t1}/>{/if}
+          {#if ordinary.divided === "division"}<Ordinary {coa} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
         {/if}
         {#if diaperType === "division"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})" style="pointer-events: none"/>{/if}
         {#if division}
@@ -119,7 +119,7 @@
 
     <!-- overall layer -->
     {#if ordinary && !ordinary.divided}
-      <Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>
+      <Ordinary {coa} {shieldPath} colors={coaColors} t={ordinary.t}/>
     {/if}
     {#if diaperType === "overall"}<rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})" style="pointer-events: none"/>{/if}
     {#each charges as charge, i}

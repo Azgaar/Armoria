@@ -43,8 +43,8 @@
     <!-- field layer -->
     <rect id="field" x=0 y=0 width=200 height=200 fill="{coaColors[coa.t1] || clr(coa.t1)}"/>
     {#if division && ordinary?.divided}
-      {#if ordinary.divided === "counter"}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={tDiv}/>{/if}
-      {#if ordinary.divided === "field"}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
+      {#if ordinary.divided === "counter"}<Ordinary {coa} {shieldPath} colors={coaColors} t={tDiv}/>{/if}
+      {#if ordinary.divided === "field"}<Ordinary {coa} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
     {/if}
     {#each charges as charge, i}
       {#if charge.layer === "field"}
@@ -59,8 +59,8 @@
       <g id="division" clip-path="url(#divisionClipMenu{i})">
         <rect x=0 y=0 width=200 height=200 fill="{coaColors[tDiv] || clr(tDiv)}"/>
         {#if ordinary?.divided}
-          {#if ordinary.divided === "counter"}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={coa.t1}/>{/if}
-          {#if ordinary.divided === "division"}<Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
+          {#if ordinary.divided === "counter"}<Ordinary {coa} {shieldPath} colors={coaColors} t={coa.t1}/>{/if}
+          {#if ordinary.divided === "division"}<Ordinary {coa} {shieldPath} colors={coaColors} t={ordinary.t}/>{/if}
         {/if}
         {#each charges as charge, i}
           {#if charge.layer === "division"}
@@ -74,7 +74,7 @@
 
     <!-- overall layer -->
     {#if ordinary && !ordinary.divided}
-      <Ordinary {ordinary} {shieldPath} colors={coaColors} t={ordinary.t}/>
+      <Ordinary {coa} {shieldPath} colors={coaColors} t={ordinary.t}/>
     {/if}
     {#each charges as charge, i}
       {#if !charge.layer}

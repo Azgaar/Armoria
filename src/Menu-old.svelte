@@ -250,7 +250,7 @@
       <option value="embattledGhibellin">embattledGhibellin</option>
       <option value="embattledNotched">embattledNotched</option>
       <option value="embattledGrady">embattledGrady</option>
-      <option value="dovetailedIntented">dovetailedIntented</option>
+      <option value="dovetailedIndented">dovetailedIndented</option>
       <option value="dovetailed">dovetailed</option>
       <option value="potenty">potenty</option>
       <option value="potentyDexter">potentyDexter</option>
@@ -487,7 +487,7 @@
       <option value="embattledGhibellin">embattledGhibellin</option>
       <option value="embattledNotched">embattledNotched</option>
       <option value="embattledGrady">embattledGrady</option>
-      <option value="dovetailedIntented">dovetailedIntented</option>
+      <option value="dovetailedIndented">dovetailedIndented</option>
       <option value="dovetailed">dovetailed</option>
       <option value="potenty">potenty</option>
       <option value="potentyDexter">potentyDexter</option>

@@ -26,6 +26,9 @@
 
   let menu = {}, change = 0;
 
+  $state.transform = null;
+  $state.positions = null;
+
   // on reroll
   $: defineMenuState(c);
 
@@ -102,17 +105,23 @@
     // Ordinary
     menu.ordinary = getOrdinary();
     function getOrdinary() {
-      let ordinary = "no", line = "straight", t, divided = "";
+      let ordinary = "no", line = "straight", t, divided = "", size = 1, x = 0, y = 0, angle = 0;
+
       if (coa.ordinary) {
         ordinary = coa.ordinary.ordinary;
         line = coa.ordinary.line || "straight";
         t = coa.ordinary.t;
         divided = coa.ordinary.divided || "";
+        size = coa.ordinary.size || 1;
+        x = coa.ordinary.x || 0;
+        y = coa.ordinary.y || 0;
+        angle = coa.ordinary.angle || 0;
+        if (angle) updateGrid(coa.ordinary);
       } else {
         t = rw(tinctures["colours"]["charge"]);
       }
 
-      return {ordinary, line, t, divided}
+      return {ordinary, line, t, divided, size, x, y, angle}
     }
 
     // Charges
@@ -128,6 +137,7 @@
         const x = c.x || 0;
         const y = c.y || 0;
         const angle = c.angle || 0;
+        if (angle) updateGrid(c);
         return {charge, type, layer, t, p, size, sinister, reversed, x, y, angle};
       });
 
@@ -216,10 +226,15 @@
 
   // ordinary attributes changed
   $: {
-    if (menu.ordinary && menu.ordinary.ordinary !== "no") {
-      coa.ordinary = {ordinary: menu.ordinary.ordinary, t: menu.ordinary.t};
-      if (ordinaries.lined[menu.ordinary.ordinary]) coa.ordinary.line = menu.ordinary.line;
-      if (coa.division) coa.ordinary.divided = menu.ordinary.divided;
+    const o = menu.ordinary;
+    if (o && o.ordinary !== "no") {
+      coa.ordinary = {ordinary: o.ordinary, t: o.t};
+      if (ordinaries.lined[o.ordinary]) coa.ordinary.line = o.line;
+      if (coa.division) coa.ordinary.divided = o.divided;
+
+      if (o.x || o.y) {coa.ordinary.x = o.x; coa.ordinary.y = o.y;}
+      if (o.angle) coa.ordinary.angle = o.angle;
+      if (o.size && o.size !== 1) coa.ordinary.size = o.size;
     } else delete coa.ordinary;
   }
 
@@ -255,12 +270,12 @@
   }
 
   function showPositions(c) {
-    $state.transform = `rotate(${c.angle||0}) translate(${c.x||0} ${c.y||0})`;
+    $state.transform = `rotate(${c.angle||0})`;
     $state.positions = c.p;
   }
 
   function updateGrid(c) {
-    $state.transform = `rotate(${c.angle||0}) translate(${c.x||0} ${c.y||0})`;
+    $state.transform = `rotate(${c.angle||0})`;
   }
 
   function cap(string = "no") {
@@ -434,6 +449,22 @@
           <EditorTincture bind:t1={menu.ordinary.t} {itemSize}/>
         </div>
       {/if}
+
+      <div class="subsection">
+        <Tooltip tip="Ordinary size"><span style="margin-left: 1em">Size:</span></Tooltip>
+        <input type=number min=.1 max=2 step=.01 bind:value={menu.ordinary.size}/>
+
+        <Tooltip tip="Ordinary rotation"><span style="margin-left: 1em">Rotation:</span></Tooltip>
+        <input style="margin-left: 1em" type="number" min=-180 max=180 bind:value={menu.ordinary.angle} on:input={() => updateGrid(menu.ordinary)}/>
+
+        <Tooltip tip="Ordinary shift"><span style="margin-left: 1em">Shift:</span></Tooltip>
+        <input type="number" min=-100 max=100 step={$grid} bind:value={menu.ordinary.x} on:input={() => updateGrid(menu.ordinary)}/>
+        <input type="number" min=-100 max=100 step={$grid} bind:value={menu.ordinary.y} on:input={() => updateGrid(menu.ordinary)}/>
+
+        <Tooltip tip="Grid size: define position shift and drag step"><span style="margin-left: 1em">Step:</span></Tooltip>
+        <input type="number" min=1 max=50 bind:value={$grid}/>
+        <Switch bind:checked={$showGrid}/>
+      </div>
     </div>
 
     <!-- Charges -->
