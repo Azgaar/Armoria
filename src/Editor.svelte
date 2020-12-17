@@ -4,6 +4,8 @@
   import EditorType from './EditorType.svelte';
   import EditorSize from './EditorSize.svelte';
   import EditorTincture from './EditorTincture.svelte';
+  import EditorShift from "./EditorShift.svelte";
+  import EditorControlButtons from "./EditorControlButtons.svelte";
   import Switch from './Switch.svelte';
   import Tooltip from './Tooltip.svelte';
   import {slide, fly} from 'svelte/transition';
@@ -182,23 +184,6 @@
     menu.charges = [...menu.charges, с];
   }
 
-  function removeCharge(index) {
-    menu.charges = menu.charges.filter((e, i) => i !== index);
-  }
-
-  function copyCharge(charge) {
-    const c = JSON.parse(JSON.stringify(charge));
-    menu.charges = [...menu.charges, c];
-  }
-
-  function moveUp(i) {
-    [menu.charges[i], menu.charges[i+1]] = [menu.charges[i+1], menu.charges[i]];
-  }
-
-  function moveDown(i) {
-    [menu.charges[i], menu.charges[i-1]] = [menu.charges[i-1], menu.charges[i]];
-  }
-
   // field attributes changed
   $: {
     if (menu.field.type === "tincture") coa.t1 = menu.field.t1; else {
@@ -270,7 +255,7 @@
   }
 
   function showPositions(c) {
-    $state.transform = `rotate(${c.angle||0})`;
+    $state.transform = `rotate(${c.angle||0}) translate(${c.x||0}, ${c.y||0})`;
     $state.positions = c.p;
   }
 
@@ -451,19 +436,7 @@
       {/if}
 
       <div class="subsection">
-        <Tooltip tip="Ordinary size"><span style="margin-left: 1em">Size:</span></Tooltip>
-        <input type=number min=.1 max=2 step=.01 bind:value={menu.ordinary.size}/>
-
-        <Tooltip tip="Ordinary rotation"><span style="margin-left: 1em">Rotation:</span></Tooltip>
-        <input style="margin-left: 1em" type="number" min=-180 max=180 bind:value={menu.ordinary.angle} on:input={() => updateGrid(menu.ordinary)}/>
-
-        <Tooltip tip="Ordinary shift"><span style="margin-left: 1em">Shift:</span></Tooltip>
-        <input type="number" min=-100 max=100 step={$grid} bind:value={menu.ordinary.x} on:input={() => updateGrid(menu.ordinary)}/>
-        <input type="number" min=-100 max=100 step={$grid} bind:value={menu.ordinary.y} on:input={() => updateGrid(menu.ordinary)}/>
-
-        <Tooltip tip="Grid size: define position shift and drag step"><span style="margin-left: 1em">Step:</span></Tooltip>
-        <input type="number" min=1 max=50 bind:value={$grid}/>
-        <Switch bind:checked={$showGrid}/>
+        <EditorShift bind:e={menu.ordinary}/>
       </div>
     </div>
 
@@ -490,16 +463,7 @@
               </select>
             {/if}
 
-            <b class="controlButton" on:click={() => removeCharge(i)} title="Remove charge">✖</b>
-            <b class="controlButton" on:click={() => copyCharge(charge)} title="Copy charge">🗗</b>
-            {#if menu.charges.length > 1}
-              {#if i}
-                <b class="controlButton" on:click={() => moveDown(i)} title="Move charge down">🠗</b>
-              {/if}
-              {#if i+1 < menu.charges.length}
-                <b class="controlButton" on:click={() => moveUp(i)} title="Move charge up">🠕</b>
-              {/if}
-            {/if}
+            <EditorControlButtons bind:els={menu.charges} el={charge} {i}/>
           </div>
 
           {#each Object.keys(charges[charge.type]).map(c => new Object({c, t1: coa.t1, charges: [{charge:c, t: charge.t, p:"e", size: 1.5, sinister: charge.sinister, reversed: charge.reversed}]})) as coa (coa)}
@@ -525,9 +489,6 @@
             {/each}
           </select>
 
-          <Tooltip tip="Charge size"><span style="margin-left: 1em">Size:</span></Tooltip>
-          <input type=number min=.1 max=2 step=.01 bind:value={charge.size}/>
-
           <Tooltip tip="Turn charge to the left"><span style="margin-left: 1em">Sinister:</span></Tooltip>
           <Switch bind:checked={charge.sinister}/>
 
@@ -536,16 +497,7 @@
         </div>
 
         <div class="subsection">
-          <Tooltip tip="Charge rotation{charge.p.length > 1 ? '. To rotate elements sepately create a new charge' : ''}">Rotation:</Tooltip>
-          <input style="margin-left: 1em" type="number" min=-180 max=180 bind:value={charge.angle} on:input={() => updateGrid(charge)}/>
-
-          <Tooltip tip="Charge shift{charge.p.length > 1 ? '. To shift elements sepately create a new charge' : ''}"><span style="margin-left: 1em">Shift:</span></Tooltip>
-          <input type="number" min=-100 max=100 step={$grid} bind:value={charge.x} on:input={() => updateGrid(charge)}/>
-          <input type="number" min=-100 max=100 step={$grid} bind:value={charge.y} on:input={() => updateGrid(charge)}/>
-
-          <Tooltip tip="Grid size: define position shift and drag step"><span style="margin-left: 1em">Step:</span></Tooltip>
-          <input type="number" min=1 max=50 bind:value={$grid}/>
-          <Switch bind:checked={$showGrid}/>
+          <EditorShift bind:e={charge}/>
         </div>
       </div>
     {/each}
@@ -645,25 +597,10 @@
     background-color: #00000080;
   }
 
-  .controlButton {
-    float: right;
-    padding: .1em;
-    margin: .2em 0 0 .5em;
-    cursor: pointer;
-  }
-
-  .controlButton:active {
-    transform: translateY(1px);
-  }
-
   select.pseudoSelect {
     width: 1.3em;
     margin-left: -1.6em;
     border: 0;
-  }
-
-  input[type="number"] {
-    width: 4em;
   }
 
   :global(.item) {
