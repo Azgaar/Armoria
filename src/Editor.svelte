@@ -509,11 +509,12 @@
 <style>
   #editor {
     width: 100%;
-    height: 100%;
+    height: calc(100% - 45px);
     display: flex;
     align-items: center;
     justify-content: center;
     user-select: none;
+    flex-direction: column;
   }
 
   #menu {
@@ -521,14 +522,13 @@
     overflow-y: auto;
     scrollbar-width: thin;
     transition: .5s;
-    height: calc(100% - 45px);
-    position: absolute;
+    background-color: #11111180;
+      height: 100%;
   }
 
   @media only screen and (orientation: landscape) {
-    #menu {
-      position: relative;
-      background-color: #11111180;
+    #editor {
+      flex-direction: row;
     }
   }
 

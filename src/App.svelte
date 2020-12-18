@@ -8,10 +8,11 @@
   import {background, size, history, matrices, matrix, state, changes} from './stores.js';
   import {download} from './download.js';
 
-  let n, w, h, gallery = [], coa;
+  let n, w, h, gallery = [], coa, seed;
   $: [n, w, h] = defineGallerySize($size);
   $: {
     const l = $history.length;
+
     // reroll is clicked
     if (!$matrices[$matrix]) {
       if ($state.edit) {
@@ -24,22 +25,56 @@
       }
     }
 
-    // update if of edited coa
-    if ($state.edit) {
-      $state.c = $matrices[$matrix][$state.i];
-      coa = $history[$state.c] || generate();
-      if (!$history[$state.c]) $history.push(coa);
-      changes.reset();
-    }
-
     // add additional coas to matrix if size is smaller
-    if ($matrices[$matrix].length < n) {
+    if (!$state.edit && $matrices[$matrix].length < n) {
       const m = $matrices[$matrix];
-      $matrices[$matrix] = [...Array(n).keys()].map(i => m[i] || l+i);
+      $matrices[$matrix] = [...Array(n).keys()].map(i => m[i] !== undefined ? m[i] : l+i);
     }
 
     gallery = $matrices[$matrix].slice(0, n);
+
+    // on coa edit
+    if ($state.edit) {
+      $state.c = $matrices[$matrix][$state.i];
+      coa = $history[$state.c] || generate(seed || undefined);
+      seed = undefined; // use once
+      if (!$history[$state.c]) $history.push(coa);
+      changes.reset();
+    }
   };
+
+  void function checkLoadParameters() {
+    const url = new URL(window.location.href);
+    const params = url.searchParams;
+
+    if (!params.has("coa") && !params.has("seed")) return;
+
+    // define coa or seed
+    if (params.get("coa")) {
+      if (!validateJSON(params.get("coa"))) return;
+
+      const coa = JSON.parse(params.get("coa"));
+      $history.push(coa);
+    } else if (params.get("seed")) {
+      seed = params.get("seed");
+      if (!isNaN(+seed)) seed = +seed;
+    }
+
+    // open in edit mode
+    $state.edit = 1;
+    $matrices[0] = [0];
+  }();
+
+  function validateJSON(text) {
+    try {
+      JSON.parse(text);
+      return true;
+    } catch(e) {
+      console.error(e);
+      alert("Error: coa value is not valid\r\n" + e.message + "\r\n" + text);
+      return false;
+    }
+  }
 
   // define number and size of coas to display
   function defineGallerySize(desiredSize) {

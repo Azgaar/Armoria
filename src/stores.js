@@ -16,9 +16,9 @@ export const grid = writable(options.grid);
 export const showGrid = writable(options.showGrid);
 
 export const history = writable([]);
-export const matrices = writable([[]]);
+export const matrices = writable([]);
 export const matrix = writable(0);
-export const state = writable({edit:0, about:0});
+export const state = writable({edit:0, about:0, i:0});
 
 const createChangesTracker = () => {
   const {subscribe, set, update} = writable([undefined, -1]);

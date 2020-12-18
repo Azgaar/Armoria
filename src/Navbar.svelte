@@ -230,7 +230,7 @@
 
     {#if $state.edit}
       <bt id="back" on:click={() => $state.edit = 0} transition:fade>
-        <Tooltip tip="Get back to Gallery">{label("back")}</Tooltip>
+        <Tooltip tip="Get back to Gallery" left>{label("back")}</Tooltip>
       </bt>
     {/if}
 
@@ -244,7 +244,6 @@
 
 <style>
   ul {
-    position: fixed;
     top: 0;
     width: 100%;
     list-style-type: none;

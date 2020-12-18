@@ -28,7 +28,7 @@
   }
 </script>
 
-<div id="gallery" style="margin-top: 28px; font-size: {Math.ceil(w/20)}px" transition:fade>
+<div id="gallery" style="font-size: {Math.ceil(w/20)}px" transition:fade>
   {#each coas as coa, i}
     <div>
       {#key coa}
