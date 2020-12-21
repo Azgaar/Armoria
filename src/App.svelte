@@ -53,8 +53,8 @@
     if (params.get("coa")) {
       if (!validateJSON(params.get("coa"))) return;
 
-      const coa = JSON.parse(params.get("coa"));
-      $history.push(coa);
+      const coaParsed = JSON.parse(params.get("coa"));
+      $history.push(coaParsed);
     } else if (params.get("seed")) {
       seed = params.get("seed");
       if (!isNaN(+seed)) seed = +seed;

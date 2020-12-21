@@ -129,10 +129,10 @@
     {/each}
   </g>
 
+  <path class="grad" d={shieldPath} fill="url(#{coaGrad})" stroke={$border} stroke-width={strokeWidth} style="pointer-events: none"/>
+
   {#if i === "Edit"}
     <Grid/>
     <Positions/>
   {/if}
-
-  <path class="grad" d={shieldPath} fill="url(#{coaGrad})" stroke={$border} stroke-width={strokeWidth} style="pointer-events: none"/>
 </svg>

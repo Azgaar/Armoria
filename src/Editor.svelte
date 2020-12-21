@@ -6,6 +6,7 @@
   import EditorTincture from './EditorTincture.svelte';
   import EditorShift from "./EditorShift.svelte";
   import EditorControlButtons from "./EditorControlButtons.svelte";
+  import EditorGuide from "./EditorGuide.svelte";
   import Switch from './Switch.svelte';
   import Tooltip from './Tooltip.svelte';
   import {slide, fly} from 'svelte/transition';
@@ -267,12 +268,19 @@
     const split = string.split(/(?=[A-Z])/).join(" ");
     return split.charAt(0).toUpperCase() + split.slice(1);
   }
+
+  function isTouchDevice() {
+    return 'ontouchstart' in window;
+  }
 </script>
 
 <div id="editor">
   {#key coa}
     <COA {coa} i="Edit" w={coaSize} h={coaSize}/>
   {/key}
+  {#if !isTouchDevice()}
+    <EditorGuide/>
+  {/if}
   <div id="menu" in:fly={{x:500, duration:1000}} style="width:{width}%">
     <!-- Field -->
     <div class="section" class:expanded={false} on:click={showSection}>Field</div>
@@ -514,7 +522,7 @@
     align-items: center;
     justify-content: center;
     user-select: none;
-    flex-direction: column;
+    flex-direction: row;
   }
 
   #menu {
@@ -523,12 +531,12 @@
     scrollbar-width: thin;
     transition: .5s;
     background-color: #11111180;
-      height: 100%;
+    height: 100%;
   }
 
-  @media only screen and (orientation: landscape) {
+  @media only screen and (orientation: portrait) {
     #editor {
-      flex-direction: row;
+      flex-direction: column;
     }
   }
 
