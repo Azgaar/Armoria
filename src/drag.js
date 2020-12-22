@@ -1,13 +1,14 @@
-import {get} from 'svelte/store';
-import {state, changes, grid} from "./stores";
+import {get } from 'svelte/store';
+import { state, changes, grid } from "./stores";
 
 export function drag(e, c, coa) {
   if (!get(state).edit) return;
   const el = e.currentTarget;
   const [a0, x0, y0] = parseTransform(el.getAttribute("transform"));
-  const x1 = e.x, y1 = e.y;
+  const x1 = e.x,
+    y1 = e.y;
   const sizeAdj = +el.closest("svg").getAttribute("width") / 200;
-  document.addEventListener("mouseup", dragStop, {once: true});
+  document.addEventListener("mouseup", dragStop, { once: true });
 
   const size = c.size || 1;
   const angle = c.angle || 0;
@@ -43,6 +44,7 @@ export function drag(e, c, coa) {
     const dy = y0 + (e.y - y1) / sizeAdj;
     c.size = size + Math.round(dy) / -100;
     el.setAttribute("transform", transform(c));
+    if (c.p) changes.add(JSON.stringify(coa));
   }
 
   function rotate(e) {
@@ -72,7 +74,7 @@ export function transform(c) {
 }
 
 function parseTransform(string) {
-  if (!string) {return [0,0,0,0,0,1];}
+  if (!string) { return [0, 0, 0, 0, 0, 1]; }
   const a = string.replace(/[a-z()]/g, "").replace(/[ ]/g, ",").split(",");
   return [+a[0] || 0, +a[1] || 0, +a[2] || 0, +a[3] || 0, +a[4] || 0, +a[5] || 1];
 }
