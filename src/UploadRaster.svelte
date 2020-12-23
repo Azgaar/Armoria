@@ -2,7 +2,7 @@
   import {state} from "./stores";
   import {charges} from "./dataModel.js";
   let dragging = false, selected = false;
-  let dataURL, size = 50, offsetX = 0, offsetY = 0;
+  let size = 50, offsetX = 0, offsetY = 0;
   let name, category;
 
   const categories = Object.keys(charges.types);
@@ -39,8 +39,9 @@
   function loadImage(file) {
     const reader = new FileReader();
     reader.onload = function (readerEvent) {
-      dataURL = readerEvent.target.result;
-      renderImage();
+      const dataURL = readerEvent.target.result;
+      const image = document.getElementById("rasterUpload").querySelector("svg image");
+      image.setAttribute("href", dataURL);
     };
     reader.readAsDataURL(file);
   }
@@ -50,29 +51,6 @@
       .replace(/\.[^/.]+$/, "") // remove extension
       .replace(/_/g, " ") // replace _ by spaces
       .replace(/\W+(.)/g, (m, c) => c.toUpperCase()); // remove non-basic chars and camelize
-  }
-
-  async function renderImage() {
-    const resized = await resizeDataURL(dataURL);
-    const image = document.getElementById("rasterUpload").querySelector("svg image");
-    image.setAttribute("href", dataURL);
-  }
-
-  function resizeDataURL(dataURL) {
-    return new Promise(async function(resolve, reject) {
-      const img = document.createElement('img');
-      img.onload = function() {
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-
-          canvas.width = img.width;
-          canvas.height = img.height;
-          ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
-          const dataURL = canvas.toDataURL();
-          resolve(dataURL);
-      };
-      img.src = dataURL;
-    });
   }
 
   function addCharge() {
@@ -107,9 +85,9 @@
   <div class=container>
     {#if selected}
       <div class="input">
-        <div><div class=label>Size:</div><input type=number bind:value={size} on:input={renderImage}/></div>
-        <div><div class=label>Offset X:</div><input type=number bind:value={offsetX} on:input={renderImage}/></div>
-        <div><div class=label>Offset Y:</div><input type=number bind:value={offsetY} on:input={renderImage}/></div>
+        <div><div class=label>Size:</div><input type=number bind:value={size}/></div>
+        <div><div class=label>Offset X:</div><input type=number bind:value={offsetX}/></div>
+        <div><div class=label>Offset Y:</div><input type=number bind:value={offsetY}/></div>
       </div>
 
       <div class="exampleCOA">
