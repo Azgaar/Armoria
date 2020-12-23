@@ -1,6 +1,7 @@
 <script>
   import {state} from "./stores";
   import {charges} from "./dataModel.js";
+  import {camelize} from './utils.js';
   let dragging = false, selected = false;
   let size = 50, offsetX = 0, offsetY = 0;
   let name, category;
@@ -46,13 +47,6 @@
     reader.readAsDataURL(file);
   }
 
-  function camelize(str) {
-    return str
-      .replace(/\.[^/.]+$/, "") // remove extension
-      .replace(/_/g, " ") // replace _ by spaces
-      .replace(/\W+(.)/g, (m, c) => c.toUpperCase()); // remove non-basic chars and camelize
-  }
-
   function addCharge() {
     name = camelize(name);
 
@@ -84,13 +78,13 @@
   <span on:click={() => $state.raster = 0} class="close">&times;</span>
   <div class=container>
     {#if selected}
-      <div class="input">
+      <div class=input>
         <div><div class=label>Size:</div><input type=number bind:value={size}/></div>
         <div><div class=label>Offset X:</div><input type=number bind:value={offsetX}/></div>
         <div><div class=label>Offset Y:</div><input type=number bind:value={offsetY}/></div>
       </div>
 
-      <div class="exampleCOA">
+      <div class=exampleCOA>
         <svg width=100% height=100% viewBox="0 0 200 200">
           <g clip-path="url(#heater)" stroke="#fff" stroke-width=.5>
             <rect x=0 y=0 width=100% height=100% fill=#d7374a/>
@@ -103,7 +97,7 @@
         </svg>
       </div>
 
-      <div class="output">
+      <div class=output>
         <div><div class=label>Name:</div><input placeholder="Charge name" required bind:value={name}/></div>
         <div><div class=label>Category:</div>
           <select bind:value={category}>
@@ -119,7 +113,7 @@
         </div>
       </div>
     {:else}
-      <label>
+      <label class=dragging>
         <slot {dragging}>
           <div>Drag &amp; Drop image here or browse</div>
         </slot>
@@ -197,5 +191,9 @@
   span:hover {
     cursor: pointer;
     color: #fff;
+  }
+
+  .dragging {
+    width: max-content;
   }
 </style>

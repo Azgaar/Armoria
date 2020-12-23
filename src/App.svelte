@@ -96,7 +96,7 @@
     if (!reserved.includes(code)) return;
 
     const active = document.activeElement.tagName;
-    if (active === "INPUT" || active === "SELECT") return;
+    if (active === "INPUT" || active === "SELECT" || active === "TEXTAREA") return;
 
     event.preventDefault();
     if (code === "Backspace" && $matrix > 0) $matrix -= 1; else // Rollback

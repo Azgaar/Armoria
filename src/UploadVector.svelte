@@ -1,9 +1,9 @@
 <script>
-  import {state} from "./stores";
+  import {state, colors} from "./stores";
   import {charges} from "./dataModel.js";
+  import {camelize} from './utils.js';
   let dragging = false, selected = false;
-  let dataURL, size = 50, offsetX = 0, offsetY = 0;
-  let name, category;
+  let svg, name, category, color = "#d7374a";
 
   const categories = Object.keys(charges.types);
 
@@ -39,40 +39,12 @@
   function loadImage(file) {
     const reader = new FileReader();
     reader.onload = function (readerEvent) {
-      dataURL = readerEvent.target.result;
-      renderImage();
+      const svgText = readerEvent.target.result;
+      const el = document.createElement("html");
+      el.innerHTML = svgText;
+      svg = el.querySelector("g").outerHTML;
     };
-    reader.readAsDataURL(file);
-  }
-
-  function camelize(str) {
-    return str
-      .replace(/\.[^/.]+$/, "") // remove extension
-      .replace(/_/g, " ") // replace _ by spaces
-      .replace(/\W+(.)/g, (m, c) => c.toUpperCase()); // remove non-basic chars and camelize
-  }
-
-  async function renderImage() {
-    const resized = await resizeDataURL(dataURL);
-    const image = document.getElementById("vectorUpload").querySelector("svg image");
-    image.setAttribute("href", resized);
-  }
-
-  function resizeDataURL(dataURL) {
-    return new Promise(async function(resolve, reject) {
-      const img = document.createElement('img');
-      img.onload = function() {
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-
-          canvas.width = img.width;
-          canvas.height = img.height;
-          ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
-          const dataURL = canvas.toDataURL();
-          resolve(dataURL);
-      };
-      img.src = dataURL;
-    });
+    reader.readAsText(file);
   }
 
   function addCharge() {
@@ -97,6 +69,17 @@
     selected = false;
     $state.vector = 0;
   }
+
+  function downloadTemplate() {
+    fetch("charges/template.svg").then(text => {
+      return text.blob().then(blob => {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.setAttribute("download", "armoriaChargeTemplate.txt");
+        a.click();
+      });
+    });
+  }
 </script>
 
 <div id=vectorUpload
@@ -106,28 +89,31 @@
   <span on:click={() => $state.vector = 0} class="close">&times;</span>
   <div class=container>
     {#if selected}
-      <div class="input">
-        <div><div class=label>Size:</div><input type=number bind:value={size} on:input={renderImage}/></div>
-        <div><div class=label>Offset X:</div><input type=number bind:value={offsetX} on:input={renderImage}/></div>
-        <div><div class=label>Offset Y:</div><input type=number bind:value={offsetY} on:input={renderImage}/></div>
+      <div class=input>
+        <textarea rows=18 cols=30 bind:value={svg}/>
       </div>
 
-      <div class="exampleCOA">
-        <svg width=100% height=100% viewBox="0 0 200 200">
-          <g clip-path="url(#heater)" stroke="#fff" stroke-width=.5>
-            <rect x=0 y=0 width=100% height=100% fill=#d7374a/>
-            <image id=imageLoaded x={(100 - size) / 2 + offsetX}% y={(100 - size) / 2 + offsetY}% width={size}% height={size}%/>
-            <rect x=30% y=30% width=40% height=40% fill=none stroke=#000 stroke-width=.5/>
-            <g stroke=#000 fill="url(#backlight)">
-              <path d="M25,25 h150 v50 a150,150,0,0,1,-75,125 a150,150,0,0,1,-75,-125 z"/>
-            </g>
-          </g>
-        </svg>
+      <div class=exampleCOA>
+        <svg width=100% height=100% fill={color} viewBox="50 50 100 100">{@html svg}</svg>
       </div>
 
-      <div class="output">
-        <div><div class=label>Name:</div><input placeholder="Charge name" required bind:value={name}/></div>
-        <div><div class=label>Category:</div>
+      <div class=output>
+        <div>
+          <div class=label>Tincture:</div>
+          <select bind:value={color}>
+            {#each ["argent", "or", "gules", "sable", "azure", "vert", "purpure"] as tincture}
+              <option value={$colors[tincture]}>{tincture}</option>
+            {/each}
+          </select>
+        </div>
+
+        <div>
+          <div class=label>Name:</div>
+          <input placeholder="Charge name" required bind:value={name}/>
+        </div>
+
+        <div>
+          <div class=label>Category:</div>
           <select bind:value={category}>
             <option value=uploaded selected>uploaded</option>
             {#each categories as c}
@@ -135,13 +121,15 @@
             {/each}
           </select>
         </div>
+
         <div class=buttons>
           <button on:click={addCharge}>Add</button>
           <button on:click={() => selected = false}>Cancel</button>
         </div>
+        <button on:click={downloadTemplate}>Download Template</button>
       </div>
     {:else}
-      <label>
+      <label class=dragging>
         <slot {dragging}>
           <div>Drag &amp; Drop image here or browse</div>
         </slot>
@@ -182,23 +170,23 @@
     }
   }
 
+  textarea {
+    font-size: .8em;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
   .exampleCOA {
     text-align: center;
     width: max-content;
-  }
-
-  .buttons {
-    text-align: center;
   }
 
   input, select {
     width: 10em;
   }
 
-  .buttons > button {
+  button {
     cursor: pointer;
-    margin: 1em .1em;
-    width: 4em;
+    text-align: center;
   }
 
   input[type="file"] {
@@ -219,5 +207,9 @@
   span:hover {
     cursor: pointer;
     color: #fff;
+  }
+
+  .dragging {
+    width: max-content;
   }
 </style>

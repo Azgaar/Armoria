@@ -7,7 +7,7 @@ export function ra(array) {
 export function rw(object) {
   const array = [];
   for (const key in object) {
-    for (let i=0; i < object[key]; i++) {
+    for (let i = 0; i < object[key]; i++) {
       array.push(key);
     }
   };
@@ -17,4 +17,12 @@ export function rw(object) {
 // probability shorthand
 export function P(probability) {
   return Math.random() < probability;
+}
+
+// get camelCase string
+export function camelize(str) {
+  return str
+    .replace(/\.[^/.]+$/, "") // remove extension
+    .replace(/_/g, " ") // replace _ by spaces
+    .replace(/\W+(.)/g, (m, c) => c.toUpperCase()); // remove non-basic chars and camelize
 }
