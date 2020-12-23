@@ -20,6 +20,7 @@
     rollback: "⭯",
     reroll: "⭮",
     download : "⇩",
+    upload : "⇧",
     undo: "⤺",
     redo: "⤻",
     back: "⮪",
@@ -209,7 +210,19 @@
     <bt on:click={() => download()}>
       <Tooltip tip="Download png image. Set size in options. Hotkey: D">{label("download")}</Tooltip>
     </bt>
-    
+
+    <div class="container"><bl>{label("upload")}</bl>
+      <div class="dropdown level1">
+        <bt on:click={() => $state.raster = 1}>
+          <Tooltip tip="Upload raster charge (one color, quality loss on scale) from jpg, png or svg image" left>Raster</Tooltip>
+        </bt>
+
+        <bt on:click={() => $state.vector = 1}>
+          <Tooltip tip="Upload vector charge (multicolor and lossless scalable) from prepared svg" left>Vector</Tooltip>
+        </bt>
+      </div>
+    </div>
+
     {#if $state.edit}
       {#if position > 0}
         <bt on:click={() => changes.undo()}>
@@ -236,7 +249,7 @@
 
     {#if wideScreen || !$state.edit}
       <bt on:click={() => $state.about = 1}>
-        <Tooltip tip="Show about screen. Hotkey: F1">{label("about")}</Tooltip>
+        <Tooltip tip="Show about screen. Hotkey: F1" left>{label("about")}</Tooltip>
       </bt>
     {/if}
   </ul>

@@ -264,6 +264,11 @@
     $state.transform = `rotate(${c.angle||0})`;
   }
 
+  function isRaster(charge) {
+    const el = document.getElementById(charge);
+    return el ? el.tagName === "image" : false;
+  }
+
   function cap(string = "no") {
     const split = string.split(/(?=[A-Z])/).join(" ");
     return split.charAt(0).toUpperCase() + split.slice(1);
@@ -467,7 +472,9 @@
                 <option value="">No (standard)</option>
                 <option value=field>Crop by main field</option>
                 <option value=division>Crop by division</option>
-                <option value=counter>Сountercharged</option>
+                {#if !isRaster(charge.charge)}
+                  <option value=counter>Сountercharged</option>
+                {/if}
               </select>
             {/if}
 
@@ -481,7 +488,7 @@
           {/each}
         </div>
 
-        {#if charge.layer !== "counter"}
+        {#if !isRaster(charge.charge) && charge.layer !== "counter"}
           <div class="subsection">
             <EditorTincture bind:t1={charge.t} {itemSize}/>
           </div>
@@ -490,7 +497,6 @@
         <div class="subsection">
           <Tooltip tip="Points on shield to place a charge">Positions:</Tooltip>
           <input style="margin-left: .6em; width: 8.6em" bind:value={charge.p} on:input={() => showPositions(charge)} on:focus={() => showPositions(charge)} on:blur={() => $state.positions = 0}/>
-
           <select class="pseudoSelect" bind:value={charge.p} on:change={() => {charge.size = getSize(charge.p, menu.ordinary.ordinary); showPositions(charge);}} on:focus={() => showPositions(charge)} on:blur={() => $state.positions = 0}>
             {#each positionsSelect as position}
               <option value={position}>{position}</option>

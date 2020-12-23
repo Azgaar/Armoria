@@ -3,6 +3,8 @@
   import About from './About.svelte';
   import Editor from './Editor.svelte';
   import Gallery from './Gallery.svelte';
+  import UploadRaster from './UploadRaster.svelte';
+  import UploadVector from './UploadVector.svelte';
   import Patterns from './Patterns.svelte';
   import {generate} from './generator.js';
   import {background, size, history, matrices, matrix, state, changes} from './stores.js';
@@ -90,7 +92,7 @@
   // keyboard shortcuts
   function handleKeydown(event) {
     const code = event.code;
-    const reserved = ["Backspace", "Enter", "KeyZ", "KeyX", "KeyD", "F1"];
+    const reserved = ["Backspace", "Enter", "KeyZ", "KeyX", "KeyD", "F1", "Escape"];
     if (!reserved.includes(code)) return;
 
     const active = document.activeElement.tagName;
@@ -103,6 +105,7 @@
     if (code === "KeyX") changes.redo(); else // Redo
     if (code === "KeyD") download(); else // Download
     if (code === "F1") $state.about = !$state.about; // About
+    if (code === "Escape") {$state.about = 0; $state.raster = 0; $state.vector = 0;} // Close Windows
   }
 </script>
 
@@ -111,6 +114,8 @@
 <main style="background-color: {$background}">
   <Navbar/>
   {#if $state.about}<About/>{/if}
+  {#if $state.raster}<UploadRaster/>{/if}
+  {#if $state.vector}<UploadVector/>{/if}
   {#if $state.edit}<Editor {coa} c={$state.c}/>
   {:else}<Gallery {gallery} {w} {h}/>{/if}
   <div id="patterns" style="position: absolute">
