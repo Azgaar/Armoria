@@ -1,8 +1,8 @@
-import {get} from 'svelte/store';
-import {background, scale, shield, grad, diaper} from './stores';
+import { get } from 'svelte/store';
+import { background, scale, shield, grad, diaper } from './stores';
 
 export async function download(i) {
-  const coas = i ? [document.getElementById("coa"+i)] : document.querySelectorAll("svg.coa");
+  const coas = i !== undefined ? [document.getElementById("coa" + i)] : document.querySelectorAll("svg.coa");
   let width = +coas[0].getAttribute("width");
   let height = +coas[0].getAttribute("height");
   const numberX = coas.length > 1 ? Math.floor(window.innerWidth / width) : 1;
@@ -20,14 +20,14 @@ export async function download(i) {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   let loaded = 0;
-  coas.forEach(async function(svg, i) {
+  coas.forEach(async function (svg, i) {
     const url = await getURL(svg);
     const img = new Image();
     img.src = url;
     img.onload = () => {
       URL.revokeObjectURL(url);
       ctx.drawImage(img, i % numberX * width, Math.floor(i / numberX) * height, width, height);
-      loaded ++;
+      loaded++;
       if (loaded === coas.length) drawCanvas(canvas);
     }
   });
@@ -57,7 +57,7 @@ async function getURL(svg) {
   if (divisionPattern) d.insertAdjacentHTML("beforeend", document.getElementById(divisionPattern).outerHTML);
 
   const serialized = (new XMLSerializer()).serializeToString(clone);
-  const blob = new Blob([serialized], {type: 'image/svg+xml;charset=utf-8'});
+  const blob = new Blob([serialized], { type: 'image/svg+xml;charset=utf-8' });
   const url = window.URL.createObjectURL(blob);
   return url;
 }
@@ -65,12 +65,12 @@ async function getURL(svg) {
 function drawCanvas(canvas) {
   const link = document.createElement("a");
   link.download = "armoria_download.png";
-  canvas.toBlob(function(blob) {
+  canvas.toBlob(function (blob) {
     console.log(blob);
     link.href = window.URL.createObjectURL(blob);
     document.body.appendChild(link);
     link.click();
-    setTimeout(function() {
+    setTimeout(function () {
       canvas.remove();
       window.URL.revokeObjectURL(link.href);
     }, 5000);
