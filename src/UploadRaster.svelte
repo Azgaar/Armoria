@@ -24,11 +24,7 @@
   };
 
   function getFilesFromDropEvent({ dataTransfer: { files, items } }) {
-    return files.length
-      ? [...files]
-      : items
-          .filter(({ kind }) => kind === "file")
-          .map(({ getAsFile }) => getAsFile());
+    return files.length ? [...files] : items.filter(({ kind }) => kind === "file").map(({ getAsFile }) => getAsFile());
   }
 
   function getFilesFromInputEvent({ target }) {
@@ -87,7 +83,7 @@
       <div class=exampleCOA>
         <svg width=100% height=100% viewBox="0 0 200 200">
           <g clip-path="url(#heater)" stroke="#fff" stroke-width=.5>
-            <rect x=0 y=0 width=100% height=100% fill=#d7374a/>
+            <rect x=0 y=0 width=100% height=100% fill=#377cd7/>
             <image id=imageLoaded x={(100 - size) / 2 + offsetX}% y={(100 - size) / 2 + offsetY}% width={size}% height={size}%/>
             <rect x=30% y=30% width=40% height=40% fill=none stroke=#000 stroke-width=.5/>
             <g stroke=#000 fill="url(#backlight)">

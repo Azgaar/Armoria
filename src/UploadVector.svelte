@@ -12,8 +12,8 @@
     const files = getFilesFunction(event);
     const file = files.length ? files[0] : [];
 
-    if (!file.type.match(/image.*/)) {
-      console.error("Not an image file!");
+    if (!file.type.match(/text.*|svg.*/)) {
+      console.error("File must be text or svg!");
       return;
     }
 
@@ -23,11 +23,7 @@
   };
 
   function getFilesFromDropEvent({ dataTransfer: { files, items } }) {
-    return files.length
-      ? [...files]
-      : items
-          .filter(({ kind }) => kind === "file")
-          .map(({ getAsFile }) => getAsFile());
+    return files.length ? [...files] : items.filter(({ kind }) => kind === "file").map(({ getAsFile }) => getAsFile());
   }
 
   function getFilesFromInputEvent({ target }) {
@@ -62,9 +58,11 @@
     }
     charges[category][name] = 5;
 
-    const image = document.getElementById("vectorUpload").querySelector("svg image").cloneNode(true);
+    const el = document.createElement("html");
+    el.innerHTML = svg;
+    const image = el.querySelector("g");
     image.id = name;
-    document.getElementById("charges").appendChild(image);
+    defs.insertAdjacentHTML("beforeend", image.outerHTML);
 
     selected = false;
     $state.vector = 0;
@@ -90,7 +88,12 @@
   <div class=container>
     {#if selected}
       <div class=input>
-        <textarea rows=18 cols=30 bind:value={svg}/>
+        <div class=label>SVG Markup:</div>
+        <textarea rows=10 cols=30 bind:value={svg}/>
+        
+        <div>
+          <button on:click={downloadTemplate}>Download Template</button>
+        </div>
       </div>
 
       <div class=exampleCOA>
@@ -122,11 +125,10 @@
           </select>
         </div>
 
-        <div class=buttons>
+        <div>
           <button on:click={addCharge}>Add</button>
           <button on:click={() => selected = false}>Cancel</button>
         </div>
-        <button on:click={downloadTemplate}>Download Template</button>
       </div>
     {:else}
       <label class=dragging>
@@ -175,18 +177,16 @@
     font-family: 'Courier New', Courier, monospace;
   }
 
+  .container > div {
+    width: max-content;
+  }
+
   .exampleCOA {
     text-align: center;
-    width: max-content;
   }
 
   input, select {
     width: 10em;
-  }
-
-  button {
-    cursor: pointer;
-    text-align: center;
   }
 
   input[type="file"] {
