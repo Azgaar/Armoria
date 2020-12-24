@@ -6,12 +6,11 @@
   import EditorTincture from './EditorTincture.svelte';
   import EditorShift from "./EditorShift.svelte";
   import EditorControlButtons from "./EditorControlButtons.svelte";
-  import EditorGuide from "./EditorGuide.svelte";
   import Switch from './Switch.svelte';
   import Tooltip from './Tooltip.svelte';
   import {slide, fly} from 'svelte/transition';
   import {rw} from './utils.js';
-  import {changes, state, grid, showGrid} from './stores';
+  import {changes, state, grid, showGrid, message} from './stores';
   import {charges, tinctures, divisions, ordinaries, lines, positionsSelect} from "./dataModel.js";
   import {getSize} from './generator.js';
   export let coa, c;
@@ -243,6 +242,14 @@
   $: localStorage.setItem("grid", $grid);
   $: localStorage.setItem("showGrid", $showGrid);
 
+  if (!isTouchDevice() && (coa.ordinary || coa.charges)) {
+    $message = {type: "info", text: "Drag to move, hold SHIFT and drag vertically to resize, hold CONTROL and drag horizontally to rotate", timeout: 5000};
+  }
+
+  function isTouchDevice() {
+    return 'ontouchstart' in window;
+  }
+
   function showSection(e) {
     e.target.classList.toggle("expanded");
     const panel = e.target.nextElementSibling;
@@ -273,19 +280,12 @@
     const split = string.split(/(?=[A-Z])/).join(" ");
     return split.charAt(0).toUpperCase() + split.slice(1);
   }
-
-  function isTouchDevice() {
-    return 'ontouchstart' in window;
-  }
 </script>
 
 <div id="editor">
   {#key coa}
     <COA {coa} i="Edit" w={coaSize} h={coaSize}/>
   {/key}
-  {#if !isTouchDevice()}
-    <EditorGuide/>
-  {/if}
   <div id="menu" in:fly={{x:500, duration:1000}} style="width:{width}%">
     <!-- Field -->
     <div class="section" class:expanded={false} on:click={showSection}>Field</div>

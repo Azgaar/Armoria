@@ -5,9 +5,10 @@
   import Gallery from './Gallery.svelte';
   import UploadRaster from './UploadRaster.svelte';
   import UploadVector from './UploadVector.svelte';
+  import Message from './Message.svelte';
   import Patterns from './Patterns.svelte';
   import {generate} from './generator.js';
-  import {background, size, history, matrices, matrix, state, changes} from './stores.js';
+  import {background, size, history, matrices, matrix, state, changes, message} from './stores.js';
   import {download} from './download.js';
 
   let n, w, h, gallery = [], coa, seed;
@@ -118,6 +119,11 @@
   {#if $state.vector}<UploadVector/>{/if}
   {#if $state.edit}<Editor {coa} c={$state.c}/>
   {:else}<Gallery {gallery} {w} {h}/>{/if}
+  <button on:click={() => $message = {type: "error", text: "Error message!"}}>Error</button>
+  <button on:click={() => $message = {type: "warn", text: "Warn message!"}}>Warn</button>
+  <button on:click={() => $message = {type: "info", text: "Info message!"}}>Info</button>
+
+  {#if $message}<Message/>{/if}
   <div id="patterns" style="position: absolute">
     <svg width=0 height=0 xmlns="http://www.w3.org/2000/svg">
       <defs><Patterns/></defs>

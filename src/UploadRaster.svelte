@@ -1,5 +1,5 @@
 <script>
-  import {state} from "./stores";
+  import {state, message} from "./stores";
   import {charges} from "./dataModel.js";
   import {camelize} from './utils.js';
   let dragging = false, selected = false;
@@ -14,11 +14,12 @@
     const file = files.length ? files[0] : [];
 
     if (!file.type.match(/image.*/)) {
-      console.error("Not an image file!");
+      $message = {type: "error", text: "Not an image file!"};
       return;
     }
 
     selected = true;
+    $message = {type: "info", text: "Fit image into the rectangle for best result"};
     name = camelize(file.name);
     loadImage(file);
   };
@@ -47,7 +48,7 @@
     name = camelize(name);
 
     if (!name || document.getElementById(name)) {
-      console.error("Name must be unique id!");
+      $message = {type: "error", text: "Name must be unique id!"};
       return;
     }
 

@@ -1,5 +1,5 @@
 <script>
-  import {state, colors} from "./stores";
+  import {state, colors, message} from "./stores";
   import {charges} from "./dataModel.js";
   import {camelize} from './utils.js';
   let dragging = false, selected = false;
@@ -13,7 +13,7 @@
     const file = files.length ? files[0] : [];
 
     if (!file.type.match(/text.*|svg.*/)) {
-      console.error("File must be text or svg!");
+      $message = {type: "error", text: "File must be text or svg!"};
       return;
     }
 
@@ -38,7 +38,15 @@
       const svgText = readerEvent.target.result;
       const el = document.createElement("html");
       el.innerHTML = svgText;
-      svg = el.querySelector("g").outerHTML;
+      const g = el.querySelector("g");
+
+      if (!g) {
+        $message = {type: "error", text: "File must be prepared svg. Download template for guidance!"};
+        selected = false;
+        return;
+      }
+
+      svg = g.outerHTML;
     };
     reader.readAsText(file);
   }
@@ -47,7 +55,7 @@
     name = camelize(name);
 
     if (!name || document.getElementById(name)) {
-      console.error("Name must be unique id!");
+      $message = {type: "error", text: "Name must be unique id!"};
       return;
     }
 
@@ -135,7 +143,7 @@
         <slot {dragging}>
           <div>Drag &amp; Drop image here or browse</div>
         </slot>
-        <input type=file accept=image/* on:input={onFile(getFilesFromInputEvent)} />
+        <input type=file accept="image/svg, text/plain" on:input={onFile(getFilesFromInputEvent)} />
       </label>
     {/if}
   </div>
