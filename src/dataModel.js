@@ -146,14 +146,14 @@ export const ordinaries = {
 };
 
 export const charges = {
-  types: { conventional: 30, crosses: 8, animals: 3, birds: 2, aquatic: 1, fantastic: 3, plants: 1, agriculture: 1, arms: 1, bodyparts: 1, miscellaneous: 3, inescutcheon: 3, uploaded: 0 },
-  single: { conventional: 12, crosses: 8, plants: 2, animals: 11, birds: 4, aquatic: 2, fantastic: 7, agriculture: 1, arms: 5, bodyparts: 1, miscellaneous: 8, inescutcheon: 5, uploaded: 0 },
+  types: { conventional: 30, crosses: 8, animals: 3, birds: 2, aquatic: 1, seafaring: 1, fantastic: 3, plants: 1, agriculture: 1, arms: 1, bodyparts: 1, miscellaneous: 3, inescutcheon: 3, uploaded: 0 },
+  single: { conventional: 12, crosses: 8, plants: 2, animals: 11, birds: 4, aquatic: 2, seafaring: 2, fantastic: 7, agriculture: 1, arms: 5, bodyparts: 1, miscellaneous: 8, inescutcheon: 5, uploaded: 0 },
   semy: { conventional: 12, crosses: 3, plants: 1 },
   conventional: {
     lozenge: 2, fusil: 4, mascle: 4, rustre: 2, lozengeFaceted: 3, lozengePloye: 1, roundel: 7, annulet: 4,
     mullet: 5, mulletPierced: 1, mulletFaceted: 1, mullet4: 3, mullet6: 4, mullet6Pierced: 1, mullet6Faceted: 1, mullet7: 1, mullet8: 1, mullet10: 1,
-    estoile: 1, billet: 5, triangle: 3, trianglePierced: 1, goutte: 4, heart: 4, pique: 2, trefle: 2, сarreau: 1,
-    fleurDeLis: 6, sun: 3, sunInSplendour: 1, crescent: 5, fountain: 1, compassRose: 1, fountain: 1
+    estoile: 1, compassRose: 1, billet: 5, triangle: 3, trianglePierced: 1, goutte: 4, heart: 4, pique: 2, сarreau: 1, trefle: 2,
+    fleurDeLis: 6, sun: 3, sunInSplendour: 1, crescent: 5, fountain: 1, fountain: 1
   },
   inescutcheon: { inescutcheonHeater: 2, inescutcheonOldFrench: 1, inescutcheonSpanish: 4 },
   crosses: {
@@ -166,10 +166,11 @@ export const charges = {
   birds: { eagle: 9, raven: 2, cock: 3, parrot: 1, swan: 2, swanErased: 1, heron: 1 },
   plants: { cinquefoil: 1, rose: 1 },
   aquatic: { escallop: 5, pike: 1, cancer: 1 },
+  seafaring: { anchor:3, boat: 1 },
   agriculture: { garb: 1 },
   arms: { sword: 5, hatchet: 2, lochaberAxe: 1, mallet: 1 },
   bodyparts: { hand: 1 },
-  miscellaneous: { crown: 3, key: 1, buckle: 1, bugleHorn: 1, horseshoe: 3, stagsAttires: 1, cowHorns: 2, wing: 1, wingSword: 1, lute: 1, harp: 1, wheel: 2, boat: 1 },
+  miscellaneous: { crown: 3, key: 1, buckle: 1, bugleHorn: 1, horseshoe: 3, stagsAttires: 1, cowHorns: 2, wing: 1, wingSword: 1, lute: 1, harp: 1, wheel: 2 },
   uploaded: {},
   natural: { fountain: "azure", garb: "or", raven: "sable" }, // charges to use predefined colours
   sinister: ["crossGamma", "lionRampant", "lionPassant", "wolfPassant", "greyhoundСourant", "boarRampant", "horseRampant", "horseSalient", "bullPassant",
