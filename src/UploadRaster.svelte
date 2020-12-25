@@ -4,9 +4,7 @@
   import {camelize} from './utils.js';
   let dragging = false, selected = false;
   let size = 50, offsetX = 0, offsetY = 0;
-  let name, category;
-
-  const categories = Object.keys(charges.types);
+  let name, category = "uploaded";
 
   const onFile = (getFilesFunction) => (event) => {
     dragging = false;
@@ -98,8 +96,7 @@
         <div><div class=label>Name:</div><input placeholder="Charge name" required bind:value={name}/></div>
         <div><div class=label>Category:</div>
           <select bind:value={category}>
-            <option value=uploaded selected>uploaded</option>
-            {#each categories as c}
+            {#each Object.keys(charges.types) as c}
               <option value={c}>{c}</option>
             {/each}
           </select>

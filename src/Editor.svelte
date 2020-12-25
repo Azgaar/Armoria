@@ -23,7 +23,7 @@
   const itemSize = width / 1000 * window.innerWidth - 3; // ~10 items in row
 
   const patterns = ["vair", "vairInPale", "vairEnPointe", "ermine", "chequy", "lozengy", "fusily", "pally", "barry", "gemelles", "bendy", "bendySinister", "palyBendy", "pappellony", "masoned", "fretty"];
-  const chargeTypes = Object.keys(charges.types);
+  const categories = Object.keys(charges.types);
   const ordinariesList = ["no"].concat(Object.keys(ordinaries.lined)).concat(Object.keys(ordinaries.straight));
 
   let menu = {}, change = 0;
@@ -159,7 +159,7 @@
     }
 
     function getChargeType(charge) {
-      return chargeTypes.find(type => charges[type][charge]);
+      return categories.find(type => charges[type][charge]);
     }
 
     function getSemyType(array) {
@@ -322,7 +322,7 @@
         <div class="subsection">
           <div>Charge:
             <select bind:value={menu.field.semy}>
-              {#each chargeTypes as type}
+              {#each categories as type}
                 <option value={type}>{cap(type)}</option>
               {/each}
             </select>
@@ -392,7 +392,7 @@
           <div class="subsection">
             <div>Charge:
               <select bind:value={menu.division.semy}>
-                {#each chargeTypes as type}
+                {#each categories as type}
                   <option value={type}>{cap(type)}</option>
                 {/each}
               </select>
@@ -461,7 +461,7 @@
         <div class="subsection">
           <div>Category:
             <select bind:value={charge.type} on:input={updateSection}>
-              {#each chargeTypes as type}
+              {#each categories as type}
                 <option value={type}>{cap(type)}</option>
               {/each}
             </select>

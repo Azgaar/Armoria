@@ -3,9 +3,7 @@
   import {charges} from "./dataModel.js";
   import {camelize} from './utils.js';
   let dragging = false, selected = false;
-  let svg, name, category, color = "#d7374a";
-
-  const categories = Object.keys(charges.types);
+  let svg, name, category = "uploaded", color = "#d7374a";
 
   const onFile = (getFilesFunction) => (event) => {
     dragging = false;
@@ -126,8 +124,7 @@
         <div>
           <div class=label>Category:</div>
           <select bind:value={category}>
-            <option value=uploaded selected>uploaded</option>
-            {#each categories as c}
+            {#each Object.keys(charges.types) as c}
               <option value={c}>{c}</option>
             {/each}
           </select>

@@ -146,8 +146,8 @@ export const ordinaries = {
 };
 
 export const charges = {
-  types: { conventional: 30, crosses: 8, animals: 3, birds: 2, aquatic: 1, fantastic: 3, plants: 1, agriculture: 1, arms: 1, bodyparts: 1, miscellaneous: 3, inescutcheon: 3 },
-  single: { conventional: 12, crosses: 8, plants: 2, animals: 11, birds: 4, aquatic: 2, fantastic: 7, agriculture: 1, arms: 5, bodyparts: 1, miscellaneous: 8, inescutcheon: 5 },
+  types: { conventional: 30, crosses: 8, animals: 3, birds: 2, aquatic: 1, fantastic: 3, plants: 1, agriculture: 1, arms: 1, bodyparts: 1, miscellaneous: 3, inescutcheon: 3, uploaded: 0 },
+  single: { conventional: 12, crosses: 8, plants: 2, animals: 11, birds: 4, aquatic: 2, fantastic: 7, agriculture: 1, arms: 5, bodyparts: 1, miscellaneous: 8, inescutcheon: 5, uploaded: 0 },
   semy: { conventional: 12, crosses: 3, plants: 1 },
   conventional: {
     lozenge: 2, fusil: 4, mascle: 4, rustre: 2, lozengeFaceted: 3, lozengePloye: 1, roundel: 7, annulet: 4,
