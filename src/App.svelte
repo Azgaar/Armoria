@@ -106,7 +106,15 @@
     if (code === "KeyX") changes.redo(); else // Redo
     if (code === "KeyD") download(); else // Download
     if (code === "F1") $state.about = !$state.about; // About
-    if (code === "Escape") {$state.about = 0; $state.raster = 0; $state.vector = 0;} // Close Windows
+    if (code === "Escape") close() // Close Windows
+
+    function close() {
+      $state.about = 0;
+      $state.raster = 0;
+      $state.vector = 0;
+      $state.edit = 0;
+      $message = null;
+    }
   }
 </script>
 
