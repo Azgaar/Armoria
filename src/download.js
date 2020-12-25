@@ -1,5 +1,5 @@
 import { get } from 'svelte/store';
-import { background, scale, shield, grad, diaper } from './stores';
+import { scale, shield, grad, diaper } from './stores';
 
 export async function download(i) {
   const coas = i !== undefined ? [document.getElementById("coa" + i)] : document.querySelectorAll("svg.coa");
@@ -16,8 +16,6 @@ export async function download(i) {
   const ctx = canvas.getContext("2d");
   canvas.width = width * numberX;
   canvas.height = height * numberY;
-  ctx.fillStyle = get(background);
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   let loaded = 0;
   coas.forEach(async function (svg, i) {

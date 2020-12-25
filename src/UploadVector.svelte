@@ -57,11 +57,8 @@
       return;
     }
 
-    if (!charges[category]) {
-      charges[category] = {};
-      charges.types[category] = 5;
-      charges.single[category] = 5;
-    }
+    if (!charges.types[category]) charges.types[category] = 6;
+    if (!charges.single[category]) charges.single[category] = 6;
     charges[category][name] = 5;
 
     const el = document.createElement("html");
