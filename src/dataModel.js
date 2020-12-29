@@ -1,22 +1,25 @@
-export const tinctures = {
-  field: { metals: 5, colours: 7, patterns: 2 },
-  division: { metals: 5, colours: 7, patterns: 1 },
-  charge: { metals: 2, colours: 3 },
-  metals: {
-    field: { argent: 3, or: 2 },
-    division: { argent: 3, or: 2 },
-    charge: { argent: 1, or: 2 }
-  },
-  colours: {
-    field: { gules: 5, sable: 3, azure: 4, vert: 2, purpure: 3 },
-    division: { gules: 5, sable: 3, azure: 4, vert: 2, purpure: 3 },
-    charge: { gules: 7, sable: 1, azure: 5, vert: 3, purpure: 2 }
-  },
-  patterns: { // patterns including furs
-    field: { semy: 1, vair: 2, vairInPale: 1, vairEnPointe: 2, ermine: 2, chequy: 4, lozengy: 2, fusily: 1, pally: 4, barry: 4, gemelles: 1, bendy: 3, bendySinister: 2, palyBendy: 1, pappellony: 2, masoned: 3, fretty: 2 },
-    division: { semy: 1, vair: 3, vairInPale: 2, vairEnPointe: 3, ermine: 4, chequy: 3, lozengy: 1, fusily: 1, pally: 5, barry: 5, bendy: 2, bendySinister: 1, pappellony: 1, masoned: 3, fretty: 1 }
-  }
-};
+export const defaultTinctures = {
+  field: { metals: 15, colours: 21, stains: 1, patterns: 6 },
+  division: { metals: 15, colours: 21, stains: 1, patterns: 3 },
+  charge: { metals: 8, colours: 12, stains: 1, patterns: 0 },
+  metals: { argent: 3, or: 2 },
+  colours: { gules: 5, azure: 4, sable: 3, purpure: 3, vert: 2 },
+  stains: { murrey: 1, sanguine: 1, tenné: 1 },
+  patterns: { semy: 1, vair: 2, vairInPale: 1, vairEnPointe: 2, ermine: 2, chequy: 4, lozengy: 2, fusily: 1, pally: 4, barry: 4, gemelles: 1, bendy: 3, bendySinister: 2, palyBendy: 1, pappellony: 2, masoned: 3, fretty: 2 }
+}
+
+export const defaultColors = {
+  argent: "#fafafa",
+  or: "#ffe066",
+  gules: "#d7374a",
+  sable: "#333333",
+  azure: "#377cd7",
+  vert: "#26c061",
+  purpure: "#522d5b",
+  murrey: "#8b004b",
+  sanguine: "#b22222",
+  tenné: "#c67000"
+}
 
 export const positionsSelect = [
   "a", "b", "c", "d", "e", "f", "g", "h", "i",
@@ -152,7 +155,7 @@ export const charges = {
   conventional: {
     lozenge: 2, fusil: 4, mascle: 4, rustre: 2, lozengeFaceted: 3, lozengePloye: 1, roundel: 7, annulet: 4,
     mullet: 5, mulletPierced: 1, mulletFaceted: 1, mullet4: 3, mullet6: 4, mullet6Pierced: 1, mullet6Faceted: 1, mullet7: 1, mullet8: 1, mullet10: 1,
-    estoile: 1, compassRose: 1, billet: 5, triangle: 3, trianglePierced: 1, goutte: 4, heart: 4, pique: 2, сarreau: 1, trefle: 2,
+    estoile: 1, compassRose: 1, billet: 5, delf: 0, triangle: 3, trianglePierced: 1, goutte: 4, heart: 4, pique: 2, сarreau: 1, trefle: 2,
     fleurDeLis: 6, sun: 3, sunInSplendour: 1, crescent: 5, fountain: 1, fountain: 1
   },
   inescutcheon: { inescutcheonHeater: 2, inescutcheonOldFrench: 1, inescutcheonSpanish: 4 },

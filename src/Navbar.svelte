@@ -3,15 +3,13 @@
   import Lock from './Lock.svelte';
   import {fade} from 'svelte/transition';
   import {download} from './download.js';
-  import {size, grad, diaper, shield, colors, background, scale, border, borderWidth, matrix, state, changes} from './stores';
+  import {size, grad, diaper, shield, background, scale, border, borderWidth, matrix, state, changes} from './stores';
 
   const shields = ["heater", "oldFrench", "spanish", "french", "swiss", "wedged", "italian", "round", "renaissance", "baroque", "polish", "german", "diamond", "kite", "vesicaPiscis", "square", "flag", "pennon", "guidon", "banner", "dovetail", "gonfalon", "pennant", "no"];
   const paths = shields.map(id => document.getElementById(id).innerHTML);
   const sizes = [[80, "Giant"], [100, "Huge"], [150, "Large"], [200, "Medium"], [300, "Small"], [400, "Tiny"]];
   const gradients = ["luster", "spotlight", "backlight"];
   const diapers = ["nourse", "tessellation", "sennwald", "sulzbach"];
-  const tinctures = ["argent", "or", "gules", "sable", "azure", "vert", "purpure"];
-  const defaultColors = {argent: "#fafafa", or: "#ffe066", gules: "#d7374a", sable: "#333333", azure: "#377cd7", vert: "#26c061", purpure: "#522d5b"};
 
   const wideScreen = window.innerWidth > 600;
 
@@ -38,7 +36,6 @@
   $: lock("grad", $grad);
   $: lock("diaper", $diaper);
   $: lock("shield", $shield);
-  $: lock("colors", JSON.stringify($colors));
   $: lock("background", $background);
   $: lock("scale", $scale);
   $: lock("border", $border);
@@ -84,24 +81,11 @@
           </bl>
         </div>
 
-        <div class="container">
-          <div class="dropdown level2">
-            {#each tinctures as t}
-              <bl>{t}
-                {#if $colors[t] !== defaultColors[t]}
-                  <Tooltip tip="Restore default color">
-                    <span on:click={() => $colors[t] = defaultColors[t]}>⭯ </span>
-                  </Tooltip>
-                {/if}
-                <input type="color" bind:value={$colors[t]}/>
-              </bl>
-            {/each}
-          </div>
-          <bl>
-            <Lock key=colors/>
-            <Tooltip tip="Hue of tinctures and metals. Edit COA to change tincture or metal itself">Colors</Tooltip>
-          </bl>
-        </div>
+        <bt on:click={() => $state.tinctures = 1}>
+          <Lock key=tinctures/>
+          <Lock key=colors/>
+          <Tooltip tip="Define tinctures. Edit COA to change tincture itself">Tinctures</Tooltip>
+        </bt>
 
         <div class="container">
           <div class="dropdown level2">

@@ -5,6 +5,7 @@
   import Gallery from './Gallery.svelte';
   import UploadRaster from './UploadRaster.svelte';
   import UploadVector from './UploadVector.svelte';
+  import Tinctures from './Tinctures.svelte';
   import Message from './Message.svelte';
   import Patterns from './Patterns.svelte';
   import {generate} from './generator.js';
@@ -112,6 +113,7 @@
       $state.about = 0;
       $state.raster = 0;
       $state.vector = 0;
+      $state.tinctures = 0;
       $state.edit = 0;
       $message = null;
     }
@@ -125,6 +127,7 @@
   {#if $state.about}<About/>{/if}
   {#if $state.raster}<UploadRaster/>{/if}
   {#if $state.vector}<UploadVector/>{/if}
+  {#if $state.tinctures}<Tinctures/>{/if}
   {#if $state.edit}<Editor {coa} c={$state.c}/>
   {:else}<Gallery {gallery} {w} {h}/>{/if}
   {#if $message}<Message/>{/if}

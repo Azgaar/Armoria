@@ -9,10 +9,10 @@
   import Switch from './Switch.svelte';
   import Tooltip from './Tooltip.svelte';
   import {slide, fly} from 'svelte/transition';
-  import {rw} from './utils.js';
-  import {changes, state, grid, showGrid, message} from './stores';
-  import {charges, tinctures, divisions, ordinaries, lines, positionsSelect} from "./dataModel.js";
-  import {getSize} from './generator.js';
+  import {rw} from './utils';
+  import {changes, tinctures, state, grid, showGrid, message} from './stores';
+  import {charges, divisions, ordinaries, lines, positionsSelect} from "./dataModel";
+  import {getSize} from './generator';
   export let coa, c;
 
   const min = Math.min(window.innerWidth, window.innerHeight);
@@ -20,7 +20,7 @@
   const coaSize = Math.round(min * .9);
   let width = window.innerWidth < 600 || ratio > 1 ? 100 : Math.round((1.05 - ratio) * 100);
   if (width / 100 * window.innerWidth < 300) width = 100;
-  const itemSize = width / 1000 * window.innerWidth - 3; // ~10 items in row
+  const itemSize = Math.floor(width / 1000 * window.innerWidth - 4); // ~10 items in row
 
   const patterns = ["vair", "vairInPale", "vairEnPointe", "ermine", "chequy", "lozengy", "fusily", "pally", "barry", "gemelles", "bendy", "bendySinister", "palyBendy", "pappellony", "masoned", "fretty"];
   const categories = Object.keys(charges.types);
@@ -61,7 +61,7 @@
 
       if (type === "tincture") {
         t1 = coa.t1;
-        t2 = selectSecondTincture(coa.t1, "field");
+        t2 = selectSecondTincture(coa.t1);
       } else {
         t1 = field[1];
         t2 = field[2];
@@ -89,7 +89,7 @@
         division = coa.division.division;
         line = coa.division.line || "straight";
         t1 = type === "tincture" ? coa.division.t : tSplit[1];
-        t2 = type === "tincture" ? selectSecondTincture(t1, "division") : tSplit[2];
+        t2 = type === "tincture" ? selectSecondTincture(t1) : tSplit[2];
         if (type === "pattern") pattern = tSplit[0];
         if (type === "semy") {
           charge = getSemyCharge(tSplit);
@@ -97,8 +97,8 @@
         }
         size = tSplit[3] || "standard";
       } else {
-        t1 = selectSecondTincture(menu.field.t1, "division");
-        t2 = selectSecondTincture(t1, "division");
+        t1 = selectSecondTincture(menu.field.t1);
+        t2 = selectSecondTincture(t1);
       }
 
       return {division, line, type, t1, t2, pattern, charge, semy, size};
@@ -120,7 +120,7 @@
         angle = coa.ordinary.angle || 0;
         if (angle) updateGrid(coa.ordinary);
       } else {
-        t = rw(tinctures["colours"]["charge"]);
+        t = rw($tinctures.colours);
       }
 
       return {ordinary, line, t, divided, size, x, y, angle}
@@ -167,10 +167,9 @@
       return getChargeType(charge);
     }
 
-    function selectSecondTincture(t1, type) {
+    function selectSecondTincture(t1) {
       const metal = t1 === "argent" || t1 === "or";
-      const tincturesType = metal ? tinctures["colours"] : tinctures["metals"];
-      return rw(tincturesType[type]);
+      return rw(metal ? $tinctures.colours : $tinctures.metals);
     }
 
     return menu;
@@ -179,7 +178,7 @@
   function addCharge() {
     const type = rw(charges.single);
     const charge = rw(charges[type]);
-    const t = rw(tinctures[rw(tinctures.charge)].charge);
+    const t = rw($tinctures[rw($tinctures.charge)]);
     const с = {charge, t, p: "e", type, size: 1.5, sinister: false, reversed: false, x: 0, y: 0, angle: 0, layer: ""};
     menu.charges = [...menu.charges, с];
   }

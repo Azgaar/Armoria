@@ -19,10 +19,11 @@ export function P(probability) {
   return Math.random() < probability;
 }
 
-// get camelCase string
+// get camelCase string 
 export function camelize(str) {
   return str
     .replace(/\.[^/.]+$/, "") // remove extension
     .replace(/_/g, " ") // replace _ by spaces
+    .replace(/^[0-9]/, "_") // first char should not be a number
     .replace(/\W+(.)/g, (m, c) => c.toUpperCase()); // remove non-basic chars and camelize
 }

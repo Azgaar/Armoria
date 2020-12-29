@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
-import { ra, rw } from './utils.js';
+import { defaultTinctures, defaultColors } from './dataModel';
+import { ra, rw } from './utils';
 
 const options = defineInitialOptions();
 export const size = writable(options.size);
@@ -7,6 +8,7 @@ export const grad = writable(options.grad);
 export const diaper = writable(options.diaper);
 export const shield = writable(options.shield);
 export const colors = writable(options.colors);
+export const tinctures = writable(options.tinctures);
 export const background = writable(options.background);
 export const scale = writable(options.scale);
 export const border = writable(options.border);
@@ -72,7 +74,8 @@ function defineInitialOptions() {
   const diaper = stored("diaper") || null;
   const grad = stored("grad") || ra(["luster", "spotlight", "backlight"]);
   const shield = stored("shield") || rw({ heater: 60, oldFrench: 20, spanish: 30, french: 5, swiss: 2, wedged: 2, italian: 1, round: 1, renaissance: 1, baroque: 1, polish: 1, german: 1, diamond: 1, kite: 1, square: 2, vesicaPiscis: 1, flag: 2, gonfalon: 3 });
-  const colors = storedObj("colors") || { argent: "#fafafa", or: "#ffe066", gules: "#d7374a", sable: "#333333", azure: "#377cd7", vert: "#26c061", purpure: "#522d5b" };
+  const colors = storedObj("colors") || JSON.parse(JSON.stringify(defaultColors));
+  const tinctures = storedObj("tinctures") || JSON.parse(JSON.stringify(defaultTinctures));
   const border = stored("border") || "#333333";
   const borderWidth = +stored("borderWidth") || 1;
   const background = stored("background") || "#333333";
@@ -81,5 +84,5 @@ function defineInitialOptions() {
   const grid = +stored("grid") || 1;
   const showGrid = storedObj("showGrid") || 0;
 
-  return { size, diaper, grad, shield, colors, border, borderWidth, background, scale, grid, showGrid };
+  return { size, diaper, grad, shield, colors, tinctures, border, borderWidth, background, scale, grid, showGrid };
 }
