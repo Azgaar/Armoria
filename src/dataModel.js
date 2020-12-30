@@ -164,7 +164,7 @@ export const charges = {
     crossPatonce: 1, crossPommy: 1, crossGamma: 1, crossArrowed: 1, crossFitchy: 1, crossCercelee: 1, crossMoline: 2, crossFourchy: 1,
     crossAvellane: 1, crossErminee: 1, crossMaltese: 3, crossCeltic: 1, crossOccitan: 1, crossSaltire: 3, crossTau: 1
   },
-  animals: { lionRampant: 4, lionPassant: 1, wolfPassant: 1, greyhoundСourant: 1, boarRampant: 1, horseRampant: 1, horseSalient: 1, bullPassant: 1, bullHeadCaboshed: 1, deerHeadCaboshed: 1 },
+  animals: { lionRampant: 4, lionPassant: 1, wolfPassant: 1, greyhoundСourant: 1, boarRampant: 1, horseRampant: 1, horseSalient: 1, bullPassant: 1, goat: 1, lamb: 1, bullHeadCaboshed: 1, deerHeadCaboshed: 1 },
   fantastic: { dragonPassant: 3, wyvern: 2, griffinPassant: 1, griffinRampant: 1, eagleTwoHeards: 2, unicornRampant: 1, pegasus: 1, serpent: 1 },
   birds: { eagle: 9, raven: 2, cock: 3, parrot: 1, swan: 2, swanErased: 1, heron: 1 },
   plants: { cinquefoil: 1, rose: 1 },
