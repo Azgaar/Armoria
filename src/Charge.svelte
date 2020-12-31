@@ -2,7 +2,7 @@
   import {shields} from "./dataModel.js";
   import {loadedCharges} from "./stores";
   import {drag, transform} from "./drag"
-  export let coa, charge, i, shield, colors, t;
+  export let coa, charge, i, shield, colors, t, type;
 
   $: shieldPositions = shields[shield] || shields.spanish;
   $: positions = [...new Set(charge.p)].filter(p => shieldPositions[p]);
@@ -26,9 +26,14 @@
     const scale = c.sinister || c.reversed ? `${c.sinister ? "-" : ""}${s}, ${c.reversed ? "-" : ""}${s}` : s;
     return `translate(${x} ${y}) scale(${scale})`;
   }
+
+  function addDrag(event) {
+    if (type !== "Edit") return;
+    drag(event, charge, coa);
+  }
 </script>
 
-<g class="charge" {i} charge={getCharge(charge.charge)} transform={transform(charge)} transform-origin="center" stroke="#000" on:mousedown={function(e) {drag(e, charge, coa)}}>
+<g class="charge" {i} charge={getCharge(charge.charge)} transform={transform(charge)} transform-origin="center" stroke="#000" on:mousedown={addDrag}>
   {#each positions as p}
     <use href="#{charge.charge}" transform={getElTransform(shieldPositions, charge, p)} transform-origin="center" fill="{colors[t]}"></use>
   {/each}

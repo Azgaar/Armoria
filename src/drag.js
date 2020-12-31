@@ -1,12 +1,10 @@
-import {get } from 'svelte/store';
-import { state, changes, grid } from "./stores";
+import {get} from 'svelte/store';
+import {changes, grid} from "./stores";
 
 export function drag(e, c, coa) {
-  if (!get(state).edit) return;
   const el = e.currentTarget;
   const [a0, x0, y0] = parseTransform(el.getAttribute("transform"));
-  const x1 = e.x,
-    y1 = e.y;
+  const x1 = e.x, y1 = e.y;
   const sizeAdj = +el.closest("svg").getAttribute("width") / 200;
   document.addEventListener("mouseup", dragStop, { once: true });
 
@@ -37,13 +35,13 @@ export function drag(e, c, coa) {
 
     c.x = Math.round(relX / gridSize) * gridSize;
     c.y = Math.round(relY / gridSize) * gridSize;
-    el.setAttribute("transform", transform(c));
+    setTransform(el, c);
   }
 
   function resize(e) {
     const dy = y0 + (e.y - y1) / sizeAdj;
     c.size = size + Math.round(dy) / -100;
-    el.setAttribute("transform", transform(c));
+    setTransform(el, c);
     if (c.p) changes.add(JSON.stringify(coa));
   }
 
@@ -53,7 +51,13 @@ export function drag(e, c, coa) {
     if (a > 180) a = a % 180 - 180;
     if (a < -179) a = a % 180 + 180;
     c.angle = a;
-    el.setAttribute("transform", transform(c));
+    setTransform(el, c);
+  }
+
+  function setTransform(el, c) {
+    const tr = transform(c);
+    if (tr) el.setAttribute("transform", tr);
+    else el.removeAttribute("transform");
   }
 
   function dragStop() {

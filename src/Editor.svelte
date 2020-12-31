@@ -9,7 +9,7 @@
   import Switch from './Switch.svelte';
   import Tooltip from './Tooltip.svelte';
   import {slide, fly} from 'svelte/transition';
-  import {rw} from './utils';
+  import {rw, ra} from './utils';
   import {changes, tinctures, state, grid, showGrid, message} from './stores';
   import {charges, divisions, ordinaries, lines, positionsSelect} from "./dataModel";
   import {getSize} from './generator';
@@ -24,7 +24,7 @@
 
   const patterns = ["vair", "vairInPale", "vairEnPointe", "ermine", "chequy", "lozengy", "fusily", "pally", "barry", "gemelles", "bendy", "bendySinister", "palyBendy", "pappellony", "masoned", "fretty"];
   const categories = Object.keys(charges.types);
-  const ordinariesList = ["no"].concat(Object.keys(ordinaries.lined)).concat(Object.keys(ordinaries.straight));
+  const ordinariesList = Object.keys(ordinaries.lined).concat(Object.keys(ordinaries.straight));
 
   let menu = {}, change = 0;
 
@@ -104,26 +104,24 @@
       return {division, line, type, t1, t2, pattern, charge, semy, size};
     }
 
-    // Ordinary
-    menu.ordinary = getOrdinary();
-    function getOrdinary() {
-      let ordinary = "no", line = "straight", t, divided = "", size = 1, x = 0, y = 0, angle = 0;
+    // Ordinaries
+    menu.ordinaries = getOrdinaries();
+    function getOrdinaries() {
+      if (!coa.ordinaries) return [];
 
-      if (coa.ordinary) {
-        ordinary = coa.ordinary.ordinary;
-        line = coa.ordinary.line || "straight";
-        t = coa.ordinary.t;
-        divided = coa.ordinary.divided || "";
-        size = coa.ordinary.size || 1;
-        x = coa.ordinary.x || 0;
-        y = coa.ordinary.y || 0;
-        angle = coa.ordinary.angle || 0;
-        if (angle) updateGrid(coa.ordinary);
-      } else {
-        t = rw($tinctures.colours);
-      }
+      const ordinaries = coa.ordinaries.map(o => {
+        const {ordinary, t} = o;
+        const line = o.line || "straight";
+        const size = o.size || 1;
+        const x = o.x || 0;
+        const y = o.y || 0;
+        const angle = o.angle || 0;
+        const divided = o.divided || "";
+        if (angle) updateGrid(o);
+        return {ordinary, t, line, size, x, y, angle, divided};
+      });
 
-      return {ordinary, line, t, divided, size, x, y, angle}
+      return ordinaries;
     }
 
     // Charges
@@ -175,6 +173,13 @@
     return menu;
   }
 
+  function addOrdinary() {
+    const ordinary = ra(ordinariesList);
+    const t = rw($tinctures[rw($tinctures.charge)]);
+    const o = {ordinary, t, line: "straight", size: 1, x: 0, y: 0, angle: 0, divided: ""};
+    menu.ordinaries = [...menu.ordinaries, o];
+  }
+
   function addCharge() {
     const type = rw(charges.single);
     const charge = rw(charges[type]);
@@ -210,16 +215,17 @@
 
   // ordinary attributes changed
   $: {
-    const o = menu.ordinary;
-    if (o && o.ordinary !== "no") {
-      coa.ordinary = {ordinary: o.ordinary, t: o.t};
-      if (ordinaries.lined[o.ordinary]) coa.ordinary.line = o.line;
-      if (coa.division) coa.ordinary.divided = o.divided;
-
-      if (o.x || o.y) {coa.ordinary.x = o.x; coa.ordinary.y = o.y;}
-      if (o.angle) coa.ordinary.angle = o.angle;
-      if (o.size && o.size !== 1) coa.ordinary.size = o.size;
-    } else delete coa.ordinary;
+    if (menu.ordinaries.length) {
+      coa.ordinaries = menu.ordinaries.map(o => {
+        const item = {ordinary: o.ordinary, t: o.t};
+        if (ordinaries.lined[o.ordinary]) item.line = o.line;
+        if (coa.division && o.divided) item.divided = o.divided;
+        if (o.size && o.size !== 1) item.size = o.size;
+        if (o.x || o.y) {item.x = o.x; item.y = o.y;}
+        if (o.angle) item.angle = o.angle;
+        return item;
+      });
+    } else delete coa.ordinaries;
   }
 
   // charges attributes changed
@@ -241,7 +247,7 @@
   $: localStorage.setItem("grid", $grid);
   $: localStorage.setItem("showGrid", $showGrid);
 
-  if (!isTouchDevice() && (coa.ordinary || coa.charges)) {
+  if (!isTouchDevice() && (coa.ordinaries || coa.charges)) {
     $message = {type: "info", text: "Drag to move, hold SHIFT and drag vertically to resize, hold CONTROL and drag horizontally to rotate", timeout: 5000};
   }
 
@@ -350,9 +356,9 @@
       {#if divisions[coa.division?.division]}
         <div class="subsection">
           <div>Line:</div>
-          {#each Object.keys(lines).map(line => new Object({t1: coa.t1, division: {division: menu.division.division, t: coa.division ? coa.division.t : menu.division.t1, line}})) as coa (coa)}
-            <div class=item class:selected={menu.division.line === coa.division.line} on:click={() => menu.division.line = coa.division.line}>
-              <MenuItem {coa} title={cap(coa.division.line)} {itemSize}/>
+          {#each Object.keys(lines).map(line => new Object({line, t1: coa.t1, division: {division: menu.division.division, t: coa.division ? coa.division.t : menu.division.t1, line}})) as coa (coa)}
+            <div class=item class:selected={menu.division.line === coa.line} on:click={() => menu.division.line = coa.line}>
+              <MenuItem {coa} title={cap(coa.line)} {itemSize}/>
             </div>
           {/each}
         </div>
@@ -379,7 +385,7 @@
         {#if menu.division.type === "pattern"}
           <div class="subsection">
             <div>Pattern:</div>
-            {#each patterns.map(p => new Object({t1: `${p}-${menu.division.t1}-${menu.division.t2}-${menu.division.size}`, pattern: p})) as coa}
+            {#each patterns.map(pattern => new Object({pattern, t1: `${pattern}-${menu.division.t1}-${menu.division.t2}-${menu.division.size}`})) as coa}
               <div class=item class:selected={menu.division.pattern === coa.pattern} on:click={() => menu.division.pattern = coa.pattern}>
                 <MenuItem {coa} title={cap(coa.pattern)} {itemSize}/>
               </div>
@@ -407,50 +413,57 @@
       {/if}
     </div>
 
-    <!-- Ordinary -->
-    <div class="section" on:click={showSection}>Ordinary</div>
-    <div class="panel">
-      {#if coa.division}
-        <div class="subsection" on:click={updateSection}>
-          Divided:
-          <select bind:value={menu.ordinary.divided}>
-            <option value="">No (standard)</option>
-            <option value=field>Crop by main field</option>
-            <option value=division>Crop by division</option>
-            <option value=counter>Сountercharged</option>
-          </select>
-        </div>
-      {/if}
+    <!-- Ordinaries -->
+    {#each menu.ordinaries as o, i}
+      <div class="section" in:slide on:click={showSection}>Ordinary {menu.ordinaries.length > 1 ? i+1 : ""}</div>
 
-      <div class="subsection" on:click={updateSection}>
-        {#each ordinariesList.map(ordinary => new Object({t1: coa.t1, division: coa.division, ordinary: {ordinary, line: menu.ordinary.line, t: menu.ordinary.t, divided: menu.ordinary.divided}})) as coa (coa)}
-          <div class=item class:selected={menu.ordinary.ordinary === coa.ordinary.ordinary} on:click={() => menu.ordinary.ordinary = coa.ordinary.ordinary}>
-            <MenuItem {coa} title={cap(coa.ordinary.ordinary)} {itemSize}/>
-          </div>
-        {/each}
-      </div>
-    
-      {#if ordinaries.lined[menu.ordinary.ordinary]}
+      <div class="panel">
         <div class="subsection">
-          <div>Line:</div>
-          {#each Object.keys(lines).map(line => new Object({t1: coa.t1, division: coa.division, ordinary: {ordinary: menu.ordinary.ordinary, line, t: menu.ordinary.t, divided: menu.ordinary.divided}})) as coa (coa)}
-            <div class=item class:selected={menu.ordinary.line === coa.ordinary.line} on:click={() => menu.ordinary.line = coa.ordinary.line}>
-              <MenuItem {coa} title={cap(coa.ordinary.line)} {itemSize}/>
+          <EditorControlButtons bind:els={menu.ordinaries} el={o} {i}/>
+        </div>
+
+        {#if coa.division}
+          <div class="subsection" on:click={updateSection}>
+            Divided:
+            <select bind:value={o.divided}>
+              <option value="">No (standard)</option>
+              <option value=field>Crop by main field</option>
+              <option value=division>Crop by division</option>
+              <option value=counter>Сountercharged</option>
+            </select>
+          </div>
+        {/if}
+
+        <div class="subsection" on:click={updateSection}>
+          {#each ordinariesList.map(ordinary => new Object({test:o, ordinary, t1: coa.t1, division: coa.division, ordinaries: [{ordinary, line: o.line, t: o.t, divided: o.divided}]})) as coa (coa)}
+            <div class=item class:selected={o.ordinary === coa.ordinary} on:click={() => o.ordinary = coa.ordinary}>
+              <MenuItem {coa} title={cap(coa.ordinary)} {itemSize}/>
             </div>
           {/each}
         </div>
-      {/if}
-
-      {#if coa.ordinary && menu.ordinary.divided !== "counter"}
+      
+        {#if ordinaries.lined[o.ordinary]}
+          <div class="subsection">
+            <div>Line:</div>
+            {#each Object.keys(lines).map(line => new Object({line, t1: coa.t1, division: coa.division, ordinaries: [{ordinary: o.ordinary, line, t: o.t, divided: o.divided}]})) as coa (coa)}
+              <div class=item class:selected={o.line === coa.line} on:click={() => o.line = coa.line}>
+                <MenuItem {coa} title={cap(coa.line)} {itemSize}/>
+              </div>
+            {/each}
+          </div>
+        {/if}
+  
+        {#if o.divided !== "counter"}
+          <div class="subsection">
+            <EditorTincture bind:t1={o.t} {itemSize}/>
+          </div>
+        {/if}
+  
         <div class="subsection">
-          <EditorTincture bind:t1={menu.ordinary.t} {itemSize}/>
+          <EditorShift bind:e={o}/>
         </div>
-      {/if}
-
-      <div class="subsection">
-        <EditorShift bind:e={menu.ordinary}/>
       </div>
-    </div>
+    {/each}
 
     <!-- Charges -->
     {#each menu.charges as charge, i}
@@ -515,7 +528,8 @@
       </div>
     {/each}
 
-    <div class="buttonLine" on:click={addCharge}>Add charge</div>
+    <div class="buttonLine" on:click={addOrdinary}>Add Ordinary</div>
+    <div class="buttonLine" on:click={addCharge}>Add Charge</div>
   </div>
 </div>
 

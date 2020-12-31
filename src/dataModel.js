@@ -84,7 +84,7 @@ export const positions = {
     mount: { e: 5, def: 1, bdf: 3 },
     point: { e: 2, def: 1, bdf: 3, acbdef: 1 },
     flaunches: { e: 3, kn: 1, beh: 3 },
-    qyron: { bh: 1 },
+    gyron: { bh: 1 },
     quarter: { e: 1 },
     canton: { e: 5, beh: 1, def: 1, bdefh: 1, kn: 1 },
     cross: { acgi: 1 },
@@ -143,7 +143,7 @@ export const ordinaries = {
   },
   straight: {
     bordure: 8, orle: 4, mount: 1, point: 2, flaunches: 1, gore: 1,
-    qyron: 1, quarter: 1, canton: 2, pall: 3, pallReversed: 2, chevron: 4, chevronReversed: 3,
+    gyron: 1, quarter: 1, canton: 2, pall: 3, pallReversed: 2, chevron: 4, chevronReversed: 3,
     pile: 2, pileInBend: 2, pileInBendSinister: 1, piles: 1, pilesInPoint: 2, label: 1
   }
 };

@@ -1,20 +1,20 @@
 <script>
   export let els, el, i;
 
-  const removeCharge = () => els = els.filter((e, n) => n !== i);
-  const copyCharge = () => els = [...els, JSON.parse(JSON.stringify(el))];
+  const remove = () => els = els.filter((e, n) => n !== i);
+  const copy = () => els = [...els, JSON.parse(JSON.stringify(el))];
   const moveUp = () => [els[i], els[i+1]] = [els[i+1], els[i]];
   const moveDown = () => [els[i], els[i-1]] = [els[i-1], els[i]];
 </script>
 
-<b on:click={removeCharge} title="Remove charge">✖</b>
-<b on:click={copyCharge} title="Copy charge">🗗</b>
+<b on:click={remove} title="Remove">✖</b>
+<b on:click={copy} title="Copy">🗗</b>
 {#if els.length > 1}
   {#if i}
-    <b on:click={moveDown} title="Move charge down">🠗</b>
+    <b on:click={moveDown} title="Move down">🠗</b>
   {/if}
   {#if i+1 < els.length}
-    <b on:click={moveUp} title="Move charge up">🠕</b>
+    <b on:click={moveUp} title="Move up">🠕</b>
   {/if}
 {/if}
 

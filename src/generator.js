@@ -30,17 +30,18 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
   }
 
   if (ordinary) {
-    coa.ordinary = {ordinary, t: getTincture("charge", usedTinctures, coa.t1)};
-    if (linedOrdinary) coa.ordinary.line = usedPattern || (division && P(.7)) ? "straight" : rw(lines);
+    coa.ordinaries = [{ordinary, t: getTincture("charge", usedTinctures, coa.t1)}];
+    if (linedOrdinary) coa.ordinaries[0].line = usedPattern || (division && P(.7)) ? "straight" : rw(lines);
     if (division && !charge && !usedPattern && P(.5) && ordinary !== "bordure" && ordinary !== "orle") {
-      if (P(.8)) coa.ordinary.divided = "counter"; // 40%
-      else if (P(.6)) coa.ordinary.divided = "field"; // 6%
-      else coa.ordinary.divided = "division"; // 4%
+      if (P(.8)) coa.ordinaries[0].divided = "counter"; // 40%
+      else if (P(.6)) coa.ordinaries[0].divided = "field"; // 6%
+      else coa.ordinaries[0].divided = "division"; // 4%
     }
   }
 
   if (charge) {
-    let p = "e", t = "gules", ordinaryT = coa.ordinary?.t;
+    let p = "e", t = "gules";
+    const ordinaryT = coa.ordinaries ? coa.ordinaries[0].t : null;
     if (positions.ordinariesOn[ordinary] && P(.8)) {
       // place charge over ordinary (use tincture of field type)
       p = rw(positions.ordinariesOn[ordinary]);
