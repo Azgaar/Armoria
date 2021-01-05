@@ -5,13 +5,19 @@ export function ra(array) {
 
 // return random value from weighted array
 export function rw(object) {
-  const array = [];
-  for (const key in object) {
-    for (let i = 0; i < object[key]; i++) {
-      array.push(key);
+  if (!object.array) {
+
+    const array = [];
+    for (const key in object) {
+      for (let i = 0; i < object[key]; i++) {
+        array.push(key);
+      }
     }
-  };
-  return array[Math.floor(Math.random() * array.length)];
+
+    Object.defineProperty(object, "array", {enumerable: false, configurable: true, writable: false, value: array});
+  }
+
+  return object.array[Math.floor(Math.random() * object.array.length)];
 }
 
 // probability shorthand

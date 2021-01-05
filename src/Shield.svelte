@@ -40,7 +40,7 @@
 </script>
 
 <defs>
-  {#if division}
+  {#if division && division.division !== "no"}
     <clipPath id="divisionClip{i}">
       {@html getTemplate(division.division, division.line)}
     </clipPath>
@@ -52,7 +52,7 @@
   <!-- Field -->
   <rect id="field" x=0 y=0 width=200 height=200 fill="{coaColors[coa.t1] || clr(coa.t1)}"/>
 
-  {#if division}
+  {#if division && division.division !== "no"}
     <!-- In field part -->
     {#each ordinaries as ordinary, i}
       {#if ordinary.divided === "field"}

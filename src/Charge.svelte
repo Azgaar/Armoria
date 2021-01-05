@@ -1,11 +1,10 @@
 <script>
-  import {shields} from "./dataModel.js";
+  import {shieldPositions} from "./dataModel.js";
   import {loadedCharges} from "./stores";
   import {drag, transform} from "./drag"
   export let coa, charge, i, shield, colors, t, type;
 
-  $: shieldPositions = shields[shield] || shields.spanish;
-  $: positions = [...new Set(charge.p)].filter(p => shieldPositions[p]);
+  $: positions = shieldPositions[shield] || shieldPositions.spanish;
 
   const defs = document.getElementById("charges");
   function getCharge(charge) {
@@ -20,8 +19,8 @@
     return charge;
   }
 
-  function getElTransform(shieldPositions, c, p) {
-    const [x, y] = shieldPositions[p];
+  function getElTransform(positions, c, p) {
+    const [x, y] = positions[p];
     const s = c.size || 1;
     const scale = c.sinister || c.reversed ? `${c.sinister ? "-" : ""}${s}, ${c.reversed ? "-" : ""}${s}` : s;
     return `translate(${x} ${y}) scale(${scale})`;
@@ -34,7 +33,7 @@
 </script>
 
 <g class="charge" {i} charge={getCharge(charge.charge)} transform={transform(charge)} transform-origin="center" stroke="#000" on:mousedown={addDrag}>
-  {#each positions as p}
-    <use href="#{charge.charge}" transform={getElTransform(shieldPositions, charge, p)} transform-origin="center" fill="{colors[t]}"></use>
+  {#each [...new Set(charge.p)].filter(p => positions[p]) as p}
+    <use href="#{charge.charge}" transform={getElTransform(positions, charge, p)} transform-origin="center" fill="{colors[t]}"></use>
   {/each}
 </g>

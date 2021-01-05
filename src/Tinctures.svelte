@@ -8,6 +8,9 @@
 
   let add = {show: false, name: "", type: "colours", color: "#96C8FA", chance: 3};
 
+  // remove stored weighted array
+  for (const key in $tinctures) {delete $tinctures[key].array};
+
   $: tData = ["metals", "colours", "stains"].map(type => {
       return Object.keys($tinctures[type]).map(t => {
         return {t, type};

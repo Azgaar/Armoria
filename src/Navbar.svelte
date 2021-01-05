@@ -4,9 +4,8 @@
   import {fade} from 'svelte/transition';
   import {download} from './download.js';
   import {size, grad, diaper, shield, background, scale, border, borderWidth, matrix, state, changes} from './stores';
+  import {shields} from './dataModel';
 
-  const shields = ["heater", "oldFrench", "spanish", "french", "swiss", "wedged", "italian", "round", "renaissance", "baroque", "polish", "german", "diamond", "kite", "vesicaPiscis", "square", "flag", "pennon", "guidon", "banner", "dovetail", "gonfalon", "pennant", "no"];
-  const paths = shields.map(id => document.getElementById(id).innerHTML);
   const sizes = [[80, "Giant"], [100, "Huge"], [150, "Large"], [200, "Medium"], [300, "Small"], [400, "Tiny"]];
   const gradients = ["luster", "spotlight", "backlight"];
   const diapers = ["nourse", "tessellation", "sennwald", "sulzbach"];
@@ -52,6 +51,10 @@
     const l = '0123456789ABCDEF';
     $background = "#"+[0,0,0,0,0,0].map(() => l[Math.floor(Math.random() * 16)]).join("");
   }
+
+  function getPath(shield) {
+    return document.getElementById(shield).innerHTML;
+  }
 </script>
 
 <div id="navbar">
@@ -67,12 +70,22 @@
 
       <div class="dropdown level1">
         <div class="container">
-          <div class="dropdown level2 columns3 iconed">
-            {#each shields as sh, i}
-              <bt on:click={() => $shield = sh}>
-                <svg class=shield class:selected={sh === $shield} width=26 height=26 viewBox="0 0 200 200">{@html paths[i]}</svg>
-                {sh.split(/(?=[A-Z])/).join(" ")}
-              </bt>
+          <div class="dropdown level2">
+            {#each Object.keys(shields.types) as type}
+              <div class="container">
+                <div class="dropdown level3 iconed">
+                  {#each Object.keys(shields[type]) as sh}
+                    <bt on:click={() => $shield = sh}>
+                      <svg class=shield class:selected={sh === $shield} width=26 height=26 viewBox="0 0 200 200">{@html getPath(sh)}</svg>
+                      {sh.split(/(?=[A-Z])/).join(" ")}
+                    </bt>
+                  {/each}
+                </div>
+
+                <bl>
+                  {type.split(/(?=[A-Z])/).join(" ")}
+                </bl>
+              </div>
             {/each}
           </div>
           <bl>
@@ -114,6 +127,18 @@
 
         <div class="container">
           <div class="dropdown level2">
+            {#each sizes as s}
+              <bt class:selected={$size == s[0]} on:click={() => $size = s[0]}>{s[1]}</bt>
+            {/each}
+          </div>
+          <bl>
+            <Lock key=size/>
+            <Tooltip tip="Gallery size">Gallery</Tooltip>
+          </bl>
+        </div>
+
+        <div class="container">
+          <div class="dropdown level2">
             <bl>Color
               {#if $border !== "#333333"}
                 <Tooltip tip="Restore default color">
@@ -129,18 +154,6 @@
           <bl>
             <Lock key=border/>
             <Tooltip tip="Border style for coat of arms">Border</Tooltip>
-          </bl>
-        </div>
-
-        <div class="container">
-          <div class="dropdown level2">
-            {#each sizes as s}
-              <bt class:selected={$size == s[0]} on:click={() => $size = s[0]}>{s[1]}</bt>
-            {/each}
-          </div>
-          <bl>
-            <Lock key=size/>
-            <Tooltip tip="Gallery size">Gallery</Tooltip>
           </bl>
         </div>
 
@@ -251,6 +264,7 @@
     overflow: hidden;
     background-color: #1b1c1d;
     z-index: 1;
+    white-space: nowrap;
   }
 
   .logo {
@@ -316,7 +330,7 @@
     display: none;
     position: fixed;
     background-color: #1b1c1d;
-    min-width: 10em;
+    min-width: 9em;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
   }
@@ -327,6 +341,11 @@
 
   .level2 {
     z-index: 1;
+    margin-left: 10.25em;
+  }
+
+  .level3 {
+    z-index: 2;
     margin-left: 10.25em;
   }
 
@@ -350,23 +369,24 @@
     padding: 0 6px 0 0;
   }
 
-  .columns3 {
-    column-count: 3;
-  }
-
-  @media only screen and (max-width: 640px) {
-    .columns3 {
-      column-count: 1;
-    }
-
+  @media only screen and (max-width: 640px), (max-height: 640px) {
     .dropdown bt, .dropdown bl {
       padding: 8px 16px;
+      width: 7em;
+    }
+
+    .level2 {
+      margin-left: 9.25em;
+    }
+
+    .level3 {
+      margin-left: 9.25em;
     }
   }
 
   @media only screen and (max-height: 640px) {
-    .dropdown bt, .dropdown bl {
-      padding: 8px 16px;
+    .level3 {
+      column-count: 3;
     }
   }
 

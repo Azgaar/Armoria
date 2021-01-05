@@ -54,6 +54,11 @@
     if (!charges.single[category]) charges.single[category] = 6;
     charges[category][name] = 5;
 
+    // remove stored weighted arrays
+    delete charges.types.array;
+    delete charges.single.array;
+    delete charges[category ].array;
+  
     const image = document.getElementById("rasterUpload").querySelector("svg image").cloneNode(true);
     image.id = name;
     document.getElementById("charges").appendChild(image);

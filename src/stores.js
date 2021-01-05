@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { defaultTinctures, defaultColors } from './dataModel';
+import { defaultTinctures, defaultColors, shields } from './dataModel';
 import { ra, rw } from './utils';
 
 const options = defineInitialOptions();
@@ -73,7 +73,7 @@ function defineInitialOptions() {
   const size = +stored("size") || 200;
   const diaper = stored("diaper") || null;
   const grad = stored("grad") || ra(["luster", "spotlight", "backlight"]);
-  const shield = stored("shield") || rw({ heater: 60, oldFrench: 20, spanish: 30, french: 5, swiss: 2, wedged: 2, italian: 1, round: 1, renaissance: 1, baroque: 1, polish: 1, german: 1, diamond: 1, kite: 1, square: 2, vesicaPiscis: 1, flag: 2, gonfalon: 3 });
+  const shield = stored("shield") || rw(shields[rw(shields.types)]);
   const colors = storedObj("colors") || JSON.parse(JSON.stringify(defaultColors));
   const tinctures = storedObj("tinctures") || JSON.parse(JSON.stringify(defaultTinctures));
   const border = stored("border") || "#333333";

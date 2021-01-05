@@ -1,10 +1,10 @@
 <script>
   import {state, shield} from "./stores";
-  import {shields} from "./dataModel.js";
+  import {shieldPositions} from "./dataModel.js";
   import {fade} from 'svelte/transition';
 
   // on shield change
-  $: points = shields[$shield] ? Object.entries(shields[$shield]) : Object.entries(shields.spanish);
+  $: points = shieldPositions[$shield] ? Object.entries(shieldPositions[$shield]) : Object.entries(shieldPositions.spanish);
 
   function getClass(p) {
     if ("abcdefghi".includes(p)) return "green";
