@@ -5,6 +5,7 @@
   import {download} from './download.js';
   import {size, grad, diaper, shield, background, scale, border, borderWidth, matrix, state, changes} from './stores';
   import {shields} from './dataModel';
+  import {rw} from './utils';
 
   const sizes = [[80, "Giant"], [100, "Huge"], [150, "Large"], [200, "Medium"], [300, "Small"], [400, "Tiny"]];
   const gradients = ["luster", "spotlight", "backlight"];
@@ -41,10 +42,11 @@
   $: lock("borderWidth", $borderWidth);
 
   // don't lock options on load
-  const loaded = [];
+  const loaded = {};
   function lock(key, value) {
-    if (loaded.includes(key)) localStorage.setItem(key, value);
-    else loaded.push(key);
+    if (loaded[key]) {
+      localStorage.setItem(key, value);
+    } else loaded[key] = true;
   }
 
   function getRandomColor() {
@@ -54,6 +56,16 @@
 
   function getPath(shield) {
     return document.getElementById(shield).innerHTML;
+  }
+
+  function reroll() {
+    $matrix += 1;
+
+    // change shield if not manually selected
+    if (!localStorage.getItem("shield")) {
+      $shield = rw(shields[rw(shields.types)]);
+      loaded.shield = false;
+    }
   }
 </script>
 
@@ -200,7 +212,7 @@
       <bd style="color: #333">{label("rollback")}</bd>
     {/if}
 
-    <bt on:click={() => $matrix += 1}>
+    <bt on:click={reroll}>
       <Tooltip tip="Regenerate coat of arms. Hotkey: Enter">{label("reroll")}</Tooltip>
     </bt>
 
