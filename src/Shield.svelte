@@ -11,7 +11,7 @@
   $: coaGrad = coa.grad || $grad;
   $: coaShield = coa.shield || $shield;
   $: shieldPath = document.querySelector(`#defs g#shields > #${coaShield} > path`).getAttribute("d");
-  $: coaDiaper = type === "Edit" ? coa.diaper || $diaper : null;
+  $: coaDiaper = type === "menuItem" ? null : coa.diaper || $diaper;
   $: diaperType = coaDiaper ? getDieperType() : null;
 
   function getDieperType() {
