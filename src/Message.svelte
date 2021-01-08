@@ -29,7 +29,7 @@
     max-width: 80%;
     width: max-content;
     user-select: none;
-    background-color: #00000060;
+    background-color: #00000080;
   }
 
   .error {
@@ -42,5 +42,10 @@
 
   .info {
     color: #fff;
+  }
+
+  .tip {
+    color: #fff;
+    border-radius: 10px;
   }
 </style>

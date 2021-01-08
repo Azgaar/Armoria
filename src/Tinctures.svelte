@@ -1,5 +1,5 @@
 <script>
-  import Tooltip from './Tooltip.svelte';
+  import Tip from './Tip.svelte';
   import { fade } from 'svelte/transition';
   import { flip } from 'svelte/animate';
   import { colors, tinctures, state, message } from './stores';
@@ -169,9 +169,9 @@
               <td>
                 <input type=color bind:value={$colors[t.t]}/>
                 {#if defaultColors[t.t] && $colors[t.t] !== defaultColors[t.t]}
-                  <Tooltip tip="Restore default color">
+                  <Tip tip="Restore default color">
                     <svg on:click={() => $colors[t.t] = defaultColors[t.t]} width=12 height=12 fill=#fff><use href="#undo-icon"></use></svg>
-                  </Tooltip>
+                  </Tip>
                 {/if}
               </td>
               <td>

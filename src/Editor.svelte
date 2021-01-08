@@ -7,7 +7,7 @@
   import EditorShift from "./EditorShift.svelte";
   import EditorControlButtons from "./EditorControlButtons.svelte";
   import Switch from './Switch.svelte';
-  import Tooltip from './Tooltip.svelte';
+  import Tip from './Tip.svelte';
   import {slide, fly} from 'svelte/transition';
   import {rw, ra} from './utils';
   import {changes, tinctures, state, grid, showGrid, message} from './stores';
@@ -507,7 +507,7 @@
         {/if}
 
         <div class="subsection">
-          <Tooltip tip="Points on shield to place a charge">Positions:</Tooltip>
+          <Tip tip="Points on shield to place a charge">Positions:</Tip>
           <input style="margin-left: .6em; width: 8.6em" bind:value={charge.p} on:input={() => showPositions(charge)} on:focus={() => showPositions(charge)} on:blur={() => $state.positions = 0}/>
           <select class="pseudoSelect" bind:value={charge.p} on:change={() => {charge.size = getSize(charge.p, menu.ordinaries[0]?.ordinary); showPositions(charge);}} on:focus={() => showPositions(charge)} on:blur={() => $state.positions = 0}>
             {#each positionsSelect as position}
@@ -515,10 +515,10 @@
             {/each}
           </select>
 
-          <Tooltip tip="Turn charge to the left"><span style="margin-left: 1em">Sinister:</span></Tooltip>
+          <Tip tip="Turn charge to the left"><span style="margin-left: 1em">Sinister:</span></Tip>
           <Switch bind:checked={charge.sinister}/>
 
-          <Tooltip tip="Show charge upside down"><span style="margin-left: 1em">Reversed:</span></Tooltip>
+          <Tip tip="Show charge upside down"><span style="margin-left: 1em">Reversed:</span></Tip>
           <Switch bind:checked={charge.reversed}/>
         </div>
 

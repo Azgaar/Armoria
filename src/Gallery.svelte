@@ -6,6 +6,8 @@
   import {history, matrices, matrix, state} from './stores';
   export let gallery, w, h;
 
+  $:font = Math.max(Math.min(Math.ceil(w / 20), 12), 6);
+
   $:coas = gallery.map(c => {
     let coa = $history[c] || generate();
     if (!$history[c]) $history[c] = coa;
@@ -28,7 +30,7 @@
   }
 </script>
 
-<div id="gallery" style="font-size: {Math.ceil(w/20)}px" transition:fade>
+<div id="gallery" style="font-size: {font}px" transition:fade>
   {#each coas as coa, i}
     <div>
       {#key coa}

@@ -1,19 +1,25 @@
 <script>
-  import Tooltip from './Tooltip.svelte';
+  import {message} from './stores.js';
   export let key;
   $: locked = localStorage.getItem(key);
 
-  const cap = string => string.charAt(0).toUpperCase() + string.slice(1);
-  const tip = cap(key) + " value is saved and auto-applied. Click to remove saved value and use default settings on load";
+  function showMessage() {
+    const cap = key.charAt(0).toUpperCase() + key.slice(1);
+    const text = cap + " value is saved and auto-applied. Click to remove saved value and use default settings on load";
+    $message = {text, type: "tip", timeout: 30000};
+  }
 
-  function unlock() {
+  function hideMessage() {
+    $message = null;
+  }
+
+  function unlock(e) {
+    e.stopPropagation();
     localStorage.removeItem(key);
     locked = false;
   }
 </script>
 
 {#if locked}
-  <Tooltip {tip}>
-    <span style="cursor: pointer" on:click={unlock}>🔖</span>
-  </Tooltip>
+  <span style="cursor: pointer" on:mouseenter={showMessage} on:mouseleave={hideMessage} on:click={unlock}>🔖</span>
 {/if}

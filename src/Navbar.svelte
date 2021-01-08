@@ -1,5 +1,5 @@
 <script>
-  import Tooltip from './Tooltip.svelte';
+  import Tip from './Tip.svelte';
   import Lock from './Lock.svelte';
   import {fade} from 'svelte/transition';
   import {download} from './download.js';
@@ -90,14 +90,16 @@
           </div>
           <bl>
             {#key $shield}<Lock key=shield/>{/key}
-            <Tooltip tip="Shield or banner form. Some forms do not work well with auto-generated heralrdy">Shield</Tooltip>
+            <span>Shield</span>
+            <Tip tip="Shield or banner shape. If not set, a random one is selected on reroll"/>
           </bl>
         </div>
 
         <bt on:click={() => $state.tinctures = 1}>
           <Lock key=tinctures/>
           <Lock key=colors/>
-          <Tooltip tip="Define tinctures. Edit COA to change tincture itself">Tinctures</Tooltip>
+          <span>Tinctures</span>
+          <Tip tip="Tinctures settings. Edit COA to change tincture itself"/>
         </bt>
 
         <div class="container">
@@ -109,7 +111,8 @@
           </div>
           <bl>
             {#key $grad}<Lock key=grad/>{/key}
-            <Tooltip tip="Gradient (overlay) style to be applied over coat of arms">Gradient</Tooltip>
+            <span>Gradient</span>
+            <Tip tip="Overlay style to be applied on top of coat of arms"/>
           </bl>
         </div>
 
@@ -122,7 +125,9 @@
           </div>
           <bl>
             {#key $diaper}<Lock key=diaper/>{/key}
-            <Tooltip tip="Diaper (subtle backing on coat of arms) style">Damasking</Tooltip></bl>
+            <span>Damasking</span>
+            <Tip tip="Backing (diaper) style for coat of arms"/>
+          </bl>
         </div>
 
         <div class="container">
@@ -133,7 +138,8 @@
           </div>
           <bl>
             {#key $size}<Lock key=size/>{/key}
-            <Tooltip tip="Gallery size">Gallery</Tooltip>
+            <span>Gallery</span>
+            <Tip tip="Coat of arms gallery size. Change to smaller value to make coat of arms bigger"/>
           </bl>
         </div>
 
@@ -141,9 +147,7 @@
           <div class="dropdown level2">
             <bl>Color
               {#if $border !== "#333333"}
-                <Tooltip tip="Restore default color">
-                  <svg on:click={() => $border = "#333333"} class="navBarIcon active smaller"><use href="#undo-icon"></use></svg>
-                </Tooltip>
+                <Tip tip="Restore default color"><svg on:click={() => $border = "#333333"} class="navBarIcon active smaller"><use href="#undo-icon"></use></svg></Tip>
               {/if}
               <input type="color" bind:value={$border}/>
             </bl>
@@ -153,27 +157,29 @@
           </div>
           <bl>
             {#key $border}<Lock key=border/>{/key}
-            <Tooltip tip="Border style for coat of arms">Border</Tooltip>
+            <span>Border</span>
+            <Tip tip="Coat of arms border style"/>
           </bl>
         </div>
 
         <div class="container">
           <div class="dropdown level2">
             <bl>Color
-              <Tooltip tip="Select random color">
+              <Tip tip="Select random color">
                 <svg on:click={getRandomColor} class="navBarIcon active smaller"><use href="#random-icon"></use></svg>
-              </Tooltip>
+              </Tip>
               {#if $background !== "#333333"}
-                <Tooltip tip="Restore default color">
+                <Tip tip="Restore default color">
                   <svg on:click={() => $background = "#333333"} class="navBarIcon active smaller"><use href="#undo-icon"></use></svg>
-                </Tooltip>
+                </Tip>
               {/if}
               <input type="color" bind:value={$background}/>
             </bl>
           </div>
           <bl>
-            {#key $scale}<Lock key=scale/>{/key}
-            <Tooltip tip="Background color">Background</Tooltip>
+            {#key $background}<Lock key=background/>{/key}
+            <span>Background</span>
+            <Tip tip="Window background color"/>
           </bl>
         </div>
 
@@ -186,7 +192,8 @@
           </div>
           <bl>
             {#key $scale}<Lock key=scale/>{/key}
-            <Tooltip tip="Downloaded image size, 1 is default size, 2 - 2x size, etc.">Scale</Tooltip>
+            <span>Scale</span>
+            <Tip tip="Downloaded image size, 1 is default size, 2 - 2x size, etc."/>
           </bl>
         </div>
       </div>
@@ -194,28 +201,30 @@
 
     {#if $matrix}
       <bt on:click={() => $matrix -= 1}>
-        <Tooltip tip="Roll to the previous list. Hotkey: Backspace">{@html getIcon("rollback")}</Tooltip>
+        <Tip tip="Roll to the previous list. Hotkey: Backspace">{@html getIcon("rollback")}</Tip>
       </bt>
     {:else}
       <bd>{@html getIcon("rollback", "inactive")}</bd>
     {/if}
 
     <bt on:click={reroll}>
-      <Tooltip tip="Regenerate coat of arms. Hotkey: Enter">{@html getIcon("reroll")}</Tooltip>
+      <Tip tip="Regenerate coat of arms" gesture="Swide down" hotkey="Enter">{@html getIcon("reroll")}</Tip>
     </bt>
 
     <bt on:click={() => download()}>
-      <Tooltip tip="Download png image. Set size in options. Hotkey: D">{@html getIcon("download")}</Tooltip>
+      <Tip tip="Download png image. Size can be set in options" hotkey="D">{@html getIcon("download")}</Tip>
     </bt>
 
     <div class="container"><bl>{@html getIcon("upload")}</bl>
       <div class="dropdown level1">
         <bt on:click={() => $state.raster = 1}>
-          <Tooltip tip="Upload raster charge (one color, quality loss on scale) from jpg, png or svg image" left>Raster</Tooltip>
+          <span>Raster</span>
+          <Tip tip="Upload raster charge (one color, quality loss on scale) from jpg, png or svg image"/>
         </bt>
 
         <bt on:click={() => $state.vector = 1}>
-          <Tooltip tip="Upload vector charge (multicolor and lossless scalable) from prepared svg" left>Vector</Tooltip>
+          <span>Vector</span>
+          <Tip tip="Upload vector charge (multicolor and lossless scalable) from prepared svg"/>
         </bt>
       </div>
     </div>
@@ -223,7 +232,7 @@
     {#if $state.edit}
       {#if position > 0}
         <bt on:click={() => changes.undo()}>
-          <Tooltip tip="Revert the latest change. Hotkey: Z">{@html getIcon("undo")}</Tooltip>
+          <Tip tip="Revert the latest change" gesture="Swipe left" hotkey="Z">{@html getIcon("undo")}</Tip>
         </bt>
       {:else}
         <bd>{@html getIcon("undo", "inactive")}</bd>
@@ -231,7 +240,7 @@
 
       {#if position < changes.length() - 1}
         <bt on:click={() => changes.redo()}>
-          <Tooltip tip="Restore next change. Hotkey: X">{@html getIcon("redo")}</Tooltip>
+          <Tip tip="Restore the next change" gesture="Swipe right" hotkey="X">{@html getIcon("redo")}</Tip>
         </bt>
       {:else}
         <bd>{@html getIcon("redo", "inactive")}</bd>
@@ -240,13 +249,13 @@
 
     {#if $state.edit}
       <bt id="back" on:click={() => $state.edit = 0} transition:fade>
-        <Tooltip tip="Get back to Gallery" left>{@html getIcon("back")}</Tooltip>
+        <Tip tip="Get back to Gallery" hotkey="Escape">{@html getIcon("back")}</Tip>
       </bt>
     {/if}
 
     {#if wideScreen || !$state.edit}
       <bt on:click={() => $state.about = 1}>
-        <Tooltip tip="Show about screen. Hotkey: F1" left>{@html getIcon("about")}</Tooltip>
+        <Tip tip="Show about screen" hotkey="F1">{@html getIcon("about")}</Tip>
       </bt>
     {/if}
   </ul>
