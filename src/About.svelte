@@ -59,5 +59,6 @@
     right: .5em;
     font-size: 4em;
     padding: .2em 0;
+    z-index: 2;
   }
 </style>

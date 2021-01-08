@@ -203,6 +203,7 @@
     padding: 0.2em 0;
     display: inline-block;
     color: #ddd;
+    z-index: 2;
   }
 
   label:hover,

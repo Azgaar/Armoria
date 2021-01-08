@@ -238,6 +238,7 @@
     padding: .2em 0;
     cursor: pointer;
     color: #ddd;
+    z-index: 2;
   }
 
   .close:hover, .actionButton:hover {
