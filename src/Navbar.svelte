@@ -201,14 +201,14 @@
 
     {#if $matrix}
       <bt on:click={() => $matrix -= 1}>
-        <Tip tip="Roll to the previous list" gesture="Swide up" hotkey="Backspace">{@html getIcon("rollback")}</Tip>
+        <Tip tip="Roll to the previous list" gesture="Swipe up" hotkey="Backspace">{@html getIcon("rollback")}</Tip>
       </bt>
     {:else}
       <bd>{@html getIcon("rollback", "inactive")}</bd>
     {/if}
 
     <bt on:click={reroll}>
-      <Tip tip="Regenerate coat of arms" gesture="Swide down" hotkey="Enter">{@html getIcon("reroll")}</Tip>
+      <Tip tip="Regenerate coat of arms" gesture="Swipe down" hotkey="Enter">{@html getIcon("reroll")}</Tip>
     </bt>
 
     <bt on:click={() => download()}>

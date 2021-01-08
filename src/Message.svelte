@@ -29,7 +29,7 @@
     max-width: 80%;
     width: max-content;
     user-select: none;
-    background-color: #00000080;
+    background-color: #00000090;
   }
 
   .error {
