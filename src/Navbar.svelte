@@ -266,6 +266,7 @@
   }
 
   .logo {
+    display: block;
     margin: 0 .5em 0 1em;
     background-color: #35bdb2;
   }
@@ -317,7 +318,7 @@
     position: absolute;
     padding: 0;
     margin: -.3em 0;
-    right: 1em;
+    right: .4em;
     border: 0;
     width: 3em;
     cursor: pointer;
@@ -342,7 +343,7 @@
     position: absolute;
     padding: 2px;
     margin: -.25em 0;
-    right: 1em;
+    right: .4em;
     width: 3em;
   }
 
@@ -389,7 +390,20 @@
     padding: 0 6px 0 0;
   }
 
-  @media only screen and (max-width: 640px), (max-height: 640px) {
+  /* low-width (narrow) screen */
+  @media only screen and (max-width: 720px) {
+    .logo {
+      display: none;
+    }
+
+    .level3 {
+      margin-left: -10.25em;
+      background-color: #222;
+    }
+  }
+
+  /* low-height screen */
+  @media only screen and (max-height: 640px) and (orientation: landscape) {
     .dropdown bt, .dropdown bl {
       padding: 6px 16px;
       width: 7em;
@@ -403,16 +417,15 @@
       margin-left: 9.25em;
     }
   }
-
-  @media only screen and (max-width: 720px) {
-    .logo {display: none};
-  }
+  
 
   @media only screen and (max-height: 640px) and (min-width: 520px) and (orientation: landscape) {
+    .logo {display: none;}
     .level3 {column-count: 2;}
   }
 
   @media only screen and (max-height: 640px) and (min-width: 680px) and (orientation: landscape) {
+    .logo {display: none;}
     .level3 {column-count: 3;}
   }
 
