@@ -34,7 +34,7 @@
       {#key coa}
         <COA {coa} {i} {w} {h}/>
       {/key}
-        <div class="control">
+      <div class="control">
         <svg on:click={() => regenerate(i)}><use href="#dice-icon"></use></svg>
         <svg on:click={() => editCOA(i)}><use href="#pencil-icon"></use></svg>
         <svg on:click={() => download(i)}><use href="#download-icon"></use></svg>
@@ -64,10 +64,9 @@
     position: absolute;
     opacity: 0;
     transition: .5s ease-in-out;
-    color: #f1f1f1;
     transform: translate(-50%, -150%);
     left: 50%;
-    font-size: 2em;
+    font-size: 2.4em;
     white-space: nowrap;
   }
 
@@ -83,13 +82,11 @@
     stroke-width: .5em;
     vertical-align: middle;
     margin: 0 .5em;
-    padding: .2em;
-    cursor: pointer;
   }
 
   .control > svg:hover {
-    background-color: #44444490;
-    color: #fff;
+    fill: #fff;
+    cursor: pointer;
   }
 
   .control > svg:active {
