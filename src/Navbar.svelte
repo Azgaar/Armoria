@@ -28,7 +28,9 @@
   function lock(key, value) {
     if (loaded[key]) {
       localStorage.setItem(key, value);
-    } else loaded[key] = true;
+    } else {
+      loaded[key] = true;
+    }
   }
 
   function getRandomColor() {
@@ -41,7 +43,7 @@
   }
 
   function getIcon(icon, active = "active") {
-    if (wideScreen) return icon;
+    if (wideScreen) return `<span class="navBarIcon ${active}">${icon}</span>`;
     return `<svg class="navBarIcon ${active}"><use href="#${icon}-icon"></use></svg>`;
   }
 
@@ -87,7 +89,7 @@
             {/each}
           </div>
           <bl>
-            <Lock key=shield/>
+            {#key $shield}<Lock key=shield/>{/key}
             <Tooltip tip="Shield or banner form. Some forms do not work well with auto-generated heralrdy">Shield</Tooltip>
           </bl>
         </div>
@@ -106,7 +108,7 @@
             {/each}
           </div>
           <bl>
-            <Lock key=grad/>
+            {#key $grad}<Lock key=grad/>{/key}
             <Tooltip tip="Gradient (overlay) style to be applied over coat of arms">Gradient</Tooltip>
           </bl>
         </div>
@@ -119,7 +121,7 @@
             {/each}
           </div>
           <bl>
-            <Lock key=diaper/>
+            {#key $diaper}<Lock key=diaper/>{/key}
             <Tooltip tip="Diaper (subtle backing on coat of arms) style">Damasking</Tooltip></bl>
         </div>
 
@@ -130,7 +132,7 @@
             {/each}
           </div>
           <bl>
-            <Lock key=size/>
+            {#key $size}<Lock key=size/>{/key}
             <Tooltip tip="Gallery size">Gallery</Tooltip>
           </bl>
         </div>
@@ -150,7 +152,7 @@
             </bl>
           </div>
           <bl>
-            <Lock key=border/>
+            {#key $border}<Lock key=border/>{/key}
             <Tooltip tip="Border style for coat of arms">Border</Tooltip>
           </bl>
         </div>
@@ -170,7 +172,7 @@
             </bl>
           </div>
           <bl>
-            <Lock key=background/>
+            {#key $scale}<Lock key=scale/>{/key}
             <Tooltip tip="Background color">Background</Tooltip>
           </bl>
         </div>
@@ -183,7 +185,7 @@
             </bl>
           </div>
           <bl>
-            <Lock key=scale/>
+            {#key $scale}<Lock key=scale/>{/key}
             <Tooltip tip="Downloaded image size, 1 is default size, 2 - 2x size, etc.">Scale</Tooltip>
           </bl>
         </div>
@@ -271,7 +273,7 @@
     background-color: #35bdb2;
   }
 
-  :global(.navBarIcon) {
+  :global(svg.navBarIcon) {
     width: 1em;
     height: 1em;
     fill: #333;
@@ -279,8 +281,17 @@
     vertical-align: middle;
   }
 
-  :global(.navBarIcon.active) {
+  :global(svg.navBarIcon.active) {
     fill: #fff;
+    cursor: pointer;
+  }
+
+  :global(span.navBarIcon) {
+    color: #333;
+  }
+
+  :global(span.navBarIcon.active) {
+    color: #fff;
     cursor: pointer;
   }
 
