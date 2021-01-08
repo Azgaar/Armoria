@@ -201,7 +201,7 @@
 
     {#if $matrix}
       <bt on:click={() => $matrix -= 1}>
-        <Tip tip="Roll to the previous list. Hotkey: Backspace">{@html getIcon("rollback")}</Tip>
+        <Tip tip="Roll to the previous list" gesture="Swide up" hotkey="Backspace">{@html getIcon("rollback")}</Tip>
       </bt>
     {:else}
       <bd>{@html getIcon("rollback", "inactive")}</bd>
