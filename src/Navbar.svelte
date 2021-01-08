@@ -10,25 +10,7 @@
   const sizes = [[80, "Giant"], [100, "Huge"], [150, "Large"], [200, "Medium"], [300, "Small"], [400, "Tiny"]];
   const gradients = ["luster", "spotlight", "backlight"];
   const diapers = ["nourse", "tessellation", "sennwald", "sulzbach"];
-
   const wideScreen = window.innerWidth > 600;
-
-  const icons = {
-    options: "☰",
-    rollback: "⭯",
-    reroll: "⭮",
-    download : "⇩",
-    upload : "⇧",
-    undo: "⤺",
-    redo: "⤻",
-    back: "⮪",
-    about: "A"
-  }
-
-  function label(i) {
-    if (wideScreen) return i;
-    return icons[i] || i;
-  }
 
   $: position = $changes[1];
   // save options on change
@@ -58,6 +40,11 @@
     return document.getElementById(shield).innerHTML;
   }
 
+  function getIcon(icon, active = "active") {
+    if (wideScreen) return icon;
+    return `<svg class="navBarIcon ${active}"><use href="#${icon}-icon"></use></svg>`;
+  }
+
   function reroll() {
     $matrix += 1;
 
@@ -78,7 +65,8 @@
       </svg>
     {/if}
 
-    <div class="container"><bl>{label("options")}</bl>
+    <div class="container">
+      <bl>{@html getIcon("options")}</bl>
 
       <div class="dropdown level1">
         <div class="container">
@@ -88,7 +76,7 @@
                 <div class="dropdown level3 iconed">
                   {#each Object.keys(shields[type]) as sh}
                     <bt on:click={() => $shield = sh}>
-                      <svg class=shield class:selected={sh === $shield} width=26 height=26 viewBox="0 0 200 200">{@html getPath(sh)}</svg>
+                      <svg class=shield class:selected={sh === $shield} width=26 height=26 viewBox="0 0 200 210">{@html getPath(sh)}</svg>
                       {sh.split(/(?=[A-Z])/).join(" ")}
                     </bt>
                   {/each}
@@ -154,7 +142,7 @@
             <bl>Color
               {#if $border !== "#333333"}
                 <Tooltip tip="Restore default color">
-                  <span on:click={() => $border = "#333333"}>⭯ </span>
+                  <svg on:click={() => $border = "#333333"} class="navBarIcon active smaller"><use href="#undo-icon"></use></svg>
                 </Tooltip>
               {/if}
               <input type="color" bind:value={$border}/>
@@ -173,11 +161,11 @@
           <div class="dropdown level2">
             <bl>Color
               <Tooltip tip="Select random color">
-                <span on:click={getRandomColor}>⭮ </span>
+                <svg on:click={getRandomColor} class="navBarIcon active smaller"><use href="#random-icon"></use></svg>
               </Tooltip>
               {#if $background !== "#333333"}
                 <Tooltip tip="Restore default color">
-                  <span on:click={() => $background = "#333333"}>⭯ </span>
+                  <svg on:click={() => $background = "#333333"} class="navBarIcon active smaller"><use href="#undo-icon"></use></svg>
                 </Tooltip>
               {/if}
               <input type="color" bind:value={$background}/>
@@ -205,22 +193,22 @@
     </div>
 
     {#if $matrix}
-    <bt on:click={() => $matrix -= 1}>
-      <Tooltip tip="Roll to the previous list. Hotkey: Backspace">{label("rollback")}</Tooltip>
-    </bt>
+      <bt on:click={() => $matrix -= 1}>
+        <Tooltip tip="Roll to the previous list. Hotkey: Backspace">{@html getIcon("rollback")}</Tooltip>
+      </bt>
     {:else}
-      <bd style="color: #333">{label("rollback")}</bd>
+      <bd>{@html getIcon("rollback", "inactive")}</bd>
     {/if}
 
     <bt on:click={reroll}>
-      <Tooltip tip="Regenerate coat of arms. Hotkey: Enter">{label("reroll")}</Tooltip>
+      <Tooltip tip="Regenerate coat of arms. Hotkey: Enter">{@html getIcon("reroll")}</Tooltip>
     </bt>
 
     <bt on:click={() => download()}>
-      <Tooltip tip="Download png image. Set size in options. Hotkey: D">{label("download")}</Tooltip>
+      <Tooltip tip="Download png image. Set size in options. Hotkey: D">{@html getIcon("download")}</Tooltip>
     </bt>
 
-    <div class="container"><bl>{label("upload")}</bl>
+    <div class="container"><bl>{@html getIcon("upload")}</bl>
       <div class="dropdown level1">
         <bt on:click={() => $state.raster = 1}>
           <Tooltip tip="Upload raster charge (one color, quality loss on scale) from jpg, png or svg image" left>Raster</Tooltip>
@@ -235,30 +223,30 @@
     {#if $state.edit}
       {#if position > 0}
         <bt on:click={() => changes.undo()}>
-          <Tooltip tip="Revert the latest change. Hotkey: Z">{label("undo")}</Tooltip>
+          <Tooltip tip="Revert the latest change. Hotkey: Z">{@html getIcon("undo")}</Tooltip>
         </bt>
       {:else}
-        <bd style="color: #333">{label("undo")}</bd>
+        <bd>{@html getIcon("undo", "inactive")}</bd>
       {/if}
 
       {#if position < changes.length() - 1}
         <bt on:click={() => changes.redo()}>
-          <Tooltip tip="Restore next change. Hotkey: X">{label("redo")}</Tooltip>
+          <Tooltip tip="Restore next change. Hotkey: X">{@html getIcon("redo")}</Tooltip>
         </bt>
       {:else}
-        <bd style="color: #333">{label("redo")}</bd>
+        <bd>{@html getIcon("redo", "inactive")}</bd>
       {/if}
     {/if}
 
     {#if $state.edit}
       <bt id="back" on:click={() => $state.edit = 0} transition:fade>
-        <Tooltip tip="Get back to Gallery" left>{label("back")}</Tooltip>
+        <Tooltip tip="Get back to Gallery" left>{@html getIcon("back")}</Tooltip>
       </bt>
     {/if}
 
     {#if wideScreen || !$state.edit}
       <bt on:click={() => $state.about = 1}>
-        <Tooltip tip="Show about screen. Hotkey: F1" left>{label("about")}</Tooltip>
+        <Tooltip tip="Show about screen. Hotkey: F1" left>{@html getIcon("about")}</Tooltip>
       </bt>
     {/if}
   </ul>
@@ -284,6 +272,28 @@
     background-color: #35bdb2;
   }
 
+  :global(.navBarIcon) {
+    width: 1em;
+    height: 1em;
+    fill: #333;
+    stroke: none;
+    vertical-align: middle;
+  }
+
+  :global(.navBarIcon.active) {
+    fill: #fff;
+    cursor: pointer;
+  }
+
+  .navBarIcon.smaller {
+    width: .8em;
+    height: .8em;
+  }
+
+  .navBarIcon.smaller:active {
+    transform: translateY(1px);
+  }
+
   bt, bl, bd {
     user-select: none;
     padding: 1em 1.14em;
@@ -301,7 +311,7 @@
     background-color: #2d2e2f;
   }
 
-  bt:active:not(:last-child), span:active {
+  bt:active:not(:last-child) {
     transform: translateY(1px);
   }
 
@@ -410,7 +420,7 @@
     position: absolute;
     fill: none;
     stroke: #fff;
-    stroke-width: 4px;
+    stroke-width: 5px;
     margin: -0.4em 0 0 -2.2em;
   }
 

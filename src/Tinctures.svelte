@@ -170,7 +170,7 @@
                 <input type=color bind:value={$colors[t.t]}/>
                 {#if defaultColors[t.t] && $colors[t.t] !== defaultColors[t.t]}
                   <Tooltip tip="Restore default color">
-                    <span on:click={() => $colors[t.t] = defaultColors[t.t]}>⭯</span>
+                    <svg on:click={() => $colors[t.t] = defaultColors[t.t]} width=12 height=12 fill=#fff><use href="#undo-icon"></use></svg>
                   </Tooltip>
                 {/if}
               </td>
