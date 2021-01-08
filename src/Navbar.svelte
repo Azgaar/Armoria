@@ -429,10 +429,6 @@
     stroke: #333;
   }
 
-  span {
-    cursor: pointer;
-  }
-
   #back {
     position: absolute;
     right: 0;
