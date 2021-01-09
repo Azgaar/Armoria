@@ -19,9 +19,7 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
   const rareDivided = ["chief", "terrace", "chevron", "quarter", "flaunches"].includes(ordinary);
   const divisioned = rareDivided ? P(.03) : charge && ordinary ? P(.03) : charge ? P(.3) : ordinary ? P(.7) : P(.995); // 33% for division
   const division = divisioned ? rw(divisions.variants) : null;
-
-  const selectCharge = () => charge = ordinary || divisioned ? rw(charges[rw(charges.types)]) : rw(charges[rw(charges.single)]);
-  if (charge) selectCharge();
+  if (charge) charge = selectCharge();
 
   if (division) {
     const t = getTincture("division", usedTinctures, P(.98) ? coa.t1 : null);
@@ -45,27 +43,27 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
     if (positions.ordinariesOn[ordinary] && P(.8)) {
       // place charge over ordinary (use tincture of field type)
       p = rw(positions.ordinariesOn[ordinary]);
-      while (charges.natural[charge] === ordinaryT) selectCharge();
+      while (charges.natural[charge] === ordinaryT) charge = selectCharge();
       t = !usedPattern && P(.3) ? coa.t1 : getTincture("charge", [], ordinaryT);
     } else if (positions.ordinariesOff[ordinary] && P(.95)) {
       // place charge out of ordinary (use tincture of ordinary type)
       p = rw(positions.ordinariesOff[ordinary]);
-      while (charges.natural[charge] === coa.t1) selectCharge();
+      while (charges.natural[charge] === coa.t1) charge = selectCharge();
       t = !usedPattern && P(.3) ? ordinaryT : getTincture("charge", usedTinctures, coa.t1);
     } else if (positions.divisions[division]) {
       // place charge in fields made by division
       p = rw(positions.divisions[division]);
-      while (charges.natural[charge] === coa.t1) selectCharge();
+      while (charges.natural[charge] === coa.t1) charge = selectCharge();
       t = getTincture("charge", ordinaryT ? usedTinctures.concat(ordinaryT) : usedTinctures, coa.t1);
     } else if (positions[charge]) {
       // place charge-suitable position
       p = rw(positions[charge]);
-      while (charges.natural[charge] === coa.t1) selectCharge();
+      while (charges.natural[charge] === coa.t1) charge = selectCharge();
       t = getTincture("charge", usedTinctures, coa.t1);
     } else {
       // place in standard position (use new tincture)
       p = usedPattern ? "e" : charges.conventional[charge] ? rw(positions.conventional) : rw(positions.complex);
-      while (charges.natural[charge] === coa.t1) selectCharge();
+      while (charges.natural[charge] === coa.t1) charge = selectCharge();
       t = getTincture("charge", usedTinctures.concat(ordinaryT), coa.t1);
     }
 
@@ -75,10 +73,14 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
     if (p === "ABCDEFGHIKL" && P(.95)) {
       // add central charge if charge is in bordure
       coa.charges[0].charge = rw(charges.conventional);
-      coa.charges.push({"charge":rw(charges[rw(charges.single)]), t:getTincture("charge", usedTinctures, coa.t1), p:"e"});
-    } else if (P(.8) && charge.slice(0,12) === "inescutcheon") {
+      const charge = selectCharge(charges.single);
+      const t = getTincture("charge", usedTinctures, coa.t1);
+      coa.charges.push({charge, t, p: "e"});
+    } else if (P(.8) && charge === "inescutcheon") {
       // add charge to inescutcheon
-      coa.charges.push({"charge":rw(charges[rw(charges.types)]), t:getTincture("charge", [], t), p, size:.5});
+      const charge = selectCharge(charges.types);
+      const t2 = getTincture("charge", [], t);
+      coa.charges.push({charge, t: t2, p, size:.5});
     } else if (division && !ordinary) {
       const allowCounter = !usedPattern && (!coa.line || coa.line === "straight");
 
@@ -87,7 +89,9 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
         coa.charges[0].layer = "field";
         if (P(.95)) {
           const p2 = p === "e" || P(.5) ? "e" : rw(positions.divisions[division]);
-          coa.charges.push({"charge":rw(charges[rw(charges.single)]), t:getTincture("charge", usedTinctures, coa.t3), p: p2, layer:"division"});
+          const charge = selectCharge(charges.single);
+          const t = getTincture("charge", usedTinctures, coa.t3);
+          coa.charges.push({charge, t, p: p2, layer: "division"});
         }
       }
       else if (allowCounter && P(.4)) coa.charges[0].layer = "counter"; // countercharged, 40%
@@ -97,7 +101,9 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
                          division === "perBend" ? ["ll", "mm"] :
                         ["jj", "oo"]; // perBendSinister
         coa.charges[0].p = p1;
-        coa.charges.push({"charge":rw(charges[rw(charges.single)]), t:getTincture("charge", usedTinctures, coa.t3), p: p2});
+        const charge = selectCharge(charges.single);
+        const t = getTincture("charge", usedTinctures, coa.t3);
+        coa.charges.push({charge, t, p: p2});
       }
       else if (allowCounter && p.length > 1) coa.charges[0].layer = "counter"; // countercharged, 40%
     }
@@ -114,6 +120,11 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
       if (P(.05) && charges.sinister.includes(c.charge)) c.sinister = 1;
       if (P(.05) && charges.reversed.includes(c.charge)) c.reversed = 1;
     }
+  }
+
+  function selectCharge(set) {
+    const type = set ? rw(set) : ordinary || divisioned ? rw(charges.types): rw(charges.single);
+    return type === "inescutcheon" ? "inescutcheon" : rw(charges[type]);
   }
 
   // select tincture: element type (field, division, charge), used field tinctures, field type to follow RoT
@@ -170,7 +181,8 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
       else if (P(.25)) {t1 = "sable"; t2 = "or";}
       else if (P(.15)) {t1 = "gules"; t2 = "argent";}
     }
-    else if (pattern === "semy") pattern += "_of_" + rw(charges[rw(charges.semy)]);
+    else if (pattern === "semy") pattern += "_of_" + selectCharge(charges.semy);
+
 
     if (!t1 || !t2) {
       const startWithMetal = P(.7);

@@ -157,7 +157,8 @@
     }
 
     function getChargeType(charge) {
-      return categories.find(type => charges[type][charge]);
+      const type = categories.find(type => charges[type][charge])
+      return type || charge;
     }
 
     function getSemyType(array) {

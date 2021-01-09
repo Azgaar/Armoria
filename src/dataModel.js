@@ -110,9 +110,7 @@ export const positions = {
     label: { defgzi: 2, eh: 3, defdefhmo: 1, egiegi: 1, pqn: 5 }
   },
   // charges
-  inescutcheonHeater: { e: 3, jln: 1 },
-  inescutcheonOldFrench: { e: 3, jln: 1 },
-  inescutcheonSpanish: { e: 3, jln: 1 },
+  inescutcheon: { e: 3, jln: 1 },
   mascle: { e: 15, abcdefgzi: 3, beh: 3, bdefh: 4, acegi: 1, kn: 3, joe: 2, abc: 3, jlh: 8, jleh: 1, df: 3, abcpqh: 4, pqe: 3, eknpq: 3 },
   lionRampant: { e: 10, def: 2, abc: 2, bdefh: 1, kn: 1, jlh: 2, abcpqh: 1 },
   lionPassant: { e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1 },
@@ -130,7 +128,7 @@ export const positions = {
 };
 
 export const lines = {
-  straight: 40, wavy: 8, engrailed: 4, invecked: 3, rayonne: 3, embattled: 1, raguly: 1, urdy: 1, dancetty: 1, indented: 2,
+  straight: 50, wavy: 8, engrailed: 4, invecked: 3, rayonne: 3, embattled: 1, raguly: 1, urdy: 1, dancetty: 1, indented: 2,
   dentilly: 1, bevilled: 1, angled: 1, flechy: 1, barby: 1, enclavy: 1, escartely: 1, arched: 2, archedReversed: 1, nowy: 1, nowyReversed: 1,
   embattledGhibellin: 1, embattledNotched: 1, embattledGrady: 1, dovetailedIndented: 1, dovetailed: 1,
   potenty: 1, potentyDexter: 1, potentySinister: 1, nebuly: 2, seaWaves: 1, dragonTeeth: 1, firTrees: 1
@@ -168,15 +166,27 @@ export const charges = {
     lozenge: 2, fusil: 4, mascle: 4, rustre: 2, lozengeFaceted: 3, lozengePloye: 1, roundel: 4, roundel2: 3, annulet: 4,
     mullet: 5, mulletPierced: 1, mulletFaceted: 1, mullet4: 3, mullet6: 4, mullet6Pierced: 1, mullet6Faceted: 1, mullet7: 1, mullet8: 1, mullet10: 1,
     estoile: 1, compassRose: 1, billet: 5, delf: 0, triangle: 3, trianglePierced: 1, goutte: 4, heart: 4, pique: 2, сarreau: 1, trefle: 2,
-    fleurDeLis: 6, sun: 3, sunInSplendour: 1, crescent: 5, fountain: 1, fountain: 1
+    fleurDeLis: 6, sun: 3, sunInSplendour: 1, crescent: 5, fountain: 1
   },
-  inescutcheon: { inescutcheonHeater: 2, inescutcheonOldFrench: 1, inescutcheonSpanish: 4 },
+  inescutcheon: {
+    inescutcheonHeater: 1, inescutcheonSpanish: 1, inescutcheonFrench: 1,
+    inescutcheonHorsehead: 1, inescutcheonHorsehead2: 1, inescutcheonPolish: 1, inescutcheonHessen: 1, inescutcheonSwiss: 1,
+    inescutcheonBoeotian: 1, inescutcheonRoman: 1, inescutcheonKite: 1, inescutcheonOldFrench: 1, inescutcheonRenaissance: 1, inescutcheonBaroque: 1,
+    inescutcheonTarge: 1, inescutcheonTarge2: 1, inescutcheonPavise: 1, inescutcheonWedged: 1,
+    inescutcheonFlag: 1, inescutcheonPennon: 1, inescutcheonGuidon: 1, inescutcheonBanner: 1, inescutcheonDovetail: 1, inescutcheonGonfalon: 1, inescutcheonPennant: 1,
+    inescutcheonRound: 1, inescutcheonOval: 1, inescutcheonVesicaPiscis: 1, inescutcheonSquare: 1, inescutcheonDiamond: 1, inescutcheonNo: 1,
+    inescutcheonFantasy1: 1, inescutcheonFantasy2: 1, inescutcheonFantasy3: 1, inescutcheonFantasy4: 1, inescutcheonFantasy5: 1,
+    inescutcheonNoldor: 1, inescutcheonGondor: 1, inescutcheonEasterling: 1, inescutcheonErebor: 1, inescutcheonIronHills: 1, inescutcheonUrukHai: 1, inescutcheonMoriaOrc: 1
+  },
   crosses: {
     crossHummetty: 15, crossVoided: 1, crossPattee: 3, crossPotent: 2, crossClechy: 3, crosslet: 1, crossBottony: 1, crossFleury: 3,
     crossPatonce: 1, crossPommy: 1, crossGamma: 1, crossArrowed: 1, crossFitchy: 1, crossCercelee: 1, crossMoline: 2, crossFourchy: 1,
     crossAvellane: 1, crossErminee: 1, crossMaltese: 3, crossCeltic: 1, crossOccitan: 1, crossSaltire: 3, crossTau: 1
   },
-  animals: { lionRampant: 4, lionPassant: 1, wolfPassant: 1, greyhoundСourant: 1, boarRampant: 1, horseRampant: 1, horseSalient: 1, bullPassant: 1, goat: 1, lamb: 1, bullHeadCaboshed: 1, deerHeadCaboshed: 1 },
+  animals: {
+    lionRampant: 4, lionPassant: 1, wolfPassant: 1, greyhoundСourant: 1, boarRampant: 1, horseRampant: 1, horseSalient: 1,
+    bullPassant: 1, goat: 1, lamb: 1, bullHeadCaboshed: 1, deerHeadCaboshed: 1
+  },
   fantastic: { dragonPassant: 3, wyvern: 2, griffinPassant: 1, griffinRampant: 1, eagleTwoHeards: 2, unicornRampant: 1, pegasus: 1, serpent: 1 },
   birds: { eagle: 9, raven: 2, cock: 3, parrot: 1, swan: 2, swanErased: 1, heron: 1 },
   plants: { cinquefoil: 1, rose: 1 },
@@ -188,7 +198,7 @@ export const charges = {
   architecture: { tower: 1, castle: 1 },
   miscellaneous: { crown: 3, key: 1, buckle: 1, bugleHorn: 1, horseshoe: 3, stagsAttires: 1, cowHorns: 2, wing: 1, wingSword: 1, lute: 1, harp: 1, wheel: 2 },
   uploaded: {},
-  natural: { fountain: "azure", garb: "or", raven: "sable" }, // charges to use predefined colours
+  natural: { fountain: "azure", garb: "or", raven: "sable" }, // charges to mainly use predefined colours
   sinister: ["crossGamma", "lionRampant", "lionPassant", "wolfPassant", "greyhoundСourant", "boarRampant", "horseRampant", "horseSalient", "bullPassant",
     "eagle", "raven", "cock", "parrot", "swan", "swanErased", "heron", "pike", "dragonPassant", "wyvern", "griffinPassant", "griffinRampant", "unicornRampant",
     "pegasus", "serpent", "hatchet", "lochaberAxe", "hand", "wing", "wingSword", "lute", "harp", "bow"], // charges that can be sinister
@@ -788,6 +798,16 @@ export const shieldPositions = {
     H: [4, 47]
   }
 };
+
+// size modifier applied for charges, default is 1
+export const shieldSize = {
+  horsehead: .9, horsehead2: .9, polish: .85, swiss: .95,
+  boeotian: .75, roman: .95, kite: .65, targe2: .9, pavise: .9, wedged: .95,
+  flag: .7, pennon: .5, guidon: .65, banner: .8, dovetail: .8, pennant: .6,
+  oval: .95, vesicaPiscis: .8, diamond: .8, no: 1.2,
+  fantasy1: .8, fantasy2: .7, fantasy3: .7, fantasy5: .9,
+  noldor: .5, gondor: .75, easterling: .8, erebor: .9, urukHai: .8, moriaOrc: .7
+}
 
 export const shieldBox = {
   heater: "0 10 200 200",
