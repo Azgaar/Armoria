@@ -430,7 +430,7 @@
               <option value="">No (standard)</option>
               <option value=field>Crop by main field</option>
               <option value=division>Crop by division</option>
-              <option value=counter>Сountercharged</option>
+              <option value=counter>Сounterchanged</option>
             </select>
           </div>
         {/if}
@@ -486,7 +486,7 @@
                 <option value=field>Crop by main field</option>
                 <option value=division>Crop by division</option>
                 {#if !isRaster(charge.charge)}
-                  <option value=counter>Сountercharged</option>
+                  <option value=counter>Сounterchanged</option>
                 {/if}
               </select>
             {/if}

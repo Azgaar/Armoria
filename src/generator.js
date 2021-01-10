@@ -94,7 +94,7 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
           coa.charges.push({charge, t, p: p2, layer: "division"});
         }
       }
-      else if (allowCounter && P(.4)) coa.charges[0].layer = "counter"; // countercharged, 40%
+      else if (allowCounter && P(.4)) coa.charges[0].layer = "counter"; // counterchanged, 40%
       else if (["perPale", "perFess", "perBend", "perBendSinister"].includes(division)) { // place 2 charges in division standard positions
         const [p1, p2] = division === "perPale" ? ["pp", "qq"] :
                          division === "perFess" ? ["kk", "nn"] :
@@ -105,7 +105,7 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
         const t = getTincture("charge", usedTinctures, coa.t3);
         coa.charges.push({charge, t, p: p2});
       }
-      else if (allowCounter && p.length > 1) coa.charges[0].layer = "counter"; // countercharged, 40%
+      else if (allowCounter && p.length > 1) coa.charges[0].layer = "counter"; // counterchanged, 40%
     }
 
     coa.charges.forEach(c => defineChargeAttributes(c));
