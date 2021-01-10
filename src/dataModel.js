@@ -110,7 +110,7 @@ export const positions = {
     label: { defgzi: 2, eh: 3, defdefhmo: 1, egiegi: 1, pqn: 5 }
   },
   // charges
-  inescutcheon: { e: 3, jln: 1 },
+  inescutcheon: { e: 4, jln: 1 },
   mascle: { e: 15, abcdefgzi: 3, beh: 3, bdefh: 4, acegi: 1, kn: 3, joe: 2, abc: 3, jlh: 8, jleh: 1, df: 3, abcpqh: 4, pqe: 3, eknpq: 3 },
   lionRampant: { e: 10, def: 2, abc: 2, bdefh: 1, kn: 1, jlh: 2, abcpqh: 1 },
   lionPassant: { e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1 },
@@ -124,7 +124,8 @@ export const positions = {
   wyvern: { e: 10, jln: 1 },
   garb: { e: 1, def: 3, abc: 2, beh: 1, kn: 1, jln: 3, jleh: 1, abcpqh: 1, joe: 1, lme: 1 },
   crown: { e: 10, abcdefgzi: 1, beh: 3, behdf: 2, acegi: 1, kn: 1, pq: 2, abc: 1, jln: 4, jleh: 1, def: 2, abcpqh: 3 },
-  hand: { e: 10, jln: 2, kn: 1, jeo: 1, abc: 2, pqe: 1 }
+  hand: { e: 10, jln: 2, kn: 1, jeo: 1, abc: 2, pqe: 1 },
+  armillarySphere: {e: 1}
 };
 
 export const lines = {
@@ -185,7 +186,7 @@ export const charges = {
   },
   animals: {
     lionRampant: 4, lionPassant: 1, wolfPassant: 1, greyhoundСourant: 1, boarRampant: 1, horseRampant: 1, horseSalient: 1,
-    bullPassant: 1, goat: 1, lamb: 1, bullHeadCaboshed: 1, deerHeadCaboshed: 1
+    bearRampant: 2, bearPassant: 1, bullPassant: 1, goat: 1, lamb: 1, bullHeadCaboshed: 1, deerHeadCaboshed: 1
   },
   fantastic: { dragonPassant: 3, wyvern: 2, griffinPassant: 1, griffinRampant: 1, eagleTwoHeards: 2, unicornRampant: 1, pegasus: 1, serpent: 1 },
   birds: { eagle: 9, raven: 2, cock: 3, parrot: 1, swan: 2, swanErased: 1, heron: 1 },
@@ -196,7 +197,9 @@ export const charges = {
   arms: { sword: 5, sabre: 1, sabresCrossed: 1, hatchet: 2, lochaberAxe: 1, mallet: 1, bowWithArrow: 2, bow: 1, arrow: 1, arrowsSheaf: 1 },
   bodyparts: { hand: 1 },
   architecture: { tower: 1, castle: 1 },
-  miscellaneous: { crown: 3, key: 1, buckle: 1, bugleHorn: 1, horseshoe: 3, stagsAttires: 1, cowHorns: 2, wing: 1, wingSword: 1, lute: 1, harp: 1, wheel: 2 },
+  miscellaneous: {
+    crown: 3, key: 1, buckle: 1, bugleHorn: 1, horseshoe: 3, stagsAttires: 1, cowHorns: 2, wing: 1, wingSword: 1, lute: 1, harp: 1,
+    wheel: 2, armillarySphere: 1 },
   uploaded: {},
   natural: { fountain: "azure", garb: "or", raven: "sable" }, // charges to mainly use predefined colours
   sinister: ["crossGamma", "lionRampant", "lionPassant", "wolfPassant", "greyhoundСourant", "boarRampant", "horseRampant", "horseSalient", "bullPassant",
