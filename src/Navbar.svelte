@@ -8,35 +8,11 @@
   import {rw} from './utils';
 
   const sizes = [[80, "Giant"], [100, "Huge"], [150, "Large"], [200, "Medium"], [300, "Small"], [400, "Tiny"]];
-  const gradients = ["luster", "spotlight", "backlight"];
-  const diapers = ["nourse", "tessellation", "sennwald", "sulzbach"];
+  const gradients = ["no", "luster", "spotlight", "backlight"];
+  const diapers = ["no", "nourse", "tessellation", "sennwald", "sulzbach"];
   const wideScreen = window.innerWidth > 600;
 
   $: position = $changes[1];
-  // save options on change
-  $: lock("size", $size);
-  $: lock("grad", $grad);
-  $: lock("diaper", $diaper);
-  $: lock("shield", $shield);
-  $: lock("background", $background);
-  $: lock("scale", $scale);
-  $: lock("border", $border);
-  $: lock("borderWidth", $borderWidth);
-
-  // don't lock options on load
-  const loaded = {};
-  function lock(key, value) {
-    if (loaded[key]) {
-      localStorage.setItem(key, value);
-    } else {
-      loaded[key] = true;
-    }
-  }
-
-  function getRandomColor() {
-    const l = '0123456789ABCDEF';
-    $background = "#"+[0,0,0,0,0,0].map(() => l[Math.floor(Math.random() * 16)]).join("");
-  }
 
   function getPath(shield) {
     return document.getElementById(shield).innerHTML;
@@ -47,15 +23,30 @@
     return `<svg class="navBarIcon ${active}"><use href="#${icon}-icon"></use></svg>`;
   }
 
-  function reroll() {
-    $matrix += 1;
-
-    // change shield if not manually selected
-    if (!localStorage.getItem("shield")) {
-      $shield = rw(shields[rw(shields.types)]);
-      loaded.shield = false;
-    }
+  function change(e, store, value, key) {
+    e.stopPropagation();
+    store.set(value);
+    localStorage.setItem(key, value);
   }
+
+  function getRandomColor() {
+    const l = '0123456789ABCDEF';
+    $background = "#"+[0,0,0,0,0,0].map(() => l[Math.floor(Math.random() * 16)]).join("");
+    localStorage.setItem("background", $background);
+  }
+
+  function restoreDefault(e, store, key, value) {
+    e.stopPropagation();
+    store.set(value);
+    localStorage.removeItem(key);
+  }
+
+  // values to be always saved
+  $: localStorage.setItem("background", $background);
+  $: localStorage.setItem("border", $border);
+  $: localStorage.setItem("borderWidth", $borderWidth);
+  $: localStorage.setItem("scale", $scale);
+
 </script>
 
 <div id="navbar">
@@ -75,7 +66,7 @@
               <div class="container">
                 <div class="dropdown level3 iconed">
                   {#each Object.keys(shields[type]) as sh}
-                    <bt on:click={() => $shield = sh}>
+                    <bt on:click={e => change(e, shield, sh, "shield")}>
                       <svg class=shield class:selected={sh === $shield} width=26 height=26 viewBox="0 0 200 210">{@html getPath(sh)}</svg>
                       {sh.split(/(?=[A-Z])/).join(" ")}
                     </bt>
@@ -104,9 +95,8 @@
 
         <div class="container">
           <div class="dropdown level2">
-            <bt class:selected={!$grad} on:click={() => $grad = null}>No gradient</bt>
             {#each gradients as g}
-              <bt class:selected={g === $grad} on:click={() => $grad = g}>{g}</bt>
+              <bt class:selected={g === $grad} on:click={e => change(e, grad, g, "grad")}>{g}</bt>
             {/each}
           </div>
           <bl>
@@ -118,22 +108,21 @@
 
         <div class="container">
           <div class="dropdown level2">
-            <bt class:selected={!$diaper} on:click={() => $diaper = null}>No pattern</bt>
             {#each diapers as d}
-              <bt class:selected={d === $diaper} on:click={() => $diaper = d}>{d}</bt>
+              <bt class:selected={d === $diaper} on:click={e => change(e, diaper, d, "diaper")}>{d}</bt>
             {/each}
           </div>
           <bl>
             {#key $diaper}<Lock key=diaper/>{/key}
             <span>Damasking</span>
-            <Tip tip="Backing (diaper) style for coat of arms"/>
+            <Tip tip="Backing style for coat of arms, also known as diaper"/>
           </bl>
         </div>
 
         <div class="container">
           <div class="dropdown level2">
             {#each sizes as s}
-              <bt class:selected={$size == s[0]} on:click={() => $size = s[0]}>{s[1]}</bt>
+              <bt class:selected={$size == s[0]} on:click={e => change(e, size, s[0], "size")}>{s[1]}</bt>
             {/each}
           </div>
           <bl>
@@ -147,16 +136,22 @@
           <div class="dropdown level2">
             <bl>Color
               {#if $border !== "#333333"}
-                <Tip tip="Restore default color"><svg on:click={() => $border = "#333333"} class="navBarIcon active smaller"><use href="#undo-icon"></use></svg></Tip>
+                <Tip tip="Restore default color">
+                  <svg on:click={e => restoreDefault(e, border, "border", "#333333")} class="navBarIcon active smaller"><use href="#undo-icon"></use></svg>
+                </Tip>
               {/if}
               <input type="color" bind:value={$border}/>
             </bl>
             <bl>Width
-              <input class="right" type="number" min=0 max=4 step=.1 bind:value={$borderWidth}/>
+              {#if $borderWidth !== 1}
+                <Tip tip="Restore default border width">
+                  <svg on:click={e => restoreDefault(e, borderWidth, "borderWidth", 1)} class="navBarIcon active smaller"><use href="#undo-icon"></use></svg>
+                </Tip>
+              {/if}
+              <input class="right" type="number" min=0 max=4 step=.1 on:input={function(e) {change(e, borderWidth, +this.value, "borderWidth")}} value={$borderWidth}/>
             </bl>
           </div>
           <bl>
-            {#key $border}<Lock key=border/>{/key}
             <span>Border</span>
             <Tip tip="Coat of arms border style"/>
           </bl>
@@ -170,14 +165,13 @@
               </Tip>
               {#if $background !== "#333333"}
                 <Tip tip="Restore default color">
-                  <svg on:click={() => $background = "#333333"} class="navBarIcon active smaller"><use href="#undo-icon"></use></svg>
+                  <svg on:click={e => restoreDefault(e, background, "background", "#333333")} class="navBarIcon active smaller"><use href="#undo-icon"></use></svg>
                 </Tip>
               {/if}
               <input type="color" bind:value={$background}/>
             </bl>
           </div>
           <bl>
-            {#key $background}<Lock key=background/>{/key}
             <span>Background</span>
             <Tip tip="Window background color"/>
           </bl>
@@ -191,7 +185,6 @@
             </bl>
           </div>
           <bl>
-            {#key $scale}<Lock key=scale/>{/key}
             <span>Scale</span>
             <Tip tip="Downloaded image size, 1 is default size, 2 - 2x size, etc."/>
           </bl>
@@ -207,7 +200,7 @@
       <bd>{@html getIcon("rollback", "inactive")}</bd>
     {/if}
 
-    <bt on:click={reroll}>
+    <bt on:click={() => $matrix += 1}>
       <Tip tip="Regenerate coat of arms" gesture="Swipe down" hotkey="Enter">{@html getIcon("reroll")}</Tip>
     </bt>
 

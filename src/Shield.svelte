@@ -7,14 +7,18 @@
   const {division, ordinaries = [], charges = []} = coa;
   const tDiv = division ? division.t : "";
 
-  $: coaColors = $colors;
-  $: coaGrad = coa.grad || $grad;
-  $: coaShield = coa.shield || $shield;
-  $: shieldPath = document.querySelector(`#defs g#shields > #${coaShield} > path`).getAttribute("d");
-  $: coaDiaper = type === "menuItem" ? null : coa.diaper || $diaper;
-  $: diaperType = coaDiaper ? getDieperType() : null;
+  let coaColors, coaGrad, coaShield, shieldPath, coaDiaper, diaperType;
+  $: {
+    coaColors = $colors;
+    coaGrad = coa.grad || $grad;
+    coaShield = coa.shield || $shield;
+    shieldPath = document.querySelector(`#defs g#shields > #${coaShield} > path`).getAttribute("d");
+    coaDiaper = type === "menuItem" ? null : coa.diaper || $diaper;
+    diaperType = getDieperType();
+  }
 
   function getDieperType() {
+    if (!coaDiaper || coaDiaper === "no") return null;
     const f = !coa.t1.includes("-");
     const d = !tDiv.includes("-");
     if (f && d) return "overall";

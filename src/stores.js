@@ -71,7 +71,7 @@ function defineInitialOptions() {
   const storedObj = key => localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : null;
 
   const size = +stored("size") || 200;
-  const diaper = stored("diaper") || null;
+  const diaper = stored("diaper") || "no";
   const grad = stored("grad") || ra(["luster", "spotlight", "backlight"]);
   const shield = stored("shield") || rw(shields[rw(shields.types)]);
   const colors = storedObj("colors") || JSON.parse(JSON.stringify(defaultColors));

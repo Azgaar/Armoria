@@ -10,7 +10,9 @@
   import Message from './Message.svelte';
   import Patterns from './Patterns.svelte';
   import {generate} from './generator.js';
-  import {background, size, history, matrices, matrix, state, changes, message} from './stores.js';
+  import {background, size, history, matrices, matrix, state, changes, message, shield} from './stores.js';
+  import {shields} from './dataModel';
+  import {rw} from './utils';
 
   let n, w, h, gallery = [], coa, seed;
   $: [n, w, h] = defineGallerySize($size);
@@ -26,6 +28,11 @@
       } else {
         // reroll gallery
         $matrices[$matrix] = Array.from({length: n}, (_, i) => l+i++);
+      }
+
+      // change shield if it's not locked (manually selected)
+      if (!localStorage.getItem("shield")) {
+        $shield = rw(shields[rw(shields.types)]);
       }
     }
 
