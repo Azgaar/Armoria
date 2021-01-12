@@ -5,7 +5,7 @@ export const defaultTinctures = {
   metals: { argent: 3, or: 2 },
   colours: { gules: 5, azure: 4, sable: 3, purpure: 3, vert: 2 },
   stains: { murrey: 1, sanguine: 1, tenné: 1 },
-  patterns: { semy: 1, vair: 2, vairInPale: 1, vairEnPointe: 2, ermine: 2, chequy: 4, lozengy: 2, fusily: 1, pally: 4, barry: 4, gemelles: 1, bendy: 3, bendySinister: 2, palyBendy: 1, pappellony: 2, masoned: 3, fretty: 2 }
+  patterns: { semy: 1, vair: 2, vairInPale: 1, vairEnPointe: 2, ermine: 2, chequy: 5, lozengy: 2, fusily: 1, pally: 4, barry: 4, gemelles: 1, bendy: 3, bendySinister: 2, palyBendy: 1, pappellony: 2, masoned: 3, fretty: 2 }
 }
 
 export const defaultColors = {
@@ -16,9 +16,9 @@ export const defaultColors = {
   azure: "#377cd7",
   vert: "#26c061",
   purpure: "#522d5b",
-  murrey: "#8b004b",
-  sanguine: "#b22222",
-  tenné: "#c67000"
+  murrey: "#85185b",
+  sanguine: "#b63a3a",
+  tenné: "#cc7f19"
 }
 
 export const shields = {
@@ -50,10 +50,10 @@ export const positions = {
     perFess: { e: 12, kn: 4, jkl: 2, gizgiz: 1, jlh: 3, kmo: 1, ABCDEFGHIJKL: 1 },
     perBend: { e: 5, lm: 5, bcfdgh: 1 },
     perBendSinister: { e: 1, jo: 1 },
-    perCross: { e: 4, jlmo: 1, jj: 1, jo: 2, jl: 1 },
+    perCross: { e: 4, jlmo: 1, j: 1, jo: 2, jl: 1 },
     perChevron: { e: 1, jlh: 1, dfk: 1, dfbh: 2, bdefh: 1 },
     perChevronReversed: { e: 1, mok: 2, dfh: 2, dfbh: 1, bdefh: 1 },
-    perSaltire: { bhdf: 8, e: 3, abcdefgzi: 1, bh: 1, df: 1, beh: 1, behdf: 1, ABCDEFGHIJKL: 1 },
+    perSaltire: { bhdf: 8, e: 3, abcdefgzi: 1, bh: 1, df: 1, ABCDEFGHIJKL: 1 },
     perPile: { ee: 3, be: 2, abceh: 1, abcabc: 1, jleh: 1 }
   },
   ordinariesOn: {
@@ -67,7 +67,7 @@ export const positions = {
     bendlet: { joejoejoe: 1 },
     bendletSinister: { lemlemlem: 1 },
     bordure: { ABCDEFGHIJKL: 1 },
-    chief: { abc: 5, bb: 1 },
+    chief: { abc: 5, bbb: 1 },
     quarter: { jjj: 1 },
     canton: { yyyy: 1 },
     cross: { eeee: 1, behdfbehdf: 3, behbehbeh: 2 },
@@ -81,14 +81,14 @@ export const positions = {
     pileInBendSinister: { eeee: 1, eemm: 1 }
   },
   ordinariesOff: {
-    pale: { yy: 1 },
+    pale: { yyy: 1 },
     fess: { abc: 3, abcz: 1 },
     bar: { abc: 2, abcgzi: 1, jlh: 5, bgi: 2, ach: 1 },
     gemelle: { abc: 1 },
-    bend: { cg: 2, cc: 1 },
-    bendSinister: { ai: 2, aa: 1 },
-    bendlet: { cg: 2, cc: 1 },
-    bendletSinister: { ai: 2, aa: 1 },
+    bend: { ccg: 2, ccc: 1 },
+    bendSinister: { aai: 2, aaa: 1 },
+    bendlet: { ccg: 2, ccc: 1 },
+    bendletSinister: { aai: 2, aaa: 1 },
     bordure: { e: 4, jleh:2, kenken: 1, peqpeq: 1 },
     orle: { e: 4, jleh: 1, kenken: 1, peqpeq: 1 },
     chief: { emo: 2, emoz: 1, ez: 2 },
@@ -216,7 +216,7 @@ export const shieldPositions = {
     g: [-32.25, 37.5], h: [0, 50], i: [32.25, 37.5],
     y: [-50, -50], z: [0, 62.5],
     j: [-37.5, -37.5], k: [0, -37.5], l: [37.5, -37.5],
-    m: [-32.5, 32.5], n: [0, 42.5], o: [32.5, 32.5],
+    m: [-30, 30], n: [0, 42.5], o: [30, 30],
     p: [-37.5, 0], q: [37.5, 0],
     A: [-66.2, -66.6], B: [-22, -66.6], C: [22, -66.6], D: [66.2, -66.6],
     K: [-66.2, -20], E: [66.2, -20],

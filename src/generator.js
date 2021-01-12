@@ -13,9 +13,9 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
 
   const coa = {seed, t1: getTincture("field")};
 
-  let charge = P(usedPattern ? .5 : .9) ? true : false; // 80% for charge
+  let charge = P(usedPattern ? .5 : .93) ? true : false; // 80% for charge
   const linedOrdinary = charge && P(.3) || P(.5) ? rw(ordinaries.lined) : null;
-  const ordinary = !charge && P(.6) || P(.3) ? linedOrdinary ? linedOrdinary : rw(ordinaries.straight) : null; // 36% for ordinary
+  const ordinary = !charge && P(.65) || P(.3) ? linedOrdinary ? linedOrdinary : rw(ordinaries.straight) : null; // 36% for ordinary
   const rareDivided = ["chief", "terrace", "chevron", "quarter", "flaunches"].includes(ordinary);
   const divisioned = rareDivided ? P(.03) : charge && ordinary ? P(.03) : charge ? P(.3) : ordinary ? P(.7) : P(.995); // 33% for division
   const division = divisioned ? rw(divisions.variants) : null;
@@ -90,20 +90,35 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
         if (P(.95)) {
           const p2 = p === "e" || P(.5) ? "e" : rw(positions.divisions[division]);
           const charge = selectCharge(charges.single);
-          const t = getTincture("charge", usedTinctures, coa.t3);
+          const t = getTincture("charge", usedTinctures, coa.division.t);
           coa.charges.push({charge, t, p: p2, layer: "division"});
         }
       }
       else if (allowCounter && P(.4)) coa.charges[0].layer = "counter"; // counterchanged, 40%
-      else if (["perPale", "perFess", "perBend", "perBendSinister"].includes(division)) { // place 2 charges in division standard positions
-        const [p1, p2] = division === "perPale" ? ["pp", "qq"] :
-                         division === "perFess" ? ["kk", "nn"] :
-                         division === "perBend" ? ["ll", "mm"] :
-                        ["jj", "oo"]; // perBendSinister
+      else if (["perPale", "perFess", "perBend", "perBendSinister"].includes(division) && P(.8)) { // place 2 charges in division standard positions
+        const [p1, p2] = division === "perPale" ? ["p", "q"] :
+                         division === "perFess" ? ["k", "n"] :
+                         division === "perBend" ? ["l", "m"] :
+                        ["j", "o"]; // perBendSinister
         coa.charges[0].p = p1;
+
         const charge = selectCharge(charges.single);
-        const t = getTincture("charge", usedTinctures, coa.t3);
+        const t = getTincture("charge", usedTinctures, coa.division.t);
         coa.charges.push({charge, t, p: p2});
+      }
+      else if (["perCross", "perSaltire"].includes(division) && P(.5)) { // place 4 charges in division standard positions
+        const [p1, p2, p3, p4] = division === "perCross" ? ["j", "l", "m", "o"] : ["b", "d", "f", "h"];
+        coa.charges[0].p = p1;
+
+        const c2 = selectCharge(charges.single);
+        const t2 = getTincture("charge", usedTinctures, coa.division.t);
+
+        const c3 = selectCharge(charges.single);
+        const t3 = getTincture("charge", usedTinctures, coa.division.t);
+
+        const c4 = selectCharge(charges.single);
+        const t4 = getTincture("charge", usedTinctures, coa.t1);
+        coa.charges.push({charge: c2, t: t2, p: p2}, {charge: c3, t: t3, p: p3}, {charge: c4, t: t4, p: p4});
       }
       else if (allowCounter && p.length > 1) coa.charges[0].layer = "counter"; // counterchanged, 40%
     }
@@ -111,14 +126,14 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
     coa.charges.forEach(c => defineChargeAttributes(c));
     function defineChargeAttributes(c) {
       // define size
-      c.size = (c.size || 1) * getSize(c.p, ordinary);
+      c.size = (c.size || 1) * getSize(c.p, ordinary, division);
 
       // clean-up position
       c.p = [...new Set(c.p)].join("");
 
       // define orientation
-      if (P(.05) && charges.sinister.includes(c.charge)) c.sinister = 1;
-      if (P(.05) && charges.reversed.includes(c.charge)) c.reversed = 1;
+      if (P(.02) && charges.sinister.includes(c.charge)) c.sinister = 1;
+      if (P(.02) && charges.reversed.includes(c.charge)) c.reversed = 1;
     }
   }
 
@@ -209,14 +224,16 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
   return coa;
 }
 
-export const getSize = (p, o) => {
+export const getSize = (p, o, d) => {
   if (p === "e" && (o === "bordure" || o === "orle")) return 1.1;
   if (p === "e") return 1.5;
-  if (["p", "q", "pp", "qq", "pq", "kn", "n", "n", "kk", "nn", "oo", "jj"].includes(p)) return .7;
   if (p === "jln" || p === "jlh") return .7;
-  if (p === "abcpqh") return .5;
+  if (p === "abcpqh" || p === "ez" || p === "be") return .5;
+  if (["j", "l", "m", "o", "jlmo"].includes(p) && d === "perCross") return .6;
+  if (["b", "d", "f", "h", "bh", "df"].includes(p) && d === "perSaltire") return .5;
   if (p.length > 10) return .18; // >10 (bordure)
   if (p.length > 7) return .3; // 8, 9, 10
   if (p.length > 4) return .4; // 5, 6, 7
-  return .5; // 1, 2, 3, 4
+  if (p.length > 2) return .5; // 3, 4
+  return .7; // 1, 2
 }
