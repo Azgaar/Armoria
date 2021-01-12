@@ -191,7 +191,7 @@ export const charges = {
   fantastic: { dragonPassant: 3, wyvern: 2, griffinPassant: 1, griffinRampant: 1, eagleTwoHeards: 2, unicornRampant: 1, pegasus: 1, serpent: 1 },
   birds: { eagle: 9, raven: 2, cock: 3, parrot: 1, swan: 2, swanErased: 1, heron: 1 },
   plants: { cinquefoil: 1, rose: 1 },
-  aquatic: { escallop: 5, pike: 1, cancer: 1 },
+  aquatic: { escallop: 5, pike: 1, cancer: 1, dolphin: 1 },
   seafaring: { anchor: 6, boat: 2, armillarySphere: 1 },
   agriculture: { garb: 1 },
   arms: { sword: 5, sabre: 1, sabresCrossed: 1, hatchet: 2, lochaberAxe: 1, mallet: 1, bowWithArrow: 2, bow: 1, arrow: 1, arrowsSheaf: 1 },
@@ -199,7 +199,7 @@ export const charges = {
   architecture: { tower: 1, castle: 1 },
   miscellaneous: {
     crown: 3, key: 1, buckle: 1, bugleHorn: 1, bell: 2, horseshoe: 3, stagsAttires: 1, cowHorns: 2, wing: 1, wingSword: 1,
-    lute: 1, harp: 1, wheel: 2 },
+    lute: 1, harp: 1, wheel: 2, chalice: 1 },
   uploaded: {},
   natural: { fountain: "azure", garb: "or", raven: "sable" }, // charges to mainly use predefined colours
   sinister: ["crossGamma", "lionRampant", "lionPassant", "wolfPassant", "greyhoundСourant", "boarRampant", "horseRampant", "horseSalient", "bullPassant",
