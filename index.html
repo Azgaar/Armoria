@@ -248,43 +248,41 @@
         <!-- Lined Ordinaries -->
         <template id="fess">
           <path dpath="{line}" transform="translate(0,-25)"/>
-          <rect x=0 y=88 width=200 height=24 />
           <path dpath="{line}" transform="translate(0,25) rotate(180.00001)" transform-origin="center"/>
+          <rect x=0 y=88 width=200 height=24 stroke="none"/>
         </template>
         <template id="pale">
           <path dpath="{line}" transform="rotate(-90) translate(0,-25)" transform-origin="center"/>
-          <rect x=88 y=0 width=24 height=200 />
           <path dpath="{line}" transform="rotate(90) translate(0,-25)" transform-origin="center"/>
+          <rect x=88 y=0 width=24 height=200 stroke="none"/>
         </template>
         <template id="bend">
           <path dpath="{line}" transform="rotate(45) translate(0,-25) scale(1.1,1)" transform-origin="center"/>
-          <rect x=0 y=88 width=200 height=24 transform="rotate(45) scale(1.1,1)" transform-origin="center"/>
           <path dpath="{line}" transform="rotate(225) translate(0,-25) scale(1.1,1)" transform-origin="center"/>
+          <rect x=0 y=88 width=200 height=24 transform="rotate(45) scale(1.1,1)" transform-origin="center" stroke="none"/>
         </template>
         <template id="bendSinister">
           <path dpath="{line}" transform="rotate(-45) translate(0,-25) scale(1.1,1)" transform-origin="center"/>
-          <rect x=0 y=88 width=200 height=24 transform="rotate(-45) scale(1.1,1)" transform-origin="center"/>
           <path dpath="{line}" transform="rotate(-225) translate(0,-25) scale(1.1,1)" transform-origin="center"/>
+          <rect x=0 y=88 width=200 height=24 transform="rotate(-45) scale(1.1,1)" transform-origin="center" stroke="none"/>
         </template>
         <template id="chief">
-          <rect x=0 y=0 width=200 height=62 />
           <path dpath="{line}" transform="translate(0,-25) rotate(180.00001)" transform-origin="center"/>
+          <rect x=0 y=0 width=200 height=62 stroke="none"/>
         </template>
         <template id="bar">
-          <path dpath="{line}" transform="translate(0,-12.5) scale(1,.5)" transform-origin="center"/>
-          <rect x=0 y=94 width=200 height=12 />
-          <path dpath="{line}" transform="translate(0,12.5) rotate(180.00001) scale(1,.5)" transform-origin="center"/>
+          <path dpath="{line}" transform="translate(0,-12.5)" transform-origin="center"/>
+          <path dpath="{line}" transform="translate(0,12.5) rotate(180.00001)" transform-origin="center"/>
+          <rect x=0 y=94 width=200 height=12 stroke="none"/>
         </template>
         <template id="gemelle">
-          <path dpath="{line}" transform="translate(0,-25) scale(1,.5)" transform-origin="center"/>
-          <rect x=0 y=82 width=200 height=12.5 />
-          <rect x=0 y=105.5 width=200 height=12.5 />
-          <path dpath="{line}" transform="translate(0,25) rotate(180.00001) scale(1,.5)" transform-origin="center"/>
+          <path dpath="{line}" transform="translate(0,-22.5)"/>
+          <path dpath="{line}" transform="translate(0,22.5) rotate(180.00001)" transform-origin="center"/>
         </template>
         <template id="fessCotissed">
-          <rect x=0 y=80 width=200 height=40 />
           <path dpath="{line}" transform="translate(0,-35) scale(1,.5)" transform-origin="center"/>
           <path dpath="{line}" transform="translate(0,35) rotate(180.0001) scale(1,.5)" transform-origin="center"/>
+          <rect x=0 y=80 width=200 height=40 />
         </template>
         <template id="fessDoubleCotissed">
           <rect x=0 y=85 width=200 height=30 />
@@ -295,17 +293,17 @@
         </template>
         <template id="bendlet">
           <path dpath="{line}" transform="rotate(45) translate(0,-16) scale(1.1,1)" transform-origin="center"/>
-          <rect x=0 y=94 width=200 height=12 transform="rotate(45) scale(1.1,1)" transform-origin="center"/>
           <path dpath="{line}" transform="rotate(225) translate(0,-16) scale(1.1,1)" transform-origin="center"/>
+          <rect x=0 y=94 width=200 height=12 transform="rotate(45) scale(1.1,1)" transform-origin="center" stroke="none"/>
         </template>
         <template id="bendletSinister">
           <path dpath="{line}" transform="rotate(-45) translate(0,-16) scale(1.1,1)" transform-origin="center"/>
-          <rect x=0 y=94 width=200 height=12 transform="rotate(-45) scale(1.1,1)" transform-origin="center"/>
           <path dpath="{line}" transform="rotate(-225) translate(0,-16) scale(1.1,1)" transform-origin="center"/>
+          <rect x=0 y=94 width=200 height=12 transform="rotate(-45) scale(1.1,1)" transform-origin="center" stroke="none"/>
         </template>
         <template id="terrace">
-          <rect x=0 y=164 width=200 height=36 />
           <path dpath="{line}" transform="translate(0,50)"/>
+          <rect x=0 y=164 width=200 height=36 stroke="none"/>
         </template>
         <template id="cross">
           <path dpath="{line}" transform="translate(0,-14.5)" transform-origin="center"/>
@@ -412,45 +410,19 @@
       </g>
       <g id="icons">
         <!-- Icons are from FontAwesome set and available under CC4, see https://fontawesome.com/license -->
-        <symbol id="dice-icon" viewBox="0 0 640 512">
-          <path d="M592 192H473.26c12.69 29.59 7.12 65.2-17 89.32L320 417.58V464c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48V240c0-26.51-21.49-48-48-48zM480 376c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24zm-46.37-186.7L258.7 14.37c-19.16-19.16-50.23-19.16-69.39 0L14.37 189.3c-19.16 19.16-19.16 50.23 0 69.39L189.3 433.63c19.16 19.16 50.23 19.16 69.39 0L433.63 258.7c19.16-19.17 19.16-50.24 0-69.4zM96 248c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24zm128 128c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24zm0-128c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24zm0-128c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24zm128 128c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24z"/>
-        </symbol>
-        <symbol id="pencil-icon" viewBox="0 0 536 536">
-          <path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/>
-        </symbol>
-        <symbol id="download-icon" viewBox="0 0 536 536">
-          <path d="M216 0h80c13 0 24 11 24 24v168h88c17 0 26 22 14 34L270 378c-8 8-20 8-28 0L90 226c-13-13-4-34 14-34h88V24c0-13 11-24 24-24zm296 376v112c0 13-11 24-24 24H24c-13 0-24-11-24-24V376c0-13 11-24 24-24h147l49 49c20 20 52 20 72 0l49-49h147c13 0 24 11 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"/>
-        </symbol>
-        <symbol id="upload-icon" viewBox="0 0 536 536">
-          <path d="M307 390h-80c-13 0-24-11-24-24V198h-88c-17 0-26-22-14-34L253 12c8-8 20-8 28 0l152 152c12 12 4 34-14 34h-88v168c0 13-11 24-24 24zm216-8v112c0 13-11 24-24 24H35c-13 0-24-11-24-24V382c0-13 11-24 24-24h136v8c0 31 25 56 56 56h80c31 0 56-25 56-56v-8h136c13 0 24 11 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"/>
-        </symbol>
-        <symbol id="options-icon" viewBox="0 0 536 536">
-          <path d="M60 145h416c9 0 16-7 16-16V89c0-9-7-16-16-16H60c-9 0-16 7-16 16v40c0 9 7 16 16 16zm0 160h416c9 0 16-7 16-16v-40c0-9-7-16-16-16H60c-9 0-16 7-16 16v40c0 9 7 16 16 16zm0 160h416c9 0 16-7 16-16v-40c0-9-7-16-16-16H60c-9 0-16 7-16 16v40c0 9 7 16 16 16z"/>
-        </symbol>
-        <symbol id="rollback-icon" viewBox="0 0 536 536">
-          <path d="M110 45v420c0 7 8 15 15 15h45c7 0 15-8 15-15V290l196 181c19 19 54 8 54-21V65c0-27-35-45-54-27L185 220V42c0-6-5-12-12-12h-48c-7 0-15 8-15 15z"/>
-        </symbol>
-        <symbol id="reroll-icon" viewBox="0 0 536 536">
-          <path d="M435 45v420c0 7-8 15-15 15h-45c-7 0-15-8-15-15V290L165 471c-20 19-55 8-55-21V65c0-27 35-45 55-27l195 182V42c0-6 5-12 12-12h48c7 0 15 8 15 15z"/>
-        </symbol>
-        <symbol id="undo-icon" viewBox="0 0 536 536">
-          <path d="M525 32v47c0 7-6 13-13 12l-85-1a244 244 0 01-158 434A248 248 0 0185 110c4-5 12-5 17-1l34 34c5 5 5 12 1 17a176 176 0 10303 156c17-71-7-145-68-186v102c0 6-5 12-12 12h-48c-6 0-12-5-12-12V32c0-7 6-12 12-12h201c6 0 12 5 12 12z"/>
-        </symbol>
-        <symbol id="redo-icon" viewBox="0 0 536 536">
-          <path d="M17 32v47c0 7 6 13 13 12l85-1a244 244 0 00158 434 248 248 0 00184-414c-4-5-12-5-17-1l-34 34c-5 5-5 12-1 17a176 176 0 11-303 156c-17-71 7-145 68-186v102c0 6 5 12 12 12h48c6 0 12-5 12-12V32c0-7-6-12-12-12H29c-6 0-12 5-12 12z"/>
-        </symbol>
-        <symbol id="about-icon" viewBox="0 0 536 536">
-          <path d="M270 7C190 7 139 39 98 98c-7 10-5 25 5 32l43 33c11 8 25 6 33-4 26-31 44-49 83-49 31 0 69 19 69 49 0 23-19 34-49 51-35 20-82 45-82 107v10c0 13 11 24 24 24h72c13 0 24-11 24-24v-6c0-43 126-45 126-161C446 73 355 7 270 7zm-10 373a69 69 0 100 139 69 69 0 000-139z"/>
-        </symbol>
-        <symbol id="back-icon" viewBox="0 0 536 536">
-          <path d="M268 516a248 248 0 110-496 248 248 0 010 496zm116-292H268v-71c0-11-13-16-20-8L133 260c-5 4-5 12 0 16l114 115c8 8 21 2 21-8v-71h116c7 0 12-5 12-12v-64c0-7-5-12-12-12z"/>
-        </symbol>
-        <symbol id="random-icon" viewBox="0 0 536 536">
-          <path d="M505 359c9 9 9 25 0 34l-80 80c-15 15-41 4-41-17v-40h-59a12 12 0 01-9-4l-70-75 53-58 53 57h32v-40c0-21 26-32 41-17l80 80zM12 176h84l53 57 53-58-70-75a12 12 0 00-9-4H12c-7 0-12 5-12 12v56c0 7 5 12 12 12zm372 0v40c0 21 26 32 41 17l80-80c9-9 9-25 0-34l-80-80c-15-15-41-4-41 17v40h-59a12 12 0 00-9 4L96 336H12c-7 0-12 5-12 12v56c0 7 5 12 12 12h111c3 0 6-1 9-4l220-236h32z"/>
-        </symbol>
-        <symbol id="info-icon" viewBox="0 0 536 536">
-          <path d="M270 21a248 248 0 100 496 248 248 0 000-496zm0 110a42 42 0 110 84 42 42 0 010-84zm56 254c0 6-6 12-12 12h-88c-7 0-12-6-12-12v-24c0-7 5-12 12-12h12v-64h-12c-7 0-12-6-12-12v-24c0-7 5-12 12-12h64c6 0 12 5 12 12v100h12c6 0 12 5 12 12z"/>
-        </symbol>
+        <symbol id="dice-icon" viewBox="0 0 640 512"><path d="M592 192H473.26c12.69 29.59 7.12 65.2-17 89.32L320 417.58V464c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48V240c0-26.51-21.49-48-48-48zM480 376c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24zm-46.37-186.7L258.7 14.37c-19.16-19.16-50.23-19.16-69.39 0L14.37 189.3c-19.16 19.16-19.16 50.23 0 69.39L189.3 433.63c19.16 19.16 50.23 19.16 69.39 0L433.63 258.7c19.16-19.17 19.16-50.24 0-69.4zM96 248c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24zm128 128c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24zm0-128c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24zm0-128c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24zm128 128c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24z"/></symbol>
+        <symbol id="pencil-icon" viewBox="0 0 536 536"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></symbol>
+        <symbol id="download-icon" viewBox="0 0 536 536"><path d="M216 0h80c13 0 24 11 24 24v168h88c17 0 26 22 14 34L270 378c-8 8-20 8-28 0L90 226c-13-13-4-34 14-34h88V24c0-13 11-24 24-24zm296 376v112c0 13-11 24-24 24H24c-13 0-24-11-24-24V376c0-13 11-24 24-24h147l49 49c20 20 52 20 72 0l49-49h147c13 0 24 11 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"/></symbol>
+        <symbol id="upload-icon" viewBox="0 0 536 536"><path d="M307 390h-80c-13 0-24-11-24-24V198h-88c-17 0-26-22-14-34L253 12c8-8 20-8 28 0l152 152c12 12 4 34-14 34h-88v168c0 13-11 24-24 24zm216-8v112c0 13-11 24-24 24H35c-13 0-24-11-24-24V382c0-13 11-24 24-24h136v8c0 31 25 56 56 56h80c31 0 56-25 56-56v-8h136c13 0 24 11 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"/></symbol>
+        <symbol id="options-icon" viewBox="0 0 536 536"><path d="M60 145h416c9 0 16-7 16-16V89c0-9-7-16-16-16H60c-9 0-16 7-16 16v40c0 9 7 16 16 16zm0 160h416c9 0 16-7 16-16v-40c0-9-7-16-16-16H60c-9 0-16 7-16 16v40c0 9 7 16 16 16zm0 160h416c9 0 16-7 16-16v-40c0-9-7-16-16-16H60c-9 0-16 7-16 16v40c0 9 7 16 16 16z"/></symbol>
+        <symbol id="rollback-icon" viewBox="0 0 536 536"><path d="M110 45v420c0 7 8 15 15 15h45c7 0 15-8 15-15V290l196 181c19 19 54 8 54-21V65c0-27-35-45-54-27L185 220V42c0-6-5-12-12-12h-48c-7 0-15 8-15 15z"/></symbol>
+        <symbol id="reroll-icon" viewBox="0 0 536 536"><path d="M435 45v420c0 7-8 15-15 15h-45c-7 0-15-8-15-15V290L165 471c-20 19-55 8-55-21V65c0-27 35-45 55-27l195 182V42c0-6 5-12 12-12h48c7 0 15 8 15 15z"/></symbol>
+        <symbol id="undo-icon" viewBox="0 0 536 536"><path d="M525 32v47c0 7-6 13-13 12l-85-1a244 244 0 01-158 434A248 248 0 0185 110c4-5 12-5 17-1l34 34c5 5 5 12 1 17a176 176 0 10303 156c17-71-7-145-68-186v102c0 6-5 12-12 12h-48c-6 0-12-5-12-12V32c0-7 6-12 12-12h201c6 0 12 5 12 12z"/></symbol>
+        <symbol id="redo-icon" viewBox="0 0 536 536"><path d="M17 32v47c0 7 6 13 13 12l85-1a244 244 0 00158 434 248 248 0 00184-414c-4-5-12-5-17-1l-34 34c-5 5-5 12-1 17a176 176 0 11-303 156c-17-71 7-145 68-186v102c0 6 5 12 12 12h48c6 0 12-5 12-12V32c0-7-6-12-12-12H29c-6 0-12 5-12 12z"/></symbol>
+        <symbol id="about-icon" viewBox="0 0 536 536"><path d="M270 7C190 7 139 39 98 98c-7 10-5 25 5 32l43 33c11 8 25 6 33-4 26-31 44-49 83-49 31 0 69 19 69 49 0 23-19 34-49 51-35 20-82 45-82 107v10c0 13 11 24 24 24h72c13 0 24-11 24-24v-6c0-43 126-45 126-161C446 73 355 7 270 7zm-10 373a69 69 0 100 139 69 69 0 000-139z"/></symbol>
+        <symbol id="back-icon" viewBox="0 0 536 536"><path d="M268 516a248 248 0 110-496 248 248 0 010 496zm116-292H268v-71c0-11-13-16-20-8L133 260c-5 4-5 12 0 16l114 115c8 8 21 2 21-8v-71h116c7 0 12-5 12-12v-64c0-7-5-12-12-12z"/></symbol>
+        <symbol id="random-icon" viewBox="0 0 536 536"><path d="M505 359c9 9 9 25 0 34l-80 80c-15 15-41 4-41-17v-40h-59a12 12 0 01-9-4l-70-75 53-58 53 57h32v-40c0-21 26-32 41-17l80 80zM12 176h84l53 57 53-58-70-75a12 12 0 00-9-4H12c-7 0-12 5-12 12v56c0 7 5 12 12 12zm372 0v40c0 21 26 32 41 17l80-80c9-9 9-25 0-34l-80-80c-15-15-41-4-41 17v40h-59a12 12 0 00-9 4L96 336H12c-7 0-12 5-12 12v56c0 7 5 12 12 12h111c3 0 6-1 9-4l220-236h32z"/></symbol>
+        <symbol id="info-icon" viewBox="0 0 536 536"><path d="M270 21a248 248 0 100 496 248 248 0 000-496zm0 110a42 42 0 110 84 42 42 0 010-84zm56 254c0 6-6 12-12 12h-88c-7 0-12-6-12-12v-24c0-7 5-12 12-12h12v-64h-12c-7 0-12-6-12-12v-24c0-7 5-12 12-12h64c6 0 12 5 12 12v100h12c6 0 12 5 12 12z"/></symbol>
       </g>
     </defs>
   </svg>

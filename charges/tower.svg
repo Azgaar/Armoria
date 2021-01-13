@@ -1,6 +1,6 @@
-<svg width="800" height="800" fill="#d7374a" viewBox="50 50 200 200" xmlns="http://www.w3.org/2000/svg">
+<svg width="800" height="800" fill="#d7374a" stroke="#000" viewBox="50 50 200 200" xmlns="http://www.w3.org/2000/svg">
 <!-- source: http://wappenwiki.org/images/3/3c/Logudoro.svg, CC BY-NC-SA 3.0 -->
- <g id="tower" stroke="#000" stroke-width="3" transform="matrix(.10915 0 0 .1094 43 58)">
+ <g id="tower" stroke-width="3" transform="matrix(.10915 0 0 .1094 43 58)">
   <path d="M643 556l39 43v104c0 30-82 45-160 45s-160-15-160-45V599l38-43h243z"/>
   <path d="m405 177-5 379c20 19 102 20 122 20 55 0 121-10 121-20-1.7-126-3.3-253-5-379m-76-114v-38l-80-1v40l-63 5v-39c-35 5-60 12-60 20l-1 85 0.8 6.7c104-12 222-17 325 0.26v-93c0-7-25-14-60-19v39"/>
   <path d="m358 54v-19c12-7 34-14 63-14v16c-33 0-58 13-63 17zm326 89c0-13-84-26-163-26s-162 13-162 26l40 39c0-7 57-16 123-16s123 12 123 16z"/>

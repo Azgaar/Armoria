@@ -1,4 +1,4 @@
-<svg width="800" height="800" fill="#d7374a" viewBox="50 50 200 200" xmlns="http://www.w3.org/2000/svg">
+<svg width="800" height="800" fill="#d7374a" stroke="#000" viewBox="50 50 200 200" xmlns="http://www.w3.org/2000/svg">
   <!-- Author: Azgaar. License: Public Domain -->
   <g id="compassRose" stroke-width=".5">
     <path d="m 100,60 6,28 14,-8 -8,15 28,5 -28,6 8,14 -14,-8 -6,28 -6,-28 -14,8 8,-14 -28,-6 28,-6 -8,-14 14,8 z"></path>
