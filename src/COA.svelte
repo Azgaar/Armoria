@@ -8,7 +8,7 @@
   $: viewBox = shieldBox[coa.shield || $shield] || "0 0 200 200";
 
   function logToConsole() {
-    console.log(JSON.stringify(coa));
+    console.log(JSON.stringify(coa).replaceAll("#", "%23"));
   }
 </script>
 

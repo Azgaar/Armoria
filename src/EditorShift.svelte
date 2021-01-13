@@ -13,7 +13,7 @@
 <input type=number min=1 max=500 step=1 value={e.size * 100 | 0} on:input={function() {e.size = this.value / 100}}/>
 
 <Tip tip="Element rotation angle in degrees"><span style="margin-left: 1em">Rotation:</span></Tip>
-<input style="margin-left: 1em" type="number" min=-180 max=180 bind:value={e.angle} on:change={updateGrid}/>
+<input type="number" min=-180 max=180 bind:value={e.angle} on:change={updateGrid}/>
 
 <Tip tip="Element shift in pixels"><span style="margin-left: 1em">Shift:</span></Tip>
 <input type="number" min=-100 max=100 step={$grid} bind:value={e.x}/>

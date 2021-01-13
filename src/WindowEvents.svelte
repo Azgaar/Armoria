@@ -43,7 +43,7 @@
     const ratioY = Math.abs(diffY / diffX);
     const absDiff = Math.abs(ratioX > ratioY ? diffX : diffY);
 
-    if (absDiff < 30) return; // ignore small movements
+    if (absDiff < 50) return; // ignore small movements
 
     if (ratioX > ratioY) diffX >= 0 ? swipeRight() : swipeLeft();
     else diffY >= 0 ? swipeDown() : swipeUp();

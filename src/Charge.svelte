@@ -11,7 +11,7 @@
     positions = shieldPositions[shield] || shieldPositions.spanish;
     size = shieldSize[shield] || 1;
     fill = colors[t];
-    stroke = charge.stroke || "#f00";
+    stroke = charge.stroke || "#000";
 
     chargeId = charge.charge;
     // select shield shape if charge is just 'inescutcheon'

@@ -4,6 +4,7 @@
   import EditorType from './EditorType.svelte';
   import EditorSize from './EditorSize.svelte';
   import EditorTincture from './EditorTincture.svelte';
+  import EditorStroke from './EditorStroke.svelte';
   import EditorShift from "./EditorShift.svelte";
   import EditorControlButtons from "./EditorControlButtons.svelte";
   import Switch from './Switch.svelte';
@@ -112,13 +113,16 @@
       const ordinaries = coa.ordinaries.map(o => {
         const {ordinary, t} = o;
         const line = o.line || "straight";
+        const showStroke = Boolean(o.stroke);
+        const stroke = o.stroke || "#000000";
+        const strokeWidth = o.strokeWidth || 1;
         const size = o.size || 1;
         const x = o.x || 0;
         const y = o.y || 0;
         const angle = o.angle || 0;
         const divided = o.divided || "";
         if (angle) updateGrid(o);
-        return {ordinary, t, line, size, x, y, angle, divided};
+        return {ordinary, t, line, showStroke, stroke, strokeWidth, size, x, y, angle, divided};
       });
 
       return ordinaries;
@@ -131,8 +135,8 @@
       const charges = coa.charges.map(c => {
         const {charge, t, p, size} = c;
         const type = getChargeType(charge);
-        const stroke = c.stroke || "#000000";
         const showStroke = c.stroke !== "none";
+        const stroke = c.stroke || "#000000";
         const layer = c.layer || "";
         const sinister = c.sinister || false;
         const reversed = c.reversed || false;
@@ -140,7 +144,7 @@
         const y = c.y || 0;
         const angle = c.angle || 0;
         if (angle) updateGrid(c);
-        return {charge, type, stroke, showStroke, layer, t, p, size, sinister, reversed, x, y, angle};
+        return {charge, type, showStroke, stroke, layer, t, p, size, sinister, reversed, x, y, angle};
       });
 
       return charges;
@@ -223,6 +227,8 @@
         const item = {ordinary: o.ordinary, t: o.t};
         if (ordinaries.lined[o.ordinary]) item.line = o.line;
         if (coa.division && o.divided) item.divided = o.divided;
+        if (o.showStroke) item.stroke = o.stroke;
+        if (o.showStroke && o.strokeWidth !== 1) item.strokeWidth = o.strokeWidth;
         if (o.size && o.size !== 1) item.size = o.size;
         if (o.x || o.y) {item.x = o.x; item.y = o.y;}
         if (o.angle) item.angle = o.angle;
@@ -236,8 +242,8 @@
     if (menu.charges.length) {
       coa.charges = menu.charges.map(c => {
         const item = {charge: c.charge, t: c.t, p: c.p, size: c.size};
-        if (c.stroke !== "#000000") item.stroke = c.stroke;
         if (!c.showStroke) item.stroke = "none";
+        if (c.stroke !== "#000000") item.stroke = c.stroke;
         if (c.layer) item.layer = c.layer;
         if (c.sinister) item.sinister = 1;
         if (c.reversed) item.reversed = 1;
@@ -464,6 +470,12 @@
             <EditorTincture bind:t1={o.t} {itemSize}/>
           </div>
         {/if}
+
+        {#if !["bordure", "orle"].includes(o.ordinary)}
+          <div class="subsection">
+            <EditorStroke bind:element={o}/>
+          </div>
+        {/if}
   
         <div class="subsection">
           <EditorShift bind:e={o}/>
@@ -513,13 +525,7 @@
         {/if}
 
         <div class="subsection">
-          <Tip tip="Element stroke. Uncheck to not render">
-            Stroke:
-            <Switch bind:checked={charge.showStroke}/>
-            {#if charge.showStroke}
-              <input type=color bind:value={charge.stroke}/>
-            {/if}
-          </Tip>
+          <EditorStroke bind:element={charge}/>
         </div>
 
         <div class="subsection">
@@ -597,15 +603,14 @@
     background-color: #00000080;
   }
 
-  .section:before {
+  .section:after {
     content: "\276F";
     transition: .2s ease-out;
     margin-top: -.1em;
-    position: absolute;
-    right: 1em;
+    float: right;
   }
 
-  .expanded:before {
+  .expanded:after {
     transform: rotate(90deg);
   }
 
@@ -644,12 +649,6 @@
     width: 1.3em;
     margin-left: -1.6em;
     border: 0;
-  }
-
-  input[type=color] {
-    margin: 0 0 0 .2em;
-    padding: 0;
-    cursor: pointer;
   }
 
   :global(.item) {
