@@ -1,11 +1,13 @@
 <script>
   import Ordinary from './Ordinary.svelte';
   import Charge from './Charge.svelte';
-  import {shield, colors, patterns, grad, diaper} from './stores';
+  import {shield, colors, patterns, grad, diaper, counter} from './stores';
   export let coa, i, border, borderWidth, type;
+  $counter += 1;
 
   const {division, ordinaries = [], charges = []} = coa;
-  const tDiv = division ? division.t : "";
+  let tDiv;
+  if (division) tDiv = division.t.includes("-") ? division.t.split("-")[1] : division.t;
 
   let coaColors, coaGrad, coaShield, shieldPath, coaDiaper, diaperType;
   $: {
@@ -20,7 +22,7 @@
   function getDieperType() {
     if (!coaDiaper || coaDiaper === "no") return null;
     const f = !coa.t1.includes("-");
-    const d = !tDiv.includes("-");
+    const d = !division?.t.includes("-");
     if (f && d) return "overall";
     if (f) return "field";
     if (d) return "division";
@@ -51,6 +53,7 @@
   {/if}
 </defs>
 
+{console.log("Shield", type, $counter, coa)}
 <g id="shield" clip-path="url(#{coaShield})">
 
   <!-- Field -->
@@ -71,16 +74,16 @@
     {/if}
 
     {#each charges as charge, i}
-      {#if charge.layer === "field"}
+      {#if charge.divided === "field"}
         <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={charge.t} {type}/>
-      {:else if charge.layer === "counter"}
+      {:else if charge.divided === "counter"}
         <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={tDiv} {type}/>
       {/if}
     {/each}
 
     <!-- In division part -->
     <g id="division" clip-path="url(#divisionClip{i})">
-      <rect x=0 y=0 width=200 height=200 fill="{coaColors[tDiv] || clr(tDiv)}"/>
+      <rect x=0 y=0 width=200 height=200 fill="{coaColors[division.t] || clr(division.t)}"/>
 
       {#each ordinaries as ordinary, i}
         {#if ordinary.divided === "division"}
@@ -95,9 +98,9 @@
       {/if}
 
       {#each charges as charge, i}
-        {#if charge.layer === "division"}
+        {#if charge.divided === "division"}
           <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={charge.t} {type}/>
-        {:else if charge.layer === "counter"}
+        {:else if charge.divided === "counter"}
           <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={coa.t1} {type}/>
         {/if}
       {/each}
@@ -116,7 +119,7 @@
   {/if}
 
   {#each charges as charge, i}
-    {#if !charge.layer || !division}
+    {#if !charge.divided || !division}
       <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={charge.t} {type}/>
     {/if}
   {/each}

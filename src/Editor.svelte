@@ -27,7 +27,7 @@
   const categories = Object.keys(charges.types);
   const ordinariesList = Object.keys(ordinaries.lined).concat(Object.keys(ordinaries.straight));
 
-  let menu = {}, change = 0;
+  let menu = {}, change = 0, section = {field: 0, division: 0, ordinary: [], charge: []};
 
   $state.transform = null;
   $state.positions = null;
@@ -137,14 +137,14 @@
         const type = getChargeType(charge);
         const showStroke = c.stroke !== "none";
         const stroke = c.stroke || "#000000";
-        const layer = c.layer || "";
+        const divided = c.divided || "";
         const sinister = c.sinister || false;
         const reversed = c.reversed || false;
         const x = c.x || 0;
         const y = c.y || 0;
         const angle = c.angle || 0;
         if (angle) updateGrid(c);
-        return {charge, type, showStroke, stroke, layer, t, p, size, sinister, reversed, x, y, angle};
+        return {charge, type, showStroke, stroke, divided, t, p, size, sinister, reversed, x, y, angle};
       });
 
       return charges;
@@ -183,7 +183,7 @@
   function addOrdinary() {
     const ordinary = ra(ordinariesList);
     const t = rw($tinctures[rw($tinctures.charge)]);
-    const o = {ordinary, t, line: "straight", size: 1, x: 0, y: 0, angle: 0, divided: ""};
+    const o = {ordinary, t, showStroke: false, stroke: "#000000", strokeWidth: 1, line: "straight", size: 1, x: 0, y: 0, angle: 0, divided: ""};
     menu.ordinaries = [...menu.ordinaries, o];
   }
 
@@ -191,7 +191,7 @@
     const type = rw(charges.single);
     const charge = rw(charges[type]);
     const t = rw($tinctures[rw($tinctures.charge)]);
-    const с = {charge, t, p: "e", type, size: 1.5, sinister: false, reversed: false, x: 0, y: 0, angle: 0, layer: ""};
+    const с = {charge, t, p: "e", showStroke: true, stroke: "#000000", type, size: 1.5, sinister: false, reversed: false, x: 0, y: 0, angle: 0, divided: ""};
     menu.charges = [...menu.charges, с];
   }
 
@@ -244,7 +244,7 @@
         const item = {charge: c.charge, t: c.t, p: c.p, size: c.size};
         if (!c.showStroke) item.stroke = "none";
         if (c.stroke !== "#000000") item.stroke = c.stroke;
-        if (c.layer) item.layer = c.layer;
+        if (c.divided) item.divided = c.divided;
         if (c.sinister) item.sinister = 1;
         if (c.reversed) item.reversed = 1;
         if (c.x || c.y) {item.x = c.x; item.y = c.y;}
@@ -266,18 +266,6 @@
     return 'ontouchstart' in window;
   }
 
-  function showSection(e) {
-    e.target.classList.toggle("expanded");
-    const panel = e.target.nextElementSibling;
-    if (panel.style.maxHeight) panel.style.maxHeight = null;
-    else panel.style.maxHeight = panel.scrollHeight + "px";
-  }
-
-  function updateSection(e) {
-    const panel = e.currentTarget.closest(".panel");
-    setTimeout(() => panel.style.maxHeight = panel.scrollHeight + "px", 100);
-  }
-
   function showPositions(c) {
     $state.transform = `rotate(${c.angle||0}) translate(${c.x||0}, ${c.y||0})`;
     $state.positions = c.p;
@@ -296,258 +284,264 @@
     const split = string.split(/(?=[A-Z])/).join(" ");
     return split.charAt(0).toUpperCase() + split.slice(1);
   }
-
 </script>
 
-<div id="editor">
+<div id=editor>
   {#key coa}
-    <COA {coa} i="Edit" w={coaSize} h={coaSize}/>
+    <COA {coa} i=Edit w={coaSize} h={coaSize}/>
   {/key}
-  <div id="menu" in:fly={{x:500, duration:1000}} style="width:{width}%">
+  <div id=menu in:fly={{x:500, duration:1000}} style="width:{width}%">
     <!-- Field -->
-    <div class="section" class:expanded={false} on:click={showSection}>Field</div>
-    <div class="panel">
-      <div class="subsection">
-        <EditorType bind:type={menu.field.type} {updateSection}/>
-        {#if menu.field.type !== "tincture"}
-          <EditorSize bind:size={menu.field.size}/>
-        {/if}
-      </div>
-
-      <div class="subsection">
-        <EditorTincture bind:t1={menu.field.t1} {itemSize}/>
-      </div>
-
-      {#if menu.field.type !== "tincture"}
-        <div class="subsection">
-          <EditorTincture bind:t1={menu.field.t2} {itemSize}/>
-        </div>
-      {/if}
-
-      {#if menu.field.type === "pattern"}
-        <div class="subsection">
-          <div>Pattern:</div>
-          {#each patterns.map(p => new Object({t1: `${p}-${menu.field.t1}-${menu.field.t2}-${menu.field.size}`, pattern: p})) as coa}
-            <div class=item class:selected={menu.field.pattern === coa.pattern} on:click={() => menu.field.pattern = coa.pattern}>
-              <MenuItem {coa} title={cap(coa.pattern)} {itemSize}/>
-            </div>
-          {/each}
-        </div>
-      {/if}
-
-      {#if menu.field.type === "semy"}
-        <div class="subsection">
-          <div>Charge:
-            <select bind:value={menu.field.semy}>
-              {#each categories as type}
-                <option value={type}>{cap(type)}</option>
-              {/each}
-            </select>
-          </div>
-
-          {#each Object.keys(charges[menu.field.semy]).map(c => new Object({t1: `semy_of_${c}-${menu.field.t1}-${menu.field.t2}-${menu.field.size}`, charge: c})) as coa (coa)}
-            <div class=item class:selected={menu.field.charge === coa.charge} on:click={() => menu.field.charge = coa.charge}>
-              <MenuItem {coa} title={cap(coa.charge)} {itemSize}/>
-            </div>
-          {/each}
-        </div>
-      {/if}
-    </div>
-
-    <!-- Division -->
-    <div class="section" on:click={showSection}>Division</div>
-    <div class="panel">
-      <div class="subsection" on:click={updateSection}>
-        {#each ["no"].concat(Object.keys(divisions.variants)).map(division => new Object({t1: coa.t1, division: {division, t: coa.division ? coa.division.t : menu.division.t1, line: menu.division.line}})) as coa (coa)}
-          <div class=item class:selected={menu.division.division === coa.division.division} on:click={() => menu.division.division = coa.division.division}>
-            <MenuItem {coa} title={cap(coa.division.division)} {itemSize}/>
-          </div>
-        {/each}
-      </div>
-
-      {#if divisions[coa.division?.division]}
-        <div class="subsection">
-          <div>Line:</div>
-          {#each Object.keys(lines).map(line => new Object({line, t1: coa.t1, division: {division: menu.division.division, t: coa.division ? coa.division.t : menu.division.t1, line}})) as coa (coa)}
-            <div class=item class:selected={menu.division.line === coa.line} on:click={() => menu.division.line = coa.line}>
-              <MenuItem {coa} title={cap(coa.line)} {itemSize}/>
-            </div>
-          {/each}
-        </div>
-      {/if}
-
-      {#if coa.division}
-        <div class="subsection">
-          <EditorType bind:type={menu.division.type} {updateSection}/>
-          {#if menu.division.type !== "tincture"}
-            <EditorSize bind:size={menu.division.size}/>
+    <div class=section class:expanded={section.field} on:click={() => section.field = !section.field}>Field</div>
+    {#if section.field}
+      <div class=panel transition:slide>
+        <div class=subsection>
+          <EditorType bind:type={menu.field.type}/>
+          {#if menu.field.type !== "tincture"}
+            <EditorSize bind:size={menu.field.size}/>
           {/if}
         </div>
 
-        <div class="subsection">
-          <EditorTincture bind:t1={menu.division.t1} {itemSize}/>
+        <div class=subsection>
+          <EditorTincture bind:t1={menu.field.t1} {itemSize}/>
         </div>
 
-        {#if menu.division.type !== "tincture"}
-          <div class="subsection">
-            <EditorTincture bind:t1={menu.division.t2} {itemSize}/>
+        {#if menu.field.type !== "tincture"}
+          <div class=subsection>
+            <EditorTincture bind:t1={menu.field.t2} {itemSize}/>
           </div>
         {/if}
 
-        {#if menu.division.type === "pattern"}
-          <div class="subsection">
+        {#if menu.field.type === "pattern"}
+          <div class=subsection>
             <div>Pattern:</div>
-            {#each patterns.map(pattern => new Object({pattern, t1: `${pattern}-${menu.division.t1}-${menu.division.t2}-${menu.division.size}`})) as coa}
-              <div class=item class:selected={menu.division.pattern === coa.pattern} on:click={() => menu.division.pattern = coa.pattern}>
+            {#each patterns.map(p => new Object({t1: `${p}-${menu.field.t1}-${menu.field.t2}-${menu.field.size}`, pattern: p})) as coa}
+              <div class=item class:selected={menu.field.pattern === coa.pattern} on:click={() => menu.field.pattern = coa.pattern}>
                 <MenuItem {coa} title={cap(coa.pattern)} {itemSize}/>
               </div>
             {/each}
           </div>
         {/if}
 
-        {#if menu.division.type === "semy"}
-          <div class="subsection">
+        {#if menu.field.type === "semy"}
+          <div class=subsection>
             <div>Charge:
-              <select bind:value={menu.division.semy}>
+              <select bind:value={menu.field.semy}>
                 {#each categories as type}
                   <option value={type}>{cap(type)}</option>
                 {/each}
               </select>
             </div>
 
-            {#each Object.keys(charges[menu.division.semy]).map(c => new Object({t1: `semy_of_${c}-${menu.division.t1}-${menu.division.t2}-${menu.division.size}`, charge: c})) as coa (coa)}
-              <div class=item class:selected={menu.division.charge === coa.charge} on:click={() => menu.division.charge = coa.charge}>
+            {#each Object.keys(charges[menu.field.semy]).map(c => new Object({t1: `semy_of_${c}-${menu.field.t1}-${menu.field.t2}-${menu.field.size}`, charge: c})) as coa (coa)}
+              <div class=item class:selected={menu.field.charge === coa.charge} on:click={() => menu.field.charge = coa.charge}>
                 <MenuItem {coa} title={cap(coa.charge)} {itemSize}/>
               </div>
             {/each}
           </div>
         {/if}
-      {/if}
-    </div>
+      </div>
+    {/if}
 
-    <!-- Ordinaries -->
-    {#each menu.ordinaries as o, i}
-      <div class="section" in:slide on:click={showSection}>Ordinary {menu.ordinaries.length > 1 ? i+1 : ""}</div>
-
-      <div class="panel">
-        <div class="subsection">
-          <EditorControlButtons bind:els={menu.ordinaries} el={o} {i}/>
-        </div>
-
-        {#if coa.division}
-          <div class="subsection" on:click={updateSection}>
-            Divided:
-            <select bind:value={o.divided}>
-              <option value="">No (standard)</option>
-              <option value=field>Crop by main field</option>
-              <option value=division>Crop by division</option>
-              <option value=counter>Сounterchanged</option>
-            </select>
-          </div>
-        {/if}
-
-        <div class="subsection" on:click={updateSection}>
-          {#each ordinariesList.map(ordinary => new Object({test:o, ordinary, t1: coa.t1, division: coa.division, ordinaries: [{ordinary, line: o.line, t: o.t, divided: o.divided}]})) as coa (coa)}
-            <div class=item class:selected={o.ordinary === coa.ordinary} on:click={() => o.ordinary = coa.ordinary}>
-              <MenuItem {coa} title={cap(coa.ordinary)} {itemSize}/>
+    <!-- Division -->
+    <div class=section class:expanded={section.division} on:click={() => section.division = !section.division}>Division: {cap(menu.division.division)}</div>
+    {#if section.division}
+      <div class=panel transition:slide>
+        <div class=subsection>
+          {#each ["no"].concat(Object.keys(divisions.variants)).map(division => new Object({t1: coa.t1, division: {division, t: coa.division ? coa.division.t : menu.division.t1, line: menu.division.line}})) as coa (coa)}
+            <div class=item class:selected={menu.division.division === coa.division.division} on:click={() => menu.division.division = coa.division.division}>
+              <MenuItem {coa} title={cap(coa.division.division)} {itemSize}/>
             </div>
           {/each}
         </div>
-      
-        {#if ordinaries.lined[o.ordinary]}
-          <div class="subsection">
+
+        {#if divisions[coa.division?.division]}
+          <div class=subsection>
             <div>Line:</div>
-            {#each Object.keys(lines).map(line => new Object({line, t1: coa.t1, division: coa.division, ordinaries: [{ordinary: o.ordinary, line, t: o.t, divided: o.divided}]})) as coa (coa)}
-              <div class=item class:selected={o.line === coa.line} on:click={() => o.line = coa.line}>
+            {#each Object.keys(lines).map(line => new Object({line, t1: coa.t1, division: {division: menu.division.division, t: coa.division ? coa.division.t : menu.division.t1, line}})) as coa (coa)}
+              <div class=item class:selected={menu.division.line === coa.line} on:click={() => menu.division.line = coa.line}>
                 <MenuItem {coa} title={cap(coa.line)} {itemSize}/>
               </div>
             {/each}
           </div>
         {/if}
-  
-        {#if o.divided !== "counter"}
-          <div class="subsection">
-            <EditorTincture bind:t1={o.t} {itemSize}/>
-          </div>
-        {/if}
 
-        {#if !["bordure", "orle"].includes(o.ordinary)}
-          <div class="subsection">
-            <EditorStroke bind:element={o}/>
+        {#if coa.division}
+          <div class=subsection>
+            <EditorType bind:type={menu.division.type}/>
+            {#if menu.division.type !== "tincture"}
+              <EditorSize bind:size={menu.division.size}/>
+            {/if}
           </div>
+
+          <div class=subsection>
+            <EditorTincture bind:t1={menu.division.t1} {itemSize}/>
+          </div>
+
+          {#if menu.division.type !== "tincture"}
+            <div class=subsection>
+              <EditorTincture bind:t1={menu.division.t2} {itemSize}/>
+            </div>
+          {/if}
+
+          {#if menu.division.type === "pattern"}
+            <div class=subsection>
+              <div>Pattern:</div>
+              {#each patterns.map(pattern => new Object({pattern, t1: `${pattern}-${menu.division.t1}-${menu.division.t2}-${menu.division.size}`})) as coa}
+                <div class=item class:selected={menu.division.pattern === coa.pattern} on:click={() => menu.division.pattern = coa.pattern}>
+                  <MenuItem {coa} title={cap(coa.pattern)} {itemSize}/>
+                </div>
+              {/each}
+            </div>
+          {/if}
+
+          {#if menu.division.type === "semy"}
+            <div class=subsection>
+              <div>Charge:
+                <select bind:value={menu.division.semy}>
+                  {#each categories as type}
+                    <option value={type}>{cap(type)}</option>
+                  {/each}
+                </select>
+              </div>
+
+              {#each Object.keys(charges[menu.division.semy]).map(c => new Object({t1: `semy_of_${c}-${menu.division.t1}-${menu.division.t2}-${menu.division.size}`, charge: c})) as coa (coa)}
+                <div class=item class:selected={menu.division.charge === coa.charge} on:click={() => menu.division.charge = coa.charge}>
+                  <MenuItem {coa} title={cap(coa.charge)} {itemSize}/>
+                </div>
+              {/each}
+            </div>
+          {/if}
         {/if}
-  
-        <div class="subsection">
-          <EditorShift bind:e={o}/>
-        </div>
       </div>
+    {/if}
+
+    <!-- Ordinaries -->
+    {#each menu.ordinaries as o, i}
+      <div class=section in:slide class:expanded={section.ordinary[i]} on:click={() => section.ordinary[i] = !section.ordinary[i]}>Ordinary{menu.ordinaries.length > 1 ? " " + (i+1) : ""}: {cap(o.ordinary)}</div>
+      {#if section.ordinary[i]}
+        <div class=panel transition:slide>
+          <div class=subsection>
+            <EditorControlButtons bind:els={menu.ordinaries} el={o} {i}/>
+          </div>
+
+          {#if coa.division}
+            <div class=subsection>
+              Divided:
+              <select bind:value={o.divided}>
+                <option value="">No (standard)</option>
+                <option value=field>Crop by main field</option>
+                <option value=division>Crop by division</option>
+                <option value=counter>Сounterchanged</option>
+              </select>
+            </div>
+          {/if}
+
+          <div class=subsection>
+            {#each ordinariesList.map(ordinary => new Object({ordinary, t1: coa.t1, division: coa.division, ordinaries: [{ordinary, line: o.line, t: o.t, divided: o.divided}]})) as coa (coa)}
+              <div class=item class:selected={o.ordinary === coa.ordinary} on:click={() => o.ordinary = coa.ordinary}>
+                <MenuItem {coa} title={cap(coa.ordinary)} {itemSize}/>
+              </div>
+            {/each}
+          </div>
+        
+          {#if ordinaries.lined[o.ordinary]}
+            <div class=subsection>
+              <div>Line:</div>
+              {#each Object.keys(lines).map(line => new Object({line, t1: coa.t1, division: coa.division, ordinaries: [{ordinary: o.ordinary, line, t: o.t, divided: o.divided}]})) as coa (coa)}
+                <div class=item class:selected={o.line === coa.line} on:click={() => o.line = coa.line}>
+                  <MenuItem {coa} title={cap(coa.line)} {itemSize}/>
+                </div>
+              {/each}
+            </div>
+          {/if}
+    
+          {#if o.divided !== "counter"}
+            <div class=subsection>
+              <EditorTincture bind:t1={o.t} {itemSize}/>
+            </div>
+          {/if}
+
+          {#if !["bordure", "orle"].includes(o.ordinary)}
+            <div class=subsection>
+              <EditorStroke bind:element={o}/>
+            </div>
+          {/if}
+    
+          <div class=subsection>
+            <EditorShift bind:e={o}/>
+          </div>
+        </div>
+      {/if}
     {/each}
 
     <!-- Charges -->
     {#each menu.charges as charge, i}
-      <div class="section" in:slide on:click={showSection}>Charge {menu.charges.length > 1 ? i+1 : ""}</div>
-      <div class="panel">
+      <div class=section in:slide class:expanded={section.charge[i]} on:click={() => section.charge[i] = !section.charge[i]}>Charge{menu.charges.length > 1 ? " "+ (i+1) : ""}: {cap(charge.charge)}</div>
+      {#if section.charge[i]}
+        <div class=panel transition:slide>
 
-        <div class="subsection">
-          <div>Category:
-            <select bind:value={charge.type} on:input={updateSection}>
-              {#each categories as type}
-                <option value={type}>{cap(type)}</option>
+          <div class=subsection>
+            <div>Category:
+              <select bind:value={charge.type}>
+                {#each categories as type}
+                  <option value={type}>{cap(type)}</option>
+                {/each}
+              </select>
+
+              {#if coa.division}
+                <span style="margin-left: 1em">Divided:</span>
+                <select bind:value={charge.divided}>
+                  <option value="">No (standard)</option>
+                  <option value=field>Crop by main field</option>
+                  <option value=division>Crop by division</option>
+                  {#if !isRaster(charge.charge)}
+                    <option value=counter>Сounterchanged</option>
+                  {/if}
+                </select>
+              {/if}
+
+              <EditorControlButtons bind:els={menu.charges} el={charge} {i}/>
+            </div>
+
+            {#each Object.keys(charges[charge.type]).map(c => new Object({c, t1: coa.t1, charges: [{charge:c, t: charge.t, p:"e", size: 1.5, sinister: charge.sinister, reversed: charge.reversed}]})) as coa (coa)}
+              <div class=item class:selected={charge.charge === coa.c} on:click={() => charge.charge = coa.c}>
+                <MenuItem {coa} title={cap(coa.c)} {itemSize}/>
+              </div>
+            {/each}
+          </div>
+
+          {#if !isRaster(charge.charge) && charge.divided !== "counter"}
+            <div class=subsection>
+              <EditorTincture bind:t1={charge.t} {itemSize}/>
+            </div>
+          {/if}
+
+          <div class=subsection>
+            <EditorStroke bind:element={charge}/>
+          </div>
+
+          <div class=subsection>
+            <Tip tip="Points on shield to place a charge">Positions:</Tip>
+            <input style="margin-left: .6em; width: 8.6em" bind:value={charge.p} on:input={() => showPositions(charge)} on:focus={() => showPositions(charge)} on:blur={() => $state.positions = 0}/>
+            <select class="pseudoSelect" bind:value={charge.p} on:change={() => {charge.size = getSize(charge.p, menu.ordinaries[0]?.ordinary, menu.division.division); showPositions(charge);}} on:focus={() => showPositions(charge)} on:blur={() => $state.positions = 0}>
+              {#each positionsSelect as position}
+                <option value={position}>{position}</option>
               {/each}
             </select>
 
-            {#if coa.division}
-              <span style="margin-left: 1em">Divided:</span>
-              <select bind:value={charge.layer}>
-                <option value="">No (standard)</option>
-                <option value=field>Crop by main field</option>
-                <option value=division>Crop by division</option>
-                {#if !isRaster(charge.charge)}
-                  <option value=counter>Сounterchanged</option>
-                {/if}
-              </select>
-            {/if}
+            <Tip tip="Turn charge to the left"><span style="margin-left: 1em">Sinister:</span></Tip>
+            <Switch bind:checked={charge.sinister}/>
 
-            <EditorControlButtons bind:els={menu.charges} el={charge} {i}/>
+            <Tip tip="Show charge upside down"><span style="margin-left: 1em">Reversed:</span></Tip>
+            <Switch bind:checked={charge.reversed}/>
           </div>
 
-          {#each Object.keys(charges[charge.type]).map(c => new Object({c, t1: coa.t1, charges: [{charge:c, t: charge.t, p:"e", size: 1.5, sinister: charge.sinister, reversed: charge.reversed}]})) as coa (coa)}
-            <div class=item class:selected={charge.charge === coa.c} on:click={() => charge.charge = coa.c}>
-              <MenuItem {coa} title={cap(coa.c)} {itemSize}/>
-            </div>
-          {/each}
-        </div>
-
-        {#if !isRaster(charge.charge) && charge.layer !== "counter"}
-          <div class="subsection">
-            <EditorTincture bind:t1={charge.t} {itemSize}/>
+          <div class=subsection>
+            <EditorShift bind:e={charge}/>
           </div>
-        {/if}
-
-        <div class="subsection">
-          <EditorStroke bind:element={charge}/>
         </div>
-
-        <div class="subsection">
-          <Tip tip="Points on shield to place a charge">Positions:</Tip>
-          <input style="margin-left: .6em; width: 8.6em" bind:value={charge.p} on:input={() => showPositions(charge)} on:focus={() => showPositions(charge)} on:blur={() => $state.positions = 0}/>
-          <select class="pseudoSelect" bind:value={charge.p} on:change={() => {charge.size = getSize(charge.p, menu.ordinaries[0]?.ordinary, menu.division.division); showPositions(charge);}} on:focus={() => showPositions(charge)} on:blur={() => $state.positions = 0}>
-            {#each positionsSelect as position}
-              <option value={position}>{position}</option>
-            {/each}
-          </select>
-
-          <Tip tip="Turn charge to the left"><span style="margin-left: 1em">Sinister:</span></Tip>
-          <Switch bind:checked={charge.sinister}/>
-
-          <Tip tip="Show charge upside down"><span style="margin-left: 1em">Reversed:</span></Tip>
-          <Switch bind:checked={charge.reversed}/>
-        </div>
-
-        <div class="subsection">
-          <EditorShift bind:e={charge}/>
-        </div>
-      </div>
+      {/if}
     {/each}
 
     <div class="buttonLine" on:click={addOrdinary}>Add Ordinary</div>
@@ -615,10 +609,8 @@
   }
 
   .panel {
-    max-height: 0;
     min-width: 100%;
     max-width: max-content;
-    transition: max-height .2s ease-out;
     background-color: #13131320;
     overflow: hidden;
   }
@@ -636,7 +628,7 @@
   .buttonLine {
     padding: 1em 1.14em;
     color: #fff;
-    background-color: #00000060;
+    background-color: #00000040;
     cursor: pointer;
     transition: background-color .1s ease;
   }

@@ -13,9 +13,12 @@
   import {background, size, history, matrices, matrix, state, changes, message, shield} from './stores.js';
   import {shields} from './dataModel';
   import {rw} from './utils';
-
   let n, w, h, gallery = [], coa, seed;
-  $: [n, w, h] = defineGallerySize($size);
+
+  $: {
+    [n, w, h] = defineGallerySize($size);
+  }
+
   $: {
     const l = $history.length;
 
@@ -100,6 +103,7 @@
 </script>
 
 <WindowEvents/>
+{console.log("App", coa)}
 <main style="background-color: {$background}">
   <Navbar/>
   {#if $state.about}<About/>{/if}

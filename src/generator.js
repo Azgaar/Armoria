@@ -86,15 +86,15 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
 
       // dimidiation: second charge at division basic positons
       if (P(.3) && ["perPale", "perFess"].includes(division) && coa.line === "straight") {
-        coa.charges[0].layer = "field";
+        coa.charges[0].divided = "field";
         if (P(.95)) {
           const p2 = p === "e" || P(.5) ? "e" : rw(positions.divisions[division]);
           const charge = selectCharge(charges.single);
           const t = getTincture("charge", usedTinctures, coa.division.t);
-          coa.charges.push({charge, t, p: p2, layer: "division"});
+          coa.charges.push({charge, t, p: p2, divided: "division"});
         }
       }
-      else if (allowCounter && P(.4)) coa.charges[0].layer = "counter"; // counterchanged, 40%
+      else if (allowCounter && P(.4)) coa.charges[0].divided = "counter"; // counterchanged, 40%
       else if (["perPale", "perFess", "perBend", "perBendSinister"].includes(division) && P(.8)) { // place 2 charges in division standard positions
         const [p1, p2] = division === "perPale" ? ["p", "q"] :
                          division === "perFess" ? ["k", "n"] :
@@ -120,7 +120,7 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
         const t4 = getTincture("charge", [], coa.t1);
         coa.charges.push({charge: c2, t: t2, p: p2}, {charge: c3, t: t3, p: p3}, {charge: c4, t: t4, p: p4});
       }
-      else if (allowCounter && p.length > 1) coa.charges[0].layer = "counter"; // counterchanged, 40%
+      else if (allowCounter && p.length > 1) coa.charges[0].divided = "counter"; // counterchanged, 40%
     }
 
     coa.charges.forEach(c => defineChargeAttributes(c));
