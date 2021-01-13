@@ -131,6 +131,8 @@
       const charges = coa.charges.map(c => {
         const {charge, t, p, size} = c;
         const type = getChargeType(charge);
+        const stroke = c.stroke || "#000000";
+        const showStroke = c.stroke !== "none";
         const layer = c.layer || "";
         const sinister = c.sinister || false;
         const reversed = c.reversed || false;
@@ -138,7 +140,7 @@
         const y = c.y || 0;
         const angle = c.angle || 0;
         if (angle) updateGrid(c);
-        return {charge, type, layer, t, p, size, sinister, reversed, x, y, angle};
+        return {charge, type, stroke, showStroke, layer, t, p, size, sinister, reversed, x, y, angle};
       });
 
       return charges;
@@ -234,6 +236,8 @@
     if (menu.charges.length) {
       coa.charges = menu.charges.map(c => {
         const item = {charge: c.charge, t: c.t, p: c.p, size: c.size};
+        if (c.stroke !== "#000000") item.stroke = c.stroke;
+        if (!c.showStroke) item.stroke = "none";
         if (c.layer) item.layer = c.layer;
         if (c.sinister) item.sinister = 1;
         if (c.reversed) item.reversed = 1;
@@ -286,6 +290,7 @@
     const split = string.split(/(?=[A-Z])/).join(" ");
     return split.charAt(0).toUpperCase() + split.slice(1);
   }
+
 </script>
 
 <div id="editor">
@@ -508,6 +513,16 @@
         {/if}
 
         <div class="subsection">
+          <Tip tip="Element stroke. Uncheck to not render">
+            Stroke:
+            <Switch bind:checked={charge.showStroke}/>
+            {#if charge.showStroke}
+              <input type=color bind:value={charge.stroke}/>
+            {/if}
+          </Tip>
+        </div>
+
+        <div class="subsection">
           <Tip tip="Points on shield to place a charge">Positions:</Tip>
           <input style="margin-left: .6em; width: 8.6em" bind:value={charge.p} on:input={() => showPositions(charge)} on:focus={() => showPositions(charge)} on:blur={() => $state.positions = 0}/>
           <select class="pseudoSelect" bind:value={charge.p} on:change={() => {charge.size = getSize(charge.p, menu.ordinaries[0]?.ordinary, menu.division.division); showPositions(charge);}} on:focus={() => showPositions(charge)} on:blur={() => $state.positions = 0}>
@@ -629,6 +644,12 @@
     width: 1.3em;
     margin-left: -1.6em;
     border: 0;
+  }
+
+  input[type=color] {
+    margin: 0 0 0 .2em;
+    padding: 0;
+    cursor: pointer;
   }
 
   :global(.item) {

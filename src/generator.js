@@ -111,13 +111,13 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
         coa.charges[0].p = p1;
 
         const c2 = selectCharge(charges.single);
-        const t2 = getTincture("charge", usedTinctures, coa.division.t);
+        const t2 = getTincture("charge", [], coa.division.t);
 
         const c3 = selectCharge(charges.single);
-        const t3 = getTincture("charge", usedTinctures, coa.division.t);
+        const t3 = getTincture("charge", [], coa.division.t);
 
         const c4 = selectCharge(charges.single);
-        const t4 = getTincture("charge", usedTinctures, coa.t1);
+        const t4 = getTincture("charge", [], coa.t1);
         coa.charges.push({charge: c2, t: t2, p: p2}, {charge: c3, t: t3, p: p3}, {charge: c4, t: t4, p: p4});
       }
       else if (allowCounter && p.length > 1) coa.charges[0].layer = "counter"; // counterchanged, 40%

@@ -1,6 +1,6 @@
-<svg width="800" height="800" fill="#d7374a" viewBox="50 50 200 200" xmlns="http://www.w3.org/2000/svg">
+<svg width="800" height="800" fill="#d7374a" stroke="#000" viewBox="50 50 200 200" xmlns="http://www.w3.org/2000/svg">
  <!-- source: http://wappenwiki.org/images/6/66/Luk.svg, CC BY-NC-SA 3.0 -->
- <g id="arrowsSheaf" stroke="#000" stroke-width="3" transform="matrix(.11 0 0 .11 10.9 102)">
+ <g id="arrowsSheaf" stroke-width="3" transform="matrix(.11 0 0 .11 10.9 102)">
   <g transform="matrix(.70711 -.70711 -.70711 -.70711 229.22 543.74)">
     <path d="m817.4 323c6.9676 3.4598 14.542 5.5315 22.3 6.1 9.6 0 20.2-9.6 20.2-20.8 0-30.9-42.5-111.4-42.5-111.4zm-15 0s-12.1 6.1-22.3 6.1c-9.6 0-20.2-9.6-20.2-20.8 0-30.9 42.5-111.4 42.5-111.4zm0-620.4v643.5s3.3 1.2 7.5 1.2 7.5-1.9 7.5-1.9v-643.5z"/>
     <ellipse cx="809.9" cy="-300.7" rx="15" ry="8.3"/>

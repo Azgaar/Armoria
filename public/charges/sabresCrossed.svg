@@ -1,7 +1,6 @@
-<svg width="800" height="800" fill="#d7374a" viewBox="50 50 200 200" xmlns="http://www.w3.org/2000/svg">
+<svg width="800" height="800" fill="#d7374a" stroke="#000" viewBox="50 50 200 200" xmlns="http://www.w3.org/2000/svg">
 <!-- source: http://wappenwiki.org/images/f/f2/Mohyla_Ancient.svg, CC BY-NC-SA 3.0 -->
- <g id="sabresCrossed" stroke="#000" stroke-width="3">
-
+ <g id="sabresCrossed" stroke-width="3">
   <g transform="matrix(-0.114,0,0,0.114,138,40)">
     <path d="m616.7 854.1s-112.8-59.6-247.1-226.9c-118.2-147.1-176.7-288.6-176.7-288.6l-42.5 29.1c0.1 0 181.2 450.3 466.3 486.4z"/>
     <path d="m126.8 231.5c-18.099-2.937-19.226-0.79035-27.5 14.2 0 0 48.246 94.257 52.5 104.2 7.3204 16.305 33.553-5.5344 29.4-15.1-2.7593-4.0924-54.4-103.3-54.4-103.3z"/>

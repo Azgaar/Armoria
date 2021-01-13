@@ -3,13 +3,15 @@
   import {loadedCharges} from "./stores";
   import {drag, transform} from "./drag"
   export let coa, charge, i, shield, colors, t, type;
-  let chargeId, positions, size;
+  let chargeId, positions, size, fill, stroke;
 
   const defs = document.getElementById("charges");
 
   $: {
     positions = shieldPositions[shield] || shieldPositions.spanish;
     size = shieldSize[shield] || 1;
+    fill = colors[t];
+    stroke = charge.stroke || "#f00";
 
     chargeId = charge.charge;
     // select shield shape if charge is just 'inescutcheon'
@@ -52,8 +54,8 @@
   }
 </script>
 
-<g class="charge" {i} charge={getCharge(chargeId)} transform={transform(charge)} transform-origin="center" stroke="#000" on:mousedown={addDrag}>
+<g class="charge" {i} charge={getCharge(chargeId)} transform={transform(charge)} transform-origin="center" {stroke} on:mousedown={addDrag}>
   {#each [...new Set(charge.p)].filter(p => positions[p]) as p}
-    <use href="#{chargeId}" transform={getElTransform(positions, charge, p)} transform-origin="center" fill="{colors[t]}"></use>
+    <use href="#{chargeId}" transform={getElTransform(positions, charge, p)} transform-origin="center" {fill}></use>
   {/each}
 </g>
