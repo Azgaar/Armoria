@@ -27,8 +27,7 @@ export const counter = writable(0);
 
 const createChangesTracker = () => {
   const { subscribe, set, update } = writable([undefined, -1]);
-  let history = [],
-    position = -1;
+  let history = [], position = -1;
 
   return {
     subscribe,

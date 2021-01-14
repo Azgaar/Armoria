@@ -53,11 +53,11 @@
   {/if}
 </defs>
 
-{console.log("Shield", type, $counter, coa)}
 <g id="shield" clip-path="url(#{coaShield})">
 
   <!-- Field -->
   <rect id="field" x=0 y=0 width=200 height=200 fill="{coaColors[coa.t1] || clr(coa.t1)}"/>
+  {console.log("Shield mount", type, coa)}
 
   {#if division && division.division !== "no"}
     <!-- In field part -->

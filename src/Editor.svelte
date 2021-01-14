@@ -11,10 +11,22 @@
   import Tip from './Tip.svelte';
   import {slide, fly} from 'svelte/transition';
   import {rw, ra} from './utils';
-  import {changes, tinctures, state, grid, showGrid, message} from './stores';
+  import {history, changes, tinctures, state, grid, showGrid, message} from './stores';
   import {charges, divisions, ordinaries, lines, positionsSelect} from "./dataModel";
-  import {getSize} from './generator';
-  export let coa, c;
+  import {generate, getSize} from './generator';
+  export let c, seed;
+
+  console.log("Editor mount", c);
+  let coa = $history[c] || generate(seed || undefined);
+  $: reroll(c);
+
+  function reroll(c) {
+    console.log("Editor reroll", c);
+    coa = $history[c] || generate(seed || undefined);
+    if (!$history[c]) $history.push(coa);
+    changes.reset();
+    defineMenuState();
+  }
 
   const min = Math.min(window.innerWidth, window.innerHeight);
   const ratio = window.innerHeight / window.innerWidth;
@@ -31,9 +43,6 @@
 
   $state.transform = null;
   $state.positions = null;
-
-  // on reroll
-  $: defineMenuState(c);
 
   // on coa change
   $: {

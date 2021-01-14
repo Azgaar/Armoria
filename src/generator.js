@@ -229,6 +229,7 @@ export const getSize = (p, o, d) => {
   if (p === "e") return 1.5;
   if (p === "jln" || p === "jlh") return .7;
   if (p === "abcpqh" || p === "ez" || p === "be") return .5;
+  if (["a", "b", "c"].includes(p)) return .5;
   if (["j", "l", "m", "o", "jlmo"].includes(p) && d === "perCross") return .6;
   if (["b", "d", "f", "h", "bh", "df"].includes(p) && d === "perSaltire") return .5;
   if (p.length > 10) return .18; // >10 (bordure)

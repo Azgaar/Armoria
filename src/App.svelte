@@ -9,17 +9,16 @@
   import Tinctures from './Tinctures.svelte';
   import Message from './Message.svelte';
   import Patterns from './Patterns.svelte';
-  import {generate} from './generator.js';
-  import {background, size, history, matrices, matrix, state, changes, message, shield} from './stores.js';
+  import {background, size, history, matrices, matrix, state, message, shield} from './stores.js';
   import {shields} from './dataModel';
   import {rw} from './utils';
-  let n, w, h, gallery = [], coa, seed;
+  let n, w, h, gallery = [], seed;
 
-  $: {
-    [n, w, h] = defineGallerySize($size);
-  }
+  $: [n, w, h] = defineGallerySize($size);
+  $: handleMatrixChange($matrix);
 
-  $: {
+  function handleMatrixChange() {
+    console.log("matrix:", $matrix);
     const l = $history.length;
 
     // reroll is clicked
@@ -28,6 +27,7 @@
         // generate new coa
         $matrices[$matrix] = $matrices[$matrix-1].slice();
         $matrices[$matrix][$state.i] = l;
+        seed = undefined; // use once
       } else {
         // reroll gallery
         $matrices[$matrix] = Array.from({length: n}, (_, i) => l+i++);
@@ -40,22 +40,15 @@
     }
 
     // add additional coas to matrix if size is smaller
-    if (!$state.edit && $matrices[$matrix].length < n) {
+    if ($matrices[$matrix].length < n) {
       const m = $matrices[$matrix];
       $matrices[$matrix] = [...Array(n).keys()].map(i => m[i] !== undefined ? m[i] : l+i);
     }
-
-    gallery = $matrices[$matrix].slice(0, n);
+    gallery = $matrices[$matrix].slice(0, n); // trim gallery if size was bigger
 
     // on coa edit
-    if ($state.edit) {
-      $state.c = $matrices[$matrix][$state.i];
-      coa = $history[$state.c] || generate(seed || undefined);
-      seed = undefined; // use once
-      if (!$history[$state.c]) $history.push(coa);
-      changes.reset();
-    }
-  };
+    if ($state.edit) $state.c = $matrices[$matrix][$state.i];
+  }
 
   void function checkLoadParameters() {
     const url = new URL(window.location.href);
@@ -103,14 +96,13 @@
 </script>
 
 <WindowEvents/>
-{console.log("App", coa)}
 <main style="background-color: {$background}">
   <Navbar/>
   {#if $state.about}<About/>{/if}
   {#if $state.raster}<UploadRaster/>{/if}
   {#if $state.vector}<UploadVector/>{/if}
   {#if $state.tinctures}<Tinctures/>{/if}
-  {#if $state.edit}<Editor {coa} c={$state.c}/>
+  {#if $state.edit}<Editor c={$state.c} {seed}/>
   {:else}<Gallery {gallery} {w} {h}/>{/if}
   {#if $message}<Message/>{/if}
   <Patterns/>

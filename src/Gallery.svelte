@@ -6,21 +6,19 @@
   import {history, matrices, matrix, state} from './stores';
   export let gallery, w, h;
 
-  $:font = Math.max(Math.min(Math.ceil(w / 20), 12), 6);
+  $: font = Math.max(Math.min(Math.ceil(w / 20), 12), 6);
 
-  $:coas = gallery.map(c => {
+  $: coas = gallery.map(c => {
     let coa = $history[c] || generate();
     if (!$history[c]) $history[c] = coa;
     return coa;
   });
 
   function regenerate(i) {
-    const coa = generate();
-    gallery[i] = $history.length;
+    $state.i = i;
     $matrix++;
-    $matrices[$matrix] = gallery;
-    $history.push(coa);
-    coas[i] = coa;
+    $matrices[$matrix] = $matrices[$matrix-1].slice();
+    $matrices[$matrix][$state.i] = $history.length;
   }
 
   function editCOA(i) {
@@ -30,13 +28,13 @@
   }
 </script>
 
-<div id="gallery" style="font-size: {font}px" transition:fade>
+<div id=gallery style="font-size: {font}px" transition:fade>
   {#each coas as coa, i}
     <div>
       {#key coa}
         <COA {coa} {i} {w} {h}/>
       {/key}
-      <div class="control">
+      <div class=control>
         <svg on:click={() => regenerate(i)}><use href="#dice-icon"></use></svg>
         <svg on:click={() => editCOA(i)}><use href="#pencil-icon"></use></svg>
         <svg on:click={() => download(i)}><use href="#download-icon"></use></svg>
