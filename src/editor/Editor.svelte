@@ -14,6 +14,7 @@
   import EditorPosition from './EditorPosition.svelte';
   import EditorShift from "./EditorShift.svelte";
   import EditorControls from "./EditorControls.svelte";
+  import EditorAbove from "./EditorAbove.svelte";
   import {slide, fly} from 'svelte/transition';
   import {rw, ra} from '../utils';
   import {history, changes, tinctures, state, grid, showGrid, message} from '../stores';
@@ -41,7 +42,6 @@
   $: localStorage.setItem("showGrid", $showGrid); // on grid change
 
   function reroll(c) {
-    console.log("reroll");
     coa = $history[c] || generate(seed || undefined);
     if (!$history[c]) $history.push(coa);
     changes.reset();
@@ -49,13 +49,11 @@
   }
 
   function edit(coa) {
-    console.log("coa change");
     changes.add(JSON.stringify(coa));
   }
 
   // get coa from menu on menu change
   function update() {
-    console.log("menu update");
     // field attributes changed
     if (menu.field.type === "tincture") coa.t1 = menu.field.t1; else {
       const type = menu.field.type === "semy" ? "semy_of_" + menu.field.charge : menu.field.pattern;
@@ -88,6 +86,7 @@
         if (o.size && o.size !== 1) item.size = o.size;
         if (o.x || o.y) {item.x = o.x; item.y = o.y;}
         if (o.angle) item.angle = o.angle;
+        if (o.above) item.above = 1;
         return item;
       });
     } else delete coa.ordinaries;
@@ -110,14 +109,12 @@
 
   function restore() {
     if (!changes.length()) return;
-    console.log("restore");
     coa = JSON.parse($changes[0]);
     defineMenuState();
   }
 
   // define initial menu state
   function defineMenuState() {
-    console.log("define menu");
     // Field
     menu.field = getField();
     function getField() {
@@ -187,8 +184,9 @@
         const y = o.y || 0;
         const angle = o.angle || 0;
         const divided = o.divided || "";
+        const above = o.above || 0;
         if (angle) $state.transform = `rotate(${angle})`;
-        return {ordinary, t, line, showStroke, stroke, strokeWidth, size, x, y, angle, divided};
+        return {ordinary, t, line, showStroke, stroke, strokeWidth, size, x, y, angle, divided, above};
       });
 
       return ordinaries;
@@ -374,6 +372,9 @@
     {#each menu.ordinaries as o, i}
       <div class=section transition:slide class:expanded={section.ordinary[i]} on:click={() => section.ordinary[i] = !section.ordinary[i]}>
         Ordinary{menu.ordinaries.length > 1 ? " " + (i+1) : ""}: {cap(o.ordinary)}
+        {#if o.above}
+          <i>[above charges]</i>
+        {/if}
         <EditorControls bind:els={menu.ordinaries} el={o} {i}/>
       </div>
       {#if section.ordinary[i]}
@@ -400,11 +401,12 @@
             </div>
           {/if}
 
-          {#if !["bordure", "orle"].includes(o.ordinary)}
-            <div class=subsection>
+          <div class=subsection>
+            {#if !["bordure", "orle"].includes(o.ordinary)}
               <EditorStroke bind:element={o}/>
-            </div>
-          {/if}
+            {/if}
+            <EditorAbove bind:above={o.above}/>
+          </div>
 
           <div class=subsection>
             <EditorShift bind:e={o}/>
@@ -523,6 +525,10 @@
 
   :global(.section:hover > span) {
     opacity: 1;
+  }
+
+  .section > i {
+    font-size: smaller;
   }
 
   .panel {

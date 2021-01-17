@@ -6,6 +6,8 @@
   $counter += 1;
 
   const {division, ordinaries = [], charges = []} = coa;
+  const ordinariesRegular = ordinaries.filter(o => !o.above);
+  const ordinariesAboveCharges = ordinaries.filter(o => o.above);
   let tDiv;
   if (division) tDiv = division.t.includes("-") ? division.t.split("-")[1] : division.t;
 
@@ -53,14 +55,14 @@
   {/if}
 </defs>
 
-<g id="shield" clip-path="url(#{coaShield})">
+<g id=shield clip-path="url(#{coaShield})">
 
   <!-- Field -->
-  <rect id="field" x=0 y=0 width=200 height=200 fill="{coaColors[coa.t1] || clr(coa.t1)}"/>
+  <rect id=field x=0 y=0 width=200 height=200 fill="{coaColors[coa.t1] || clr(coa.t1)}"/>
 
   {#if division && division.division !== "no"}
     <!-- In field part -->
-    {#each ordinaries as ordinary, i}
+    {#each ordinariesRegular as ordinary, i}
       {#if ordinary.divided === "field"}
         <Ordinary {coa} {ordinary} {i} {shieldPath} colors={coaColors} t={ordinary.t} {type}/>
       {:else if ordinary.divided === "counter"}
@@ -69,7 +71,7 @@
     {/each}
 
     {#if diaperType === "field"}
-      <rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})" style="pointer-events: none"/>
+      <rect class=diaper x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})" style="pointer-events: none"/>
     {/if}
 
     {#each charges as charge, i}
@@ -80,11 +82,19 @@
       {/if}
     {/each}
 
+    {#each ordinariesAboveCharges as ordinary, i}
+      {#if ordinary.divided === "field"}
+        <Ordinary {coa} {ordinary} {i} {shieldPath} colors={coaColors} t={ordinary.t} {type}/>
+      {:else if ordinary.divided === "counter"}
+        <Ordinary {coa} {ordinary} {i} {shieldPath} colors={coaColors} t={tDiv} {type}/>
+      {/if}
+    {/each}
+
     <!-- In division part -->
-    <g id="division" clip-path="url(#divisionClip{i})">
+    <g id=division clip-path="url(#divisionClip{i})">
       <rect x=0 y=0 width=200 height=200 fill="{coaColors[division.t] || clr(division.t)}"/>
 
-      {#each ordinaries as ordinary, i}
+      {#each ordinariesRegular as ordinary, i}
         {#if ordinary.divided === "division"}
           <Ordinary {coa} {ordinary} {i} {shieldPath} colors={coaColors} t={ordinary.t} {type}/>
         {:else if ordinary.divided === "counter"}
@@ -93,7 +103,7 @@
       {/each}
 
       {#if diaperType === "division"}
-        <rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})" style="pointer-events: none"/>
+        <rect class=diaper x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})" style="pointer-events: none"/>
       {/if}
 
       {#each charges as charge, i}
@@ -103,18 +113,26 @@
           <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={coa.t1} {type}/>
         {/if}
       {/each}
+
+      {#each ordinariesAboveCharges as ordinary, i}
+        {#if ordinary.divided === "division"}
+          <Ordinary {coa} {ordinary} {i} {shieldPath} colors={coaColors} t={ordinary.t} {type}/>
+        {:else if ordinary.divided === "counter"}
+          <Ordinary {coa} {ordinary} {i} {shieldPath} colors={coaColors} t={coa.t1} {type}/>
+        {/if}
+      {/each}
     </g>
   {/if}
 
   <!-- Overall -->
-  {#each ordinaries as ordinary, i}
+  {#each ordinariesRegular as ordinary, i}
     {#if !ordinary.divided}
       <Ordinary {coa} {ordinary} {i} {shieldPath} colors={coaColors} t={ordinary.t} {type}/>
     {/if}
   {/each}
 
   {#if diaperType === "overall"}
-    <rect class="diaper" x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})" style="pointer-events: none"/>
+    <rect class=diaper x=0 y=0 width=200 height=200 fill="url(#{coaDiaper})" style="pointer-events: none"/>
   {/if}
 
   {#each charges as charge, i}
@@ -122,6 +140,12 @@
       <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={charge.t} {type}/>
     {/if}
   {/each}
+
+  {#each ordinariesAboveCharges as ordinary, i}
+    {#if !ordinary.divided}
+      <Ordinary {coa} {ordinary} {i} {shieldPath} colors={coaColors} t={ordinary.t} {type}/>
+    {/if}
+  {/each}
 </g>
 
-<path class="grad" d={shieldPath} fill="url(#{coaGrad})" stroke={border} stroke-width={borderWidth} style="pointer-events: none"/>
+<path class=grad d={shieldPath} fill="url(#{coaGrad})" stroke={border} stroke-width={borderWidth} style="pointer-events: none"/>
