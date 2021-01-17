@@ -27,7 +27,7 @@
   const coaSize = window.innerWidth > window.innerHeight ? Math.round(window.innerHeight * .9) : "100%";
   let width = window.innerWidth < 600 || ratio > 1 ? 100 : Math.round((1.05 - ratio) * 100);
   if (width / 100 * window.innerWidth < 300) width = 100;
-  let itemSize = Math.floor(width / 1000 * window.innerWidth - 4); // 10 items in row
+  let itemSize = Math.floor(width / 1000 * window.innerWidth - 5); // 10 items in row
   if (window.innerWidth < 600) itemSize *= 2; // 5 items in row for narrow screens
 
   $state.transform = null;

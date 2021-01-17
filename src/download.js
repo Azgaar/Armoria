@@ -3,8 +3,7 @@ import { scale, shield, grad, diaper } from './stores';
 
 export async function download(i) {
   const coas = i !== undefined ? [document.getElementById("coa" + i)] : document.querySelectorAll("svg.coa");
-  let width = +coas[0].getAttribute("width");
-  let height = +coas[0].getAttribute("height");
+  let {width, height} = coas[0].getBoundingClientRect();
   const numberX = coas.length > 1 ? Math.floor(window.innerWidth / width) : 1;
   const numberY = coas.length > 1 ? Math.ceil(coas.length / numberX) : 1;
 
@@ -64,7 +63,6 @@ function drawCanvas(canvas) {
   const link = document.createElement("a");
   link.download = "armoria_download.png";
   canvas.toBlob(function (blob) {
-    console.log(blob);
     link.href = window.URL.createObjectURL(blob);
     document.body.appendChild(link);
     link.click();
