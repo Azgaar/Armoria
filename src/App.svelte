@@ -18,7 +18,6 @@
   $: handleMatrixChange($matrix, $size);
 
   function handleMatrixChange() {
-    console.log("matrix:", $matrix);
     const l = $history.length;
 
     // reroll is clicked
