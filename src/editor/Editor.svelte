@@ -372,13 +372,12 @@
 
     <!-- Ordinaries -->
     {#each menu.ordinaries as o, i}
-      <div class=section transition:slide class:expanded={section.ordinary[i]} on:click={() => section.ordinary[i] = !section.ordinary[i]}>Ordinary{menu.ordinaries.length > 1 ? " " + (i+1) : ""}: {cap(o.ordinary)}</div>
+      <div class=section transition:slide class:expanded={section.ordinary[i]} on:click={() => section.ordinary[i] = !section.ordinary[i]}>
+        Ordinary{menu.ordinaries.length > 1 ? " " + (i+1) : ""}: {cap(o.ordinary)}
+        <EditorControls bind:els={menu.ordinaries} el={o} {i}/>
+      </div>
       {#if section.ordinary[i]}
         <div class=panel transition:slide>
-          <div class=subsection>
-            <EditorControls bind:els={menu.ordinaries} el={o} {i}/>
-          </div>
-
           {#if coa.division}
             <div class=subsection>
               <EditorDivided bind:divided={o.divided}/>
