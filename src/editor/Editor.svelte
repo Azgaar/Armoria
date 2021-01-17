@@ -200,7 +200,7 @@
       if (!coa.charges) return [];
       const charges = coa.charges.map(c => {
         const {charge, t, p, size} = c;
-        const type = getChargeType(charge);
+        const type = getChargeCategory(charge);
         const showStroke = c.stroke !== "none";
         const stroke = c.stroke || "#000000";
         const divided = c.divided || "";
@@ -228,14 +228,14 @@
       return array[0].split("_of_")[1];
     }
 
-    function getChargeType(charge) {
+    function getChargeCategory(charge) {
       const type = Object.keys(charges.types).find(type => charges[type][charge])
       return type || charge;
     }
 
     function getSemyType(array) {
       const charge = getSemyCharge(array);
-      return getChargeType(charge);
+      return getChargeCategory(charge);
     }
 
     function selectSecondTincture(t1) {
@@ -372,7 +372,7 @@
 
     <!-- Ordinaries -->
     {#each menu.ordinaries as o, i}
-      <div class=section in:slide class:expanded={section.ordinary[i]} on:click={() => section.ordinary[i] = !section.ordinary[i]}>Ordinary{menu.ordinaries.length > 1 ? " " + (i+1) : ""}: {cap(o.ordinary)}</div>
+      <div class=section transition:slide class:expanded={section.ordinary[i]} on:click={() => section.ordinary[i] = !section.ordinary[i]}>Ordinary{menu.ordinaries.length > 1 ? " " + (i+1) : ""}: {cap(o.ordinary)}</div>
       {#if section.ordinary[i]}
         <div class=panel transition:slide>
           <div class=subsection>
@@ -416,18 +416,18 @@
 
     <!-- Charges -->
     {#each menu.charges as charge, i}
-      <div class=section in:slide class:expanded={section.charge[i]} on:click={() => section.charge[i] = !section.charge[i]}>Charge{menu.charges.length > 1 ? " "+ (i+1) : ""}: {cap(charge.charge)}</div>
+      <div class=section transition:slide class:expanded={section.charge[i]} on:click={() => section.charge[i] = !section.charge[i]}>
+        Charge{menu.charges.length > 1 ? " " + (i+1) : ""}: {cap(charge.charge)}
+        <EditorControls bind:els={menu.charges} el={charge} {i}/>
+      </div>
       {#if section.charge[i]}
         <div class=panel transition:slide>
 
           <div class=subsection>
             <EditorCategory name=Categories bind:category={charge.type}/>
-
             {#if coa.division}
               <EditorDivided bind:divided={charge.divided} raster={isRaster(charge.charge)}/>
             {/if}
-
-            <EditorControls bind:els={menu.charges} el={charge} {i}/>
             <EditorCharge type=charge bind:charge={charge.charge} category={charge.type} t1={coa.t1} t2={charge.t} sinister={charge.sinister} reversed={charge.reversed} {itemSize}/>
           </div>
 
@@ -514,6 +514,16 @@
 
   .expanded:after {
     transform: rotate(90deg);
+  }
+
+  :global(.section > span) {
+    transition: 1s ease-out;
+    opacity: 0;
+    margin-left: .6em;
+  }
+
+  :global(.section:hover > span) {
+    opacity: 1;
   }
 
   .panel {
