@@ -2,7 +2,7 @@
   import WindowEvents from './WindowEvents.svelte';
   import Navbar from './Navbar.svelte';
   import About from './About.svelte';
-  import Editor from './Editor.svelte';
+  import Editor from './editor/Editor.svelte';
   import Gallery from './Gallery.svelte';
   import UploadRaster from './UploadRaster.svelte';
   import UploadVector from './UploadVector.svelte';
@@ -15,7 +15,7 @@
   let n, w, h, gallery = [], seed;
 
   $: [n, w, h] = defineGallerySize($size);
-  $: handleMatrixChange($matrix);
+  $: handleMatrixChange($matrix, $size);
 
   function handleMatrixChange() {
     console.log("matrix:", $matrix);

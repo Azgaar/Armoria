@@ -1,6 +1,6 @@
 <script>
-  import Tip from './Tip.svelte';
-  import Switch from './Switch.svelte';
+  import Tip from '../Tip.svelte';
+  import Switch from '../Switch.svelte';
   export let element;
 </script>
 

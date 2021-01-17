@@ -224,7 +224,7 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
   return coa;
 }
 
-export const getSize = (p, o, d) => {
+export const getSize = (p, o = null, d = null) => {
   if (p === "e" && (o === "bordure" || o === "orle")) return 1.1;
   if (p === "e") return 1.5;
   if (p === "jln" || p === "jlh") return .7;
