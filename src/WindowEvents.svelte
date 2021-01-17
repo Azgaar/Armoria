@@ -37,6 +37,11 @@
   }
 
   function handleTouchEnd(e) {
+    const menu = document.getElementById("menu");
+    const navbar = document.getElementById("navbar");
+    if (menu?.contains(e.target)) return; // cancel touch event if start area is menu
+    if (navbar?.contains(e.target)) return; // cancel touch event if start area is nav bar
+
     const diffX = e.changedTouches[0].screenX - touch.startX;
     const diffY = e.changedTouches[0].screenY - touch.startY;
     const ratioX = Math.abs(diffX / diffY);

@@ -23,7 +23,6 @@
 </script>
 
 <span>
-  <b on:click={remove} title="Remove">✖</b>
   <b on:click={copy} title="Copy">🗗</b>
   {#if els.length > 1}
     {#if i}
@@ -33,6 +32,7 @@
       <b on:click={moveUp} title="Move up">🠕</b>
     {/if}
   {/if}
+  <b on:click={remove} title="Remove">✖</b>
 </span>
 
 <style>
