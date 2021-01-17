@@ -69,6 +69,10 @@ button:focus {
     border-color: #666;
 }
 
+select {
+    cursor: pointer;
+}
+
 font {
     pointer-events: none;
 }
