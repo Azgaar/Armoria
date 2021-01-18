@@ -1,6 +1,6 @@
 <script>
   import {message} from './stores.js';
-  export let tip, gesture = null, hotkey = null;
+  export let tip, gesture = null, hotkey = null, position = "right", helpCursor = true;
   const touch = 'ontouchstart' in window;
   const hasSlot = $$props.$$slots;
 
@@ -20,18 +20,18 @@
   }
 </script>
 
-<span class=tip on:mouseenter={showMessage} on:focus={showMessage} on:mouseleave={hideMessage}>
+<span class:helpCursor on:mouseenter={showMessage} on:focus={showMessage} on:mouseleave={hideMessage}>
   {#if hasSlot}
     <slot/>
   {:else}
-    <svg>
+    <svg class={position}>
       <use href="#info-icon"></use>
     </svg>
   {/if}
 </span>
 
 <style>
-  .tip {
+  .helpCursor {
     cursor: help;
   }
 
@@ -39,6 +39,13 @@
     width: 1em;
     height: 1em;
     fill: #eee;
+  }
+
+  svg.left {
+    margin-bottom: -2px;
+  }
+
+  svg.right {
     position: absolute;
     right: .6em;
   }

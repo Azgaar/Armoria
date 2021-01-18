@@ -43,9 +43,10 @@
   }
 
   function addCharge() {
+    const allCharges = Object.keys(charges.types).map(type => Object.keys(charges[type])).flat();
     name = camelize(name);
 
-    if (!name || document.getElementById(name)) {
+    if (!name || document.getElementById(name) || allCharges.includes(name)) {
       $message = {type: "error", text: "Name must be unique id!"};
       return;
     }
@@ -111,9 +112,9 @@
     {:else}
       <label class=dragging>
         <slot {dragging}>
-          <div>Drag &amp; Drop image here or browse</div>
+          <div>Drag &amp; Drop image here or <b>browse</b></div>
         </slot>
-        <input type=file accept=image/* on:input={onFile(getFilesFromInputEvent)} />
+        <input type=file accept=image/* on:input={onFile(getFilesFromInputEvent)}/>
       </label>
     {/if}
   </div>
