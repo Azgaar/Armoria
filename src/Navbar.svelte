@@ -242,7 +242,7 @@
 
     {#if $state.edit}
       <bt on:click={share}>
-        <Tip tip="Copy link to the coat of arms to clipboard" hotkey="S">{@html getIcon("share")}</Tip>
+        {@html getIcon("share")}
       </bt>
     {/if}
 

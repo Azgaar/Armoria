@@ -6,7 +6,7 @@
   // keyboard shortcuts
   function handleKeydown(event) {
     const code = event.code;
-    const reserved = ["Backspace", "Enter", "KeyZ", "KeyX", "KeyD", "KeyS", "F1", "Escape"];
+    const reserved = ["Backspace", "Enter", "KeyZ", "KeyX", "KeyD", "F1", "Escape"];
     if (!reserved.includes(code)) return;
 
     const active = document.activeElement.tagName;
@@ -18,7 +18,6 @@
     if (code === "KeyZ") changes.undo(); else // Undo
     if (code === "KeyX") changes.redo(); else // Redo
     if (code === "KeyD") download(); else // Download
-    if (code === "KeyS") share(); // Copy link
     if (code === "F1") $state.about = !$state.about; // About
     if (code === "Escape") close() // Close all windows
 
