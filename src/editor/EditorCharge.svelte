@@ -2,12 +2,28 @@
   import MenuItem from '../MenuItem.svelte';
   import {charges} from "../dataModel";
   export let charge, type, category, t1, t2, size = null, sinister = null, reversed = null, itemSize;
-  let coas;
+  let coas = [], query, queryOld;
+
+  const categories = Object.keys(charges.types);
+  const allCharges = categories.map(category => Object.keys(charges[category])).flat();
+  const cap = string => string.charAt(0).toUpperCase() + string.slice(1);
+
   $: update(category, t1, t2, size, sinister, reversed);
+  $: showResults(query);
 
   function update() {
     const chargeList = Object.keys(charges[category]);
     coas = chargeList.map(c => new Object({c, t1: getTincture(c), charges: getCharge(c)}));
+  }
+
+  function showResults(query) {
+    if (!query && query !== queryOld) update();
+    queryOld = query;
+    if (!query) return;
+
+    const regEx = new RegExp(query.replaceAll(" ", ""), "i");
+    const results = allCharges.filter(c => regEx.test(c));
+    coas = results.map(c => new Object({c, t1: getTincture(c), charges: getCharge(c)}));
   }
 
   function getTincture(c) {
@@ -26,6 +42,20 @@
   }
 </script>
 
+{#if type === "semy"}
+  <span>Charge:</span>
+{:else}
+  <span style="margin-left: 1em">Category:</span>
+{/if}
+<select bind:value={category} class:inactive={query} on:input={() => query = ""}>
+  {#each categories as type}
+    <option value={type}>{cap(type)}</option>
+  {/each}
+</select>
+
+<span style="margin-left: 1em">Search:</span>
+<input bind:value={query} class:inactive={!query}/>
+
 <div>
   {#each coas as coa (coa)}
     <div class=item class:selected={charge === coa.c} on:click={() => charge = coa.c}>
@@ -33,3 +63,13 @@
     </div>
   {/each}
 </div>
+
+<style>
+  input {
+    width: 10em;
+  }
+
+  .inactive {
+    background-color: #ddd;
+  }
+</style>

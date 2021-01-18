@@ -4,7 +4,6 @@
   import EditorSize from './EditorSize.svelte';
   import EditorTincture from './EditorTincture.svelte';
   import EditorPattern from './EditorPattern.svelte';
-  import EditorCategory from './EditorCategory.svelte';
   import EditorCharge from './EditorCharge.svelte';
   import EditorDivision from './EditorDivision.svelte';
   import EditorDivided from './EditorDivided.svelte';
@@ -313,8 +312,7 @@
 
         {#if menu.field.type === "semy"}
           <div class=subsection>
-            <EditorCategory name=Charge bind:category={menu.field.semy}/>
-            <EditorCharge type=semy bind:charge={menu.field.charge} category={menu.field.semy} t1={menu.field.t1} t2={menu.field.t2} size={menu.field.size} {itemSize}/>
+            <EditorCharge type=semy bind:charge={menu.field.charge} bind:category={menu.field.semy} t1={menu.field.t1} t2={menu.field.t2} size={menu.field.size} {itemSize}/>
           </div>
         {/if}
       </div>
@@ -360,8 +358,7 @@
 
           {#if menu.division.type === "semy"}
             <div class=subsection>
-              <EditorCategory name=Charge bind:category={menu.division.semy}/>
-              <EditorCharge type=semy bind:charge={menu.division.charge} category={menu.division.semy} t1={menu.division.t1} t2={menu.division.t2} size={menu.division.size} {itemSize}/>
+              <EditorCharge type=semy bind:charge={menu.division.charge} bind:category={menu.division.semy} t1={menu.division.t1} t2={menu.division.t2} size={menu.division.size} {itemSize}/>
             </div>
           {/if}
         {/if}
@@ -425,11 +422,10 @@
         <div class=panel transition:slide>
 
           <div class=subsection>
-            <EditorCategory name=Categories bind:category={charge.type}/>
             {#if coa.division}
               <EditorDivided bind:divided={charge.divided} raster={isRaster(charge.charge)}/>
             {/if}
-            <EditorCharge type=charge bind:charge={charge.charge} category={charge.type} t1={coa.t1} t2={charge.t} sinister={charge.sinister} reversed={charge.reversed} {itemSize}/>
+            <EditorCharge type=charge bind:charge={charge.charge} bind:category={charge.type} t1={coa.t1} t2={charge.t} sinister={charge.sinister} reversed={charge.reversed} {itemSize}/>
           </div>
 
           {#if !isRaster(charge.charge) && charge.divided !== "counter"}

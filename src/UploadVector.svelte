@@ -12,12 +12,12 @@
 
   function updateTransform(transform) {
     if (!svg) return; // on component on load
-    if (Object.values(transform).every(v => !v)) return; // no transform
     const el = document.createElement("html");
     el.innerHTML = svg;
     const g = el.querySelector("g");
-    const transformString = "matrix(" + Object.values(transform).join(" ")+ ")";
-    g.setAttribute("transform", transformString);
+    const transformString = Object.values(transform).join(" ");
+    if (transformString === "1 0 0 1 0 0") g.removeAttribute("transform");
+    else g.setAttribute("transform", "matrix(" + transformString+ ")");
     svg = g.outerHTML;
   }
 
