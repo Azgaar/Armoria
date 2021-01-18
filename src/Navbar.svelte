@@ -3,7 +3,7 @@
   import Lock from './Lock.svelte';
   import {fade} from 'svelte/transition';
   import {download} from './download.js';
-  import {size, grad, diaper, shield, background, scale, border, borderWidth, matrix, state, changes} from './stores';
+  import {size, grad, diaper, shield, background, scale, border, borderWidth, matrix, state, changes, message} from './stores';
   import {shields} from './dataModel';
 
   const sizes = [[80, "Giant"], [100, "Huge"], [150, "Large"], [200, "Medium"], [300, "Small"], [400, "Tiny"]];
@@ -40,12 +40,29 @@
     localStorage.removeItem(key);
   }
 
+  function share() {
+    const coa = $changes[0].replaceAll("#", "%23");
+    const link = window.location.origin + "/?coa=" + coa;
+    $message = null;
+
+    navigator.clipboard.writeText(link).then(
+      () => {
+        $message = null;
+        setTimeout(() => {
+          $message = {type: "sucess", text: `COA link is copied to your clipboard`, timeout: 5000};
+        }, 500);
+      }, err => {
+        $message = {type: "error", text: `Cannot copy link to the clipboard!`, timeout: 5000};
+        console.error(err);
+      }
+    );
+  }
+
   // values to be always saved
   $: localStorage.setItem("background", $background);
   $: localStorage.setItem("border", $border);
   $: localStorage.setItem("borderWidth", $borderWidth);
   $: localStorage.setItem("scale", $scale);
-
 </script>
 
 <div id="navbar">
@@ -207,19 +224,27 @@
       <Tip tip="Download png image. Size can be set in options" hotkey="D">{@html getIcon("download")}</Tip>
     </bt>
 
-    <div class="container"><bl>{@html getIcon("upload")}</bl>
-      <div class="dropdown level1">
-        <bt on:click={() => $state.raster = 1}>
-          <span>Raster</span>
-          <Tip tip="Upload raster charge (one color, quality loss on scale) from jpg, png or svg image"/>
-        </bt>
+    {#if wideScreen || !$state.edit}
+      <div class="container"><bl>{@html getIcon("upload")}</bl>
+        <div class="dropdown level1">
+          <bt on:click={() => $state.raster = 1}>
+            <span>Raster</span>
+            <Tip tip="Upload raster charge (one color, quality loss on scale) from jpg, png or svg image"/>
+          </bt>
 
-        <bt on:click={() => $state.vector = 1}>
-          <span>Vector</span>
-          <Tip tip="Upload vector charge (multicolor and lossless scalable) from prepared svg"/>
-        </bt>
+          <bt on:click={() => $state.vector = 1}>
+            <span>Vector</span>
+            <Tip tip="Upload vector charge (multicolor and lossless scalable) from prepared svg"/>
+          </bt>
+        </div>
       </div>
-    </div>
+    {/if}
+
+    {#if $state.edit}
+      <bt on:click={share}>
+        <Tip tip="Copy link to the coat of arms to clipboard" hotkey="S">{@html getIcon("share")}</Tip>
+      </bt>
+    {/if}
 
     {#if $state.edit}
       {#if position > 0}

@@ -1,22 +1,24 @@
 <script>
   import {message} from './stores.js';
   export let tip, gesture = null, hotkey = null, position = "right", helpCursor = true;
+  let text = tip;
   const touch = 'ontouchstart' in window;
   const hasSlot = $$props.$$slots;
 
   function showMessage() {
-    if ($message?.text) return; // concurrent message
-
     // add Gesture or Hotkey postfix
-    let text = tip;
-    if (gesture && touch) text += ". Gesture: " + gesture;
-    else if (hotkey && !touch) text += ". Hotkey: " + hotkey;
+    if (gesture && touch) text = tip + ". Gesture: " + gesture;
+    else if (hotkey && !touch) text = tip + ". Hotkey: " + hotkey;
 
-    setTimeout(() => $message = {text, type: "tip", timeout: 10000}, 500);
+    setTimeout(() => {
+      $message = {text, type: "tip", timeout: 10000};
+    }, 500);
   }
 
   function hideMessage() {
-    $message = null;
+    setTimeout(() => {
+      if ($message?.text === text) $message = null;
+    }, 500);
   }
 </script>
 

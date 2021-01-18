@@ -5,7 +5,10 @@
   const {text, type = "info", timeout = 4000} = $message;
 
   onMount(async () => {
-    setTimeout(() => $message = null, timeout);
+    const text = $message.text;
+    setTimeout(() => {
+      if ($message?.text === text) $message = null;
+    }, timeout);
   });
 
   function hideMessage() {
@@ -13,7 +16,7 @@
   }
 </script>
 
-<div class={type} in:fly={{y:200, duration: 500}} out:fade on:click={hideMessage}>
+<div class={type} in:fly={{y:200, duration: 500}} out:fade={{duration: 300}} on:click={hideMessage}>
   {text}
 </div>
 
@@ -47,5 +50,9 @@
   .tip {
     color: #fff;
     border-radius: 10px;
+  }
+
+  .sucess {
+    color: #0fc63a;
   }
 </style>

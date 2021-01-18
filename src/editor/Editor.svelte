@@ -53,6 +53,9 @@
 
   // get coa from menu on menu change
   function update() {
+    // remove see reference as it would be confusing
+    delete coa.seed;
+
     // field attributes changed
     if (menu.field.type === "tincture") coa.t1 = menu.field.t1; else {
       const type = menu.field.type === "semy" ? "semy_of_" + menu.field.charge : menu.field.pattern;
@@ -260,7 +263,7 @@
   }
 
   if (!isTouchDevice() && (coa.ordinaries || coa.charges)) {
-    $message = {type: "info", text: "Drag to move, hold SHIFT and drag vertically to resize, hold CONTROL and drag horizontally to rotate", timeout: 5000};
+    $message = {type: "info", text: "Drag to move, hold SHIFT and drag vertically to resize, hold CONTROL and drag horizontally to rotate", timeout: 4000};
   }
 
   function isTouchDevice() {
