@@ -7,7 +7,7 @@
   import {shields} from './dataModel';
 
   const sizes = [[80, "Giant"], [100, "Huge"], [150, "Large"], [200, "Medium"], [300, "Small"], [400, "Tiny"]];
-  const gradients = ["no", "luster", "spotlight", "backlight"];
+  const gradients = ["no", "luster", "spotlight", "backlight", "brink"];
   const diapers = ["no", "nourse", "tessellation", "sennwald", "sulzbach"];
   const wideScreen = window.innerWidth > 600;
 
