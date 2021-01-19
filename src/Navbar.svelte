@@ -42,7 +42,7 @@
 
   function share() {
     const coa = $changes[0].replaceAll("#", "%23");
-    const link = window.location.origin + window.location.pathname + "/?coa=" + coa;
+    const link = window.location.origin + window.location.pathname + "?coa=" + coa;
     $message = null;
 
     navigator.clipboard.writeText(link).then(
