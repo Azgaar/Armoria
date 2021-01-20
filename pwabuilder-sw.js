@@ -1,7 +1,7 @@
 // This is the "Offline page" service worker
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js");
 const CACHE = "pwabuilder-page";
-const offlineFallbackPage = "index.html";
+const offlineFallbackPage = "offline.html";
 
 self.addEventListener("message", event => {
   if (event.data && event.data.type === "SKIP_WAITING") {
