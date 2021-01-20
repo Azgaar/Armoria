@@ -1,0 +1,23 @@
+{
+  "dir": "ltr",
+  "lang": "en",
+  "name": "Armoria: Heraldry Generator",
+  "short_name": "Armoria",
+  "scope": "/Armoria/",
+  "display": "standalone",
+  "start_url": "https://azgaar.github.io/Armoria/",
+  "background_color": "#000000",
+  "theme_color": "transparent",
+  "description": "Heraldry Generator and Editor by Azgaar",
+  "orientation": "any",
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "url": "https://azgaar.github.io/Armoria"
+}
