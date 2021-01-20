@@ -4,7 +4,7 @@
   "name": "Armoria",
   "short_name": "Armoria",
   "scope": "/Armoria/",
-  "display": "fullscreen",
+  "display": "standalone",
   "start_url": "https://azgaar.github.io/Armoria/",
   "background_color": "#000000",
   "theme_color": "transparent",
