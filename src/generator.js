@@ -1,11 +1,12 @@
 import {get} from 'svelte/store';
 import {rw, P} from './utils';
 import {charges, divisions, lines, ordinaries, positions} from "./dataModel";
+import {aleaPRNG} from './alea';
 import {tinctures} from './stores';
 
 // main generation routine
 export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
-  Math.seedrandom(seed); // define Math.random()
+  Math.random = aleaPRNG(seed);
 
   // reset parameters to default
   let usedPattern = null, usedTinctures = [];

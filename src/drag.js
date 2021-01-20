@@ -1,4 +1,4 @@
-import {get} from 'svelte/store';
+import {get} from "svelte/store";
 import {changes, grid} from "./stores";
 
 export function drag(e, c, coa) {

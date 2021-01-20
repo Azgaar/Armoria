@@ -1,7 +1,7 @@
 {
   "name": "armoria",
   "description": "Heraldry generator and editor",
-  "version": "0.7.01",
+  "version": "0.8.01",
   "author": "Azgaar <maxganiev@yandex.com>",
   "scripts": {
     "build": "rollup -c",

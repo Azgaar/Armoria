@@ -199,7 +199,7 @@ export const charges = {
   architecture: { tower: 1, castle: 1 },
   miscellaneous: {
     crown: 3, key: 1, buckle: 1, bugleHorn: 1, bell: 2, horseshoe: 3, stagsAttires: 1, cowHorns: 2, wing: 1, wingSword: 1,
-    lute: 1, harp: 1, wheel: 2, chalice: 1 },
+    lute: 1, harp: 1, wheel: 2, chalice: 1, crosier: 1 },
   uploaded: {},
   natural: { fountain: "azure", garb: "or", raven: "sable" }, // charges to mainly use predefined colours
   sinister: ["crossGamma", "lionRampant", "lionPassant", "wolfPassant", "greyhoundСourant", "boarRampant", "horseRampant", "horseSalient", "bullPassant",
