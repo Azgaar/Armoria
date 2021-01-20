@@ -1,7 +1,7 @@
 <script>
   import MenuItem from '../MenuItem.svelte';
   import {charges} from "../dataModel";
-  export let charge, type, category, t1, t2, size = null, sinister = null, reversed = null, itemSize;
+  export let charge, type, category, t1, t2, size = null, sinister = null, reversed = null, division = false, itemSize;
   let coas = [], query, queryOld;
 
   const categories = Object.keys(charges.types);
@@ -45,7 +45,7 @@
 {#if type === "semy"}
   <span>Charge:</span>
 {:else}
-  <span style="margin-left: 1em">Category:</span>
+  <span class:indented={division}>Category:</span>
 {/if}
 <select bind:value={category} class:inactive={query} on:input={() => query = ""}>
   {#each categories as type}
@@ -53,7 +53,7 @@
   {/each}
 </select>
 
-<span style="margin-left: 1em">Search:</span>
+<span class:indented={true}>Search:</span>
 <input bind:value={query} class:inactive={!query}/>
 
 <div>
@@ -71,5 +71,9 @@
 
   .inactive {
     background-color: #ddd;
+  }
+
+  .indented {
+    margin-left: 1em;
   }
 </style>

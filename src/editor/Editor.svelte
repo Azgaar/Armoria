@@ -24,7 +24,7 @@
 
   const ratio = window.innerHeight / window.innerWidth;
   const coaSize = window.innerWidth > window.innerHeight ? Math.round(window.innerHeight * .9) : "100%";
-  let width = window.innerWidth < 600 || ratio > 1 ? 100 : Math.round((1.05 - ratio) * 100);
+  let width = window.innerWidth < 600 || ratio > 1 ? 100 : Math.round((1.06 - ratio) * 100);
   if (width / 100 * window.innerWidth < 300) width = 100;
   let itemSize = Math.floor(width / 1000 * window.innerWidth - 5); // 10 items in row
   if (window.innerWidth < 600) itemSize *= 2; // 5 items in row for narrow screens
@@ -428,7 +428,7 @@
             {#if coa.division}
               <EditorDivided bind:divided={charge.divided} raster={isRaster(charge.charge)}/>
             {/if}
-            <EditorCharge type=charge bind:charge={charge.charge} bind:category={charge.type} t1={coa.t1} t2={charge.t} sinister={charge.sinister} reversed={charge.reversed} {itemSize}/>
+            <EditorCharge type=charge bind:charge={charge.charge} bind:category={charge.type} t1={coa.t1} t2={charge.t} sinister={charge.sinister} reversed={charge.reversed} division={coa.division} {itemSize}/>
           </div>
 
           {#if !isRaster(charge.charge) && charge.divided !== "counter"}
