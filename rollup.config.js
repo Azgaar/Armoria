@@ -3,6 +3,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
+import { generateSW } from 'rollup-plugin-workbox';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -43,13 +44,12 @@ export default {
       css: css => {css.write('bundle.css');}
     }),
 
-    // If you have external dependencies installed from npm, you'll most likely need these plugins.
-    // In some cases you'll need additional configuration - consult the documentation for details:
-    // https://github.com/rollup/plugins/tree/master/packages/commonjs
     resolve({
       browser: true,
       dedupe: ['svelte']
     }),
+
+    // convert CommonJS modules to ES6
     commonjs(),
 
     // In dev mode, call `npm run start` once the bundle has been generated
@@ -58,7 +58,28 @@ export default {
     // Watch the `public` directory and refresh the browser on changes when not in production
     !production && livereload('public'),
 
-    // If we're building for production (npm run build instead of npm run dev), minify
+    // generate service worker and add charges folder to precache
+    production && generateSW({
+      swDest: './public/sw.js',
+      globDirectory: 'public/',
+      globPatterns: [
+        "./charges/*.svg"
+      ],
+      cacheId: "armoria",
+      cleanupOutdatedCaches: true,
+      runtimeCaching: [{
+        urlPattern: /.*/,
+        handler: "CacheFirst",
+        options: {
+          cacheName: 'armoria-cache',
+          expiration: {
+            maxAgeSeconds: 60 * 60 * 24 * 10
+          }
+        }
+      }]
+    }),
+
+    // minify
     production && terser()
   ],
   watch: {

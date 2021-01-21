@@ -1,7 +1,7 @@
 import App from "./App.svelte";
 
 // register serviceWorker
-if ("serviceWorker" in navigator) navigator.serviceWorker.register('./pwabuilder-sw.js');
+if ("serviceWorker" in navigator) navigator.serviceWorker.register('./sw.js');
 
 const app = new App({
   target: document.body,
