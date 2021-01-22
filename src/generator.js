@@ -230,9 +230,8 @@ export const getSize = (p, o = null, d = null) => {
   if (p === "e") return 1.5;
   if (p === "jln" || p === "jlh") return .7;
   if (p === "abcpqh" || p === "ez" || p === "be") return .5;
-  if (["a", "b", "c"].includes(p)) return .5;
+  if (["a", "b", "c", "d", "f", "g", "h", "i", "bh", "df"].includes(p)) return .5;
   if (["j", "l", "m", "o", "jlmo"].includes(p) && d === "perCross") return .6;
-  if (["b", "d", "f", "h", "bh", "df"].includes(p) && d === "perSaltire") return .5;
   if (p.length > 10) return .18; // >10 (bordure)
   if (p.length > 7) return .3; // 8, 9, 10
   if (p.length > 4) return .4; // 5, 6, 7
