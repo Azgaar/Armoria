@@ -8,8 +8,4 @@ const app = new App({
   props: {}
 });
 
-window.addEventListener("beforeinstallprompt", e => {
-  console.log("beforeinstallprompt from main", e);
-});
-
 export default app;
