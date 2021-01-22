@@ -61,7 +61,9 @@ async function getURL(svg) {
 
 function drawCanvas(canvas) {
   const link = document.createElement("a");
-  link.download = "armoria_download.png";
+  const date = new Date();
+  const dateString = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+  link.download = `armoria_${dateString}.png`;
   canvas.toBlob(function (blob) {
     link.href = window.URL.createObjectURL(blob);
     document.body.appendChild(link);
