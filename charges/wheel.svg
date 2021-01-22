@@ -1,4 +1,4 @@
-<svg width="800" height="800" fill="#d7374a" stroke="#000" viewBox="50 50 200 200" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" fill="#d7374a" stroke="#000" viewBox="50 50 200 200">
 <!-- source: wappenwiki.org, CC BY-NC-SA 3.0 -->
  <g id="wheel" transform="translate(31.2 79.3) scale(.1296)" stroke-width="3">
   <path d="M478.6-3.4c13.1-7.8 29.4-33.7 29.4-49l-.2-45.3h44.5l-.2 45.3c0 15.3 16.2 41.2 29.4 49M581.6 1.1c-13.1 7.8-29.4 33.7-29.4 49l.2 45.3h-44.5l.2-45.3c0-15.3-16.2-41.2-29.4-49"/>
