@@ -6,6 +6,7 @@
   import {size, grad, diaper, shield, background, scale, border, borderWidth, matrix, state, changes, message} from './stores';
   import {shields} from './dataModel';
 
+  let installable = false;
   const sizes = [[80, "Giant"], [100, "Huge"], [150, "Large"], [200, "Medium"], [300, "Small"], [400, "Tiny"]];
   const gradients = ["no", "luster", "spotlight", "backlight", "brink"];
   const diapers = ["no", "nourse", "tessellation", "sennwald", "sulzbach"];
@@ -56,6 +57,10 @@
         console.error(err);
       }
     );
+  }
+
+  function install() {
+    installable = false;
   }
 
   // values to be always saved
@@ -238,6 +243,12 @@
           </bt>
         </div>
       </div>
+    {/if}
+
+    {#if installable}
+      <bt on:click={() => install()}>
+        <Tip tip="Add the application to the desktop or to the home screen">{@html getIcon("install")}</Tip>
+      </bt>
     {/if}
 
     {#if $state.edit}

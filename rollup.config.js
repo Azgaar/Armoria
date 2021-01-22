@@ -63,18 +63,15 @@ export default {
       swDest: './public/sw.js',
       globDirectory: 'public/',
       globPatterns: [
-        "./charges/*.svg"
+        '**/*.{json,svg}'
       ],
-      cacheId: "armoria",
+      cacheId: 'armoria',
       cleanupOutdatedCaches: true,
       runtimeCaching: [{
-        urlPattern: /.*/,
-        handler: "CacheFirst",
+        urlPattern: '**/*.{css,js,html}',
+        handler: 'NetworkFirst',
         options: {
-          cacheName: 'armoria-cache',
-          expiration: {
-            maxAgeSeconds: 60 * 60 * 24 * 10
-          }
+          cacheName: 'armoria-cache'
         }
       }]
     }),
