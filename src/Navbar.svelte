@@ -62,18 +62,19 @@
   function install() {
     installable = false;
     prompt.prompt();
-    prompt.userChoice.then(choise => {
-      if (choise.outcome === 'accepted') console.log('User accepted the A2HS prompt');
-      else console.log('User dismissed the A2HS prompt');
-      prompt = null;
-    });
+    prompt.userChoice.then(choise => prompt = null);
   }
 
   window.addEventListener("beforeinstallprompt", e => {
-    console.log("beforeinstallprompt from navbar");
+    console.log("beforeinstallprompt is fired");
     e.preventDefault(); // no default prompt
     prompt = e;
     installable = true;
+  });
+
+  window.addEventListener("appinstalled", e => {
+    console.log("App installation: success");
+    $message = {type: "sucess", text: `Armoria application is installed`, timeout: 5000};
   });
 
   // values to be always saved
@@ -260,7 +261,7 @@
 
     {#if !$state.edit && installable}
       <bt on:click={() => install()}>
-        <Tip tip="Add the application to the desktop or to the home screen">{@html getIcon("install")}</Tip>
+        <Tip tip="Add Armoria application to the desktop or home screen">{@html getIcon("install")}</Tip>
       </bt>
     {/if}
 
