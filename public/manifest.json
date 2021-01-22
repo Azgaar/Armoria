@@ -7,7 +7,7 @@
   "display": "standalone",
   "start_url": "https://azgaar.github.io/Armoria/",
   "background_color": "#000000",
-  "theme_color": "transparent",
+  "theme_color": "#000000",
   "description": "Heraldry Generator and Editor by Azgaar",
   "orientation": "any",
   "related_applications": [],
@@ -27,6 +27,12 @@
       "src": "logo512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "logo512maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "logo.svg",
