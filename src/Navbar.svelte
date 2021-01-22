@@ -67,7 +67,7 @@
 
   window.addEventListener("beforeinstallprompt", e => {
     console.log("beforeinstallprompt is fired");
-    e.preventDefault(); // no default prompt
+    //e.preventDefault(); // no default prompt
     prompt = e;
     installable = true;
   });
@@ -259,8 +259,8 @@
       </div>
     {/if}
 
-    {#if !$state.edit && installable}
-      <bt on:click={() => install()}>
+    {#if installable}
+      <bt on:click={() => install()} in:fade>
         <Tip tip="Add Armoria application to the desktop or home screen">{@html getIcon("install")}</Tip>
       </bt>
     {/if}
