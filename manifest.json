@@ -6,7 +6,7 @@
   "scope": "/Armoria/",
   "display": "standalone",
   "start_url": "/Armoria/?source=pwa",
-  "background_color": "#35bdb2",
+  "background_color": "#000000",
   "theme_color": "#000000",
   "description": "Heraldry Generator and Editor by Azgaar",
   "orientation": "any",
