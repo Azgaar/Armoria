@@ -70,7 +70,7 @@
   }
 
   window.addEventListener("beforeinstallprompt", e => {
-    console.log("beforeinstallprompt from navbar", e);
+    console.log("beforeinstallprompt from navbar");
     e.preventDefault(); // no default prompt
     prompt = e;
     installable = true;
@@ -258,7 +258,7 @@
       </div>
     {/if}
 
-    {#if installable}
+    {#if !$state.edit && installable}
       <bt on:click={() => install()}>
         <Tip tip="Add the application to the desktop or to the home screen">{@html getIcon("install")}</Tip>
       </bt>

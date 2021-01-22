@@ -71,10 +71,6 @@
   function swipeUp() {
     if ($matrix > 0) $matrix -= 1;
   }
-
-  function savePrompt(e) {
-    console.log("beforeinstallprompt from main", e);
-  }
 </script>
 
-<svelte:window on:keydown={handleKeydown} on:touchstart={handleTouchStart} on:touchend={handleTouchEnd} on:beforeinstallprompt={savePrompt}/>
+<svelte:window on:keydown={handleKeydown} on:touchstart={handleTouchStart} on:touchend={handleTouchEnd}/>
