@@ -49,7 +49,7 @@ plugins:
   - sortDefsChildren: true
   - removeTitle: true
   - removeDesc: true
-  - removeDimensions: true
+  - removeDimensions: false
   - removeAttrs:
       attrs: '(clip-rule|fill-rule|stroke-linejoin|stroke-miterlimit|stroke-linecap)'
   - removeAttributesBySelector: false

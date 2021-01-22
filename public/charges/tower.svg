@@ -1,4 +1,4 @@
-<svg width="800" height="800" fill="#d7374a" stroke="#000" viewBox="50 50 200 200" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" fill="#d7374a" stroke="#000" viewBox="50 50 200 200">
 <!-- source: http://wappenwiki.org/images/3/3c/Logudoro.svg, CC BY-NC-SA 3.0 -->
  <g id="tower" stroke-width="3" transform="matrix(.10915 0 0 .1094 43 58)">
   <path d="M643 556l39 43v104c0 30-82 45-160 45s-160-15-160-45V599l38-43h243z"/>
