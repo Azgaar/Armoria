@@ -43,7 +43,7 @@ plugins:
   - convertTransform: true
   - removeEmptyAttrs: true
   - removeEmptyContainers: true
-  - mergePaths: true
+  - mergePaths: false
   - removeUnusedNS: true
   - sortAttrs: true
   - sortDefsChildren: true
@@ -51,7 +51,7 @@ plugins:
   - removeDesc: true
   - removeDimensions: true
   - removeAttrs:
-      attrs: '(clip-rule|stroke-mitterlimit)'
+      attrs: '(clip-rule|fill-rule|stroke-linejoin|stroke-miterlimit|stroke-linecap)'
   - removeAttributesBySelector: false
   - removeElementsByAttr: false
   - addClassesToSVGElement: false
