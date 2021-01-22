@@ -6,7 +6,7 @@
   import {size, grad, diaper, shield, background, scale, border, borderWidth, matrix, state, changes, message} from './stores';
   import {shields} from './dataModel';
 
-  let installable = false;
+  let installable = false, prompt = null;
   const sizes = [[80, "Giant"], [100, "Huge"], [150, "Large"], [200, "Medium"], [300, "Small"], [400, "Tiny"]];
   const gradients = ["no", "luster", "spotlight", "backlight", "brink"];
   const diapers = ["no", "nourse", "tessellation", "sennwald", "sulzbach"];
@@ -61,7 +61,20 @@
 
   function install() {
     installable = false;
+    prompt.prompt();
+    prompt.userChoice.then(choise => {
+      if (choise.outcome === 'accepted') console.log('User accepted the A2HS prompt');
+      else console.log('User dismissed the A2HS prompt');
+      prompt = null;
+    });
   }
+
+  window.addEventListener("beforeinstallprompt", e => {
+    console.log("beforeinstallprompt from navbar", e);
+    e.preventDefault(); // no default prompt
+    prompt = e;
+    installable = true;
+  });
 
   // values to be always saved
   $: localStorage.setItem("background", $background);

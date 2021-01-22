@@ -65,13 +65,13 @@ export default {
       globPatterns: [
         '**/*.{json,svg}'
       ],
-      cacheId: 'armoria',
+      cacheId: "armoria",
       cleanupOutdatedCaches: true,
       runtimeCaching: [{
-        urlPattern: '**/*.{css,js,html}',
+        urlPattern: /.*/,
         handler: 'NetworkFirst',
         options: {
-          cacheName: 'armoria-cache'
+          cacheName: 'armoria-cache',
         }
       }]
     }),
