@@ -125,7 +125,9 @@ export const positions = {
   garb: { e: 1, def: 3, abc: 2, beh: 1, kn: 1, jln: 3, jleh: 1, abcpqh: 1, joe: 1, lme: 1 },
   crown: { e: 10, abcdefgzi: 1, beh: 3, behdf: 2, acegi: 1, kn: 1, pq: 2, abc: 1, jln: 4, jleh: 1, def: 2, abcpqh: 3 },
   hand: { e: 10, jln: 2, kn: 1, jeo: 1, abc: 2, pqe: 1 },
-  armillarySphere: {e: 1}
+  armillarySphere: {e: 1},
+  tree: {e: 1},
+  lymphad: {e: 1}
 };
 
 export const lines = {
@@ -195,14 +197,14 @@ export const charges = {
   birds: { eagle: 9, raven: 2, cock: 3, parrot: 1, swan: 2, swanErased: 1, heron: 1 },
   plants: { tree: 1, cinquefoil: 1, rose: 1 },
   aquatic: { escallop: 5, pike: 1, cancer: 1, dolphin: 1 },
-  seafaring: { anchor: 6, boat: 2, armillarySphere: 1 },
+  seafaring: { anchor: 6, boat: 2, lymphad: 2, armillarySphere: 1 },
   agriculture: { garb: 2, rake: 1 },
   arms: { sword: 5, sabre: 1, sabresCrossed: 1, hatchet: 2, lochaberAxe: 1, mallet: 1, bowWithArrow: 2, bow: 1, arrow: 1, arrowsSheaf: 1 },
   bodyparts: { hand: 1 },
   architecture: { tower: 1, castle: 1 },
   miscellaneous: {
     crown: 3, key: 1, buckle: 1, bugleHorn: 1, bell: 2, horseshoe: 3, stagsAttires: 1, cowHorns: 2, wing: 1, wingSword: 1,
-    lute: 1, harp: 1, wheel: 2, chalice: 1, crosier: 1},
+    lute: 1, harp: 1, wheel: 2, chalice: 1, crosier: 1, log: 1},
   uploaded: {},
   natural: { fountain: "azure", garb: "or", raven: "sable" }, // charges to mainly use predefined colours
   sinister: ["crossGamma", "lionRampant", "lionPassant", "wolfPassant", "greyhoundСourant", "boarRampant", "horseRampant", "horseSalient", "bullPassant",
