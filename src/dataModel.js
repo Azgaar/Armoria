@@ -191,7 +191,7 @@ export const charges = {
   animalHeads: {
     wolfHeadErased: 2, bullHeadCaboshed: 1, deerHeadCaboshed: 1
   },
-  fantastic: { dragonPassant: 2, dragonRampant: 2, wyvern: 2, griffinPassant: 1, griffinRampant: 1, eagleTwoHeards: 2, unicornRampant: 1, pegasus: 1, serpent: 1 },
+  fantastic: { dragonPassant: 2, dragonRampant: 2, wyvern: 1, wyvernWithWingsDisplayed: 1, griffinPassant: 1, griffinRampant: 1, eagleTwoHeards: 2, unicornRampant: 1, pegasus: 1, serpent: 1 },
   birds: { eagle: 9, raven: 2, cock: 3, parrot: 1, swan: 2, swanErased: 1, heron: 1 },
   plants: { cinquefoil: 1, rose: 1 },
   aquatic: { escallop: 5, pike: 1, cancer: 1, dolphin: 1 },
