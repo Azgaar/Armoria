@@ -160,8 +160,8 @@ export const ordinaries = {
 };
 
 export const charges = {
-  types: { conventional: 30, crosses: 8, animals: 3, birds: 2, aquatic: 1, seafaring: 1, fantastic: 3, plants: 1, agriculture: 1, arms: 3, bodyparts: 1, architecture: 1, miscellaneous: 3, inescutcheon: 3, uploaded: 0 },
-  single: { conventional: 12, crosses: 8, plants: 2, animals: 11, birds: 4, aquatic: 2, seafaring: 2, fantastic: 7, agriculture: 1, arms: 6, bodyparts: 1, architecture: 1, miscellaneous: 8, inescutcheon: 5, uploaded: 0 },
+  types: { conventional: 30, crosses: 8, animals: 2, animalHeads: 1, birds: 2, aquatic: 1, seafaring: 1, fantastic: 3, plants: 1, agriculture: 1, arms: 3, bodyparts: 1, architecture: 1, miscellaneous: 3, inescutcheon: 3, uploaded: 0 },
+  single: { conventional: 12, crosses: 8, plants: 2, animals: 10, animalHeads: 2, birds: 4, aquatic: 2, seafaring: 2, fantastic: 7, agriculture: 1, arms: 6, bodyparts: 1, architecture: 1, miscellaneous: 8, inescutcheon: 5, uploaded: 0 },
   semy: { conventional: 12, crosses: 3, plants: 1 },
   conventional: {
     lozenge: 2, fusil: 4, mascle: 4, rustre: 2, lozengeFaceted: 3, lozengePloye: 1, roundel: 4, roundel2: 3, annulet: 4,
@@ -185,8 +185,11 @@ export const charges = {
     crossAvellane: 1, crossErminee: 1, crossMaltese: 3, crossCeltic: 1, crossOccitan: 1, crossSaltire: 3, crossTau: 1
   },
   animals: {
-    lionRampant: 4, lionPassant: 1, wolfPassant: 1, greyhoundСourant: 1, boarRampant: 1, horseRampant: 1, horseSalient: 1,
-    bearRampant: 2, bearPassant: 1, bullPassant: 1, goat: 1, lamb: 1, elephant: 1, bullHeadCaboshed: 1, deerHeadCaboshed: 1
+    lionRampant: 5, lionPassant: 2, wolfRampant: 1, wolfPassant: 1, wolfStatant: 1, greyhoundCourant: 1, boarRampant: 1,
+    horseRampant: 2, horseSalient: 1, bearRampant: 2, bearPassant: 1, bullPassant: 1, goat: 1, lamb: 1, elephant: 1
+  },
+  animalHeads: {
+    wolfHeadErased: 2, bullHeadCaboshed: 1, deerHeadCaboshed: 1
   },
   fantastic: { dragonPassant: 2, dragonRampant: 2, wyvern: 2, griffinPassant: 1, griffinRampant: 1, eagleTwoHeards: 2, unicornRampant: 1, pegasus: 1, serpent: 1 },
   birds: { eagle: 9, raven: 2, cock: 3, parrot: 1, swan: 2, swanErased: 1, heron: 1 },
