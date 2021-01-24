@@ -127,7 +127,9 @@ export const positions = {
   hand: { e: 10, jln: 2, kn: 1, jeo: 1, abc: 2, pqe: 1 },
   armillarySphere: {e: 1},
   tree: {e: 1},
-  lymphad: {e: 1}
+  lymphad: {e: 1},
+  head: {e: 1},
+  headWreathed: {e: 1}
 };
 
 export const lines = {
@@ -204,14 +206,16 @@ export const charges = {
   people: {knight: 1},
   architecture: { tower: 1, castle: 1 },
   miscellaneous: {
-    crown: 3, key: 1, buckle: 1, bugleHorn: 1, bell: 2, horseshoe: 3, stagsAttires: 1, cowHorns: 2, wing: 1, wingSword: 1,
-    lute: 1, harp: 1, wheel: 2, chalice: 1, crosier: 1, log: 1},
+    crown: 3, orb: 1, chalice: 1, key: 1, buckle: 1, bugleHorn: 1, bell: 2, horseshoe: 3, stagsAttires: 1, cowHorns: 2, wing: 1, wingSword: 1,
+    lute: 1, harp: 1, wheel: 2, crosier: 1, log: 1},
   uploaded: {},
   natural: { fountain: "azure", garb: "or", raven: "sable" }, // charges to mainly use predefined colours
-  sinister: ["crossGamma", "lionRampant", "lionPassant", "wolfPassant", "greyhoundСourant", "boarRampant", "horseRampant", "horseSalient", "bullPassant",
-    "eagle", "raven", "cock", "parrot", "swan", "swanErased", "heron", "pike", "dragonPassant", "wyvern", "griffinPassant", "griffinRampant", "unicornRampant",
-    "pegasus", "serpent", "hatchet", "lochaberAxe", "hand", "wing", "wingSword", "lute", "harp", "bow"], // charges that can be sinister
-  reversed: ["goutte", "mullet", "mullet7", "crescent", "crossTau", "cancer", "sword", "hand", "horseshoe", "arrow", "arrows"] // charges that can be reversed
+  sinister: ["crossGamma", "lionRampant", "lionPassant", "wolfRampant", "wolfPassant", "wolfStatant", "wolfHeadErased", "greyhoundСourant", "boarRampant", "horseRampant", "horseSalient", "bullPassant",
+    "bearRampant", "bearPassant", "goat", "lamb", "elephant",
+    "eagle", "raven", "cock", "parrot", "swan", "swanErased", "heron", "pike", "dragonPassant", "dragonRampant", "wyvern", "wyvernWithWingsDisplayed", "griffinPassant", "griffinRampant", "unicornRampant",
+    "pegasus", "serpent", "hatchet", "lochaberAxe", "hand", "wing", "wingSword", "lute", "harp", "bow", "head", "headWreathed", "knight", "lymphad", "log",
+    "crosier", "dolphin", "sabre"], // charges that can be sinister
+  reversed: ["goutte", "mullet", "mullet7", "crescent", "crossTau", "cancer", "sword", "sabresCrossed", "hand", "horseshoe", "bowWithArrow", "arrow", "arrowsSheaf", "rake"] // charges that can be reversed
 }
 
 export const shieldPositions = {
