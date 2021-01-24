@@ -200,7 +200,7 @@ export const charges = {
   seafaring: { anchor: 6, boat: 2, lymphad: 2, armillarySphere: 1 },
   agriculture: { garb: 2, rake: 1 },
   arms: { sword: 5, sabre: 1, sabresCrossed: 1, hatchet: 2, lochaberAxe: 1, mallet: 1, bowWithArrow: 2, bow: 1, arrow: 1, arrowsSheaf: 1 },
-  bodyparts: { hand: 1 },
+  bodyparts: { hand: 4, head: 1, headWreathed: 1 },
   people: {knight: 1},
   architecture: { tower: 1, castle: 1 },
   miscellaneous: {
