@@ -165,7 +165,7 @@ export const ordinaries = {
 
 export const charges = {
   types: { conventional: 30, crosses: 8, animals: 2, animalHeads: 1, birds: 2, aquatic: 1, seafaring: 1, fantastic: 3, plants: 1, agriculture: 1, arms: 3, bodyparts: 1, people: 1, architecture: 1, miscellaneous: 3, inescutcheon: 3, uploaded: 0 },
-  single: { conventional: 12, crosses: 8, plants: 2, animals: 10, animalHeads: 2, birds: 4, aquatic: 2, seafaring: 2, fantastic: 7, agriculture: 1, arms: 6, bodyparts: 1, people: 1, architecture: 1, miscellaneous: 8, inescutcheon: 5, uploaded: 0 },
+  single: { conventional: 12, crosses: 8, plants: 2, animals: 10, animalHeads: 2, birds: 4, aquatic: 2, seafaring: 2, fantastic: 7, agriculture: 1, arms: 6, bodyparts: 1, people: 1, architecture: 1, miscellaneous: 9, inescutcheon: 5, uploaded: 0 },
   semy: { conventional: 12, crosses: 3, plants: 1 },
   conventional: {
     lozenge: 2, fusil: 4, mascle: 4, rustre: 2, lozengeFaceted: 3, lozengePloye: 1, roundel: 4, roundel2: 3, annulet: 4,
@@ -206,7 +206,7 @@ export const charges = {
   people: {knight: 1},
   architecture: { tower: 1, castle: 1 },
   miscellaneous: {
-    crown: 3, orb: 1, chalice: 1, key: 1, buckle: 1, bugleHorn: 1, bell: 2, horseshoe: 3, stagsAttires: 1, cowHorns: 2, wing: 1, wingSword: 1,
+    crown: 3, orb: 1, chalice: 1, key: 1, buckle: 1, bugleHorn: 1, bell: 2, pot: 1, horseshoe: 3, stagsAttires: 1, cowHorns: 2, wing: 1, wingSword: 1,
     lute: 1, harp: 1, wheel: 2, crosier: 1, log: 1},
   uploaded: {},
   natural: { fountain: "azure", garb: "or", raven: "sable" }, // charges to mainly use predefined colours
