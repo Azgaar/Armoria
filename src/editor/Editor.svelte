@@ -229,7 +229,7 @@
     }
 
     function getChargeCategory(charge) {
-      const type = Object.keys(charges.types).find(type => charges[type][charge])
+      const type = Object.keys(charges.types).find(type => charges[type][charge] !== undefined)
       return type || charge;
     }
 
