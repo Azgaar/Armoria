@@ -2,6 +2,7 @@
   import WindowEvents from './WindowEvents.svelte';
   import Navbar from './Navbar.svelte';
   import About from './About.svelte';
+  import Viewer from './Viewer.svelte';
   import Editor from './editor/Editor.svelte';
   import Gallery from './Gallery.svelte';
   import UploadRaster from './UploadRaster.svelte';
@@ -12,8 +13,9 @@
   import {background, size, history, matrices, matrix, state, message, shield} from './stores.js';
   import {shields} from './dataModel';
   import {rw} from './utils';
-  let n, w, h, gallery = [], seed;
+  let n, w, h, gallery = [], seed, coaSize = 500;
 
+  checkLoadParameters(); // on load
   $: [n, w, h] = defineGallerySize($size);
   $: handleMatrixChange($matrix, $size);
 
@@ -45,31 +47,36 @@
     }
     gallery = $matrices[$matrix].slice(0, n); // trim gallery if size was bigger
 
-    // on coa edit
-    if ($state.edit) $state.c = $matrices[$matrix][$state.i];
+    // on coa edit or view mode
+    if ($state.edit || $state.view) $state.c = $matrices[$matrix][$state.i];
   }
 
-  void function checkLoadParameters() {
+  function checkLoadParameters() {
     const url = new URL(window.location.href);
-    const params = url.searchParams;
+    const viewParam = url.searchParams.get("view") == 1;
+    const sizeParam = +url.searchParams.get("size");
+    const coaParam = url.searchParams.get("coa");
+    const seedParam = url.searchParams.get("seed");
 
-    if (!params.has("coa") && !params.has("seed")) return;
+    if (!coaParam && !seedParam) return; // no predefined coa, regular flow (generate gallery)
 
-    // define coa or seed
-    if (params.get("coa")) {
-      if (!validateJSON(params.get("coa"))) return;
-
-      const coaParsed = JSON.parse(params.get("coa"));
-      $history.push(coaParsed);
-    } else if (params.get("seed")) {
-      seed = params.get("seed");
-      if (!isNaN(+seed)) seed = +seed;
+    if (coaParam) {
+      // exact coa to render
+      if (!validateJSON(coaParam)) return;
+      $history.push(JSON.parse(coaParam));
+    } else if (seedParam) {
+      // exact seed to use
+      seed = isNaN(+seedParam) ? seedParam : +seedParam;
     }
 
-    // open in edit mode
-    $state.edit = 1;
-    $matrices[0] = [0];
-  }();
+    if (coaParam || seedParam) {
+      $matrices[0] = [0];
+      if (viewParam) {
+        if (sizeParam) coaSize = sizeParam;
+        $state.view = 1; // open in view only mode
+      } else $state.edit = 1; // open in edit mode
+    }
+  }
 
   function validateJSON(text) {
     try {
@@ -77,7 +84,7 @@
       return true;
     } catch(e) {
       console.error(e);
-      alert("Error: coa value is not valid\r\n" + e.message + "\r\n" + text);
+      $message = {type: "error", text: `URL error: ${e.message}`, timeout: 5000};
       return false;
     }
   }
@@ -96,14 +103,18 @@
 
 <WindowEvents/>
 <main style="background-color: {$background}">
-  <Navbar/>
-  {#if $state.about}<About/>{/if}
-  {#if $state.raster}<UploadRaster/>{/if}
-  {#if $state.vector}<UploadVector/>{/if}
-  {#if $state.tinctures}<Tinctures/>{/if}
-  {#if $state.edit}<Editor c={$state.c} {seed}/>
-  {:else}<Gallery {gallery} {w} {h}/>{/if}
-  {#if $message}<Message/>{/if}
+  {#if $state.view}
+    <Viewer c={$state.c} {seed} {coaSize}/>
+  {:else}
+    <Navbar/>
+    {#if $state.about}<About/>{/if}
+    {#if $state.raster}<UploadRaster/>{/if}
+    {#if $state.vector}<UploadVector/>{/if}
+    {#if $state.tinctures}<Tinctures/>{/if}
+    {#if $state.edit}<Editor c={$state.c} {seed}/>
+    {:else}<Gallery {gallery} {w} {h}/>{/if}
+    {#if $message}<Message/>{/if}
+  {/if}
   <Patterns/>
 </main>
 
