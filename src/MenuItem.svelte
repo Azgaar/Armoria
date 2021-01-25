@@ -14,9 +14,11 @@
   }
 
   function cap(string) {
-    return string.replace(/(?=[A-Z])/g, " ").replace(/\w\S*/g, s => s.charAt(0).toUpperCase() + s.substr(1).toLowerCase());
+    return string
+      .replace(/_/g, " ")
+      .replace(/(?<!_)(?=[A-Z])/g, " ")
+      .replace(/\w\S*/g, s => s.charAt(0).toUpperCase() + s.substr(1).toLowerCase());
   }
-
 </script>
 
 <svg class=menuItem xmlns=http://www.w3.org/2000/svg width={itemSize} height={itemSize} viewBox="0 0 200 200" on:mouseenter={showMessage} on:focus={showMessage} on:mouseleave={hideMessage}>

@@ -203,7 +203,7 @@ export const charges = {
   agriculture: { garb: 2, rake: 1 },
   arms: { sword: 5, sabre: 1, sabresCrossed: 1, hatchet: 2, lochaberAxe: 1, mallet: 1, bowWithArrow: 2, bow: 1, arrow: 1, arrowsSheaf: 1 },
   bodyparts: { hand: 4, head: 1, headWreathed: 1 },
-  people: {knight: 1},
+  people: { cavalier: 1 },
   architecture: { tower: 1, castle: 1 },
   miscellaneous: {
     crown: 3, orb: 1, chalice: 1, key: 1, buckle: 1, bugleHorn: 1, bell: 2, pot: 1, horseshoe: 3, stagsAttires: 1, cowHorns: 2, wing: 1, wingSword: 1,
