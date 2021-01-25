@@ -101,11 +101,10 @@
   }
 </script>
 
-<WindowEvents/>
-<main style="background-color: {$background}">
-  {#if $state.view}
-    <Viewer c={$state.c} {seed} {coaSize}/>
-  {:else}
+{#if $state.view}
+  <Viewer c={$state.c} {seed} {coaSize}/>
+{:else}
+  <main style="background-color: {$background}">
     <Navbar/>
     {#if $state.about}<About/>{/if}
     {#if $state.raster}<UploadRaster/>{/if}
@@ -114,9 +113,10 @@
     {#if $state.edit}<Editor c={$state.c} {seed}/>
     {:else}<Gallery {gallery} {w} {h}/>{/if}
     {#if $message}<Message/>{/if}
-  {/if}
-  <Patterns/>
-</main>
+  </main>
+{/if}
+<WindowEvents/>
+<Patterns/>
 
 <style>
   main {
