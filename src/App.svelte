@@ -13,7 +13,7 @@
   import {background, size, history, matrices, matrix, state, message, shield} from './stores.js';
   import {shields} from './dataModel';
   import {rw} from './utils';
-  let n, w, h, gallery = [], seed, coaSize = 500;
+  let n, w, h, gallery = [], seed, coaSize = 200;
 
   checkLoadParameters(); // on load
   $: [n, w, h] = defineGallerySize($size);
@@ -52,7 +52,7 @@
   }
 
   function checkLoadParameters() {
-    const url = new URL(window.location.href);
+    const url = new URL(window.location);
     const viewParam = url.searchParams.get("view") == 1;
     const sizeParam = +url.searchParams.get("size");
     const coaParam = url.searchParams.get("coa");
