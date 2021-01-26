@@ -1,10 +1,10 @@
 <script>
-  import Tip from './Tip.svelte';
   import { fade } from 'svelte/transition';
   import { flip } from 'svelte/animate';
   import { colors, tinctures, state, message } from './stores';
   import { defaultTinctures, defaultColors } from './dataModel';
   import { camelize } from './utils';
+  import { tooltip } from './tooltip';
 
   let add = {show: false, name: "", type: "colours", color: "#96C8FA", chance: 3};
 
@@ -169,9 +169,9 @@
               <td>
                 <input type=color bind:value={$colors[t.t]}/>
                 {#if defaultColors[t.t] && $colors[t.t] !== defaultColors[t.t]}
-                  <Tip tip="Restore default color">
-                    <svg on:click={() => $colors[t.t] = defaultColors[t.t]} width=12 height=12 fill=#fff><use href="#undo-icon"></use></svg>
-                  </Tip>
+                  <svg on:click={() => $colors[t.t] = defaultColors[t.t]} width=12 height=12 fill=#fff title="Restore default color" use:tooltip>
+                    <use href="#undo-icon"></use>
+                  </svg>
                 {/if}
               </td>
               <td>

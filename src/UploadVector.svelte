@@ -1,8 +1,8 @@
 <script>
-  import Tip from './Tip.svelte';
   import {state, colors, tinctures, message} from "./stores";
   import {charges} from "./dataModel.js";
   import {camelize} from './utils.js';
+  import {tooltip} from './tooltip';
   let dragging = false, selected = false;
   let svg, transform = {a:1, b:0, c:0, d:1, e:0, f:0}, name, category = "uploaded", color = "#d7374a";
   const tinctureList = ["metals", "colours", "stains"].map(type => Object.keys($tinctures[type])).flat();
@@ -130,44 +130,33 @@
         </div>
       </div>
 
-      <div class=exampleCOA>
-        <Tip tip="For best result charge must fit into the inner rectangle" helpCursor={false}>
-          <svg width=100% height=100% fill={color} stroke=#000 stroke-width=1 viewBox="0 0 200 200">
-            <g fill="#fff" fill-opacity=".05" stroke="#fff" stroke-width=".5">
-              <path d="m25 25h150v50a150 150 0 0 1-75 125 150 150 0 0 1-75-125z"/>
-              <rect x="60" y="60" width="80" height="80"/>
-            </g>
-            <g>
-              {@html svg}
-            </g>
-          </svg>
-        </Tip>
+      <div class=exampleCOA title="For best result charge must fit into the inner rectangle" use:tooltip>
+        <svg width=100% height=100% fill={color} stroke=#000 stroke-width=1 viewBox="0 0 200 200">
+          <g fill="#fff" fill-opacity=".05" stroke="#fff" stroke-width=".5">
+            <path d="m25 25h150v50a150 150 0 0 1-75 125 150 150 0 0 1-75-125z"/>
+            <rect x="60" y="60" width="80" height="80"/>
+          </g>
+          <g>
+            {@html svg}
+          </g>
+        </svg>
       </div>
 
       <div class=output>
-        <div>
-          <div class=label>
-            <Tip tip="Charge translate: X and Y px" position=left/>
-            Translate:
-          </div>
+        <div title="Charge translate: X and Y px" use:tooltip>
+          <div class=label>Translate:</div>
           <input type=number step=.1 class=paired bind:value={transform.e}/>
           <input type=number step=.1 class=paired bind:value={transform.f}/>
         </div>
 
-        <div>
-          <div class=label>
-            <Tip tip="Charge scale: X and Y, where 1 is default size" position=left/>
-            Scale:
-          </div>
+        <div title="Charge scale: X and Y, where 1 is default size" use:tooltip>
+          <div class=label>Scale:</div>
           <input type=number step=.01 class=paired bind:value={transform.a}/>
           <input type=number step=.01 class=paired bind:value={transform.d}/>
         </div>
 
-        <div>
-          <div class=label>
-            <Tip tip="Tincture preview color, does not affect uploaded actual color. Charges must not have exact color defined. In this case charge will support all tunctures" position=left/>
-            Tincture:
-          </div>
+        <div title="Tincture preview color, does not affect uploaded actual color. Charges must not have exact color defined. In this case charge will support all tunctures" use:tooltip>
+          <div class=label>Tincture:</div>
           <select bind:value={color}>
             {#each tinctureList as tincture}
               <option value={$colors[tincture]}>{tincture}</option>
@@ -175,19 +164,13 @@
           </select>
         </div>
 
-        <div>
-          <div class=label>
-            <Tip tip="Charge ID, must be unique" position=left/>
-            Name:
-          </div>
+        <div title="Charge ID, must be unique" use:tooltip>
+          <div class=label>Name:</div>
           <input placeholder="Charge name" required bind:value={name}/>
         </div>
 
-        <div>
-          <div class=label>
-            <Tip tip="Category where charge will be added" position=left/>
-            Category:
-          </div>
+        <div title="Category where charge will be added" use:tooltip>
+          <div class=label>Category:</div>
           <select bind:value={category}>
             {#each Object.keys(charges.types) as c}
               <option value={c}>{c}</option>

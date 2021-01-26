@@ -1,10 +1,10 @@
 <script>
-  import Tip from '../Tip.svelte';
   import Switch from '../Switch.svelte';
+  import {tooltip} from '../tooltip';
   export let above;
 </script>
 
-<Tip tip="Check to render ordinary above charges">
+<span title="Check to render ordinary above charges" use:tooltip>
   <span style="margin-left: 1em">Above charges:</span>
   <Switch bind:checked={above}/>
-</Tip>
+</span>

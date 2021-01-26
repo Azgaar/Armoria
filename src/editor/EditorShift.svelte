@@ -1,7 +1,7 @@
 <script>
-  import Tip from '../Tip.svelte';
   import Switch from '../Switch.svelte';
   import {grid, showGrid, state} from '../stores';
+  import {tooltip} from '../tooltip';
   export let e;
 
   function updateGrid() {
@@ -9,30 +9,30 @@
   }
 </script>
 
-<Tip tip="Element size in percents">
+<span title="Element size in percents" use:tooltip>
   Size:
   <input type=number min=1 max=500 step=1 value={e.size * 100 | 0} on:input={function() {e.size = this.value / 100}}/>
-</Tip>
+</span>
 
-<Tip tip="Element rotation angle in degrees">
+<span title="Element rotation angle in degrees" use:tooltip>
   <span>Rotation:</span>
   <input type=number min=-180 max=180 bind:value={e.angle} on:change={updateGrid}/>
-</Tip>
+</span>
 
-<Tip tip="Element shift in pixels">
+<span title="Element shift in pixels" use:tooltip>
   <span>Shift:</span>
   <input type=number min=-100 max=100 step={$grid} bind:value={e.x}/>
   <input type=number min=-100 max=100 step={$grid} bind:value={e.y}/>
-</Tip>
+</span>
 
-<Tip tip="Grid size: define position shift and drag step in pixels">
+<span title="Grid size: define position shift and drag step in pixels" use:tooltip>
   <span>Step:</span>
   <input type=number min=1 max=50 bind:value={$grid}/>
   <Switch bind:checked={$showGrid}/>
-</Tip>
+</span>
 
 <style>
-  span {
+  span > span {
     margin-left: 1em;
   }
 

@@ -1,10 +1,10 @@
 <script>
-  import Tip from '../Tip.svelte';
   import Switch from '../Switch.svelte';
+  import {tooltip} from '../tooltip';
   export let element;
 </script>
 
-<Tip tip="Element stroke. Check to render, select a color and set stroke width">
+<span title="Element stroke. Check to render and select a color" use:tooltip>
   <span>Stroke:</span>
   <Switch bind:checked={element.showStroke}/>
   {#if element.showStroke}
@@ -16,7 +16,7 @@
       <input type=number min=.1 max=5 step=.1 bind:value={element.strokeWidth}/>
     {/if}
   {/if}
-</Tip>
+</span>
 
 <style>
   input[type=color] {

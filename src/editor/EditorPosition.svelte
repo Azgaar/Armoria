@@ -1,9 +1,9 @@
 <script>
-  import Tip from '../Tip.svelte';
   import Switch from '../Switch.svelte';
   import {state} from '../stores';
   import {positionsSelect} from "../dataModel";
   import {getSize} from '../generator';
+  import {tooltip} from '../tooltip';
   export let charge;
 
   function showPositions() {
@@ -21,7 +21,7 @@
   }
 </script>
 
-<Tip tip="Points on shield to place a charge">
+<span title="Points on shield to place a charge" use:tooltip>
   Positions:
   <input bind:value={charge.p} on:input={showPositions} on:focus={showPositions} on:blur={hidePositions}/>
   <select bind:value={charge.p} on:change={changePosition} on:focus={showPositions} on:blur={hidePositions}>
@@ -29,20 +29,20 @@
       <option value={position}>{position}</option>
     {/each}
   </select>
-</Tip>
+</span>
 
-<Tip tip="Turn charge to the left">
+<span title="Turn charge to the left" use:tooltip>
   <span style="margin-left: 1em">Sinister:</span>
   <Switch bind:checked={charge.sinister}/>
-</Tip>
+</span>
 
-<Tip tip="Show charge upside down">
+<span title="Show charge upside down" use:tooltip>
   <span style="margin-left: 1em">Reversed:</span>
   <Switch bind:checked={charge.reversed}/>
-</Tip>
+</span>
 
 <style>
-  span {
+  span > span {
     margin-left: 1em;
   }
 
