@@ -129,7 +129,8 @@ export const positions = {
   tree: {e: 1},
   lymphad: {e: 1},
   head: {e: 1},
-  headWreathed: {e: 1}
+  headWreathed: {e: 1},
+  cavalier: {e: 1}
 };
 
 export const lines = {
