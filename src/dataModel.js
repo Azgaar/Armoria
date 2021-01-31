@@ -74,7 +74,7 @@ export const positions = {
     crossParted: { e: 5, ee: 1 },
     saltire: { ee: 5, jlemo: 1 },
     saltireParted: { e: 5, ee: 1 },
-    pall: { ee: 1, acez: 5, jlhh: 3 },
+    pall: { ee: 1, jleh: 5, jlhh: 3 },
     pallReversed: { ee: 1, bemo: 5 },
     pile: { bbb: 1 },
     pileInBend: { eeee: 1, eeoo: 1 },
