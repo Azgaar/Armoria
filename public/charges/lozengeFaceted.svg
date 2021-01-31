@@ -2,8 +2,10 @@
 <!--Author: Azgaar. License: Public Domain-->
   <g id="lozengeFaceted">
     <polygon points="100 55 130 100 100 145 70 100"/>
-    <polygon points="100 99 130 99 100 55" opacity=".2"/>
-    <polygon points="99 100 70 100 99 145" opacity=".2"/>
-    <polygon points="100 100 130 100 100 145" opacity=".3"/>
+    <g fill="#000">
+      <polygon points="100 99 130 99 100 55" opacity=".2"/>
+      <polygon points="99 100 70 100 99 145" opacity=".2"/>
+      <polygon points="100 100 130 100 100 145" opacity=".3"/>
+    </g>
   </g>
 </svg>
