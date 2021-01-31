@@ -1,6 +1,8 @@
 import { get } from 'svelte/store';
 import { scale, shield, grad, diaper } from './stores';
 
+const formatTime = time => time < 10 ? "0" + time : time;
+
 export async function download(i) {
   const coas = i !== undefined ? [document.getElementById("coa" + i)] : document.querySelectorAll("svg.coa");
   let {width, height} = coas[0].getBoundingClientRect();
@@ -61,8 +63,15 @@ async function getURL(svg) {
 
 function drawCanvas(canvas) {
   const link = document.createElement("a");
+
   const date = new Date();
-  const dateString = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+  const year = date.getFullYear();
+  const month = formatTime(date.getMonth() + 1);
+  const day = formatTime(date.getDate());
+  const hour = formatTime(date.getHours());
+  const minutes = formatTime(date.getMinutes());
+  const dateString = [year, month, day, hour, minutes].join('-');
+
   link.download = `armoria_${dateString}.png`;
   canvas.toBlob(function (blob) {
     link.href = window.URL.createObjectURL(blob);
@@ -74,4 +83,3 @@ function drawCanvas(canvas) {
     }, 5000);
   });
 }
-
