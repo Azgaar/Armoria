@@ -12,34 +12,34 @@
     e.stopPropagation();
   }
 
-  const moveUp = e => {
+  const forward = e => {
     [els[i], els[i+1]] = [els[i+1], els[i]];
     e.stopPropagation();
   }
 
-  const moveDown = e => {
+  const backward = e => {
     [els[i], els[i-1]] = [els[i-1], els[i]];
     e.stopPropagation();
   }
 </script>
 
 <span>
-  <svg on:click={clone} title="Clone element" use:tooltip>
+  <svg on:click={clone} title="Clone" use:tooltip>
     <use href="#clone-icon"></use>
   </svg>
   {#if els.length > 1}
     {#if i}
-      <svg on:click={moveDown} title="Move element down" use:tooltip>
-        <use href="#down-icon"></use>
-      </svg>
-    {/if}
-    {#if i+1 < els.length}
-      <svg on:click={moveUp} title="Move element up" use:tooltip>
+      <svg on:click={backward} title="Send backward" use:tooltip>
         <use href="#up-icon"></use>
       </svg>
     {/if}
+    {#if i+1 < els.length}
+      <svg on:click={forward} title="Bring forward" use:tooltip>
+        <use href="#down-icon"></use>
+      </svg>
+    {/if}
   {/if}
-  <svg on:click={remove} title="Remove element" use:tooltip>
+  <svg on:click={remove} title="Remove" use:tooltip>
     <use href="#remove-icon"></use>
   </svg>
 </span>
@@ -51,12 +51,7 @@
     fill: #fff;
   }
 
-  b {
-    padding: .1em;
-    margin-top: -.1em;
-  }
-
-  b:active {
+  svg:active {
     transform: translateY(1px);
   }
 </style>
