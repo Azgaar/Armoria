@@ -1,5 +1,5 @@
 <script>
-  import MenuItem from '../MenuItem.svelte';
+  import EditorItem from './EditorItem.svelte';
   import {tinctures} from '../stores';
   export let t1, itemSize;
 
@@ -13,6 +13,6 @@
 <div>Tincture:</div>
 {#each coas as coa}
   <div class=item class:selected={t1 === coa.t1} on:click={() => t1 = coa.t1}>
-    <MenuItem {coa} tip={coa.tip} {itemSize}/>
+    <EditorItem {coa} tip={coa.tip} {itemSize}/>
   </div>
 {/each}

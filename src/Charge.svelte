@@ -2,15 +2,14 @@
   import {shieldPositions, shieldSize} from "./dataModel.js";
   import {loadedCharges} from "./stores";
   import {drag, transform} from "./drag"
-  export let coa, charge, i, shield, colors, t, type;
-  let chargeId, positions, size, fill, stroke;
+  export let coa, charge, i, shield, t, type;
+  let chargeId, positions, size, stroke;
 
   const defs = document.getElementById("charges");
 
   $: {
     positions = shieldPositions[shield] || shieldPositions.spanish;
     size = shieldSize[shield] || 1;
-    fill = colors[t];
     stroke = charge.stroke || "#000";
 
     chargeId = charge.charge;
@@ -54,8 +53,8 @@
   }
 </script>
 
-<g class="charge" {i} charge={getCharge(chargeId)} transform={transform(charge)} transform-origin="center" {stroke} on:mousedown={addDrag}>
+<g class="charge" {i} charge={getCharge(chargeId)} transform="{transform(charge)}" transform-origin="center" {stroke} on:mousedown={addDrag}>
   {#each [...new Set(charge.p)].filter(p => positions[p]) as p}
-    <use href="#{chargeId}" transform={getElTransform(positions, charge, p)} transform-origin="center" {fill}></use>
+    <use href="#{chargeId}" transform="{getElTransform(positions, charge, p)}" transform-origin="center" fill="{t}"></use>
   {/each}
 </g>

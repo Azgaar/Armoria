@@ -1,5 +1,5 @@
 <script>
-  import MenuItem from '../MenuItem.svelte';
+  import EditorItem from './EditorItem.svelte';
   import {lines} from "../dataModel";
   export let line, division = null, ordinary = null, t1, t, itemSize;
 
@@ -13,6 +13,6 @@
 <div>Line:</div>
 {#each coas as coa (coa)}
   <div class=item class:selected={line === coa.line} on:click={() => line = coa.line}>
-    <MenuItem {coa} tip={getTip(coa.line)} {itemSize}/>
+    <EditorItem {coa} tip={getTip(coa.line)} {itemSize}/>
   </div>
 {/each}

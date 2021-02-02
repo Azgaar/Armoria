@@ -41,7 +41,6 @@
   // get color or link to pattern
   function clr(tincture) {
     if (coaColors[tincture]) return coaColors[tincture];
-    if (!tincture) debugger;
     $patterns[$patterns.length] = tincture;
     return "url(#"+tincture+")";
   }
@@ -58,15 +57,15 @@
 <g id=shield clip-path="url(#{coaShield})">
 
   <!-- Field -->
-  <rect id=field x=0 y=0 width=200 height=200 fill="{coaColors[coa.t1] || clr(coa.t1)}"/>
+  <rect id=field x=0 y=0 width=200 height=200 fill="{clr(coa.t1)}"/>
 
   {#if division && division.division !== "no"}
     <!-- In field part -->
     {#each ordinariesRegular as ordinary, i}
       {#if ordinary.divided === "field"}
-        <Ordinary {coa} {ordinary} {i} {shieldPath} colors={coaColors} t={ordinary.t} {type}/>
+        <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type}/>
       {:else if ordinary.divided === "counter"}
-        <Ordinary {coa} {ordinary} {i} {shieldPath} colors={coaColors} t={tDiv} {type}/>
+        <Ordinary {coa} {ordinary} {i} {shieldPath} t={tDiv} {type}/>
       {/if}
     {/each}
 
@@ -76,29 +75,29 @@
 
     {#each charges as charge, i}
       {#if charge.divided === "field"}
-        <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={charge.t} {type}/>
+        <Charge {coa} {charge} {i} shield={coaShield} t={clr(charge.t)} {type}/>
       {:else if charge.divided === "counter"}
-        <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={tDiv} {type}/>
+        <Charge {coa} {charge} {i} shield={coaShield} t={tDiv} {type}/>
       {/if}
     {/each}
 
     {#each ordinariesAboveCharges as ordinary, i}
       {#if ordinary.divided === "field"}
-        <Ordinary {coa} {ordinary} {i} {shieldPath} colors={coaColors} t={ordinary.t} {type}/>
+        <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type}/>
       {:else if ordinary.divided === "counter"}
-        <Ordinary {coa} {ordinary} {i} {shieldPath} colors={coaColors} t={tDiv} {type}/>
+        <Ordinary {coa} {ordinary} {i} {shieldPath} t={tDiv} {type}/>
       {/if}
     {/each}
 
     <!-- In division part -->
     <g id=division clip-path="url(#divisionClip{i})">
-      <rect x=0 y=0 width=200 height=200 fill="{coaColors[division.t] || clr(division.t)}"/>
+      <rect x=0 y=0 width=200 height=200 fill="{clr(division.t)}"/>
 
       {#each ordinariesRegular as ordinary, i}
         {#if ordinary.divided === "division"}
-          <Ordinary {coa} {ordinary} {i} {shieldPath} colors={coaColors} t={ordinary.t} {type}/>
+          <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type}/>
         {:else if ordinary.divided === "counter"}
-          <Ordinary {coa} {ordinary} {i} {shieldPath} colors={coaColors} t={coa.t1} {type}/>
+          <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(coa.t1)} {type}/>
         {/if}
       {/each}
 
@@ -108,17 +107,17 @@
 
       {#each charges as charge, i}
         {#if charge.divided === "division"}
-          <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={charge.t} {type}/>
+          <Charge {coa} {charge} {i} shield={coaShield} t={clr(charge.t)} {type}/>
         {:else if charge.divided === "counter"}
-          <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={coa.t1} {type}/>
+          <Charge {coa} {charge} {i} shield={coaShield} t={clr(coa.t1)} {type}/>
         {/if}
       {/each}
 
       {#each ordinariesAboveCharges as ordinary, i}
         {#if ordinary.divided === "division"}
-          <Ordinary {coa} {ordinary} {i} {shieldPath} colors={coaColors} t={ordinary.t} {type}/>
+          <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type}/>
         {:else if ordinary.divided === "counter"}
-          <Ordinary {coa} {ordinary} {i} {shieldPath} colors={coaColors} t={coa.t1} {type}/>
+          <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(coa.t1)} {type}/>
         {/if}
       {/each}
     </g>
@@ -127,7 +126,7 @@
   <!-- Overall -->
   {#each ordinariesRegular as ordinary, i}
     {#if !ordinary.divided}
-      <Ordinary {coa} {ordinary} {i} {shieldPath} colors={coaColors} t={ordinary.t} {type}/>
+      <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type}/>
     {/if}
   {/each}
 
@@ -137,13 +136,13 @@
 
   {#each charges as charge, i}
     {#if !charge.divided || !division}
-      <Charge {coa} {charge} {i} shield={coaShield} colors={coaColors} t={charge.t} {type}/>
+      <Charge {coa} {charge} {i} shield={coaShield} t={clr(charge.t)} {type}/>
     {/if}
   {/each}
 
   {#each ordinariesAboveCharges as ordinary, i}
     {#if !ordinary.divided}
-      <Ordinary {coa} {ordinary} {i} {shieldPath} colors={coaColors} t={ordinary.t} {type}/>
+      <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type}/>
     {/if}
   {/each}
 </g>

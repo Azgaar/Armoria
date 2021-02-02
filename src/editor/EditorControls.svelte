@@ -1,4 +1,5 @@
 <script>
+  import {tooltip} from '../tooltip';
   export let els, el, i;
 
   const remove = e => {
@@ -23,16 +24,16 @@
 </script>
 
 <span>
-  <b on:click={copy} title="Copy">🗗</b>
+  <b on:click={copy} title="Copy" use:tooltip>🗗</b>
   {#if els.length > 1}
     {#if i}
-      <b on:click={moveDown} title="Move down">🠗</b>
+      <b on:click={moveDown} title="Move down" use:tooltip>🠗</b>
     {/if}
     {#if i+1 < els.length}
-      <b on:click={moveUp} title="Move up">🠕</b>
+      <b on:click={moveUp} title="Move up" use:tooltip>🠕</b>
     {/if}
   {/if}
-  <b on:click={remove} title="Remove">✖</b>
+  <b on:click={remove} title="Remove" use:tooltip>✖</b>
 </span>
 
 <style>

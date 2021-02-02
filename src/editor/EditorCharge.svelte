@@ -1,5 +1,5 @@
 <script>
-  import MenuItem from '../MenuItem.svelte';
+  import EditorItem from './EditorItem.svelte';
   import {charges} from "../dataModel";
   export let charge, type, category, t1, t2, size = null, sinister = null, reversed = null, division = false, itemSize;
   let coas = [], query, queryOld;
@@ -59,7 +59,7 @@
 <div>
   {#each coas as coa (coa)}
     <div class=item class:selected={charge === coa.c} on:click={() => charge = coa.c}>
-      <MenuItem {coa} tip={getTip(coa.c)} {itemSize}/>
+      <EditorItem {coa} tip={getTip(coa.c)} {itemSize}/>
     </div>
   {/each}
 </div>

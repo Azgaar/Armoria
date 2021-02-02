@@ -1,5 +1,5 @@
 <script>
-  import MenuItem from '../MenuItem.svelte';
+  import EditorItem from './EditorItem.svelte';
   import {ordinaries} from "../dataModel";
   export let ordinary, line, t1, t, itemSize;
 
@@ -9,6 +9,6 @@
 
 {#each coas as coa (coa)}
   <div class=item class:selected={ordinary === coa.ordinary} on:click={() => ordinary = coa.ordinary}>
-    <MenuItem {coa} tip="Ordinary: {coa.ordinary}" {itemSize}/>
+    <EditorItem {coa} tip="Ordinary: {coa.ordinary}" {itemSize}/>
   </div>
 {/each}
