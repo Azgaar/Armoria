@@ -7,7 +7,7 @@
     e.stopPropagation();
   }
 
-  const copy = e => {
+  const clone = e => {
     els = [...els, JSON.parse(JSON.stringify(el))];
     e.stopPropagation();
   }
@@ -24,19 +24,33 @@
 </script>
 
 <span>
-  <b on:click={copy} title="Copy" use:tooltip>🗗</b>
+  <svg on:click={clone} title="Clone element" use:tooltip>
+    <use href="#clone-icon"></use>
+  </svg>
   {#if els.length > 1}
     {#if i}
-      <b on:click={moveDown} title="Move down" use:tooltip>🠗</b>
+      <svg on:click={moveDown} title="Move element down" use:tooltip>
+        <use href="#down-icon"></use>
+      </svg>
     {/if}
     {#if i+1 < els.length}
-      <b on:click={moveUp} title="Move up" use:tooltip>🠕</b>
+      <svg on:click={moveUp} title="Move element up" use:tooltip>
+        <use href="#up-icon"></use>
+      </svg>
     {/if}
   {/if}
-  <b on:click={remove} title="Remove" use:tooltip>✖</b>
+  <svg on:click={remove} title="Remove element" use:tooltip>
+    <use href="#remove-icon"></use>
+  </svg>
 </span>
 
 <style>
+  svg {
+    width: .8em;
+    height: .8em;
+    fill: #fff;
+  }
+
   b {
     padding: .1em;
     margin-top: -.1em;

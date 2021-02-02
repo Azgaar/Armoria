@@ -166,7 +166,7 @@
           <div class="dropdown level2">
             <bl>Color
               {#if $border !== "#333333"}
-                <svg on:click={e => restoreDefault(e, border, "border", "#333333")} class="navBarIcon active smaller" tip="Restore default color" use:tooltip>
+                <svg on:click={e => restoreDefault(e, border, "border", "#333333")} class="navBarIcon active smaller" title="Restore default color" use:tooltip>
                   <use href="#undo-icon"></use>
                 </svg>
               {/if}
@@ -174,7 +174,7 @@
             </bl>
             <bl>Width
               {#if $borderWidth !== 1}
-                <svg on:click={e => restoreDefault(e, borderWidth, "borderWidth", "#333333")} class="navBarIcon active smaller" tip="Restore default border width" use:tooltip>
+                <svg on:click={e => restoreDefault(e, borderWidth, "borderWidth", "#333333")} class="navBarIcon active smaller" title="Restore default border width" use:tooltip>
                   <use href="#undo-icon"></use>
                 </svg>
               {/if}
