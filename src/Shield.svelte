@@ -8,8 +8,7 @@
   const {division, ordinaries = [], charges = []} = coa;
   const ordinariesRegular = ordinaries.filter(o => !o.above);
   const ordinariesAboveCharges = ordinaries.filter(o => o.above);
-  let tDiv;
-  if (division) tDiv = division.t.includes("-") ? division.t.split("-")[1] : division.t;
+  const tDiv = division ? division.t.includes("-") ? division.t.split("-")[1] : division.t : null;
 
   let coaColors, coaGrad, coaShield, shieldPath, coaDiaper, diaperType;
   $: {
@@ -65,7 +64,7 @@
       {#if ordinary.divided === "field"}
         <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type}/>
       {:else if ordinary.divided === "counter"}
-        <Ordinary {coa} {ordinary} {i} {shieldPath} t={tDiv} {type}/>
+        <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(tDiv)} {type}/>
       {/if}
     {/each}
 
@@ -77,7 +76,7 @@
       {#if charge.divided === "field"}
         <Charge {coa} {charge} {i} shield={coaShield} t={clr(charge.t)} {type}/>
       {:else if charge.divided === "counter"}
-        <Charge {coa} {charge} {i} shield={coaShield} t={tDiv} {type}/>
+        <Charge {coa} {charge} {i} shield={coaShield} t={clr(tDiv)} {type}/>
       {/if}
     {/each}
 
@@ -85,7 +84,7 @@
       {#if ordinary.divided === "field"}
         <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type}/>
       {:else if ordinary.divided === "counter"}
-        <Ordinary {coa} {ordinary} {i} {shieldPath} t={tDiv} {type}/>
+        <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(tDiv)} {type}/>
       {/if}
     {/each}
 
