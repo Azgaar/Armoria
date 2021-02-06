@@ -1,8 +1,8 @@
 # Armoria
 
-Armoria is a procedural heraldry generator and editor by Azgaar.
+Armoria is a procedural heraldry generator and editor by Azgaar. It's both a separate serverless GUI tool and server-side API. The same logic is also available as a part of the [Fantasy Map Generator](https://github.com/Azgaar/Fantasy-Map-Generator) project.
 
-Project is under development, alpha version is available on [Github Pages](https://azgaar.github.io/Armoria/).
+Armoria is under development, the GUI version is available on [Github Pages](https://azgaar.github.io/Armoria/).
 
 ![Gallery View](public/preview.png)
 ![Editor View](https://cdn.discordapp.com/attachments/587406457725779968/787792526907015234/preview2.png)
@@ -11,7 +11,7 @@ Join our [Reddit community](https://www.reddit.com/r/FantasyMapGenerator) and [D
 
 ## For Developers
 
-The tool is almost zero-dependency vanilla JS with just [Svelte](https://github.com/sveltejs/svelte) to build UI. Svelte is a bit specific framework that compiles components to vanilla JS.
+The tool is almost zero-dependency vanilla JS with just [Svelte](https://github.com/sveltejs/svelte) to build GUI. Svelte is a bit specific framework that compiles components to vanilla JS.
 
 I am not a profi in web-development or Svelte, so help from professional developers and Pull Requests are welcomed.
 
@@ -19,18 +19,18 @@ I am not a profi in web-development or Svelte, so help from professional develop
 
 Clone the repository and install the dependencies.
 
-```sh
-$ git clone https://github.com/Azgaar/Armoria.git
-$ cd Armoria
-$ npm install
+```
+git clone https://github.com/Azgaar/Armoria.git
+cd Armoria
+npm install
 ```
 
 ### Usage
 
 Run `dev` to start Rollup and build in dev mode
 
-```sh
-$ npm run dev
+```
+npm run dev
 ```
 
 Navigate to [localhost:5000](http://localhost:5000). You should see the app running.
@@ -39,10 +39,20 @@ Edit a component file in `src`, save it, and reload the page to see your changes
 
 To create an optimised version of the app run:
 
-```bash
+```
 npm run build
 ```
 
+## API
+
+Armoria API is available as a seperate project, see (the documentation)[https://github.com/Azgaar/armoria-api#readme]. The API allows to `GET` random or predefined vector and raster heraldic images of a given size.
+
+API is hosted on _Heroku_ for free, so downtime and slow first response are expected. I will considered scaling in case of active API usage. Please [contact me directly](mailto:maxganiev@yandex.com) if you needs API for production.
+
 ## License
 
-The code is distributed under MIT. Simple svg shapes and charges are self-made and available under CC0. Complex charges are historical, svg renders are coming from [WappenWiki](http://wappenwiki.org) and available for non-commercial use under CC3. Source info is added to svg files as a comment. All images are manually optimized by me.
+The code is distributed under [MIT](https://opensource.org/licenses/MIT).
+
+Simple svg shapes and charges are self-made and available under [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/). Complex charges are historical, svg renders are coming from [WappenWiki](http://wappenwiki.org) and available for non-commercial use under [CC0](https://creativecommons.org/licenses/by-nc/3.0/). Source info is added to svg files as a comment.
+
+All images are manually optimized by me.

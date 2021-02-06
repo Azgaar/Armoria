@@ -100,7 +100,7 @@ export const positions = {
     quarter: { e: 1 },
     canton: { e: 5, beh: 1, def: 1, bdefh: 1, kn: 1 },
     cross: { acgi: 1 },
-    pall: { BCKFEILGbdmfo: 1 },
+    pall: { BCKFEILGJbdmfo: 1 },
     pallReversed: { aczac: 1 },
     chevron: { ach: 3, hhh: 1 },
     chevronReversed: { bbb: 1 },
