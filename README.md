@@ -53,6 +53,6 @@ API is hosted on _Heroku_ for free, so downtime and slow first response are expe
 
 The code is distributed under [MIT](https://opensource.org/licenses/MIT).
 
-Simple svg shapes and charges are self-made and available under [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/). Complex charges are historical, svg renders are coming from [WappenWiki](http://wappenwiki.org) and available for non-commercial use under [CC0](https://creativecommons.org/licenses/by-nc/3.0/). Source info is added to svg files as a comment.
+Simple svg shapes and charges are self-made and available under [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/). Complex charges are historical, svg renders are coming from [WappenWiki](http://wappenwiki.org) and available for non-commercial use under [CC3](https://creativecommons.org/licenses/by-nc/3.0/). Source info is added to svg files as a comment.
 
 All images are manually optimized by me.
