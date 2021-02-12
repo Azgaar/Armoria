@@ -57,6 +57,7 @@
     const sizeParam = +url.searchParams.get("size");
     const coaParam = url.searchParams.get("coa");
     const seedParam = url.searchParams.get("seed");
+    const from = url.searchParams.get("from");
 
     if (!coaParam && !seedParam) return; // no predefined coa, regular flow (generate gallery)
 
@@ -70,6 +71,10 @@
     }
 
     if (coaParam || seedParam) {
+      if (from === "FMG") {
+        const text = "Configure emblem, save it in SVG format and then load back to the Fantasy Map Generator";
+        $message = {type: "info", text, timeout: 10000};
+      }
       $matrices[0] = [0];
       if (viewParam) {
         if (sizeParam) coaSize = sizeParam;

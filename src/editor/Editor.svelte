@@ -263,7 +263,7 @@
   }
 
   if (!isTouchDevice() && (coa.ordinaries || coa.charges)) {
-    $message = {type: "info", text: "Drag to move, hold SHIFT and drag vertically to resize, hold CONTROL and drag horizontally to rotate", timeout: 4000};
+    if (!$message) $message = {type: "info", text: "Drag to move, hold SHIFT and drag vertically to resize, hold CONTROL and drag horizontally to rotate", timeout: 4000};
   }
 
   function isTouchDevice() {
