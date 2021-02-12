@@ -3,6 +3,9 @@
   import {download} from './download.js';
   const touch = {startX:0, startY: 0};
 
+  // prevent unwanted refresh
+  window.onbeforeunload = () => "Are you sure you want to navigate away?";
+
   // keyboard shortcuts
   function handleKeydown(event) {
     const code = event.code;
