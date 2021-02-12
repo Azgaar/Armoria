@@ -4,13 +4,14 @@
   const touch = {startX:0, startY: 0};
 
   // prevent unwanted refresh
-  window.onbeforeunload = () => "Are you sure you want to navigate away?";
+  if (location.host === "azgaar.github.io") window.onbeforeunload = () => "Are you sure you want to navigate away?";
 
   // keyboard shortcuts
   function handleKeydown(event) {
     const code = event.code;
-    const reserved = ["Backspace", "Enter", "KeyZ", "KeyX", "KeyD", "F1", "Escape"];
-    if (!reserved.includes(code)) return;
+    const ctrl = event.ctrlKey;
+    const reserved = ["Backspace", "Enter", "KeyZ", "KeyX", "KeyS", "KeyP", "KeyJ", "F1", "Escape"];
+    if (!ctrl && !reserved.includes(code)) return;
 
     const active = document.activeElement.tagName;
     if (active === "INPUT" || active === "SELECT" || active === "TEXTAREA") return;
@@ -20,7 +21,9 @@
     if (code === "Enter") $matrix += 1; else // Reroll
     if (code === "KeyZ") changes.undo(); else // Undo
     if (code === "KeyX") changes.redo(); else // Redo
-    if (code === "KeyD") download(); else // Download SVG
+    if (ctrl && code === "KeyS") download(null, "svg"); else // Download SVG
+    if (ctrl && code === "KeyP") download(null, "png"); else // Download PNG
+    if (ctrl && code === "KeyJ") download(null, "jpeg"); else // Download JPEG
     if (code === "F1") $state.about = !$state.about; // About
     if (code === "Escape") close() // Close all windows
 

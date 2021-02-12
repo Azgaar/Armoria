@@ -248,15 +248,15 @@
 
   <div class="container"><bl>{@html getIcon("save")}</bl>
     <div class="dropdown level1">
-      <bt on:click={() => download(null, "svg")} title="Download vector image or set of images. Open in browser or load to Map Generator. Size can be set in options" hotkey="D" use:tooltip>
+      <bt on:click={() => download(null, "svg")} title="Download vector image or set of images. Open in browser or load to Map Generator. Size can be set in options" hotkey="ctrl + S" use:tooltip>
         <span>Download SVG</span>
       </bt>
 
-      <bt on:click={() => download(null, "png")} title="Download as raster image. Size can be set in options" use:tooltip>
+      <bt on:click={() => download(null, "png")} title="Download as raster image. Size can be set in options" hotkey="ctrl + P" use:tooltip>
         <span>Download PNG</span>
       </bt>
 
-      <bt on:click={() => download(null, "jpeg")} title="Download a compressed raster image. Size can be set in options" use:tooltip>
+      <bt on:click={() => download(null, "jpeg")} title="Download a compressed raster image. Size can be set in options" hotkey="ctrl + J" use:tooltip>
         <span>Download JPEG</span>
       </bt>
 
