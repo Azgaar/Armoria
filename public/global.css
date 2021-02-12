@@ -1,78 +1,91 @@
 html,
 body,
 main {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 body {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    overflow: hidden;
-    overscroll-behavior: none;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Lato", "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 a {
-    color: rgb(0, 100, 200);
-    text-decoration: none;
+  color: rgb(0, 100, 200);
+  text-decoration: none;
 }
 
 a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 a:visited {
-    color: rgb(0, 80, 160);
+  color: rgb(0, 80, 160);
 }
 
 label {
-    display: block;
+  display: block;
 }
 
 input,
 button,
 select,
 textarea {
-    font-family: inherit;
-    font-size: inherit;
-    -webkit-padding: 0.4em 0;
-    padding: 0.4em;
-    margin: 0 0 0.5em 0;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 2px;
+  font-family: inherit;
+  font-size: inherit;
+  -webkit-padding: 0.4em 0;
+  padding: 0.4em;
+  margin: 0 0 0.5em 0;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 2px;
 }
 
 input:disabled {
-    color: #ccc;
+  color: #ccc;
 }
 
 button {
-    color: #333;
-    background-color: #f4f4f4;
-    outline: none;
-    cursor: pointer;
+  color: #333;
+  background-color: #f4f4f4;
+  outline: none;
+  cursor: pointer;
 }
 
 button:disabled {
-    color: #999;
+  color: #999;
 }
 
 button:not(:disabled):active {
-    background-color: #ddd;
+  background-color: #ddd;
 }
 
 button:focus {
-    border-color: #666;
+  border-color: #666;
 }
 
 select {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 font {
-    pointer-events: none;
+  pointer-events: none;
+}
+
+.flutter {
+  animation: shake 10s ease infinite;
+  animation-iteration-count: 5;
+}
+
+@keyframes shake {
+  2%, 18% {transform: translate3d(-.5px, 0, 0);}
+  4%, 16% {transform: translate3d(.5px, 0, 0);}
+  6%, 10%, 14% {transform: translate3d(-1px, 0, 0);}
+  8%, 12% {transform: translate3d(1px, 0, 0);}
+  20%, 100% {transform: translate3d(0, 0, 0);}
 }

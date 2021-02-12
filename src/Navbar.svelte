@@ -41,19 +41,29 @@
     localStorage.removeItem(key);
   }
 
-  function share() {
+  function copyLink() {
     const coa = $changes[0].replaceAll("#", "%23");
     const link = window.location.origin + window.location.pathname + "?coa=" + coa;
+    copyToClipboard(link, "Coat of arms link is copied to your clipboard");
+  }
+
+  function copyJSON() {
+    const encoded = encodeURI($changes[0]);
+    copyToClipboard(encoded, "Coat of arms JSON is copied to your clipboard");
+  }
+
+  function copyToClipboard(stringToCopy, response) {
     $message = null;
 
-    navigator.clipboard.writeText(link).then(
+    navigator.clipboard.writeText(stringToCopy).then(
       () => {
         $message = null;
         setTimeout(() => {
-          $message = {type: "sucess", text: `COA link is copied to your clipboard`, timeout: 5000};
+          $message = {type: "sucess", text: response, timeout: 5000};
         }, 500);
       }, err => {
-        $message = {type: "error", text: `Cannot copy link to the clipboard!`, timeout: 5000};
+        const text = "Cannot copy to the clipboard!";
+        $message = {type: "error", text, timeout: 5000};
         console.error(err);
       }
     );
@@ -231,33 +241,45 @@
       {@html getIcon("reroll")}
     </bt>
 
-    <bt on:click={() => download()} title="Download png image. Size can be set in options" hotkey="D" use:tooltip>
-      {@html getIcon("download")}
-    </bt>
+    <div class="container"><bl>{@html getIcon("save")}</bl>
+      <div class="dropdown level1">
+        <bt on:click={() => download(null, "svg")} title="Download SVG image. Size can be set in options" hotkey="D" use:tooltip>
+          <span>Download SVG</span>
+        </bt>
 
-    {#if wideScreen || !$state.edit}
-      <div class="container"><bl>{@html getIcon("upload")}</bl>
-        <div class="dropdown level1">
-          <bt on:click={() => $state.raster = 1} title="Upload raster charge (one color, quality loss on scale) from jpg, png or svg image" use:tooltip>
-            <span>Raster</span>
-          </bt>
+        <bt on:click={() => download(null, "png")} title="Download PNG image. Size can be set in options" use:tooltip>
+          <span>Download PNG</span>
+        </bt>
 
-          <bt on:click={() => $state.vector = 1} title="Upload vector charge (multicolor and lossless scalable) from prepared svg" use:tooltip>
-            <span>Vector</span>
-          </bt>
-        </div>
+        <bt on:click={() => download(null, "jpg")} title="Download JPG image. Size can be set in options" use:tooltip>
+          <span>Download JPG</span>
+        </bt>
+
+        <bt on:click={copyLink} title="Copy link to the coat of arms to your clipbard" use:tooltip>
+          <span>Copy link</span>
+        </bt>
+
+        <bt on:click={copyJSON} title="Copy encoded coat of arms JSON to your clipbard" use:tooltip>
+          <span>Copy JSON</span>
+        </bt>
       </div>
-    {/if}
+    </div>
+
+    <div class="container"><bl>{@html getIcon("upload")}</bl>
+      <div class="dropdown level1">
+        <bt on:click={() => $state.raster = 1} title="Upload raster charge (one color, quality loss on scale) from jpg, png or svg image" use:tooltip>
+          <span>Raster</span>
+        </bt>
+
+        <bt on:click={() => $state.vector = 1} title="Upload vector charge (multicolor and lossless scalable) from prepared svg" use:tooltip>
+          <span>Vector</span>
+        </bt>
+      </div>
+    </div>
 
     {#if installable}
-      <bt on:click={() => install()} in:fade title="Add Armoria application to the desktop or home screen" use:tooltip>
+      <bt on:click={() => install()} class=flutter in:fade title="Add Armoria application to the desktop or home screen" use:tooltip>
         {@html getIcon("install")}
-      </bt>
-    {/if}
-
-    {#if $state.edit}
-      <bt on:click={share}>
-        {@html getIcon("share")}
       </bt>
     {/if}
 
@@ -333,7 +355,6 @@
 
   :global(span.navBarIcon.active) {
     color: #fff;
-    cursor: pointer;
   }
 
   .navBarIcon.smaller {
@@ -347,8 +368,7 @@
 
   bt, bl, bd {
     user-select: none;
-    padding: 1em 1.14em;
-    line-height: 1.24;
+    padding: 1em;
     color: #fff;
     text-transform: capitalize;
   }

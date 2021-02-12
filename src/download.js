@@ -3,8 +3,8 @@ import { scale, shield, grad, diaper } from './stores';
 
 const formatTime = time => time < 10 ? "0" + time : time;
 
-export async function download(i) {
-  const coas = i !== undefined ? [document.getElementById("coa" + i)] : document.querySelectorAll("svg.coa");
+export async function download(i, format = "png") {
+  const coas = i || i === 0 ? [document.getElementById("coa" + i)] : document.querySelectorAll("svg.coa");
   let {width, height} = coas[0].getBoundingClientRect();
   const numberX = coas.length > 1 ? Math.floor(window.innerWidth / width) : 1;
   const numberY = coas.length > 1 ? Math.ceil(coas.length / numberX) : 1;
@@ -21,6 +21,19 @@ export async function download(i) {
   let loaded = 0;
   coas.forEach(async function (svg, i) {
     const url = await getURL(svg);
+    format === "svg" ? downloadVector(url) : downloadRaster(url);
+  });
+
+  function downloadVector(url) {
+    const link = document.createElement("a");
+    link.download = `armoria_${getTimestamp()}.svg`;
+    link.href = url;
+    document.body.appendChild(link);
+    link.click();
+    window.setTimeout(() => window.URL.revokeObjectURL(URL), 5000);
+  }
+
+  function downloadRaster(url) {
     const img = new Image();
     img.src = url;
     img.onload = () => {
@@ -29,7 +42,7 @@ export async function download(i) {
       loaded++;
       if (loaded === coas.length) drawCanvas(canvas);
     }
-  });
+  }
 }
 
 async function getURL(svg) {
@@ -63,16 +76,7 @@ async function getURL(svg) {
 
 function drawCanvas(canvas) {
   const link = document.createElement("a");
-
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = formatTime(date.getMonth() + 1);
-  const day = formatTime(date.getDate());
-  const hour = formatTime(date.getHours());
-  const minutes = formatTime(date.getMinutes());
-  const dateString = [year, month, day, hour, minutes].join('-');
-
-  link.download = `armoria_${dateString}.png`;
+  link.download = `armoria_${getTimestamp()}.png`;
   canvas.toBlob(function (blob) {
     link.href = window.URL.createObjectURL(blob);
     document.body.appendChild(link);
@@ -82,4 +86,14 @@ function drawCanvas(canvas) {
       window.URL.revokeObjectURL(link.href);
     }, 5000);
   });
+}
+
+function getTimestamp() {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = formatTime(date.getMonth() + 1);
+  const day = formatTime(date.getDate());
+  const hour = formatTime(date.getHours());
+  const minutes = formatTime(date.getMinutes());
+  return [year, month, day, hour, minutes].join('-');
 }

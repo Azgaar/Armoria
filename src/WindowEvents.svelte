@@ -17,7 +17,7 @@
     if (code === "Enter") $matrix += 1; else // Reroll
     if (code === "KeyZ") changes.undo(); else // Undo
     if (code === "KeyX") changes.redo(); else // Redo
-    if (code === "KeyD") download(); else // Download
+    if (code === "KeyD") download(); else // Download SVG
     if (code === "F1") $state.about = !$state.about; // About
     if (code === "Escape") close() // Close all windows
 
