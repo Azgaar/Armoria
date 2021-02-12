@@ -1,6 +1,6 @@
 export const defaultTinctures = {
-  field: { metals: 30, colours: 42, stains: 1, patterns: 12 },
-  division: { metals: 30, colours: 42, stains: 1, patterns: 6 },
+  field: { metals: 35, colours: 49, stains: 1, patterns: 14 },
+  division: { metals: 35, colours: 49, stains: 1, patterns: 8 },
   charge: { metals: 16, colours: 24, stains: 1, patterns: 0 },
   metals: { argent: 3, or: 2 },
   colours: { gules: 5, azure: 4, sable: 3, purpure: 3, vert: 2 },

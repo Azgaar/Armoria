@@ -41,15 +41,18 @@
     localStorage.removeItem(key);
   }
 
-  function copyLink() {
+  function copyEditLink() {
     const coa = $changes[0].replaceAll("#", "%23");
-    const link = window.location.origin + window.location.pathname + "?coa=" + coa;
-    copyToClipboard(link, "Coat of arms link is copied to your clipboard");
+    const url = window.location.origin + window.location.pathname + "?coa=" + coa;
+    copyToClipboard(url, "Coat of arms link is copied to your clipboard");
   }
 
-  function copyJSON() {
+  function copyAPILink() {
     const encoded = encodeURI($changes[0]);
-    copyToClipboard(encoded, "Coat of arms JSON is copied to your clipboard");
+    const coaShield = $changes[0].shield || $shield;
+    const API = "https://armoria.herokuapp.com/";
+    const url = `${API}?size=500&format=png&coa=${encoded}&shield=${coaShield}`;
+    copyToClipboard(url, "API link is copied to your clipboard");
   }
 
   function copyToClipboard(stringToCopy, response) {
@@ -243,36 +246,38 @@
 
     <div class="container"><bl>{@html getIcon("save")}</bl>
       <div class="dropdown level1">
-        <bt on:click={() => download(null, "svg")} title="Download SVG image. Size can be set in options" hotkey="D" use:tooltip>
+        <bt on:click={() => download(null, "svg")} title="Download vector image or set of images. Open in browser or load to Map Generator. Size can be set in options" hotkey="D" use:tooltip>
           <span>Download SVG</span>
         </bt>
 
-        <bt on:click={() => download(null, "png")} title="Download PNG image. Size can be set in options" use:tooltip>
+        <bt on:click={() => download(null, "png")} title="Download as raster image. Size can be set in options" use:tooltip>
           <span>Download PNG</span>
         </bt>
 
-        <bt on:click={() => download(null, "jpg")} title="Download JPG image. Size can be set in options" use:tooltip>
-          <span>Download JPG</span>
+        <bt on:click={() => download(null, "jpeg")} title="Download a compressed raster image. Size can be set in options" use:tooltip>
+          <span>Download JPEG</span>
         </bt>
 
-        <bt on:click={copyLink} title="Copy link to the coat of arms to your clipbard" use:tooltip>
-          <span>Copy link</span>
-        </bt>
+        {#if $state.edit}
+          <bt on:click={copyEditLink} title="Copy link to the coat of arms in Edit mode to your clipbard" use:tooltip>
+            <span>Copy edit link</span>
+          </bt>
 
-        <bt on:click={copyJSON} title="Copy encoded coat of arms JSON to your clipbard" use:tooltip>
-          <span>Copy JSON</span>
-        </bt>
+          <bt on:click={copyAPILink} title="Copy link to the coat of arms for embedding. Armoria API does not support custom positions and charges" use:tooltip>
+            <span>Copy API link</span>
+          </bt>
+        {/if}
       </div>
     </div>
 
     <div class="container"><bl>{@html getIcon("upload")}</bl>
       <div class="dropdown level1">
         <bt on:click={() => $state.raster = 1} title="Upload raster charge (one color, quality loss on scale) from jpg, png or svg image" use:tooltip>
-          <span>Raster</span>
+          <span>Raster charge</span>
         </bt>
 
         <bt on:click={() => $state.vector = 1} title="Upload vector charge (multicolor and lossless scalable) from prepared svg" use:tooltip>
-          <span>Vector</span>
+          <span>Vector charge</span>
         </bt>
       </div>
     </div>
