@@ -25,12 +25,12 @@ export function P(probability) {
   return Math.random() < probability;
 }
 
-// get camelCase string 
+// transform string to camelCase
 export function camelize(str) {
   return str
+    .toLowerCase()
     .replace(/\.[^/.]+$/, "") // remove extension
     .replace(/[()]/g, "") // remove parentheses
-    .replace(/_/g, " ") // replace _ by spaces
-    .replace(/^[0-9]/, "_") // first char should not be a number
-    .replace(/\W+(.)/g, (m, c) => c.toUpperCase()); // remove non-basic chars and camelize
+    .replace(/[^a-zA-Z0-9]+(.)/g, (m, c) => c.toUpperCase())
+    .replace(/^[0-9]/, "_"); // first char should not be a number
 }

@@ -1,7 +1,7 @@
 <script>
-  import {state, message} from "../../data/stores";
-  import {charges} from "../../data/dataModel";
-  import {camelize} from '../../scripts/utils';
+  import {state, message} from './../../data/stores';
+  import {charges} from './../../data/dataModel';
+  import {camelize} from './../../scripts/utils';
   let dragging = false, selected = false;
   let size = 50, offsetX = 0, offsetY = 0;
   let name, category = "uploaded";

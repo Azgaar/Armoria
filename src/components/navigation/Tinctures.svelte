@@ -66,10 +66,10 @@
       return;
     }
 
-    $tinctures[add.type][add.name] = add.chance;
-    $colors[add.name] = add.color;
+    $tinctures[add.type][name] = add.chance;
+    $colors[name] = add.color;
     add.show = false;
-    $message = {type: "info", text: `Tincture ${add.name} is added`};
+    $message = {type: "info", text: `Tincture ${name} is added`};
   }
 
   function restoreDefault() {

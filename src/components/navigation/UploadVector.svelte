@@ -1,8 +1,8 @@
 <script>
-  import {state, colors, tinctures, message} from "../../data/stores";
-  import {charges} from "../../data/dataModel";
-  import {camelize} from '../../scripts/utils';
-  import {tooltip} from '../../scripts/tooltip';
+  import {state, colors, tinctures, message} from './../../data/stores';
+  import {charges} from './../../data/dataModel';
+  import {camelize} from './../../scripts/utils';
+  import {tooltip} from './../../scripts/tooltip';
   let dragging = false, selected = false;
   let svg, transform = {a:1, b:0, c:0, d:1, e:0, f:0}, name, category = "uploaded", color = "#d7374a";
   const tinctureList = ["metals", "colours", "stains"].map(type => Object.keys($tinctures[type])).flat();
