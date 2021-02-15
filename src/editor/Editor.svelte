@@ -48,6 +48,7 @@
   }
 
   function edit(coa) {
+    if (!coa.shield) coa.shield = $shield;
     changes.add(JSON.stringify(coa));
   }
 
@@ -118,7 +119,7 @@
   // define initial menu state
   function defineMenuState() {
     // Shield
-    if (coa.shield) $shield = coa.shield; 
+    if (coa.shield) $shield = coa.shield;
 
     // Field
     menu.field = getField();
