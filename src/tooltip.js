@@ -27,6 +27,9 @@ export function tooltip(element) {
 
     div.style = style;
     document.body.appendChild(div);
+
+    // remove in 5 seconds
+    setTimeout(() => mouseLeave(), 5000);
   }
 
   function mouseMove(event) {
@@ -41,12 +44,14 @@ export function tooltip(element) {
 
   element.addEventListener("mouseenter", mouseEnter);
   element.addEventListener("mouseleave", mouseLeave);
+  element.addEventListener("touchend", mouseLeave);
   element.addEventListener("mousemove", mouseMove);
 
   return {
     destroy() {
       element.removeEventListener("mouseenter", mouseEnter);
       element.removeEventListener("mouseleave", mouseLeave);
+      element.removeEventListener("touchend", mouseLeave);
       element.removeEventListener("mousemove", mouseMove);
     }
   };
