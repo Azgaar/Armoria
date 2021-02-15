@@ -215,19 +215,19 @@
           <!-- Lined Divisions -->
           <template id="perFess">
             <path dpath="{line}"/>
-            <rect x="0" y="115" width="200" height="85"/>
+            <rect x="0" y="114.5" width="200" height="86"/>
           </template>
           <template id="perPale">
-            <path dpath="{line}" transform="rotate(-90)" transform-origin="center"/>
-            <rect x="115" y="0" width="85" height="200"/>
+            <path dpath="{line}" transform="translate(.5 0) rotate(-90)" transform-origin="center"/>
+            <rect x="114.75" y="0" width="85.5" height="200"/>
           </template>
           <template id="perBend">
-            <path dpath="{line}" transform="rotate(45) scale(1.1)" transform-origin="center"/>
-            <rect x="0" y="115" width="200" height="85" transform="rotate(45) scale(1.1)" transform-origin="center"/>
+            <path dpath="{line}" transform="translate(-.5 0) rotate(45) scale(1.1)" transform-origin="center"/>
+            <rect x="0" y="114.5" width="200" height="86" transform="rotate(45) scale(1.1)" transform-origin="center"/>
           </template>
           <template id="perBendSinister">
-            <path dpath="{line}" transform="rotate(-45) scale(1.1)" transform-origin="center"/>
-            <rect x="0" y="115" width="200" height="85" transform="rotate(-45) scale(1.1)" transform-origin="center"/>
+            <path dpath="{line}" transform="translate(.5 0) rotate(-45) scale(1.1)" transform-origin="center"/>
+            <rect x="0" y="114.5" width="200" height="86" transform="rotate(-45) scale(1.1)" transform-origin="center"/>
           </template>
           <template id="perChevron">
             <path dpath="{line}" transform="translate(-70.7,70.7) rotate(-45) scale(-1,1)" transform-origin="center"/>
@@ -236,13 +236,13 @@
           </template>
           <template id="perChevronReversed">
             <path dpath="{line}" transform="translate(-70.7,-70.7) rotate(225) scale(1,1)" transform-origin="center"/>
-            <polygon points="21,0 100,79 179,0"/>
+            <polygon points="20,0 100,80 180,0"/>
             <path dpath="{line}" transform="translate(70.7,-70.7) rotate(-225) scale(-1,1)" transform-origin="center"/>
           </template>
           <template id="perCross">
-            <rect x="100" y="0" width="100" height="92.5"/>
+            <rect x="100" y="0" width="100" height="93.5"/>
             <rect x="0" y="107.5" width="100" height="92.5"/>
-            <path dpath="{line}" transform="translate(0,50) scale(.5001,.5001)"/>
+            <path dpath="{line}" transform="translate(0,51) scale(.5001,.5001)"/>
             <path dpath="{line}" transform="translate(50,0) scale(-.5001,-.5001)" transform-origin="center"/>
           </template>
           <template id="perPile">
