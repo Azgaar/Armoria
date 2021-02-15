@@ -27,6 +27,13 @@
     e.stopPropagation();
     store.set(value);
     localStorage.setItem(key, value);
+
+    // update coa on shield change
+    if (key === "shield" && changes.length()) {
+      const coa = JSON.parse($changes[0]);
+      coa.shield = $shield;
+      changes.add(JSON.stringify(coa));
+    }
   }
 
   function getRandomColor() {

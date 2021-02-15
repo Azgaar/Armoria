@@ -16,7 +16,7 @@
   import EditorAbove from "./EditorAbove.svelte";
   import {slide, fly} from 'svelte/transition';
   import {rw, ra} from '../utils';
-  import {history, changes, tinctures, state, grid, showGrid, message} from '../stores';
+  import {history, changes, tinctures, state, grid, showGrid, message, shield} from '../stores';
   import {charges, divisions, ordinaries} from "../dataModel";
   import {generate} from '../generator';
   export let c, seed;
@@ -117,6 +117,9 @@
 
   // define initial menu state
   function defineMenuState() {
+    // Shield
+    if (coa.shield) $shield = coa.shield; 
+
     // Field
     menu.field = getField();
     function getField() {

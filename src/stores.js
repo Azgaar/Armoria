@@ -42,11 +42,11 @@ const createChangesTracker = () => {
       position += 1;
       set([history[position], position])
     },
-    undo: () => update(p => {
+    undo: () => update(() => {
       if (position > 0) position -= 1;
       return [history[position], position];
     }),
-    redo: () => update(p => {
+    redo: () => update(() => {
       if (position < history.length - 1) position += 1;
       return [history[position], position];
     })
