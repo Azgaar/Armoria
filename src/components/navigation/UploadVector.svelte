@@ -1,6 +1,6 @@
 <script>
-  import {state, colors, tinctures, message} from "../../stores";
-  import {charges} from "../../dataModel.js";
+  import {state, colors, tinctures, message} from "../../data/stores";
+  import {charges} from "../../data/dataModel";
   import {camelize} from '../../scripts/utils';
   import {tooltip} from '../../scripts/tooltip';
   let dragging = false, selected = false;

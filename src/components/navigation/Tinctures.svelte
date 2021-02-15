@@ -1,8 +1,8 @@
 <script>
   import { fade } from 'svelte/transition';
   import { flip } from 'svelte/animate';
-  import { colors, tinctures, state, message, changes } from '../../stores';
-  import { defaultTinctures, defaultColors } from '../../dataModel';
+  import { colors, tinctures, state, message, changes } from '../../data/stores';
+  import { defaultTinctures, defaultColors } from '../../data/dataModel';
   import { camelize } from '../../scripts/utils';
   import { tooltip } from '../../scripts/tooltip';
 

@@ -2,7 +2,7 @@ import {get} from 'svelte/store';
 import {aleaPRNG} from './alea';
 import {rw, P} from './utils';
 import {charges, divisions, lines, ordinaries, positions} from "../data/dataModel";
-import {tinctures} from '../stores';
+import {tinctures} from '../data/stores';
 
 // main generation routine
 export const generate = function(seed = Math.floor(Math.random() * 1e9)) {

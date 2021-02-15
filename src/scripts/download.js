@@ -1,5 +1,5 @@
 import { get } from 'svelte/store';
-import { scale, shield, grad, diaper } from '../stores';
+import { scale, shield, grad, diaper } from '../data/stores';
 
 export async function download(i, format = "png") {
   const coas = i || i === 0 ? [document.getElementById("coa" + i)] : document.querySelectorAll("svg.coa");

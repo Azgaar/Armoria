@@ -1,5 +1,5 @@
 <script>
-  import {state, matrix, changes, message} from '../stores';
+  import {state, matrix, changes, message} from './../data/stores';
   import {download} from '../scripts/download';
   const touch = {startX:0, startY: 0};
 

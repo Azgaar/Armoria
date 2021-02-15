@@ -1,6 +1,6 @@
 <script>
   import Switch from './Switch.svelte';
-  import {tooltip} from '../scripts/tooltip';
+  import {tooltip} from './../../scripts/tooltip';
   export let above;
 </script>
 

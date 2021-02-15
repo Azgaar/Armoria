@@ -1,6 +1,6 @@
 <script>
   import EditorItem from './EditorItem.svelte';
-  import {charges} from "../dataModel";
+  import {charges} from "./../../data/dataModel";
   export let charge, type, category, t1, t2, size = null, sinister = null, reversed = null, division = false, itemSize;
   let coas = [], query, queryOld;
 

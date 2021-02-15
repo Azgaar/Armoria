@@ -1,6 +1,6 @@
 <script>
-  import Shield from '../components/object/Shield.svelte';
-  import {tooltip} from '../scripts/tooltip';
+  import Shield from './../object/Shield.svelte';
+  import {tooltip} from './../../scripts/tooltip';
   export let coa, tip, itemSize;
   const i = Math.floor(1e6 * Math.random());
 

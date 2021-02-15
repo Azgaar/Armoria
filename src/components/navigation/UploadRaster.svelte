@@ -1,6 +1,6 @@
 <script>
-  import {state, message} from "../../stores";
-  import {charges} from "../../dataModel";
+  import {state, message} from "../../data/stores";
+  import {charges} from "../../data/dataModel";
   import {camelize} from '../../scripts/utils';
   let dragging = false, selected = false;
   let size = 50, offsetX = 0, offsetY = 0;

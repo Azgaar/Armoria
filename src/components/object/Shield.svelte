@@ -1,7 +1,7 @@
 <script>
   import Ordinary from './Ordinary.svelte';
   import Charge from './Charge.svelte';
-  import {shield, colors, patterns, grad, diaper} from '../../stores';
+  import {shield, colors, patterns, grad, diaper} from '../../data/stores';
   export let coa, i, border, borderWidth, type;
 
   const {division, ordinaries = [], charges = []} = coa;
@@ -60,7 +60,7 @@
       {#if ordinary.divided === "field"}
         <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type}/>
       {:else if ordinary.divided === "counter"}
-        <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(tDiv)} {type}/>
+        <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(division.t)} {type}/>
       {/if}
     {/each}
 
@@ -72,7 +72,7 @@
       {#if charge.divided === "field"}
         <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} {type}/>
       {:else if charge.divided === "counter"}
-        <Charge {coa} {charge} {i} shield={$shield} t={clr(tDiv)} {type}/>
+        <Charge {coa} {charge} {i} shield={$shield} t={clr(division.t)} {type}/>
       {/if}
     {/each}
 
@@ -80,7 +80,7 @@
       {#if ordinary.divided === "field"}
         <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type}/>
       {:else if ordinary.divided === "counter"}
-        <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(tDiv)} {type}/>
+        <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(division.t)} {type}/>
       {/if}
     {/each}
 

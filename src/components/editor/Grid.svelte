@@ -1,5 +1,5 @@
 <script>
-  import {state, grid, showGrid} from "../stores";
+  import {state, grid, showGrid} from "./../../data/stores";
   import {fade} from 'svelte/transition';
 
   $: transform = $state.transform || null;

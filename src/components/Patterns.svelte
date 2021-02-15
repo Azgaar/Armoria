@@ -1,5 +1,5 @@
 <script>
-  import {colors, patterns} from "../stores";
+  import {colors, patterns} from "./../data/stores";
 
   let patternData = [];
   $: {

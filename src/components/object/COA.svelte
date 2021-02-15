@@ -1,9 +1,9 @@
 <script>
   import Shield from './Shield.svelte';
-  import Grid from '../../editor/Grid.svelte';
-  import Positions from '../../editor/Positions.svelte';
-  import {shield, border, borderWidth} from '../../stores';
-  import {shieldBox} from '../../dataModel';
+  import Grid from './../editor/Grid.svelte';
+  import Positions from './../editor/Positions.svelte';
+  import {shield, border, borderWidth} from './../../data/stores';
+  import {shieldBox} from './../../data/dataModel';
   export let coa, i, w, h;
   $: viewBox = shieldBox[$shield] || "0 0 200 200";
 </script>

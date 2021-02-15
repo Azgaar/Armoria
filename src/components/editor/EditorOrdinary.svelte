@@ -1,6 +1,6 @@
 <script>
   import EditorItem from './EditorItem.svelte';
-  import {ordinaries} from "../dataModel";
+  import {ordinaries} from "./../../data/dataModel";
   export let ordinary, line, t1, t, itemSize;
 
   const ordinariesList = Object.keys(ordinaries.lined).concat(Object.keys(ordinaries.straight));

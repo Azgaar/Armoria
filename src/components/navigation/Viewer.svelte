@@ -1,7 +1,7 @@
 <script>
-  import COA from '../../object/COA.svelte/COA.svelte';
-  import {hist../../stores '../stores';
-  import {gener../../scripts/generators/generator';
+  import COA from './../object/COA.svelte';
+  import {history} from './../../data/stores';
+	import {generate} from './../../scripts/generator';
   export let c, seed, coaSize;
   let coa = $history[c] || generate(seed || undefined); // on load
 

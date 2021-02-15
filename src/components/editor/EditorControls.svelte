@@ -1,5 +1,5 @@
 <script>
-  import {tooltip} from '../scripts/tooltip';
+  import {tooltip} from './../../scripts/tooltip';
   export let els, el, i;
 
   const remove = e => {

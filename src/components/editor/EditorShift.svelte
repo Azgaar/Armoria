@@ -1,7 +1,7 @@
 <script>
   import Switch from './Switch.svelte';
-  import {grid, showGrid, state} from '../stores';
-  import {tooltip} from '../scripts/tooltip';
+  import {grid, showGrid, state} from './../../data/stores';
+  import {tooltip} from './../../scripts/tooltip';
   export let e;
 
   function updateGrid() {

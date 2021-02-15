@@ -1,6 +1,6 @@
 <script>
-  import {shieldPositions, shieldSize} from "../../dataModel.js";
-  import {loadedCharges} from "../../stores";
+  import {shieldPositions, shieldSize} from "../../data/dataModel";
+  import {loadedCharges} from "../../data/stores";
   import {drag, transform} from "../../scripts/drag"
   export let coa, charge, i, shield, t, type;
   let chargeId, positions, size, stroke;

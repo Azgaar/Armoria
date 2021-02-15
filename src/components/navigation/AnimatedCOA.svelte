@@ -1,5 +1,5 @@
 <script>
-  import {colors} from '../../stores';
+  import {colors} from '../../data/stores';
   import {fade, draw} from 'svelte/transition';
   import {rw} from '../../scripts/utils';
   export let duration;

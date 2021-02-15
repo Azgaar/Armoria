@@ -1,10 +1,10 @@
 <script>
   import Lock from './Lock.svelte';
   import {fade} from 'svelte/transition';
-  import {download} from '.../../scripts/download;
-  import {size, grad, diaper, shield, background, scale, border, borderWidth, matrix, state, changes, message} from '.../../stores;
-  import {shields} from '.../../dataModel;
-  import {tooltip} from '.../../scripts/tooltip;
+  import {download} from './../../scripts/download';
+  import {size, grad, diaper, shield, background, scale, border, borderWidth, matrix, state, changes, message} from './../../data/stores';
+  import {shields} from './../../data/dataModel';
+  import {tooltip} from './../../scripts/tooltip';
 
   let installable = false, prompt = null;
   const sizes = [[80, "Giant"], [100, "Huge"], [150, "Large"], [200, "Medium"], [300, "Small"], [400, "Tiny"]];

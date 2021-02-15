@@ -3,15 +3,15 @@
   import Navbar from './navigation/Navbar.svelte';
   import About from './navigation/About.svelte';
   import Viewer from './navigation/Viewer.svelte';
-  import Editor from '../editor/Editor.svelte';
+  import Editor from './editor/Editor.svelte';
   import Gallery from './navigation/Gallery.svelte';
   import UploadRaster from './navigation/UploadRaster.svelte';
   import UploadVector from './navigation/UploadVector.svelte';
   import Tinctures from './navigation/Tinctures.svelte';
   import Message from './Message.svelte';
   import Patterns from './Patterns.svelte';
-  import {background, size, history, matrices, matrix, state, message, shield} from '../stores.js';
-  import {shields} from '../dataModel';
+  import {background, size, history, matrices, matrix, state, message, shield} from '../data/stores';
+  import {shields} from '../data/dataModel';
   import {rw} from '../scripts/utils';
   let n, w, h, gallery = [], seed, coaSize = 200;
 

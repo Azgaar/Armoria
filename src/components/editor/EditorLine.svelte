@@ -1,6 +1,6 @@
 <script>
   import EditorItem from './EditorItem.svelte';
-  import {lines} from "../dataModel";
+  import {lines} from "./../../data/dataModel";
   export let line, division = null, ordinary = null, t1, t, itemSize;
 
   const lineList = Object.keys(lines);
