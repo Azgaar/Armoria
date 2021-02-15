@@ -53,9 +53,8 @@
 
   function copyAPILink() {
     const encoded = encodeURI($changes[0]);
-    const coaShield = $changes[0].shield || $shield;
     const API = "https://armoria.herokuapp.com/";
-    const url = `${API}?size=500&format=png&coa=${encoded}&shield=${coaShield}`;
+    const url = `${API}?size=500&format=png&coa=${encoded}`;
     copyToClipboard(url, "API link is copied to your clipboard");
   }
 
@@ -135,7 +134,7 @@
         </bl>
       </div>
 
-      <bt on:click={() => $state.tinctures = 1} title="Tinctures settings. Edit COA to change tincture itself" use:tooltip>
+      <bt on:click={() => $state.tinctures = 1} title="Setup tinctures selection chance and hue" use:tooltip>
         <Lock key=tinctures/>
         <Lock key=colors/>
         <span>Tinctures</span>

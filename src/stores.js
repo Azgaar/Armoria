@@ -23,22 +23,18 @@ export const matrix = writable(0);
 export const state = writable({ edit: 0, about: 0, i: 0 });
 export const message = writable(null);
 
-export const counter = writable(0);
-
 const createChangesTracker = () => {
   const { subscribe, set, update } = writable([undefined, -1]);
   let history = [], position = -1;
 
   return {
     subscribe,
-
+    refresh: () => set([history[position], position]), // trigger coa refresh
     length: () => history.length,
-
     reset: () => {
       history = [], position = -1;
       set([undefined, -1])
     },
-
     add(value) {
       if (value === history[position]) return; // no change
       if (position < history.length - 1) history = history.slice(0, position + 1); // cut future history
@@ -46,12 +42,10 @@ const createChangesTracker = () => {
       position += 1;
       set([history[position], position])
     },
-
     undo: () => update(p => {
       if (position > 0) position -= 1;
       return [history[position], position];
     }),
-
     redo: () => update(p => {
       if (position < history.length - 1) position += 1;
       return [history[position], position];
@@ -70,11 +64,17 @@ function defineInitialOptions() {
     return value;
   };
   const storedObj = key => localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : null;
+  const getShieldFromURL = () => {
+    const coaParam = (new URL(window.location)).searchParams.get("coa");
+    if (!coaParam) return null;
+    const coa = JSON.parse(coaParam);
+    return coa?.shield;
+  }
 
   const size = +stored("size") || 200;
   const diaper = stored("diaper") || "no";
   const grad = stored("grad") || ra(["luster", "spotlight", "backlight"]);
-  const shield = stored("shield") || rw(shields[rw(shields.types)]);
+  const shield = getShieldFromURL() || stored("shield") || rw(shields[rw(shields.types)]);
   const colors = storedObj("colors") || JSON.parse(JSON.stringify(defaultColors));
   const tinctures = storedObj("tinctures") || JSON.parse(JSON.stringify(defaultTinctures));
   const border = stored("border") || "#333333";

@@ -1,21 +1,17 @@
 <script>
   import Ordinary from './Ordinary.svelte';
   import Charge from './Charge.svelte';
-  import {shield, colors, patterns, grad, diaper, counter} from './stores';
+  import {shield, colors, patterns, grad, diaper} from './stores';
   export let coa, i, border, borderWidth, type;
-  $counter += 1;
 
   const {division, ordinaries = [], charges = []} = coa;
   const ordinariesRegular = ordinaries.filter(o => !o.above);
   const ordinariesAboveCharges = ordinaries.filter(o => o.above);
   const tDiv = division ? division.t.includes("-") ? division.t.split("-")[1] : division.t : null;
 
-  let coaColors, coaGrad, coaShield, shieldPath, coaDiaper, diaperType;
+  let shieldPath, coaDiaper, diaperType;
   $: {
-    coaColors = $colors;
-    coaGrad = coa.grad || $grad;
-    coaShield = coa.shield || $shield;
-    shieldPath = document.querySelector(`#defs g#shields > #${coaShield} > path`).getAttribute("d");
+    shieldPath = document.querySelector(`#defs g#shields > #${$shield} > path`).getAttribute("d");
     coaDiaper = type === "menuItem" ? null : coa.diaper || $diaper;
     diaperType = getDieperType();
   }
@@ -39,7 +35,7 @@
 
   // get color or link to pattern
   function clr(tincture) {
-    if (coaColors[tincture]) return coaColors[tincture];
+    if ($colors[tincture]) return $colors[tincture];
     $patterns[$patterns.length] = tincture;
     return "url(#"+tincture+")";
   }
@@ -53,7 +49,7 @@
   {/if}
 </defs>
 
-<g id=shield clip-path="url(#{coaShield})">
+<g id=shield clip-path="url(#{$shield})">
 
   <!-- Field -->
   <rect id=field x=0 y=0 width=200 height=200 fill="{clr(coa.t1)}"/>
@@ -74,9 +70,9 @@
 
     {#each charges as charge, i}
       {#if charge.divided === "field"}
-        <Charge {coa} {charge} {i} shield={coaShield} t={clr(charge.t)} {type}/>
+        <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} {type}/>
       {:else if charge.divided === "counter"}
-        <Charge {coa} {charge} {i} shield={coaShield} t={clr(tDiv)} {type}/>
+        <Charge {coa} {charge} {i} shield={$shield} t={clr(tDiv)} {type}/>
       {/if}
     {/each}
 
@@ -106,9 +102,9 @@
 
       {#each charges as charge, i}
         {#if charge.divided === "division"}
-          <Charge {coa} {charge} {i} shield={coaShield} t={clr(charge.t)} {type}/>
+          <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} {type}/>
         {:else if charge.divided === "counter"}
-          <Charge {coa} {charge} {i} shield={coaShield} t={clr(coa.t1)} {type}/>
+          <Charge {coa} {charge} {i} shield={$shield} t={clr(coa.t1)} {type}/>
         {/if}
       {/each}
 
@@ -135,7 +131,7 @@
 
   {#each charges as charge, i}
     {#if !charge.divided || !division}
-      <Charge {coa} {charge} {i} shield={coaShield} t={clr(charge.t)} {type}/>
+      <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} {type}/>
     {/if}
   {/each}
 
@@ -146,4 +142,4 @@
   {/each}
 </g>
 
-<path class=grad d={shieldPath} fill="url(#{coaGrad})" stroke={border} stroke-width={borderWidth} style="pointer-events: none"/>
+<path class=grad d={shieldPath} fill="url(#{$grad})" stroke={border} stroke-width={borderWidth} style="pointer-events: none"/>

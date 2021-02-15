@@ -1,7 +1,7 @@
 <script>
   import { fade } from 'svelte/transition';
   import { flip } from 'svelte/animate';
-  import { colors, tinctures, state, message } from './stores';
+  import { colors, tinctures, state, message, changes } from './stores';
   import { defaultTinctures, defaultColors } from './dataModel';
   import { camelize } from './utils';
   import { tooltip } from './tooltip';
@@ -19,12 +19,17 @@
 
   $: lock("tinctures", $tinctures);
   $: lock("colors", $colors);
+  $: updateCOAonColorChange($colors);
 
   // don't lock options on load
   let loaded = [];
   function lock(key, value) {
     if (loaded.includes(key)) localStorage.setItem(key, JSON.stringify(value));
     else loaded.push(key);
+  }
+
+  function updateCOAonColorChange() {
+    changes.refresh();
   }
 
   function getTotalChance(type) {
