@@ -1,13 +1,13 @@
 <script>
   import Ordinary from './Ordinary.svelte';
   import Charge from './Charge.svelte';
+  import {charges as chargesData, ordinaries as ordinariesData} from "./../../data/dataModel";
   import {shield, colors, patterns, grad, diaper} from '../../data/stores';
   export let coa, i, border, borderWidth, type;
 
   const {division, ordinaries = [], charges = []} = coa;
   const ordinariesRegular = ordinaries.filter(o => !o.above);
   const ordinariesAboveCharges = ordinaries.filter(o => o.above);
-  const tDiv = division ? division.t.includes("-") ? division.t.split("-")[1] : division.t : null;
 
   let shieldPath, coaDiaper, diaperType;
   $: {
@@ -31,6 +31,14 @@
     const template = document.getElementById(templateId);
     const line = document.getElementById(lineId) ? document.getElementById(lineId) : document.getElementById("straight");
     return template.innerHTML.replace(/{line}/g, line.getAttribute("d")).replace(/dpath/g, "d");
+  }
+
+  // if charge doesn't support pattern, return basic tincture
+  function counterChange(t, charge) {
+    if (!(/-/).test(t)) return clr(t); // not a pattern
+    if (chargesData.patternable.includes(charge)) return clr(t); // patternable
+    if (ordinariesData.patternable.includes(charge)) return clr(t); // patternable
+    return clr(t.split("-")[1]); // not patternable, return basic color
   }
 
   // get color or link to pattern
@@ -60,7 +68,7 @@
       {#if ordinary.divided === "field"}
         <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type}/>
       {:else if ordinary.divided === "counter"}
-        <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(division.t)} {type}/>
+        <Ordinary {coa} {ordinary} {i} {shieldPath} t={counterChange(division.t, ordinary.ordinary)} {type}/>
       {/if}
     {/each}
 
@@ -72,7 +80,7 @@
       {#if charge.divided === "field"}
         <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} {type}/>
       {:else if charge.divided === "counter"}
-        <Charge {coa} {charge} {i} shield={$shield} t={clr(division.t)} {type}/>
+        <Charge {coa} {charge} {i} shield={$shield} t={counterChange(division.t, charge.charge)} {type}/>
       {/if}
     {/each}
 
@@ -80,7 +88,7 @@
       {#if ordinary.divided === "field"}
         <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type}/>
       {:else if ordinary.divided === "counter"}
-        <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(division.t)} {type}/>
+        <Ordinary {coa} {ordinary} {i} {shieldPath} t={counterChange(division.t, ordinary.ordinary)} {type}/>
       {/if}
     {/each}
 
@@ -92,7 +100,7 @@
         {#if ordinary.divided === "division"}
           <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type}/>
         {:else if ordinary.divided === "counter"}
-          <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(coa.t1)} {type}/>
+          <Ordinary {coa} {ordinary} {i} {shieldPath} t={counterChange(coa.t1, ordinary.ordinary)} {type}/>
         {/if}
       {/each}
 
@@ -104,7 +112,7 @@
         {#if charge.divided === "division"}
           <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} {type}/>
         {:else if charge.divided === "counter"}
-          <Charge {coa} {charge} {i} shield={$shield} t={clr(coa.t1)} {type}/>
+          <Charge {coa} {charge} {i} shield={$shield} t={counterChange(coa.t1, charge.charge)} {type}/>
         {/if}
       {/each}
 
@@ -112,7 +120,7 @@
         {#if ordinary.divided === "division"}
           <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type}/>
         {:else if ordinary.divided === "counter"}
-          <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(coa.t1)} {type}/>
+          <Ordinary {coa} {ordinary} {i} {shieldPath} t={counterChange(coa.t1, ordinary.ordinary)} {type}/>
         {/if}
       {/each}
     </g>

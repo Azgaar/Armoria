@@ -161,7 +161,8 @@ export const ordinaries = {
     bordure: 8, orle: 4, mount: 1, point: 2, flaunches: 1, gore: 1,
     gyron: 1, quarter: 1, canton: 2, pall: 3, pallReversed: 2, chevron: 4, chevronReversed: 3,
     pile: 2, pileInBend: 2, pileInBendSinister: 1, piles: 1, pilesInPoint: 2, label: 1
-  }
+  },
+  patternable: ["flaunches", "gyron", "quarter", "canton", "pall", "pallReversed", "pileInBend", "pileInBendSinister"]
 };
 
 export const charges = {
@@ -211,12 +212,17 @@ export const charges = {
     lute: 1, harp: 1, wheel: 2, crosier: 1, log: 1},
   uploaded: {},
   natural: { fountain: "azure", garb: "or", raven: "sable" }, // charges to mainly use predefined colours
-  sinister: ["crossGamma", "lionRampant", "lionPassant", "wolfRampant", "wolfPassant", "wolfStatant", "wolfHeadErased", "greyhoundСourant", "boarRampant", "horseRampant", "horseSalient", "bullPassant",
-    "bearRampant", "bearPassant", "goat", "lamb", "elephant",
-    "eagle", "raven", "cock", "parrot", "swan", "swanErased", "heron", "pike", "dragonPassant", "dragonRampant", "wyvern", "wyvernWithWingsDisplayed", "griffinPassant", "griffinRampant", "unicornRampant",
-    "pegasus", "serpent", "hatchet", "lochaberAxe", "hand", "wing", "wingSword", "lute", "harp", "bow", "head", "headWreathed", "knight", "lymphad", "log",
-    "crosier", "dolphin", "sabre"], // charges that can be sinister
-  reversed: ["goutte", "mullet", "mullet7", "crescent", "crossTau", "cancer", "sword", "sabresCrossed", "hand", "horseshoe", "bowWithArrow", "arrow", "arrowsSheaf", "rake"] // charges that can be reversed
+  sinister: [
+    "crossGamma", "lionRampant", "lionPassant", "wolfRampant", "wolfPassant", "wolfStatant", "wolfHeadErased", "greyhoundСourant", "boarRampant",
+    "horseRampant", "horseSalient", "bullPassant", "bearRampant", "bearPassant", "goat", "lamb", "elephant", "eagle", "raven", "cock", "parrot",
+    "swan", "swanErased", "heron", "pike", "dragonPassant", "dragonRampant", "wyvern", "wyvernWithWingsDisplayed", "griffinPassant", "griffinRampant",
+    "unicornRampant", "pegasus", "serpent", "hatchet", "lochaberAxe", "hand", "wing", "wingSword", "lute", "harp", "bow", "head", "headWreathed",
+    "knight", "lymphad", "log", "crosier", "dolphin", "sabre"], // charges that can be sinister
+  reversed: ["goutte", "mullet", "mullet7", "crescent", "crossTau", "cancer", "sword", "sabresCrossed", "hand", "horseshoe", "bowWithArrow", "arrow", "arrowsSheaf", "rake"], // charges that can be reversed
+  patternable: [
+    "lozengePloye", "roundel", "annulet", "mullet4", "mullet8", "delf", "triangle", "trianglePierced", "sun", "fountain","inescutcheonRound", "inescutcheonSquare",
+    "inescutcheonNo", "crossHummetty", "crossVoided", "crossPattee", "crossPotent", "crossClechy", "crosslet", "crossBottony", "crossFleury", "crossPatonce","crossPommy",
+    "crossGamma", "crossArrowed", "crossFitchy", "crossCercelee", "crossMoline", "crossAvellane", "crossErminee", "crossMaltese", "crossCeltic", "crossOccitan", "crossSaltire", "crossTau"],
 }
 
 export const shieldPositions = {
