@@ -9,7 +9,6 @@
   import UploadVector from './navigation/UploadVector.svelte';
   import Tinctures from './navigation/Tinctures.svelte';
   import Message from './Message.svelte';
-  import Patterns from './Patterns.svelte';
   import {background, size, history, matrices, matrix, state, message, shield} from '../data/stores';
   import {shields} from '../data/shields';
   import {rw} from '../scripts/utils';
@@ -121,7 +120,6 @@
   </main>
 {/if}
 <WindowEvents/>
-<Patterns/>
 
 <style>
   main {

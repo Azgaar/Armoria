@@ -43,6 +43,7 @@ export async function download(i, format = "png") {
 }
 
 async function getURL(svg, width, height) {
+  const addedElements = {};
   const clone = svg.cloneNode(true); // clone svg
   clone.setAttribute("width", width);
   clone.setAttribute("height", height);
@@ -61,12 +62,28 @@ async function getURL(svg, width, height) {
   if (di && di !== "no") d.insertAdjacentHTML("beforeend", defs.getElementById(di).outerHTML);
   clone.querySelectorAll(".charge[charge]").forEach(el => {
     const charge = el.getAttribute("charge");
+    if (addedElements[charge]) return;
     d.insertAdjacentHTML("beforeend", defs.getElementById(charge).outerHTML);
+    addedElements[charge] = true;
   });
   const fieldPattern = clone.getElementById("field").getAttribute("fill").split("(#")[1]?.split(")")[0];
-  if (fieldPattern) d.insertAdjacentHTML("beforeend", document.getElementById(fieldPattern).outerHTML);
+  if (fieldPattern) addPattern(fieldPattern, d);
   const divisionPattern = clone.getElementById("division")?.querySelector("rect").getAttribute("fill").split("(#")[1]?.split(")")[0];
-  if (divisionPattern) d.insertAdjacentHTML("beforeend", document.getElementById(divisionPattern).outerHTML);
+  if (divisionPattern) addPattern(divisionPattern, d);
+
+  function addPattern(pattern, d) {
+    if (addedElements[pattern]) return;
+    d.insertAdjacentHTML("beforeend", document.getElementById(pattern).outerHTML);
+  
+    if (pattern.slice(0, 4) === "semy") {
+      const charge = pattern.match(/semy_of_(.*?)-/)[1];
+      if (!addedElements[charge]) {
+        d.insertAdjacentHTML("beforeend", document.getElementById(charge).outerHTML);
+        addedElements[charge] = true;
+      }
+    }
+    addedElements[pattern] = true;
+  }
 
   const serialized = (new XMLSerializer()).serializeToString(clone);
   const blob = new Blob([serialized], { type: 'image/svg+xml;charset=utf-8' });

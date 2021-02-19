@@ -55,9 +55,6 @@ const createChangesTracker = () => {
 }
 export const changes = createChangesTracker();
 
-export const loadedCharges = writable([]);
-export const patterns = writable([]);
-
 function defineInitialOptions() {
   const stored = key => {
     const value = localStorage.getItem(key);

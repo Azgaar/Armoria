@@ -3,14 +3,14 @@ import {changes, grid} from "../data/stores";
 
 export function drag(e, c, coa) {
   const el = e.currentTarget;
-  const [a0, x0, y0] = parseTransform(el.getAttribute("transform"));
+  const {x, y, a} = parseTransform(el.getAttribute("transform"));
   const x1 = e.x, y1 = e.y;
   const sizeAdj = +el.closest("svg").getAttribute("width") / 200;
   document.addEventListener("mouseup", dragStop, { once: true });
 
   const size = c.size || 1;
   const angle = c.angle || 0;
-  const rad = -a0 * (Math.PI / 180);
+  const rad = -a * (Math.PI / 180);
   const cosAngle = Math.cos(rad);
   const sinAngle = Math.sin(rad);
   const gridSize = get(grid);
@@ -27,8 +27,8 @@ export function drag(e, c, coa) {
   };
 
   function move(e) {
-    const dx = x0 + (e.x - x1) / sizeAdj;
-    const dy = y0 + (e.y - y1) / sizeAdj;
+    const dx = x + (e.x - x1) / sizeAdj;
+    const dy = y + (e.y - y1) / sizeAdj;
 
     const relX = (dx * cosAngle) - (dy * sinAngle);
     const relY = (dx * sinAngle) + (dy * cosAngle);
@@ -39,14 +39,14 @@ export function drag(e, c, coa) {
   }
 
   function resize(e) {
-    const dy = y0 + (e.y - y1) / sizeAdj;
+    const dy = y + (e.y - y1) / sizeAdj;
     c.size = size + Math.round(dy) / -100;
     setTransform(el, c);
     if (c.p) changes.add(JSON.stringify(coa));
   }
 
   function rotate(e) {
-    const dx = x0 + (e.x - x1) / sizeAdj;
+    const dx = x + (e.x - x1) / sizeAdj;
     let a = angle + Math.round(dx / 1.8);
     if (a > 180) a = a % 180 - 180;
     if (a < -179) a = a % 180 + 180;
@@ -69,7 +69,21 @@ export function drag(e, c, coa) {
   }
 }
 
-export function transform(c) {
+export function transform(charge) {
+  let {x = 0, y = 0, angle = 0, size = 1, p} = charge;
+  if (p) size = 1; // size is defined on use element level
+
+  if (!x && !y && !angle && size === 1) return null;
+
+  let transform = "";
+  if (x || y) transform += `translate(${x} ${y})`;
+  if (angle) transform += ` rotate(${angle})`;
+  if (size !== 1) transform += `scale(${size})`;
+
+  return transform.trim();
+}
+
+export function transform2(c) {
   if (!c.x && !c.y && !c.angle && !c.size) return null;
 
   // charges have c.p and have size on use level, not on g level
@@ -78,7 +92,7 @@ export function transform(c) {
 }
 
 function parseTransform(string) {
-  if (!string) { return [0, 0, 0, 0, 0, 1]; }
+  if (!string) { return {x: 0, y: 0, a: 0, s: 1}; }
   const a = string.replace(/[a-z()]/g, "").replace(/[ ]/g, ",").split(",");
-  return [+a[0] || 0, +a[1] || 0, +a[2] || 0, +a[3] || 0, +a[4] || 0, +a[5] || 1];
+  return {x: +a[0] || 0, y: +a[1] || 0, a: +a[2] || 0, s: +a[3] || 1};
 }

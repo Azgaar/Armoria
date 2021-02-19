@@ -2,14 +2,15 @@
   import Ordinary from './Ordinary.svelte';
   import Charge from './Charge.svelte';
   import {charges as chargesData, ordinaries as ordinariesData} from "./../../data/dataModel";
-  import {shield, colors, patterns, grad, diaper} from '../../data/stores';
+  import {shield, colors, grad, diaper} from '../../data/stores';
   import {shieldPaths} from '../../data/shields';
-  import {getTemplate} from "../../scripts/getTemplate";
+  import {getTemplate, addPattern, addCharge} from "../../scripts/getters";
   export let coa, i, border, borderWidth, type;
 
   const {division, ordinaries = [], charges = []} = coa;
   const ordinariesRegular = ordinaries.filter(o => !o.above);
   const ordinariesAboveCharges = ordinaries.filter(o => o.above);
+  charges.forEach(charge => addCharge(charge.charge));
 
   let shieldPath, coaDiaper, diaperType;
   $: {
@@ -39,7 +40,7 @@
   // get color or link to pattern
   function clr(tincture) {
     if ($colors[tincture]) return $colors[tincture];
-    $patterns[$patterns.length] = tincture;
+    addPattern(tincture);
     return "url(#"+tincture+")";
   }
 </script>
