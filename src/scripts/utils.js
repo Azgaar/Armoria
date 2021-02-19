@@ -1,4 +1,3 @@
-// return random value from the array
 export function ra(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
@@ -20,12 +19,10 @@ export function rw(object) {
   return object.array[Math.floor(Math.random() * object.array.length)];
 }
 
-// probability shorthand
 export function P(probability) {
   return Math.random() < probability;
 }
 
-// transform string to camelCase
 export function camelize(str) {
   return str
     .toLowerCase()

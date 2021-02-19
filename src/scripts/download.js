@@ -1,5 +1,5 @@
 import { get } from 'svelte/store';
-import { scale, shield, grad, diaper } from '../data/stores';
+import { scale, grad, diaper } from '../data/stores';
 
 export async function download(i, format = "png") {
   const coas = i || i === 0 ? [document.getElementById("coa" + i)] : document.querySelectorAll("svg.coa");
@@ -56,10 +56,9 @@ async function getURL(svg, width, height) {
   if (grid) grid.remove();
   if (gridPattern) gridPattern.remove();
 
-  const sh = get(shield), gr = get(grad), di = get(diaper);
-  d.insertAdjacentHTML("beforeend", defs.getElementById(sh).outerHTML);
+  const gr = get(grad), di = get(diaper);
   if (gr) d.insertAdjacentHTML("beforeend", defs.getElementById(gr).outerHTML);
-  if (di) d.insertAdjacentHTML("beforeend", defs.getElementById(di).outerHTML);
+  if (di && di !== "no") d.insertAdjacentHTML("beforeend", defs.getElementById(di).outerHTML);
   clone.querySelectorAll(".charge[charge]").forEach(el => {
     const charge = el.getAttribute("charge");
     d.insertAdjacentHTML("beforeend", defs.getElementById(charge).outerHTML);

@@ -1,6 +1,6 @@
 <script>
   import {state, shield} from "./../../data/stores";
-  import {shieldPositions} from "./../../data/dataModel";
+  import {shieldPositions} from "./../../data/shields";
   import {fade} from 'svelte/transition';
 
   // on shield change

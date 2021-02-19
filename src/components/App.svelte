@@ -11,7 +11,7 @@
   import Message from './Message.svelte';
   import Patterns from './Patterns.svelte';
   import {background, size, history, matrices, matrix, state, message, shield} from '../data/stores';
-  import {shields} from '../data/dataModel';
+  import {shields} from '../data/shields';
   import {rw} from '../scripts/utils';
   let n, w, h, gallery = [], seed, coaSize = 200;
 

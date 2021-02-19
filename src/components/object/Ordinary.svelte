@@ -1,18 +1,12 @@
 <script>
-  import {drag, transform} from "../../scripts/drag"
+  import {drag, transform} from "../../scripts/drag";
+  import {getTemplate} from "../../scripts/getTemplate";
   export let coa, ordinary, i, shieldPath, t, type;
 
   let stroke, width;
   $: {
     stroke = ordinary.stroke || "none";
     width = ordinary.strokeWidth || 1;
-  }
-
-  function getTemplate(templateId, lineId) {
-    if (!lineId) return document.getElementById(templateId)?.innerHTML;
-    const template = document.getElementById(templateId);
-    const line = document.getElementById(lineId) ? document.getElementById(lineId) : document.getElementById("straight");
-    return template.innerHTML.replace(/{line}/g, line.getAttribute("d")).replace(/dpath/g, "d");
   }
 
   function addDrag(event) {

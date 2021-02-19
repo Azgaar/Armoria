@@ -3,7 +3,7 @@
   import {fade} from 'svelte/transition';
   import {download} from './../../scripts/download';
   import {size, grad, diaper, shield, background, scale, border, borderWidth, matrix, state, changes, message} from './../../data/stores';
-  import {shields} from './../../data/dataModel';
+  import {shields, shieldPaths} from './../../data/shields';
   import {tooltip} from './../../scripts/tooltip';
 
   let installable = false, prompt = null;
@@ -13,10 +13,6 @@
   const wideScreen = window.innerWidth > 600;
 
   $: position = $changes[1];
-
-  function getPath(shield) {
-    return document.getElementById(shield).innerHTML;
-  }
 
   function getIcon(icon, active = "active") {
     if (wideScreen) return `<span class="navBarIcon ${active}">${icon}</span>`;
@@ -123,7 +119,9 @@
               <div class="dropdown level3 iconed">
                 {#each Object.keys(shields[type]) as sh}
                   <bt on:click={e => change(e, shield, sh, "shield")}>
-                    <svg class=shield class:selected={sh === $shield} width=26 height=26 viewBox="0 0 200 210">{@html getPath(sh)}</svg>
+                    <svg class=shield class:selected={sh === $shield} width=26 height=26 viewBox="0 0 200 210">
+                      <path d="{shieldPaths[sh]}"/>
+                    </svg>
                     {sh.split(/(?=[A-Z])/).join(" ")}
                   </bt>
                 {/each}

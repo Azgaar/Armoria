@@ -3,6 +3,8 @@
   import Charge from './Charge.svelte';
   import {charges as chargesData, ordinaries as ordinariesData} from "./../../data/dataModel";
   import {shield, colors, patterns, grad, diaper} from '../../data/stores';
+  import {shieldPaths} from '../../data/shields';
+  import {getTemplate} from "../../scripts/getTemplate";
   export let coa, i, border, borderWidth, type;
 
   const {division, ordinaries = [], charges = []} = coa;
@@ -11,7 +13,7 @@
 
   let shieldPath, coaDiaper, diaperType;
   $: {
-    shieldPath = document.querySelector(`#defs g#shields > #${$shield} > path`).getAttribute("d");
+    shieldPath = shieldPaths[$shield];
     coaDiaper = type === "menuItem" ? null : coa.diaper || $diaper;
     diaperType = getDieperType();
   }
@@ -24,13 +26,6 @@
     if (f) return "field";
     if (d) return "division";
     return null;
-  }
-
-  function getTemplate(templateId, lineId) {
-    if (!lineId) return document.getElementById(templateId)?.innerHTML;
-    const template = document.getElementById(templateId);
-    const line = document.getElementById(lineId) ? document.getElementById(lineId) : document.getElementById("straight");
-    return template.innerHTML.replace(/{line}/g, line.getAttribute("d")).replace(/dpath/g, "d");
   }
 
   // if charge doesn't support pattern, return basic tincture
@@ -50,6 +45,9 @@
 </script>
 
 <defs>
+  <clipPath id="shield{i}">
+    <path d="{shieldPath}"/>
+  </clipPath>
   {#if division && division.division !== "no"}
     <clipPath id="divisionClip{i}">
       {@html getTemplate(division.division, division.line)}
@@ -57,7 +55,7 @@
   {/if}
 </defs>
 
-<g id=shield clip-path="url(#{$shield})">
+<g id=shield clip-path="url(#shield{i})">
 
   <!-- Field -->
   <rect id=field x=0 y=0 width=200 height=200 fill="{clr(coa.t1)}"/>

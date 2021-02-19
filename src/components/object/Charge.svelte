@@ -1,7 +1,7 @@
 <script>
-  import {shieldPositions, shieldSize} from "../../data/dataModel";
+  import {shieldPaths, shieldPositions, shieldSize} from '../../data/shields';
   import {loadedCharges} from "../../data/stores";
-  import {drag, transform} from "../../scripts/drag"
+  import {drag, transform} from "../../scripts/drag";
   export let coa, charge, i, shield, t, type;
   let chargeId, positions, size, stroke;
 
@@ -35,7 +35,7 @@
 
   function getInescutcheon(id) {
     const shield = id.slice(12, 13).toLowerCase() + id.slice(13);
-    const d = document.querySelector("#shields > #"+ shield + "> path").getAttribute("d");
+    const d = shieldPaths[shield];
     const g = `<g id=${id}><path transform="scale(.33)" transform-origin="center" d="${d}"/></g>`
     defs.insertAdjacentHTML("beforeend", g);
   }
