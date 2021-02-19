@@ -180,25 +180,36 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
     else if (P(.005)) size = "-smallest";
 
     // apply standard tinctures
-    if (P(.5) && ["vair", "vairInPale", "vairEnPointe"].includes(pattern)) {t1 = "azure"; t2 = "argent";}
-    else if (P(.8) && pattern === "ermine") {t1 = "argent"; t2 = "sable";}
-    else if (pattern === "pappellony") {
+    if (P(.5) && (pattern.includes("air") || pattern.includes("otent"))) {t1 = "argent"; t2 = "azure";}
+    else if (pattern === "ermine") {
+      if (P(.7)) {t1 = "argent"; t2 = "sable";}
+      else if (P(.3)) {t1 = "sable"; t2 = "argent";}
+      else if (P(.1)) {t1 = "or"; t2 = "sable";}
+      else if (P(.1)) {t1 = "sable"; t2 = "or";}
+      else if (P(.1)) {t1 = "gules"; t2 = "argent";}
+    }
+    else if (pattern.includes("pappellony") || pattern === "scaly") {
       if (P(.2)) {t1 = "gules"; t2 = "or";}
+      else if (P(.2)) {t1 = "sable"; t2 = "argent";}
       else if (P(.2)) {t1 = "argent"; t2 = "sable";}
       else if (P(.2)) {t1 = "azure"; t2 = "argent";}
     }
+    else if (P(.2) && pattern === "plumetty") {t1 = "gules"; t2 = "or";}
     else if (pattern === "masoned") {
       if (P(.3)) {t1 = "gules"; t2 = "argent";}
       else if (P(.3)) {t1 = "argent"; t2 = "sable";}
       else if (P(.1)) {t1 = "or"; t2 = "sable";}
     }
-    else if (pattern === "fretty") {
-      if (t2 === "sable" || P(.35)) {t1 = "argent"; t2 = "gules";}
-      else if (P(.25)) {t1 = "sable"; t2 = "or";}
-      else if (P(.15)) {t1 = "gules"; t2 = "argent";}
+    else if (pattern === "fretty" || pattern === "grillage" || pattern === "chainy") {
+      if (P(.35)) {t1 = "argent"; t2 = "gules";}
+      else if (P(.1)) {t1 = "sable"; t2 = "or";}
+      else if (P(.2)) {t1 = "gules"; t2 = "argent";}
+    }
+    else if (pattern === "honeycombed") {
+      if (P(.4)) {t1 = "sable"; t2 = "or";}
+      else if (P(.3)) {t1 = "or"; t2 = "sable";}
     }
     else if (pattern === "semy") pattern += "_of_" + selectCharge(charges.semy);
-
 
     if (!t1 || !t2) {
       const startWithMetal = P(.7);
