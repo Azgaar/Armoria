@@ -32,19 +32,24 @@ function semy(string) {
 }
 
 export function addCharge(charge) {
-  if (loadedCharges[charge]) return; // already added
-  loadedCharges[charge] = true;
   charge.slice(0, 12) === "inescutcheon" ? addInescutcheon(charge) : fetchCharge(charge);
 }
 
 function addInescutcheon(charge) {
   const shieldName = charge.length > 12 ? charge.slice(12, 13).toLowerCase() + charge.slice(13) : get(shield);
   const id = charge.length > 12 ? charge : "inescutcheon" + shieldName.charAt(0).toUpperCase() + shieldName.slice(1);
+
+  if (loadedCharges[id]) return; // already added
+  loadedCharges[id] = true;
+
   const g = `<g id=${id}><path transform="translate(67 67) scale(.33)" d="${shieldPaths[shieldName]}"/></g>`
   chargesGroup.insertAdjacentHTML("beforeend", g);
 }
 
 function fetchCharge(charge) {
+  if (loadedCharges[charge]) return; // already added
+  loadedCharges[charge] = true;
+
   fetch("charges/"+charge+".svg").then(res => {
     if (res.ok) return res.text();
     else throw new Error("Cannot fetch charge");
