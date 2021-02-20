@@ -12,6 +12,7 @@
     <div class=buttons in:fly="{{y:200, delay: duration, duration}}">
       <a target=_blank href=https://discord.com/invite/X7E84HU><span translate="no">Discord</span></a>
       <a target=_blank href=https://github.com/Azgaar/Armoria><span translate="no">GitHub</span></a>
+      <a target=_blank href=https://github.com/Azgaar/armoria-api#readme><span translate="no">API</span></a>
       <a target=_blank href=https://www.patreon.com/azgaar><span translate="no">Patreon</span></a>
     </div>
   </div>
