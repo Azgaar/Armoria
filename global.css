@@ -77,6 +77,18 @@ font {
   pointer-events: none;
 }
 
+.tooltip {
+  position: absolute;
+  padding: .5em;
+  pointer-events: none;
+  z-index: 99;
+  color: #fff;
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  opacity: .9;
+  max-width: 330px;
+}
+
 .flutter {
   animation: shake 10s ease infinite;
   animation-iteration-count: 5;
