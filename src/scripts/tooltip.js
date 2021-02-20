@@ -1,19 +1,13 @@
 export function tooltip(element) {
   const touch = 'ontouchstart' in window;
-  let div, title;
-
-  const style = `
-    position: absolute;
-    padding: .5em;
-    pointer-events: none;
-    z-index: 99;
-    color: #fff;
-    background-color: #1e1e1e;
-    border: 1px solid #333;
-    opacity: .9;
-  `;
+  let div, title, limit;
 
   function mouseEnter() {
+    const oldTips = document.getElementsByClassName("tooltip");
+    for (const tip of oldTips) {
+      tip.remove();
+    }
+
     title = element.getAttribute("title");
     element.removeAttribute("title");
 
@@ -24,17 +18,17 @@ export function tooltip(element) {
     div.textContent = title;
     if (touch && gesture) div.textContent += ". Gesture: " + gesture;
     if (!touch && hotkey) div.textContent += ". Hotkey: " + hotkey;
-
-    div.style = style;
+    div.className = "tooltip";
     document.body.appendChild(div);
 
-    // remove in 5 seconds
-    setTimeout(() => mouseLeave(), 5000);
+    const bbox = div.getBoundingClientRect();
+    limit = [window.innerWidth - bbox.width, window.innerHeight - bbox.height];
+    setTimeout(() => mouseLeave(), 5000); // remove in 5 seconds
   }
 
   function mouseMove(event) {
-    div.style.left = `${event.pageX + 10}px`;
-    div.style.top = `${event.pageY + 10}px`;
+    div.style.left = `${Math.min(event.pageX + 10, limit[0])}px`;
+    div.style.top = `${Math.min(event.pageY + 10, limit[1])}px`;
   }
 
   function mouseLeave() {
