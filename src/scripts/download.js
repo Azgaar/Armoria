@@ -58,7 +58,7 @@ async function getURL(svg, width, height) {
   if (gridPattern) gridPattern.remove();
 
   const gr = get(grad), di = get(diaper);
-  if (gr) d.insertAdjacentHTML("beforeend", defs.getElementById(gr).outerHTML);
+  if (gr && gr !== "no") d.insertAdjacentHTML("beforeend", defs.getElementById(gr).outerHTML);
   if (di && di !== "no") d.insertAdjacentHTML("beforeend", defs.getElementById(di).outerHTML);
   clone.querySelectorAll(".charge[charge]").forEach(el => {
     const charge = el.getAttribute("charge");
