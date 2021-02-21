@@ -1,7 +1,8 @@
 <script>
-  import {colors} from '../../data/stores';
+  import {colors} from './../../data/stores';
+  import {shieldPaths} from './../../data/shields'
   import {fade, draw} from 'svelte/transition';
-  import {rw} from '../../scripts/utils';
+  import {rw} from './../../scripts/utils';
   export let duration;
   const delay = duration * 2.6;
 
@@ -30,7 +31,11 @@
 </script>
 
 <svg width={size} height={size} viewBox="0 0 200 200">
-  <g clip-path="url(#heater)" stroke="#fff" stroke-width=.5>
+  <clipPath id="shieldAbout">
+    <path d="{shieldPaths.heater}"/>
+  </clipPath>
+
+  <g clip-path="url(#shieldAbout)" stroke="#fff" stroke-width=.5>
     <path stroke-width=1 d="M25,25 h150 v50 a150,150,0,0,1,-75,125 a150,150,0,0,1,-75,-125 z" in:draw="{{duration}}"/>
     <path d={paths[division][0]} in:draw="{{delay: duration}}"/>
 
@@ -42,6 +47,6 @@
   </g>
 
   <g stroke="#000" fill="url(#backlight)">
-    <path d="M25,25 h150 v50 a150,150,0,0,1,-75,125 a150,150,0,0,1,-75,-125 z" in:draw="{{delay, duration}}"/>
+    <path d="{shieldPaths.heater}" in:draw="{{delay, duration}}"/>
   </g>
 </svg>

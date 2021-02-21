@@ -58,6 +58,12 @@ function fetchCharge(charge) {
     el.innerHTML = text;
     const html = el.querySelector("g").outerHTML;
     chargesGroup.insertAdjacentHTML("beforeend", html);
+
+    if (el.getElementsByTagName("metadata")[0]) {
+      const source = el.getElementsByTagName("dc:source")[0]?.getAttribute("rdf:resource");
+      const license = el.getElementsByTagName("cc:license")[0]?.getAttribute("rdf:resource");
+      //console.log(charge, source, license);
+    }
   }).catch(err => console.error(err));
 }
 
