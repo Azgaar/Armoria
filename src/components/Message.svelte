@@ -52,7 +52,7 @@
     border-radius: 10px;
   }
 
-  .sucess {
+  .success {
     color: #0fc63a;
   }
 </style>

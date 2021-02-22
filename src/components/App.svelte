@@ -2,6 +2,7 @@
   import WindowEvents from './WindowEvents.svelte';
   import Navbar from './navigation/Navbar.svelte';
   import About from './navigation/About.svelte';
+  import License from './navigation/License.svelte';
   import Viewer from './navigation/Viewer.svelte';
   import Editor from './editor/Editor.svelte';
   import Gallery from './navigation/Gallery.svelte';
@@ -111,6 +112,7 @@
   <main style="background-color: {$background}">
     <Navbar/>
     {#if $state.about}<About/>{/if}
+    {#if $state.license}<License/>{/if}
     {#if $state.raster}<UploadRaster/>{/if}
     {#if $state.vector}<UploadVector/>{/if}
     {#if $state.tinctures}<Tinctures/>{/if}

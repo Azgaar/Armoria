@@ -1,14 +1,16 @@
 <script>
-  import {state, colors, tinctures, message} from './../../data/stores';
+  import LicenseList from './LicenseList.svelte';
+  import {state, colors, tinctures, message, shield} from './../../data/stores';
   import {charges} from './../../data/dataModel';
+  import {shieldPaths} from '../../data/shields';
   import {camelize} from './../../scripts/utils';
   import {tooltip} from './../../scripts/tooltip';
   let dragging = false, selected = false;
   let svg, transform = {a:1, b:0, c:0, d:1, e:0, f:0}, name, category = "uploaded", color = "#d7374a";
+  let source, license, author;
   const tinctureList = ["metals", "colours", "stains"].map(type => Object.keys($tinctures[type])).flat();
 
   $: updateTransform(transform);
-  $: updateId(name);
 
   function updateTransform(transform) {
     if (!svg) return; // on component on load
@@ -18,15 +20,6 @@
     const transformString = Object.values(transform).join(" ");
     if (transformString === "1 0 0 1 0 0") g.removeAttribute("transform");
     else g.setAttribute("transform", "matrix(" + transformString+ ")");
-    svg = g.outerHTML;
-  }
-
-  function updateId(name) {
-    if (!svg) return; // on component on load
-    const el = document.createElement("html");
-    el.innerHTML = svg;
-    const g = el.querySelector("g");
-    g.setAttribute("id", name);
     svg = g.outerHTML;
   }
 
@@ -75,6 +68,7 @@
         const fix = n => +n.toFixed(4);
         transform = Object.assign(transform, {a:fix(a), b:fix(b), c:fix(c), d:fix(d), e:fix(e), f:fix(f)});
       }
+      g.removeAttribute("id");
       svg = g.outerHTML;
     };
     reader.readAsText(file);
@@ -97,10 +91,16 @@
     el.innerHTML = svg;
     const image = el.querySelector("g");
     image.id = name;
+
+    if (source) image.setAttribute("source", source);
+    if (license) image.setAttribute("license", license);
+    if (author) image.setAttribute("author", author);
+
     defs.insertAdjacentHTML("beforeend", image.outerHTML);
 
     selected = false;
     $state.vector = 0;
+    $message = {type: "success", text: `Charge "${name}" is added to the category "${category}"`};
   }
 
   function downloadTemplate() {
@@ -122,27 +122,19 @@
   <span on:click={() => $state.vector = 0} class="close">&times;</span>
   <div class=container>
     {#if selected}
-      <div class=input>
-        <div class=label>SVG Markup:</div>
-        <textarea rows=18 cols=22 bind:value={svg}/>
-        <div>
-          <button on:click={downloadTemplate}>Download Template</button>
-        </div>
+      <svg width=100% height=100% fill={color} stroke=#000 stroke-width=1 viewBox="0 0 200 200" title="Fit image into the rectangle for best result" use:tooltip>
+        <g fill="#fff" fill-opacity=".05" stroke="#fff" stroke-width=".5">
+          <path d="{shieldPaths[$shield]}"/>
+          <rect x="60" y="60" width="80" height="80"/>
+        </g>
+        <g>{@html svg}</g>
+      </svg>
+
+      <div>
+        <div class=label>SVG Markup:</div><textarea rows=5 bind:value={svg}/>
       </div>
 
-      <div class=exampleCOA title="For best result charge must fit into the inner rectangle" use:tooltip>
-        <svg width=100% height=100% fill={color} stroke=#000 stroke-width=1 viewBox="0 0 200 200">
-          <g fill="#fff" fill-opacity=".05" stroke="#fff" stroke-width=".5">
-            <path d="m25 25h150v50a150 150 0 0 1-75 125 150 150 0 0 1-75-125z"/>
-            <rect x="60" y="60" width="80" height="80"/>
-          </g>
-          <g>
-            {@html svg}
-          </g>
-        </svg>
-      </div>
-
-      <div class=output>
+      <div class=inputs>
         <div title="Charge translate: X and Y px" use:tooltip>
           <div class=label>Translate:</div>
           <input type=number step=.1 class=paired bind:value={transform.e}/>
@@ -164,12 +156,19 @@
           </select>
         </div>
 
-        <div title="Charge ID, must be unique" use:tooltip>
-          <div class=label>Name:</div>
-          <input placeholder="Charge name" required bind:value={name}/>
+        <div title="Link to the image source" use:tooltip>
+          <div class=label>Source:</div><input bind:value={source}/>
         </div>
-
-        <div title="Category where charge will be added" use:tooltip>
+        <div title="Image author or source portal name" use:tooltip>
+          <div class=label>Author:</div><input bind:value={author}/>
+        </div>
+        <div title="Image license" use:tooltip>
+          <div class=label>License:</div><LicenseList bind:license/>
+        </div>
+        <div title="Charge unique name (id)" use:tooltip>
+          <div class=label>Name:</div><input placeholder="Charge id" required bind:value={name}/>
+        </div>
+        <div title="Category to put a charge" use:tooltip>
           <div class=label>Category:</div>
           <select bind:value={category}>
             {#each Object.keys(charges.types) as c}
@@ -178,7 +177,7 @@
           </select>
         </div>
 
-        <div>
+        <div class=buttons>
           <button on:click={addCharge}>Upload</button>
           <button on:click={() => selected = false}>Cancel</button>
         </div>
@@ -203,39 +202,29 @@
     z-index: 1;
     left: 0;
     top: 0;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: #000000e6;
     transition: 0.5s;
     user-select: none;
-  }
-
-  .container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #ddd;
     display: flex;
     flex-flow: row;
     align-items: center;
     justify-content: center;
+    overflow: auto;
   }
 
-  .exampleCOA {
-    width: max-content;
+  .container {
+    color: #ddd;
+    max-height: 100%;
+    max-width: 90%;
   }
 
-  @media only screen and (orientation: portrait) {
-    .container {
-      flex-flow: column;
-    }
-
-    .exampleCOA {
-      height: 20vh;
-      width: 20vh;
-    }
+  .inputs {
+    column-count: 3;
   }
+
 
   textarea {
+    width: 100%;
     font-size: .8em;
     font-family: 'Courier New', Courier, monospace;
   }
@@ -279,5 +268,21 @@
     left: 50%;
     margin-top: 2.5em;
     transform: translate(-50%, -50%);
+  }
+
+  .buttons > button {
+    cursor: pointer;
+    margin: 1.18em 0;
+    width: 4.8em;
+  }
+
+  @media only screen and (orientation: portrait) {
+    .inputs {
+      column-count: 2;
+    }
+
+    .buttons {
+      column-span: all;
+    }
   }
 </style>

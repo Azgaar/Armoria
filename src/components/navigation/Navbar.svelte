@@ -68,7 +68,7 @@
       () => {
         $message = null;
         setTimeout(() => {
-          $message = {type: "sucess", text: response, timeout: 5000};
+          $message = {type: "success", text: response, timeout: 5000};
         }, 500);
       }, err => {
         const text = "Cannot copy to the clipboard!";
@@ -93,7 +93,7 @@
 
   window.addEventListener("appinstalled", e => {
     console.log("App installation: success");
-    $message = {type: "sucess", text: `Armoria application is installed`, timeout: 5000};
+    $message = {type: "success", text: `Armoria application is installed`, timeout: 5000};
   });
 
   // values to be always saved
@@ -235,6 +235,12 @@
           <span>Scale</span>
         </bl>
       </div>
+
+      {#if !wideScreen && $state.edit}
+        <bt on:click={() => $state.license = 1} title="Show information about license" use:tooltip>
+          License
+        </bt>
+      {/if}
     </div>
   </div>
 
@@ -319,6 +325,9 @@
   {/if}
 
   {#if wideScreen || !$state.edit}
+    <bt on:click={() => $state.license = 1} title="Show information about license" use:tooltip>
+      {@html getIcon("license")}
+    </bt>
     <bt on:click={() => $state.about = 1} title="Show about screen" hotkey="F1" use:tooltip>
       {@html getIcon("about")}
     </bt>

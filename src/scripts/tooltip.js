@@ -32,20 +32,18 @@ export function tooltip(element) {
   }
 
   function mouseLeave() {
-    div.remove();
     element.setAttribute("title", title);
+    if (div) div.remove();
   }
 
   element.addEventListener("mouseenter", mouseEnter);
   element.addEventListener("mouseleave", mouseLeave);
-  element.addEventListener("touchend", mouseLeave);
   element.addEventListener("mousemove", mouseMove);
 
   return {
     destroy() {
       element.removeEventListener("mouseenter", mouseEnter);
       element.removeEventListener("mouseleave", mouseLeave);
-      element.removeEventListener("touchend", mouseLeave);
       element.removeEventListener("mousemove", mouseMove);
     }
   };

@@ -42,7 +42,10 @@ function addInescutcheon(charge) {
   if (loadedCharges[id]) return; // already added
   loadedCharges[id] = true;
 
-  const g = `<g id=${id}><path transform="translate(67 67) scale(.33)" d="${shieldPaths[shieldName]}"/></g>`
+  const licenseAttrs = ["noldor", "gondor", "easterling", "ironHills", "urukHai", "moriaOrc"].includes(shieldName) ?
+    `author="Weta Workshop" source="www.wetanz.com" license="https://en.wikipedia.org/wiki/Fair_use"` :
+    `author=Azgaar license="https://creativecommons.org/publicdomain/zero/1.0"`;
+  const g = `<g id=${id} ${licenseAttrs}><path transform="translate(67 67) scale(.33)" d="${shieldPaths[shieldName]}"/></g>`
   chargesGroup.insertAdjacentHTML("beforeend", g);
 }
 
@@ -56,14 +59,19 @@ function fetchCharge(charge) {
   }).then(text => {
     const el = document.createElement("html");
     el.innerHTML = text;
-    const html = el.querySelector("g").outerHTML;
-    chargesGroup.insertAdjacentHTML("beforeend", html);
+    const g = el.querySelector("g");
+    const metadata = el.getElementsByTagName("metadata")[0];
 
-    if (el.getElementsByTagName("metadata")[0]) {
-      const source = el.getElementsByTagName("dc:source")[0]?.getAttribute("rdf:resource");
-      const license = el.getElementsByTagName("cc:license")[0]?.getAttribute("rdf:resource");
-      //console.log(charge, source, license);
+    if (metadata) {
+      const author = metadata.getAttribute("author");
+      const source = metadata.getAttribute("source");
+      const license = metadata.getAttribute("license");
+      if (author) g.setAttribute("author", author);
+      if (source) g.setAttribute("source", source);
+      if (license) g.setAttribute("license", license);
     }
+
+    chargesGroup.insertAdjacentHTML("beforeend", g.outerHTML);
   }).catch(err => console.error(err));
 }
 
