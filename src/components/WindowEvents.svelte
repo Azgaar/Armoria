@@ -4,8 +4,10 @@
   const touch = {startX:0, startY: 0};
 
   // prevent unwanted refresh
-  if (location.host === "azgaar.github.io") window.onbeforeunload = () => "Are you sure you want to navigate away?";
-
+  if (location.host === "azgaar.github.io" && !navigator.userAgent.includes("Electron")) {
+    window.onbeforeunload = () => "Are you sure you want to navigate away?";
+  }
+  
   // keyboard shortcuts
   function handleKeydown(event) {
     const code = event.code;
