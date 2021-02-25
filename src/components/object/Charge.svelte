@@ -18,7 +18,7 @@
     const [x, y] = positions[p];
     const translate = x || y ? `translate(${x} ${y})` : "";
 
-    const s = (c.size || 1) * size;
+    const s = Math.round((c.size || 1) * size * 100) / 100;
     const scaleX = c.sinister ? -s : s;
     const scaleY = c.reversed ? -s : s;
     const scale = scaleX === scaleY ? s === 1 ? "" : `scale(${s})` : `scale(${scaleX} ${scaleY})`;
