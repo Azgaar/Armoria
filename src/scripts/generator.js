@@ -147,10 +147,6 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
         }
     }
 
-
-
-
-
     return coa;
 }
 
@@ -178,7 +174,6 @@ function replaceTincture(config, t, n) {
     while (!n || n === t) { n = rw(config.tData[type]); }
     return n;
 }
-
 
 function getType(config, t) {
     const tincture = t.includes("-") ? t.split("-")[1] : t;
