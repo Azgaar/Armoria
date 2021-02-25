@@ -3,8 +3,7 @@ import {changes, grid} from "../data/stores";
 
 export function drag(e, c, coa) {
   const el = e.currentTarget;
-
-  const x1 = e.x, y1 = e.y;
+  const x0 = e.x, y0 = e.y;
   const sizeAdj = +el.closest("svg").getAttribute("width") / 200;
   document.addEventListener("mouseup", dragStop, { once: true });
 
@@ -26,8 +25,8 @@ export function drag(e, c, coa) {
   };
 
   function move(e) {
-    const dx = x + (e.x - x1) / sizeAdj;
-    const dy = y + (e.y - y1) / sizeAdj;
+    const dx = x + (e.x - x0) / sizeAdj;
+    const dy = y + (e.y - y0) / sizeAdj;
 
     c.x = Math.round(dx / gridSize) * gridSize;
     c.y = Math.round(dy / gridSize) * gridSize;
@@ -35,18 +34,21 @@ export function drag(e, c, coa) {
   }
 
   function resize(e) {
-    const dy = y + (e.y - y1) / sizeAdj;
-    c.size = size + Math.round(dy) / -100;
+    const dy = y + (e.y - y0) / sizeAdj;
+    c.size = round(size + dy / -100);
     setTransform(el, c);
     if (c.p) changes.add(JSON.stringify(coa));
   }
 
   function rotate(e) {
-    const dx = x + (e.x - x1) / sizeAdj;
-    let a = angle + Math.round(dx / 1.8);
+    const cx = x + 100, cy = y + 100;
+    const x1 = e.x / sizeAdj, y1 = e.y / sizeAdj;
+
+    let a = 90 + Math.atan2(y1 - cy, x1 - cx) * 180 / Math.PI;
     if (a > 180) a = a % 180 - 180;
     if (a < -179) a = a % 180 + 180;
-    c.angle = a;
+
+    c.angle = Math.round(a / gridSize) * gridSize;
     setTransform(el, c);
   }
 

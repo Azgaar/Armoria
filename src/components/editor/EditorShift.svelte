@@ -25,7 +25,7 @@
   <input type=number min=-100 max=100 step={$grid} bind:value={e.y}/>
 </span>
 
-<span title="Grid size: define position shift and drag step in pixels" use:tooltip>
+<span title="Define grid size, angle and position shift step (in pixels and degrees)" use:tooltip>
   <span>Step:</span>
   <input type=number min=1 max=50 bind:value={$grid}/>
   <Switch bind:checked={$showGrid}/>
