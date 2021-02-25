@@ -3,16 +3,15 @@ import {changes, grid} from "../data/stores";
 
 export function drag(e, c, coa) {
   const el = e.currentTarget;
-  const {x, y, a} = parseTransform(el.getAttribute("transform"));
+
   const x1 = e.x, y1 = e.y;
   const sizeAdj = +el.closest("svg").getAttribute("width") / 200;
   document.addEventListener("mouseup", dragStop, { once: true });
 
+  const x = c.x || 0;
+  const y = c.y || 0;
   const size = c.size || 1;
   const angle = c.angle || 0;
-  const rad = -a * (Math.PI / 180);
-  const cosAngle = Math.cos(rad);
-  const sinAngle = Math.sin(rad);
   const gridSize = get(grid);
 
   if (e.shiftKey) {
@@ -30,11 +29,8 @@ export function drag(e, c, coa) {
     const dx = x + (e.x - x1) / sizeAdj;
     const dy = y + (e.y - y1) / sizeAdj;
 
-    const relX = (dx * cosAngle) - (dy * sinAngle);
-    const relY = (dx * sinAngle) + (dy * cosAngle);
-
-    c.x = Math.round(relX / gridSize) * gridSize;
-    c.y = Math.round(relY / gridSize) * gridSize;
+    c.x = Math.round(dx / gridSize) * gridSize;
+    c.y = Math.round(dy / gridSize) * gridSize;
     setTransform(el, c);
   }
 
@@ -69,22 +65,49 @@ export function drag(e, c, coa) {
   }
 }
 
+function round(n) {
+  return Math.round(n * 100) / 100;
+}
+
 export function transform(charge) {
   let {x = 0, y = 0, angle = 0, size = 1, p} = charge;
   if (p) size = 1; // size is defined on use element level
 
-  if (!x && !y && !angle && size === 1) return null;
+  if (size !== 1) {
+    x = round(x + 100 - size * 100);
+    y = round(y + 100 - size * 100);
+  }
 
   let transform = "";
   if (x || y) transform += `translate(${x} ${y})`;
-  if (angle) transform += ` rotate(${angle})`;
-  if (size !== 1) transform += `scale(${size})`;
+  if (angle) transform += ` rotate(${angle} ${size * 100} ${size * 100})`;
+  if (size !== 1) transform += ` scale(${size})`;
 
-  return transform.trim();
+  return transform ? transform.trim() : null;
 }
 
 function parseTransform(string) {
-  if (!string) { return {x: 0, y: 0, a: 0, s: 1}; }
-  const a = string.replace(/[a-z()]/g, "").replace(/[ ]/g, ",").split(",");
-  return {x: +a[0] || 0, y: +a[1] || 0, a: +a[2] || 0, s: +a[3] || 1};
+  let parsed = {x: 0, y: 0, a: 0, s: 1}
+  if (!string) return parsed;
+
+  const translate = string.match(/(?<=translate)\((.*?)\)/);
+  if (translate) {
+    const ar = translate[1].split(" ");
+    if (ar[0]) parsed.x = +ar[0];
+    if (ar[1]) parsed.y = +ar[1];
+  }
+
+  const rotate = string.match(/(?<=rotate)\((.*?)\)/);
+  if (rotate) {
+    const ar = rotate[1].split(" ");
+    if (ar[0]) parsed.a = +ar[0];
+  }
+
+  const scale = string.match(/(?<=scale)\((.*?)\)/);
+  if (scale) {
+    const ar = scale[1].split(" ");
+    if (ar[0]) parsed.s = +ar[0];
+  }
+
+  return parsed;
 }
