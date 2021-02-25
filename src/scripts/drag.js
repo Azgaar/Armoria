@@ -83,14 +83,6 @@ export function transform(charge) {
   return transform.trim();
 }
 
-export function transform2(c) {
-  if (!c.x && !c.y && !c.angle && !c.size) return null;
-
-  // charges have c.p and have size on use level, not on g level
-  const size = c.p ? 1 : c.size;
-  return `rotate(${c.angle||0}) translate(${c.x||0} ${c.y||0}) scale(${size||1})`;
-}
-
 function parseTransform(string) {
   if (!string) { return {x: 0, y: 0, a: 0, s: 1}; }
   const a = string.replace(/[a-z()]/g, "").replace(/[ ]/g, ",").split(",");

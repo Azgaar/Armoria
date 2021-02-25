@@ -2,11 +2,11 @@
   import {shieldPositions, shieldSize} from '../../data/shields';
   import {drag, transform} from "../../scripts/drag";
   export let coa, charge, i, shield, t, type;
-  let chargeId, positions, size, stroke;
+  let chargeId, positions, sizeModifier, stroke;
 
   $: {
     positions = shieldPositions[shield] || shieldPositions.spanish;
-    size = shieldSize[shield] || 1;
+    sizeModifier = shieldSize[shield] || 1;
     stroke = charge.stroke || "#000";
 
     chargeId = charge.charge;
@@ -14,15 +14,20 @@
     if (chargeId === "inescutcheon") chargeId = "inescutcheon" + shield.charAt(0).toUpperCase() + shield.slice(1);
   }
 
-  function getElTransform(positions, c, p) {
-    const [x, y] = positions[p];
-    const translate = x || y ? `translate(${x} ${y})` : "";
+  function round(n) {
+    return Math.round(n * 100) / 100;
+  }
 
-    const s = Math.round((c.size || 1) * size * 100) / 100;
-    const scaleX = c.sinister ? -s : s;
-    const scaleY = c.reversed ? -s : s;
-    const scale = scaleX === scaleY ? s === 1 ? "" : `scale(${s})` : `scale(${scaleX} ${scaleY})`;
+  function getElTransform(c, p) {
+    const s = round((c.size || 1) * sizeModifier);
+    const sx = c.sinister ? -s : s;
+    const sy = c.reversed ? -s : s;
+    let [x, y] = positions[p];
+    x = round(x - 100 * (sx - 1));
+    y = round(y - 100 * (sy - 1));
 
+    const translate = x || y ? `translate(${x} ${y})` : null;
+    const scale = sx !== 1 || sy !== 1 ? sx === sy ? `scale(${s})` : `scale(${sx} ${sy})` : null;
     return translate && scale ? `${translate} ${scale}` : translate ? translate : scale ? scale : null;
   }
 
@@ -32,8 +37,8 @@
   }
 </script>
 
-<g class="charge" {i} charge={chargeId} transform="{transform(charge)}" transform-origin="center" {stroke} on:mousedown={addDrag}>
+<g class="charge" {i} charge={chargeId} fill="{t}" transform="{transform(charge)}" {stroke} on:mousedown={addDrag}>
   {#each [...new Set(charge.p)].filter(p => positions[p]) as p}
-    <use href="#{chargeId}" transform="{getElTransform(positions, charge, p)}" transform-origin="center" fill="{t}"></use>
+    <use xlink:href="#{chargeId}" transform="{getElTransform(charge, p)}"/>
   {/each}
 </g>
