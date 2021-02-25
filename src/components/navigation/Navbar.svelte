@@ -275,7 +275,7 @@
           <span>Copy edit link</span>
         </bt>
 
-        <bt on:click={copyAPILink} title="Copy link to the coat of arms for embedding. Armoria API does not support custom positions and charges" use:tooltip>
+        <bt on:click={copyAPILink} title="Copy link to the coat of arms for embedding. Armoria API does not support custom charges" use:tooltip>
           <span>Copy API link</span>
         </bt>
       {/if}

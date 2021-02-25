@@ -27,7 +27,7 @@
     y = round(y - 100 * (sy - 1));
 
     const translate = x || y ? `translate(${x} ${y})` : null;
-    const scale = sx !== 1 || sy !== 1 ? sx === sy ? `scale(${s})` : `scale(${sx} ${sy})` : null;
+    const scale = sx !== 1 || sy !== 1 ? sx === sy ? `scale(${sx})` : `scale(${sx} ${sy})` : null;
     return translate && scale ? `${translate} ${scale}` : translate ? translate : scale ? scale : null;
   }
 
