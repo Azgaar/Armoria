@@ -85,29 +85,3 @@ export function transform(charge) {
 
   return transform ? transform.trim() : null;
 }
-
-function parseTransform(string) {
-  let parsed = {x: 0, y: 0, a: 0, s: 1}
-  if (!string) return parsed;
-
-  const translate = string.match(/(?<=translate)\((.*?)\)/);
-  if (translate) {
-    const ar = translate[1].split(" ");
-    if (ar[0]) parsed.x = +ar[0];
-    if (ar[1]) parsed.y = +ar[1];
-  }
-
-  const rotate = string.match(/(?<=rotate)\((.*?)\)/);
-  if (rotate) {
-    const ar = rotate[1].split(" ");
-    if (ar[0]) parsed.a = +ar[0];
-  }
-
-  const scale = string.match(/(?<=scale)\((.*?)\)/);
-  if (scale) {
-    const ar = scale[1].split(" ");
-    if (ar[0]) parsed.s = +ar[0];
-  }
-
-  return parsed;
-}
