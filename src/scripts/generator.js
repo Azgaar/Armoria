@@ -4,24 +4,22 @@ import { rw, P } from './utils';
 import { charges, divisions, lines, ordinaries, positions } from "../data/dataModel";
 import { tinctures } from '../data/stores';
 
-// GenerationConfig is a data class that holds configurations across generation functions.
-class GenerationConfig {
-    usedPattern;
-    usedTinctures = [];
-    constructor() {
-        this.tData = get(tinctures) // tinctures data
-            // initialize to `null`
-        this.divisioned = null;
-        this.ordinary = null;
-    }
-};
+const createConfig = function() {
+    return {
+        usedPattern: null,
+        usedTinctures: [],
+        tData: get(tinctures),
+        divisioned: null,
+        ordinary: null
+    };
+}
 
 // main generation routine
 export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
     Math.random = aleaPRNG(seed);
 
     // create a new config
-    let config = new GenerationConfig()
+    let config = createConfig();
 
     const coa = { seed, t1: getTincture(config, "field") };
 
