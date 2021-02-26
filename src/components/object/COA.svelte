@@ -9,7 +9,7 @@
 </script>
 
 <svg id="coa{i}" class="coa" width={w} height={h} {viewBox} xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <Shield {coa} {i} border={$border} borderWidth={$borderWidth} type={i}/>
+  <Shield {coa} border={$border} borderWidth={$borderWidth} type={i}/>
   {#if i === "Edit"}
     <Grid/>
     <Positions/>
