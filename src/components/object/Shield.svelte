@@ -5,8 +5,9 @@
   import {shield, colors, grad, diaper} from '../../data/stores';
   import {shieldPaths} from '../../data/shields';
   import {getTemplate, addPattern, addCharge} from "../../scripts/getters";
-  export let coa, i, border, borderWidth, type;
+  export let coa, border, borderWidth, type;
 
+  const id = coa.seed || Math.floor(Math.random() * 1e9);
   const {division, ordinaries = [], charges = []} = coa;
   const ordinariesRegular = ordinaries.filter(o => !o.above);
   const ordinariesAboveCharges = ordinaries.filter(o => o.above);
@@ -46,20 +47,20 @@
 </script>
 
 <defs>
-  <clipPath id="shield{i}">
+  <clipPath id="shield_{id}">
     <path d="{shieldPath}"/>
   </clipPath>
   {#if division && division.division !== "no"}
-    <clipPath id="divisionClip{i}">
+    <clipPath id="division_{id}">
       {@html getTemplate(division.division, division.line)}
     </clipPath>
   {/if}
 </defs>
 
-<g id=shield clip-path="url(#shield{i})">
+<g clip-path="url(#shield_{id})">
 
   <!-- Field -->
-  <rect id=field x=0 y=0 width=200 height=200 fill="{clr(coa.t1)}"/>
+  <rect class=field x=0 y=0 width=200 height=200 fill="{clr(coa.t1)}"/>
 
   {#if division && division.division !== "no"}
     <!-- In field part -->
@@ -92,7 +93,7 @@
     {/each}
 
     <!-- In division part -->
-    <g id=division clip-path="url(#divisionClip{i})">
+    <g class=division clip-path="url(#division_{id})">
       <rect x=0 y=0 width=200 height=200 fill="{clr(division.t)}"/>
 
       {#each ordinariesRegular as ordinary, i}

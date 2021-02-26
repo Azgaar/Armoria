@@ -66,9 +66,9 @@ async function getURL(svg, width, height) {
     d.insertAdjacentHTML("beforeend", defs.getElementById(charge).outerHTML);
     addedElements[charge] = true;
   });
-  const fieldPattern = clone.getElementById("field").getAttribute("fill").split("(#")[1]?.split(")")[0];
+  const fieldPattern = clone.getElementsByClassName("field")[0].getAttribute("fill").split("(#")[1]?.split(")")[0];
   if (fieldPattern) addPattern(fieldPattern, d);
-  const divisionPattern = clone.getElementById("division")?.querySelector("rect").getAttribute("fill").split("(#")[1]?.split(")")[0];
+  const divisionPattern = clone.getElementsByClassName("division")[0]?.querySelector("rect").getAttribute("fill").split("(#")[1]?.split(")")[0];
   if (divisionPattern) addPattern(divisionPattern, d);
 
   function addPattern(pattern, d) {
@@ -86,7 +86,8 @@ async function getURL(svg, width, height) {
   }
 
   const serialized = (new XMLSerializer()).serializeToString(clone);
-  const blob = new Blob([serialized], { type: 'image/svg+xml;charset=utf-8' });
+  const pretty = prettify(serialized);
+  const blob = new Blob([pretty], { type: 'image/svg+xml;charset=utf-8' });
   const url = window.URL.createObjectURL(blob);
   window.setTimeout(() => window.URL.revokeObjectURL(url), 6000);
   return url;
@@ -116,4 +117,26 @@ function getTimestamp() {
   const minutes = formatTime(date.getMinutes());
   const seconds = formatTime(date.getSeconds());
   return [year, month, day, hour, minutes, seconds].join('-');
+}
+
+function prettify(source) {
+  const xmlDoc = new DOMParser().parseFromString(source, "image/svg+xml");
+  const xsltDoc = new DOMParser().parseFromString([
+      '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform">',
+      '  <xsl:strip-space elements="*"/>',
+      '  <xsl:template match="para[content-style][not(text())]">',
+      '    <xsl:value-of select="normalize-space(.)"/>',
+      '  </xsl:template>',
+      '  <xsl:template match="node()|@*">',
+      '    <xsl:copy><xsl:apply-templates select="node()|@*"/></xsl:copy>',
+      '  </xsl:template>',
+      '  <xsl:output indent="yes"/>',
+      '</xsl:stylesheet>',
+  ].join('\n'), 'application/xml');
+
+  const xsltProcessor = new XSLTProcessor();
+  xsltProcessor.importStylesheet(xsltDoc);
+  const resultDoc = xsltProcessor.transformToDocument(xmlDoc);
+  const resultXml = new XMLSerializer().serializeToString(resultDoc);
+  return resultXml;
 }

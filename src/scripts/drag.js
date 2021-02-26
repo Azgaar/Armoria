@@ -3,16 +3,14 @@ import {changes, grid} from "../data/stores";
 
 export function drag(e, c, coa) {
   const el = e.currentTarget;
-  const {x, y, a} = parseTransform(el.getAttribute("transform"));
-  const x1 = e.x, y1 = e.y;
+  const x0 = e.x, y0 = e.y;
   const sizeAdj = +el.closest("svg").getAttribute("width") / 200;
   document.addEventListener("mouseup", dragStop, { once: true });
 
+  const x = c.x || 0;
+  const y = c.y || 0;
   const size = c.size || 1;
   const angle = c.angle || 0;
-  const rad = -a * (Math.PI / 180);
-  const cosAngle = Math.cos(rad);
-  const sinAngle = Math.sin(rad);
   const gridSize = get(grid);
 
   if (e.shiftKey) {
@@ -27,30 +25,30 @@ export function drag(e, c, coa) {
   };
 
   function move(e) {
-    const dx = x + (e.x - x1) / sizeAdj;
-    const dy = y + (e.y - y1) / sizeAdj;
+    const dx = x + (e.x - x0) / sizeAdj;
+    const dy = y + (e.y - y0) / sizeAdj;
 
-    const relX = (dx * cosAngle) - (dy * sinAngle);
-    const relY = (dx * sinAngle) + (dy * cosAngle);
-
-    c.x = Math.round(relX / gridSize) * gridSize;
-    c.y = Math.round(relY / gridSize) * gridSize;
+    c.x = Math.round(dx / gridSize) * gridSize;
+    c.y = Math.round(dy / gridSize) * gridSize;
     setTransform(el, c);
   }
 
   function resize(e) {
-    const dy = y + (e.y - y1) / sizeAdj;
-    c.size = size + Math.round(dy) / -100;
+    const dy = y + (e.y - y0) / sizeAdj;
+    c.size = round(size + dy / -100);
     setTransform(el, c);
     if (c.p) changes.add(JSON.stringify(coa));
   }
 
   function rotate(e) {
-    const dx = x + (e.x - x1) / sizeAdj;
-    let a = angle + Math.round(dx / 1.8);
+    const cx = x + 100, cy = y + 100;
+    const x1 = e.x / sizeAdj, y1 = e.y / sizeAdj;
+
+    let a = 90 + Math.atan2(y1 - cy, x1 - cx) * 180 / Math.PI;
     if (a > 180) a = a % 180 - 180;
     if (a < -179) a = a % 180 + 180;
-    c.angle = a;
+
+    c.angle = Math.round(a / gridSize) * gridSize;
     setTransform(el, c);
   }
 
@@ -69,30 +67,23 @@ export function drag(e, c, coa) {
   }
 }
 
+function round(n) {
+  return Math.round(n * 100) / 100;
+}
+
 export function transform(charge) {
   let {x = 0, y = 0, angle = 0, size = 1, p} = charge;
   if (p) size = 1; // size is defined on use element level
 
-  if (!x && !y && !angle && size === 1) return null;
+  if (size !== 1) {
+    x = round(x + 100 - size * 100);
+    y = round(y + 100 - size * 100);
+  }
 
   let transform = "";
   if (x || y) transform += `translate(${x} ${y})`;
-  if (angle) transform += ` rotate(${angle})`;
-  if (size !== 1) transform += `scale(${size})`;
+  if (angle) transform += ` rotate(${angle} ${size * 100} ${size * 100})`;
+  if (size !== 1) transform += ` scale(${size})`;
 
-  return transform.trim();
-}
-
-export function transform2(c) {
-  if (!c.x && !c.y && !c.angle && !c.size) return null;
-
-  // charges have c.p and have size on use level, not on g level
-  const size = c.p ? 1 : c.size;
-  return `rotate(${c.angle||0}) translate(${c.x||0} ${c.y||0}) scale(${size||1})`;
-}
-
-function parseTransform(string) {
-  if (!string) { return {x: 0, y: 0, a: 0, s: 1}; }
-  const a = string.replace(/[a-z()]/g, "").replace(/[ ]/g, ",").split(",");
-  return {x: +a[0] || 0, y: +a[1] || 0, a: +a[2] || 0, s: +a[3] || 1};
+  return transform ? transform.trim() : null;
 }
