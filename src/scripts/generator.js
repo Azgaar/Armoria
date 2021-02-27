@@ -130,19 +130,7 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
             } else if (allowCounter && p.length > 1) coa.charges[0].divided = "counter"; // counterchanged, 40%
         }
 
-        coa.charges.forEach(c => defineChargeAttributes(c));
-
-        function defineChargeAttributes(c) {
-            // define size
-            c.size = (c.size || 1) * getSize(c.p, config.ordinary, division);
-
-            // clean-up position
-            c.p = [...new Set(c.p)].join("");
-
-            // define orientation
-            if (P(.02) && charges.sinister.includes(c.charge)) c.sinister = 1;
-            if (P(.02) && charges.reversed.includes(c.charge)) c.reversed = 1;
-        }
+        coa.charges.forEach(c => defineChargeAttributes(config, division, c));
     }
 
     return coa;
@@ -160,6 +148,18 @@ export const getSize = (p, o = null, d = null) => {
     if (p.length > 4) return .4; // 5, 6, 7
     if (p.length > 2) return .5; // 3, 4
     return .7; // 1, 2
+}
+
+function defineChargeAttributes(config, division, c) {
+    // define size
+    c.size = (c.size || 1) * getSize(c.p, config.ordinary, division);
+
+    // clean-up position
+    c.p = [...new Set(c.p)].join("");
+
+    // define orientation
+    if (P(.02) && charges.sinister.includes(c.charge)) c.sinister = 1;
+    if (P(.02) && charges.reversed.includes(c.charge)) c.reversed = 1;
 }
 
 function selectCharge(config, set) {
