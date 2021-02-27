@@ -54,8 +54,16 @@
       const svgText = readerEvent.target.result;
       const el = document.createElement("html");
       el.innerHTML = svgText;
-      const g = el.querySelector("g");
 
+      // remove sodipodi and inkscape attributes
+      el.querySelectorAll("*").forEach(el => {
+        const attributes = el.getAttributeNames();
+        attributes.forEach(attr => {
+          if (attr.includes("inkscape") || attr.includes("sodipodi")) el.removeAttribute(attr);
+        });
+      });
+
+      const g = el.querySelector("g");
       if (!g) {
         $message = {type: "error", text: "File must be prepared svg. Download template for guidance!"};
         selected = false;
