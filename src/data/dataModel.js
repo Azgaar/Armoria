@@ -220,3 +220,5 @@ export const charges = {
     "inescutcheonNo", "crossHummetty", "crossVoided", "crossPattee", "crossPotent", "crossClechy", "crosslet", "crossBottony", "crossFleury", "crossPatonce","crossPommy",
     "crossGamma", "crossArrowed", "crossFitchy", "crossCercelee", "crossMoline", "crossAvellane", "crossErminee", "crossMaltese", "crossCeltic", "crossOccitan", "crossSaltire", "crossTau"],
 }
+
+export const patternSize = {standard: 154, small: 20, smaller: 20, big: 5, smallest: 1};

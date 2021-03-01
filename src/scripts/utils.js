@@ -3,7 +3,7 @@ export function ra(array) {
 }
 
 // return random value from weighted array
-export function rw(object) {
+export function rw(object, save = true) {
   if (!object.array) {
 
     const array = [];
@@ -13,7 +13,7 @@ export function rw(object) {
       }
     }
 
-    Object.defineProperty(object, "array", {enumerable: false, configurable: true, writable: false, value: array});
+    save && Object.defineProperty(object, "array", {enumerable: false, configurable: true, writable: false, value: array});
   }
 
   return object.array[Math.floor(Math.random() * object.array.length)];
