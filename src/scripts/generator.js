@@ -54,27 +54,27 @@ export const generate = function(seed = Math.floor(Math.random() * 1e9)) {
     if (positions.ordinariesOn[config.ordinary] && P(.8)) {
       // place charge over config.ordinary (use tincture of field type)
       p = rw(positions.ordinariesOn[config.ordinary]);
-      while (charges.natural[charge] === ordinaryT) charge = selectCharge();
+      while (charges.natural[charge] === ordinaryT) charge = selectCharge(config);
       t = !config.usedPattern && P(.3) ? coa.t1 : getTincture(config, "charge", [], ordinaryT);
     } else if (positions.ordinariesOff[config.ordinary] && P(.95)) {
       // place charge out of config.ordinary (use tincture of ordinary type)
       p = rw(positions.ordinariesOff[config.ordinary]);
-      while (charges.natural[charge] === coa.t1) charge = selectCharge();
+      while (charges.natural[charge] === coa.t1) charge = selectCharge(config);
       t = !config.usedPattern && P(.3) ? ordinaryT : getTincture(config, "charge", config.usedTinctures, coa.t1);
     } else if (positions.divisions[division]) {
       // place charge in fields made by division
       p = rw(positions.divisions[division]);
-      while (charges.natural[charge] === coa.t1) charge = selectCharge();
+      while (charges.natural[charge] === coa.t1) charge = selectCharge(config);
       t = getTincture(config, "charge", ordinaryT ? config.usedTinctures.concat(ordinaryT) : config.usedTinctures, coa.t1);
     } else if (positions[charge]) {
       // place charge-suitable position
       p = rw(positions[charge]);
-      while (charges.natural[charge] === coa.t1) charge = selectCharge();
+      while (charges.natural[charge] === coa.t1) charge = selectCharge(config);
       t = getTincture(config, "charge", config.usedTinctures, coa.t1);
     } else {
       // place in standard position (use new tincture)
       p = config.usedPattern ? "e" : charges.conventional[charge] ? rw(positions.conventional) : rw(positions.complex);
-      while (charges.natural[charge] === coa.t1) charge = selectCharge();
+      while (charges.natural[charge] === coa.t1) charge = selectCharge(config);
       t = getTincture(config, "charge", config.usedTinctures.concat(ordinaryT), coa.t1);
     }
 
