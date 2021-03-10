@@ -61,6 +61,11 @@
     copyToClipboard(url, "API link is copied to your clipboard");
   }
 
+  function copyCOA() {
+    const encoded = encodeURI($changes[0]);
+    copyToClipboard(encoded, "Encoded COA string is copied to your clipboard");
+  }
+
   function copyToClipboard(stringToCopy, response) {
     $message = null;
 
@@ -277,6 +282,10 @@
 
         <bt on:click={copyAPILink} title="Copy link to the coat of arms for embedding. Armoria API does not support custom charges" use:tooltip>
           <span>Copy API link</span>
+        </bt>
+
+        <bt on:click={copyCOA} title="Copy coa object as encoded string to use in Armoria API" use:tooltip>
+          <span>Copy COA string</span>
         </bt>
       {/if}
     </div>
