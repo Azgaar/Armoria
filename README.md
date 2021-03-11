@@ -45,9 +45,7 @@ npm run build
 
 ## API
 
-Armoria API is available as a seperate project, see (the documentation)[https://github.com/Azgaar/armoria-api#readme]. The API allows to `GET` random or predefined vector and raster heraldic images of a given size.
-
-API is hosted on _Heroku_ for free, so downtime and slow first response are expected. I will considered scaling in case of active API usage. Please [contact me directly](mailto:maxganiev@yandex.com) if you needs API for production.
+Armoria API is available as a seperate project, see [the documentation](https://github.com/Azgaar/armoria-api#readme). The API allows to `GET` random or predefined vector and raster heraldic images of a given size.
 
 ## License
 
