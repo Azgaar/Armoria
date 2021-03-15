@@ -1,13 +1,4 @@
 plugins:
-  # - name
-
-  # - name: false
-  # - name: true
-
-  # - name:
-  #     param1: 1
-  #     param2: 2
-
   - removeDoctype: true
   - removeXMLProcInst: false
   - removeComments: false
@@ -18,7 +9,7 @@ plugins:
   - inlineStyles: true
   - minifyStyles: true
   - convertStyleToAttrs: true
-  - cleanupIDs: false
+  - cleanupIDs: true
   - prefixIds: false
   - removeRasterImages: false
   - removeUselessDefs: true

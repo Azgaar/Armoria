@@ -163,8 +163,8 @@ export const ordinaries = {
 
 export const charges = {
   types: { conventional: 30, crosses: 8, animals: 2, animalHeads: 1, birds: 2, aquatic: 1, seafaring: 1, fantastic: 3, plants: 1, agriculture: 1, arms: 3, bodyparts: 1, people: 1, architecture: 1, miscellaneous: 3, inescutcheon: 3, uploaded: 0 },
-  single: { conventional: 12, crosses: 8, plants: 2, animals: 10, animalHeads: 2, birds: 4, aquatic: 2, seafaring: 2, fantastic: 7, agriculture: 1, arms: 6, bodyparts: 1, people: 1, architecture: 1, miscellaneous: 9, inescutcheon: 5, uploaded: 0 },
-  semy: { conventional: 12, crosses: 3, plants: 1 },
+  single: { conventional: 12, crosses: 8, plants: 2, animals: 10, animalHeads: 2, birds: 4, aquatic: 2, seafaring: 2, fantastic: 7, agriculture: 1, arms: 6, bodyparts: 1, people: 1, architecture: 1, miscellaneous: 10, inescutcheon: 5, uploaded: 0 },
+  semy: { conventional: 4, crosses: 1 },
   conventional: {
     lozenge: 2, fusil: 4, mascle: 4, rustre: 2, lozengeFaceted: 3, lozengePloye: 1, roundel: 4, roundel2: 3, annulet: 4,
     mullet: 5, mulletPierced: 1, mulletFaceted: 1, mullet4: 3, mullet6: 4, mullet6Pierced: 1, mullet6Faceted: 1, mullet7: 1, mullet8: 1, mullet10: 1,
@@ -188,24 +188,26 @@ export const charges = {
   },
   animals: {
     lionRampant: 5, lionPassant: 2, wolfRampant: 1, wolfPassant: 1, wolfStatant: 1, greyhoundCourant: 1, boarRampant: 1,
-    horseRampant: 2, horseSalient: 1, bearRampant: 2, bearPassant: 1, bullPassant: 1, goat: 1, lamb: 1, elephant: 1
+    horseRampant: 2, horseSalient: 1, bearRampant: 2, bearPassant: 1, bullPassant: 1, goat: 1, lamb: 1, elephant: 1, camel: 1
   },
-  animalHeads: {
-    wolfHeadErased: 2, bullHeadCaboshed: 1, deerHeadCaboshed: 1
+  animalHeads: {wolfHeadErased: 2, bullHeadCaboshed: 1, deerHeadCaboshed: 1},
+  fantastic: {
+    dragonPassant: 2, dragonRampant: 2, wyvern: 1, wyvernWithWingsDisplayed: 1, griffinPassant: 1, griffinRampant: 1,
+    eagleTwoHeards: 2, unicornRampant: 1, pegasus: 1, serpent: 1
   },
-  fantastic: { dragonPassant: 2, dragonRampant: 2, wyvern: 1, wyvernWithWingsDisplayed: 1, griffinPassant: 1, griffinRampant: 1, eagleTwoHeards: 2, unicornRampant: 1, pegasus: 1, serpent: 1 },
   birds: { eagle: 9, raven: 2, cock: 3, parrot: 1, swan: 2, swanErased: 1, heron: 1 },
-  plants: { tree: 1, cinquefoil: 1, rose: 1 },
+  plants: { tree: 1, oak: 1, cinquefoil: 1, rose: 1 },
   aquatic: { escallop: 5, pike: 1, cancer: 1, dolphin: 1 },
-  seafaring: { anchor: 6, boat: 2, lymphad: 2, armillarySphere: 1 },
+  seafaring: { anchor: 6, boat: 2, boat2: 1, lymphad: 2, armillarySphere: 1 },
   agriculture: { garb: 2, rake: 1 },
-  arms: { sword: 5, sabre: 1, sabresCrossed: 1, hatchet: 2, lochaberAxe: 1, mallet: 1, bowWithArrow: 2, bow: 1, arrow: 1, arrowsSheaf: 1 },
+  arms: { sword: 5, sabre: 1, sabresCrossed: 1, hatchet: 2, axe: 2, lochaberAxe: 1, mallet: 1, bowWithArrow: 2, bow: 1, arrow: 1, arrowsSheaf: 1, helmet: 2 },
   bodyparts: { hand: 4, head: 1, headWreathed: 1 },
-  people: { cavalier: 1 },
+  people: { cavalier: 3, monk: 1 },
   architecture: { tower: 1, castle: 1 },
   miscellaneous: {
-    crown: 3, orb: 1, chalice: 1, key: 1, buckle: 1, bugleHorn: 1, bell: 2, pot: 1, horseshoe: 3, stagsAttires: 1, cowHorns: 2, wing: 1, wingSword: 1,
-    lute: 1, harp: 1, wheel: 2, crosier: 1, log: 1},
+    crown: 3, orb: 1, chalice: 1, key: 1, buckle: 1, bugleHorn: 1, bugleHorn2: 1, bell: 2, pot: 1, bucket: 1, horseshoe: 3,
+    attire: 1, stagsAttires: 1, ramsHorn: 1, cowHorns: 2, wing: 1, wingSword: 1, lute: 1, harp: 1, wheel: 2, crosier: 1, fasces: 1, log: 1
+  },
   uploaded: {},
   natural: { fountain: "azure", garb: "or", raven: "sable" }, // charges to mainly use predefined colours
   sinister: [
