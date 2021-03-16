@@ -187,15 +187,15 @@ export const charges = {
     crossAvellane: 1, crossErminee: 1, crossMaltese: 3, crossCeltic: 1, crossOccitan: 1, crossSaltire: 3, crossTau: 1
   },
   animals: {
-    lionRampant: 5, lionPassant: 2, wolfRampant: 1, wolfPassant: 1, wolfStatant: 1, greyhoundCourant: 1, boarRampant: 1,
+    lionRampant: 5, lionPassant: 2, lionPassantGuardant: 1, wolfRampant: 1, wolfPassant: 1, wolfStatant: 1, greyhoundCourant: 1, boarRampant: 1,
     horseRampant: 2, horseSalient: 1, bearRampant: 2, bearPassant: 1, bullPassant: 1, goat: 1, lamb: 1, elephant: 1, camel: 1
   },
-  animalHeads: {wolfHeadErased: 2, bullHeadCaboshed: 1, deerHeadCaboshed: 1},
+  animalHeads: { wolfHeadErased: 2, bullHeadCaboshed: 1, deerHeadCaboshed: 1, lionHeadCaboshed: 2},
   fantastic: {
     dragonPassant: 2, dragonRampant: 2, wyvern: 1, wyvernWithWingsDisplayed: 1, griffinPassant: 1, griffinRampant: 1,
     eagleTwoHeards: 2, unicornRampant: 1, pegasus: 1, serpent: 1
   },
-  birds: { eagle: 9, raven: 2, cock: 3, parrot: 1, swan: 2, swanErased: 1, heron: 1 },
+  birds: { eagle: 9, raven: 2, cock: 3, parrot: 1, swan: 2, swanErased: 1, heron: 1, owl: 1 },
   plants: { tree: 1, oak: 1, cinquefoil: 1, rose: 1 },
   aquatic: { escallop: 5, pike: 1, cancer: 1, dolphin: 1 },
   seafaring: { anchor: 6, boat: 2, boat2: 1, lymphad: 2, armillarySphere: 1 },
