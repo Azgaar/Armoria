@@ -126,7 +126,8 @@ export const positions = {
   lymphad: {e: 1},
   head: {e: 1},
   headWreathed: {e: 1},
-  cavalier: {e: 1}
+  cavalier: {e: 1},
+  angel: {e: 1}
 };
 
 export const lines = {
@@ -215,7 +216,7 @@ export const charges = {
     "horseRampant", "horseSalient", "bullPassant", "bearRampant", "bearPassant", "goat", "lamb", "elephant", "eagle", "raven", "cock", "parrot",
     "swan", "swanErased", "heron", "pike", "dragonPassant", "dragonRampant", "wyvern", "wyvernWithWingsDisplayed", "griffinPassant", "griffinRampant",
     "unicornRampant", "pegasus", "serpent", "hatchet", "lochaberAxe", "hand", "wing", "wingSword", "lute", "harp", "bow", "head", "headWreathed",
-    "knight", "lymphad", "log", "crosier", "dolphin", "sabre"], // charges that can be sinister
+    "knight", "lymphad", "log", "crosier", "dolphin", "sabre", "monk", "owl", "axe", "camel", "fasces", "lionPassantGuardant", "helmet"], // charges that can be sinister
   reversed: ["goutte", "mullet", "mullet7", "crescent", "crossTau", "cancer", "sword", "sabresCrossed", "hand", "horseshoe", "bowWithArrow", "arrow", "arrowsSheaf", "rake"], // charges that can be reversed
   patternable: [
     "lozengePloye", "roundel", "annulet", "mullet4", "mullet8", "delf", "triangle", "trianglePierced", "sun", "fountain","inescutcheonRound", "inescutcheonSquare",
