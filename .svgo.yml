@@ -27,7 +27,7 @@ plugins:
   - convertEllipseToCircle: true
   - moveElemsAttrsToGroup: true
   - moveGroupAttrsToElems: true
-  - collapseGroups: false
+  - collapseGroups: true
   - convertPathData:
       floatPrecision: 2
       transformPrecision: 4
