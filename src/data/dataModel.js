@@ -163,7 +163,7 @@ export const ordinaries = {
 };
 
 export const charges = {
-  types: { conventional: 30, crosses: 8, animals: 2, animalHeads: 1, birds: 2, aquatic: 1, seafaring: 1, fantastic: 3, plants: 1, agriculture: 1, arms: 3, bodyparts: 1, people: 1, architecture: 1, miscellaneous: 3, inescutcheon: 3, uploaded: 0 },
+  types: { conventional: 30, crosses: 10, animals: 2, animalHeads: 1, birds: 2, aquatic: 1, seafaring: 1, fantastic: 3, plants: 1, agriculture: 1, arms: 3, bodyparts: 1, people: 1, architecture: 1, miscellaneous: 3, inescutcheon: 3, uploaded: 0 },
   single: { conventional: 12, crosses: 8, plants: 2, animals: 10, animalHeads: 2, birds: 4, aquatic: 2, seafaring: 2, fantastic: 7, agriculture: 1, arms: 6, bodyparts: 1, people: 2, architecture: 1, miscellaneous: 10, inescutcheon: 5, uploaded: 0 },
   semy: { conventional: 4, crosses: 1 },
   conventional: {
@@ -183,9 +183,11 @@ export const charges = {
     inescutcheonNoldor: 1, inescutcheonGondor: 1, inescutcheonEasterling: 1, inescutcheonErebor: 1, inescutcheonIronHills: 1, inescutcheonUrukHai: 1, inescutcheonMoriaOrc: 1
   },
   crosses: {
-    crossHummetty: 15, crossVoided: 1, crossPattee: 3, crossPotent: 2, crossClechy: 3, crosslet: 1, crossBottony: 1, crossFleury: 3,
-    crossPatonce: 1, crossPommy: 1, crossGamma: 1, crossArrowed: 1, crossFitchy: 1, crossCercelee: 1, crossMoline: 2, crossFourchy: 1,
-    crossAvellane: 1, crossErminee: 1, crossMaltese: 3, crossCeltic: 1, crossOccitan: 1, crossSaltire: 3, crossTau: 1
+    crossHummetty: 15, crossVoided: 1, crossPattee: 2, crossPatteeAlisee: 1, crossFormee: 1, crossFormee2: 2, crossPotent: 2, crossJerusalem:1,
+    crosslet: 1, crossClechy: 3, crossBottony: 1, crossFleury: 3, crossPatonce: 1, crossPommy: 1, crossGamma: 1, crossArrowed: 1, crossFitchy: 1,
+    crossCercelee: 1, crossMoline: 2, crossFourchy: 1, crossAvellane: 1, crossErminee: 1, crossBiparted: 1, crossMaltese: 3, crossTemplar: 2,
+    crossCeltic: 1, crossCeltic2: 1, crossTriquetra: 1, crossCarolingian: 1, crossOccitan: 1, crossSaltire: 3, crossBurgundy: 1,
+    crossLatin: 3, crossPatriarchal: 1, crossOrthodox: 1, crossCalvary: 1, crossDouble: 1, crossTau: 1, crossSantiago: 1, crossAnkh: 1
   },
   animals: {
     lionRampant: 5, lionPassant: 2, lionPassantGuardant: 1, wolfRampant: 1, wolfPassant: 1, wolfStatant: 1, greyhoundCourant: 1, boarRampant: 1,
@@ -211,17 +213,24 @@ export const charges = {
   },
   uploaded: {},
   natural: { fountain: "azure", garb: "or", raven: "sable" }, // charges to mainly use predefined colours
-  sinister: [
+  sinister: [ // charges that can be sinister
     "crossGamma", "lionRampant", "lionPassant", "wolfRampant", "wolfPassant", "wolfStatant", "wolfHeadErased", "greyhoundСourant", "boarRampant",
     "horseRampant", "horseSalient", "bullPassant", "bearRampant", "bearPassant", "goat", "lamb", "elephant", "eagle", "raven", "cock", "parrot",
     "swan", "swanErased", "heron", "pike", "dragonPassant", "dragonRampant", "wyvern", "wyvernWithWingsDisplayed", "griffinPassant", "griffinRampant",
     "unicornRampant", "pegasus", "serpent", "hatchet", "lochaberAxe", "hand", "wing", "wingSword", "lute", "harp", "bow", "head", "headWreathed",
-    "knight", "lymphad", "log", "crosier", "dolphin", "sabre", "monk", "owl", "axe", "camel", "fasces", "lionPassantGuardant", "helmet"], // charges that can be sinister
-  reversed: ["goutte", "mullet", "mullet7", "crescent", "crossTau", "cancer", "sword", "sabresCrossed", "hand", "horseshoe", "bowWithArrow", "arrow", "arrowsSheaf", "rake"], // charges that can be reversed
-  patternable: [
-    "lozengePloye", "roundel", "annulet", "mullet4", "mullet8", "delf", "triangle", "trianglePierced", "sun", "fountain","inescutcheonRound", "inescutcheonSquare",
-    "inescutcheonNo", "crossHummetty", "crossVoided", "crossPattee", "crossPotent", "crossClechy", "crosslet", "crossBottony", "crossFleury", "crossPatonce","crossPommy",
-    "crossGamma", "crossArrowed", "crossFitchy", "crossCercelee", "crossMoline", "crossAvellane", "crossErminee", "crossMaltese", "crossCeltic", "crossOccitan", "crossSaltire", "crossTau"],
+    "knight", "lymphad", "log", "crosier", "dolphin", "sabre", "monk", "owl", "axe", "camel", "fasces", "lionPassantGuardant", "helmet"],
+  reversed: [ // charges that can be reversed
+    "goutte", "mullet", "mullet7", "crescent", "crossTau", "cancer", "sword", "sabresCrossed", "hand",
+    "horseshoe", "bowWithArrow", "arrow", "arrowsSheaf", "rake", "crossTriquetra", "crossLatin", "crossTau"
+  ],
+  patternable: [ // charges that can have pattern tincture when counterchanged
+    "lozengePloye", "roundel", "annulet", "mullet4", "mullet8", "delf", "triangle", "trianglePierced",
+    "sun", "fountain","inescutcheonRound", "inescutcheonSquare", "inescutcheonNo",
+    "crossHummetty", "crossVoided", "crossPattee", "crossPatteeAlisee", "crossFormee", "crossFormee2",
+    "crossPotent", "crossJerusalem", "crosslet", "crossClechy", "crossBottony", "crossFleury",
+    "crossPatonce", "crossPommy", "crossGamma", "crossArrowed", "crossFitchy", "crossCercelee", "crossMoline",
+    "crossAvellane", "crossErminee", "crossBiparted", "crossMaltese", "crossTemplar", "crossCeltic", "crossCeltic2", "crossTau"
+  ],
 }
 
 export const patternSize = {standard: 154, small: 20, smaller: 20, big: 5, smallest: 1};
