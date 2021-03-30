@@ -13,11 +13,12 @@
   const ordinariesAboveCharges = ordinaries.filter(o => o.above);
   charges.forEach(charge => addCharge(charge.charge));
 
-  let shieldPath, coaDiaper, diaperType;
+  let shieldPath, coaDiaper, diaperType, overFill;
   $: {
     shieldPath = shieldPaths[$shield];
     coaDiaper = type === "menuItem" ? null : coa.diaper || $diaper;
     diaperType = getDieperType();
+    overFill = !$grad || $grad === "no" ? "none" : `url(#${$grad})`;
   }
 
   function getDieperType() {
@@ -150,4 +151,4 @@
   {/each}
 </g>
 
-<path class=grad d={shieldPath} fill="url(#{$grad})" stroke={border} stroke-width={borderWidth} style="pointer-events: none"/>
+<path class=grad d={shieldPath} fill={overFill} stroke={border} stroke-width={borderWidth} style="pointer-events: none"/>
