@@ -340,6 +340,9 @@
     <bt on:click={() => $state.about = 1} title="Show about screen" hotkey="F1" use:tooltip>
       {@html getIcon("about")}
     </bt>
+    <bt on:click={() => window.open("https://www.patreon.com/azgaar", "_blank")} title="Support the project on Patreon" use:tooltip>
+      {@html getIcon("support")}
+    </bt>
   {/if}
 </nav>
 
