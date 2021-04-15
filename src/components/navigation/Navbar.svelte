@@ -284,7 +284,7 @@
           <span>Copy API link</span>
         </bt>
 
-        <bt on:click={copyCOA} title="Copy coa object as encoded string to use in Armoria API" use:tooltip>
+        <bt on:click={copyCOA} title="Copy coa object as encoded string to use in Armoria API or in Watabou's Medieval Fantasy City Generator" use:tooltip>
           <span>Copy COA string</span>
         </bt>
       {/if}
