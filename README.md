@@ -1,13 +1,15 @@
 # Armoria
 
-Armoria is a procedural heraldry generator and editor by Azgaar. It's both a separate serverless GUI tool and server-side API. The same logic is also available as a part of the [Fantasy Map Generator](https://github.com/Azgaar/Fantasy-Map-Generator) project.
+Armoria is a procedural heraldry generator and editor by Azgaar. It's both a serverless GUI tool and server-side API. Almost the same code is also used as a part of the [Fantasy Map Generator](https://github.com/Azgaar/Fantasy-Map-Generator) project.
 
-Armoria is under development, the GUI version is available on [Github Pages](https://azgaar.github.io/Armoria/).
+Armoria is under development, the GUI version is available on [Github Pages](https://azgaar.github.io/Armoria/) and [here is the tutorial](https://github.com/Azgaar/Armoria/wiki/Armoria-Tutorial). Join our [Reddit community](https://www.reddit.com/r/FantasyMapGenerator) and [Discord server](https://discordapp.com/invite/X7E84HU) to share your creations, discuss the tool, suggest ideas and get the most recent updates.
+
+You can support the project on [Patreon](https://www.patreon.com/azgaar).
+
 
 ![Gallery View](public/preview.png)
-![Editor View](https://cdn.discordapp.com/attachments/587406457725779968/787792526907015234/preview2.png)
 
-Join our [Reddit community](https://www.reddit.com/r/FantasyMapGenerator) and [Discord server](https://discordapp.com/invite/X7E84HU) to share your creations, discuss the Tool, suggest ideas and get the most recent updates. You can support the project on [Patreon](https://www.patreon.com/azgaar).
+![Editor View](https://cdn.discordapp.com/attachments/587406457725779968/787792526907015234/preview2.png)
 
 ## For Developers
 
@@ -17,31 +19,18 @@ I am not a profi in web-development or Svelte, so help from professional develop
 
 ### Installation
 
-Clone the repository and install the dependencies.
+Clone the repository and install the dependencies, then run `dev` to start Rollup and build in dev mode:
 
 ```
 git clone https://github.com/Azgaar/Armoria.git
 cd Armoria
 npm install
-```
-
-### Usage
-
-Run `dev` to start Rollup and build in dev mode
-
-```
 npm run dev
 ```
 
-Navigate to [localhost:5000](http://localhost:5000). You should see the app running.
+Navigate to [localhost:5000](http://localhost:5000). You should see the app running. Edit a component file in `src`, save it, and reload the page to see your changes.
 
-Edit a component file in `src`, save it, and reload the page to see your changes.
-
-To create an optimised version of the app run:
-
-```
-npm run build
-```
+To create an optimised version run `npm run build`.
 
 ## API
 
