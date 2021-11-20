@@ -50,7 +50,7 @@ plugins:
   - removeScriptElement: true
   - addAttributesToSVGElement: false
   - removeOffCanvasPaths: true
-  - reusePaths: false
+  - reusePaths: true
 
 js2svg:
  pretty: true

@@ -5,7 +5,6 @@ export function ra(array) {
 // return random value from weighted array
 export function rw(object, save = true) {
   if (!object.array) {
-
     const array = [];
     for (const key in object) {
       for (let i = 0; i < object[key]; i++) {
@@ -30,4 +29,15 @@ export function camelize(str) {
     .replace(/[()]/g, "") // remove parentheses
     .replace(/[^a-zA-Z0-9]+(.)/g, (m, c) => c.toUpperCase())
     .replace(/^[0-9]/, "_"); // first char should not be a number
+}
+
+export function capitalize(string) {
+  return string
+    .replace(/_/g, " ")
+    .replace(/(?<!_)(?=[A-Z])/g, " ")
+    .replace(/\w\S*/g, s => s.charAt(0).toUpperCase() + s.substr(1).toLowerCase());
+}
+
+export function link(url, text) {
+  return `<a href="${url}" target="_blank">${text}</a>`;
 }
