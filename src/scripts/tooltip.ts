@@ -1,30 +1,29 @@
 import {forEach} from "./utils";
 
+const removalDelay = 20000;
+
 export const tooltip = (element: HTMLElement) => {
   const isTouchAvailable = "ontouchstart" in window;
-  let div: HTMLDivElement;
-  let tooltip: string;
+  const tooltip = element.dataset.tooltip;
+  const div = document.createElement("div");
   let limit: number[];
 
   function mouseEnter() {
     forEach(".tooltip", el => el.remove());
 
-    tooltip = element.dataset.tooltip;
-    element.removeAttribute("title");
-
     const gesture = element.getAttribute("gesture");
     const hotkey = element.getAttribute("hotkey");
 
-    div = document.createElement("div");
-    div.textContent = tooltip;
-    if (isTouchAvailable && gesture) div.textContent += ". Gesture: " + gesture;
-    if (!isTouchAvailable && hotkey) div.textContent += ". Hotkey: " + hotkey;
+    let text = tooltip;
+    if (isTouchAvailable && gesture) text += ". Gesture: " + gesture;
+    if (!isTouchAvailable && hotkey) text += ". Hotkey: " + hotkey;
+    div.textContent = text;
     div.className = "tooltip";
     document.body.appendChild(div);
 
     const bbox = div.getBoundingClientRect();
     limit = [window.innerWidth - bbox.width, window.innerHeight - bbox.height];
-    setTimeout(mouseLeave, 5000); // remove in 5 seconds
+    setTimeout(mouseLeave, removalDelay);
   }
 
   function mouseMove(event: MouseEvent) {
@@ -33,7 +32,6 @@ export const tooltip = (element: HTMLElement) => {
   }
 
   function mouseLeave() {
-    element.dataset.tooltip = tooltip;
     if (div) div.remove();
   }
 
