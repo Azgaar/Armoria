@@ -1,7 +1,7 @@
-import { get } from "svelte/store";
-import { templates, lines, patterns } from "./../data/templates";
-import { shieldPaths } from "./../data/shields";
-import { colors, shield } from "./../data/stores";
+import {get} from "svelte/store";
+import {templates, lines, patterns} from "@/data/templates";
+import {shieldPaths} from "@/data/shields";
+import {colors, shield} from "@/data/stores";
 
 const chargesGroup = document.getElementById("charges");
 const colorsData = get(colors);
@@ -14,20 +14,14 @@ export const getTemplate = (id, line) => {
   return templates[linedId](linePath);
 };
 
-export const addPattern = (patternId) => {
+export const addPattern = patternId => {
   if (document.getElementById(patternId)) return; // already added;
 
   const [pattern, t1, t2, size] = patternId.split("-");
   const charge = semy(patternId);
   if (charge) addCharge(charge);
 
-  const html = patterns[charge ? "semy" : pattern](
-    patternId,
-    clr(t1),
-    clr(t2),
-    getSizeMod(size),
-    charge
-  );
+  const html = patterns[charge ? "semy" : pattern](patternId, clr(t1), clr(t2), getSizeMod(size), charge);
   document.getElementById("patterns").insertAdjacentHTML("beforeend", html);
 };
 
@@ -38,34 +32,17 @@ function semy(string) {
 }
 
 export function addCharge(charge) {
-  charge.slice(0, 12) === "inescutcheon"
-    ? addInescutcheon(charge)
-    : fetchCharge(charge);
+  charge.slice(0, 12) === "inescutcheon" ? addInescutcheon(charge) : fetchCharge(charge);
 }
 
 function addInescutcheon(charge) {
-  const shieldName =
-    charge.length > 12
-      ? charge.slice(12, 13).toLowerCase() + charge.slice(13)
-      : get(shield);
-  const id =
-    charge.length > 12
-      ? charge
-      : "inescutcheon" +
-        shieldName.charAt(0).toUpperCase() +
-        shieldName.slice(1);
+  const shieldName = charge.length > 12 ? charge.slice(12, 13).toLowerCase() + charge.slice(13) : get(shield);
+  const id = charge.length > 12 ? charge : "inescutcheon" + shieldName.charAt(0).toUpperCase() + shieldName.slice(1);
 
   if (loadedCharges[id]) return; // already added
   loadedCharges[id] = true;
 
-  const licenseAttrs = [
-    "noldor",
-    "gondor",
-    "easterling",
-    "ironHills",
-    "urukHai",
-    "moriaOrc",
-  ].includes(shieldName)
+  const licenseAttrs = ["noldor", "gondor", "easterling", "ironHills", "urukHai", "moriaOrc"].includes(shieldName)
     ? `author="Weta Workshop" source="www.wetanz.com" license="https://en.wikipedia.org/wiki/Fair_use"`
     : `author=Azgaar license="https://creativecommons.org/publicdomain/zero/1.0"`;
   const g = `<g id=${id} ${licenseAttrs}><path transform="translate(67 67) scale(.33)" d="${shieldPaths[shieldName]}"/></g>`;
@@ -77,11 +54,11 @@ function fetchCharge(charge) {
   loadedCharges[charge] = true;
 
   fetch("charges/" + charge + ".svg")
-    .then((res) => {
+    .then(res => {
       if (res.ok) return res.text();
       else throw new Error("Cannot fetch charge");
     })
-    .then((text) => {
+    .then(text => {
       const el = document.createElement("html");
       el.innerHTML = text;
       const g = el.querySelector("g");
@@ -98,12 +75,11 @@ function fetchCharge(charge) {
 
       chargesGroup.insertAdjacentHTML("beforeend", g.outerHTML);
     })
-    .catch((err) => console.error(err));
+    .catch(err => console.error(err));
 }
 
 function clr(tincture) {
-  if (!colorsData[tincture])
-    throw new error(`Tincture ${tincture} is not available in ${tincture}`);
+  if (!colorsData[tincture]) throw new error(`Tincture ${tincture} is not available in ${tincture}`);
   return colorsData[tincture];
 }
 

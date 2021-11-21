@@ -1,13 +1,13 @@
 <script>
-  import {state, matrix, changes, message} from './../data/stores';
-  import {download} from '../scripts/download';
-  const touch = {startX:0, startY: 0};
+  import {state, matrix, changes, message} from "@/data/stores";
+  import {download} from "@/scripts/download";
+  const touch = {startX: 0, startY: 0};
 
   // prevent unwanted refresh
   if (location.host === "azgaar.github.io" && !navigator.userAgent.includes("Electron")) {
     window.onbeforeunload = () => "Are you sure you want to navigate away?";
   }
-  
+
   // keyboard shortcuts
   function handleKeydown(event) {
     const code = event.code;
@@ -19,15 +19,22 @@
     if (active === "INPUT" || active === "SELECT" || active === "TEXTAREA") return;
 
     event.preventDefault();
-    if (code === "Backspace" && $matrix > 0) $matrix -= 1; else // Rollback
-    if (code === "Enter") $matrix += 1; else // Reroll
-    if (code === "KeyZ") changes.undo(); else // Undo
-    if (code === "KeyX") changes.redo(); else // Redo
-    if (ctrl && code === "KeyS") download(null, "svg"); else // Download SVG
-    if (ctrl && code === "KeyP") download(null, "png"); else // Download PNG
-    if (ctrl && code === "KeyJ") download(null, "jpeg"); else // Download JPEG
-    if (code === "F1") $state.about = !$state.about; // About
-    if (code === "Escape") close() // Close all windows
+    if (code === "Backspace" && $matrix > 0) $matrix -= 1;
+    // Rollback
+    else if (code === "Enter") $matrix += 1;
+    // Reroll
+    else if (code === "KeyZ") changes.undo();
+    // Undo
+    else if (code === "KeyX") changes.redo();
+    // Redo
+    else if (ctrl && code === "KeyS") download(null, "svg");
+    // Download SVG
+    else if (ctrl && code === "KeyP") download(null, "png");
+    // Download PNG
+    else if (ctrl && code === "KeyJ") download(null, "jpeg");
+    // Download JPEG
+    else if (code === "F1") $state.about = !$state.about; // About
+    if (code === "Escape") close(); // Close all windows
 
     function close() {
       $state.about = 0;
@@ -81,4 +88,4 @@
   }
 </script>
 
-<svelte:window on:keydown={handleKeydown} on:touchstart={handleTouchStart} on:touchend={handleTouchEnd}/>
+<svelte:window on:keydown={handleKeydown} on:touchstart={handleTouchStart} on:touchend={handleTouchEnd} />

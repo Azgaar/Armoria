@@ -1,6 +1,6 @@
 <script>
-  import {shieldPositions, shieldSize} from '../../data/shields';
-  import {drag, transform} from "../../scripts/drag";
+  import {shieldPositions, shieldSize} from "@/data/shields";
+  import {drag, transform} from "@/scripts/drag";
   export let coa, charge, i, shield, t, type;
   let chargeId, positions, sizeModifier, stroke;
 
@@ -27,7 +27,7 @@
     y = round(y - 100 * (sy - 1));
 
     const translate = x || y ? `translate(${x} ${y})` : null;
-    const scale = sx !== 1 || sy !== 1 ? sx === sy ? `scale(${sx})` : `scale(${sx} ${sy})` : null;
+    const scale = sx !== 1 || sy !== 1 ? (sx === sy ? `scale(${sx})` : `scale(${sx} ${sy})`) : null;
     return translate && scale ? `${translate} ${scale}` : translate ? translate : scale ? scale : null;
   }
 
@@ -37,8 +37,8 @@
   }
 </script>
 
-<g class="charge" {i} charge={chargeId} fill="{t}" transform="{transform(charge)}" {stroke} on:mousedown={addDrag}>
+<g class="charge" {i} charge={chargeId} fill={t} transform={transform(charge)} {stroke} on:mousedown={addDrag}>
   {#each [...new Set(charge.p)].filter(p => positions[p]) as p}
-    <use xlink:href="#{chargeId}" transform="{getElTransform(charge, p)}"/>
+    <use xlink:href="#{chargeId}" transform={getElTransform(charge, p)} />
   {/each}
 </g>

@@ -1,6 +1,7 @@
 <script>
-  import {tooltip} from "../../scripts/tooltip";
+  import {tooltip} from "@/scripts/tooltip";
   export let key;
+
   $: locked = localStorage.getItem(key);
 
   const cap = key.charAt(0).toUpperCase() + key.slice(1);

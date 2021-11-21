@@ -3,9 +3,9 @@
   const id = "switch" + Math.floor(1e6 * Math.random());
 </script>
 
-<div class=switch>
-  <input id={id} class=switch-input type=checkbox bind:checked/>
-  <label for={id} class=switch-label>Switch</label>
+<div class="switch">
+  <input {id} class="switch-input" type="checkbox" bind:checked />
+  <label for={id} class="switch-label">Switch</label>
 </div>
 
 <style>
@@ -26,7 +26,8 @@
     color: transparent;
   }
 
-  .switch-label::before, .switch-label::after {
+  .switch-label::before,
+  .switch-label::after {
     content: "";
     display: block;
     position: absolute;

@@ -1,12 +1,12 @@
-import { get } from "svelte/store";
-import { changes, grid } from "../data/stores";
+import {get} from "svelte/store";
+import {changes, grid} from "@/data/stores";
 
 export function drag(e, c, coa) {
   const el = e.currentTarget;
   const x0 = e.x,
     y0 = e.y;
   const sizeAdj = +el.closest("svg").getAttribute("width") / 200;
-  document.addEventListener("mouseup", dragStop, { once: true });
+  document.addEventListener("mouseup", dragStop, {once: true});
 
   const x = c.x || 0;
   const y = c.y || 0;
@@ -75,7 +75,7 @@ function round(n) {
 }
 
 export function transform(charge) {
-  let { x = 0, y = 0, angle = 0, size = 1, p } = charge;
+  let {x = 0, y = 0, angle = 0, size = 1, p} = charge;
   if (p) size = 1; // size is defined on use element level
 
   if (size !== 1) {

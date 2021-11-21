@@ -1,21 +1,25 @@
 <script>
-  import { fade } from 'svelte/transition';
-  import { flip } from 'svelte/animate';
-  import { colors, tinctures, state, message, changes } from '../../data/stores';
-  import { defaultTinctures, defaultColors } from '../../data/dataModel';
-  import { camelize } from '../../scripts/utils';
-  import { tooltip } from '../../scripts/tooltip';
+  import {fade} from "svelte/transition";
+  import {flip} from "svelte/animate";
+  import {colors, tinctures, state, message, changes} from "@/data/stores";
+  import {defaultTinctures, defaultColors} from "@/data/dataModel";
+  import {camelize} from "../../scripts/utils";
+  import {tooltip} from "../../scripts/tooltip";
 
   let add = {show: false, name: "", type: "colours", color: "#96C8FA", chance: 3};
 
   // remove stored weighted array
-  for (const key in $tinctures) {delete $tinctures[key].array};
+  for (const key in $tinctures) {
+    delete $tinctures[key].array;
+  }
 
-  $: tData = ["metals", "colours", "stains"].map(type => {
+  $: tData = ["metals", "colours", "stains"]
+    .map(type => {
       return Object.keys($tinctures[type]).map(t => {
         return {t, type};
       });
-    }).flat();
+    })
+    .flat();
 
   $: lock("tinctures", $tinctures);
   $: lock("colors", $colors);
@@ -83,10 +87,9 @@
 </script>
 
 <div id="tinctures" transition:fade|local>
-  <span on:click={() => $state.tinctures = 0} class="close">&times;</span>
+  <span on:click={() => ($state.tinctures = 0)} class="close">&times;</span>
   <div id="tincturesCont">
-
-    <div id=left>
+    <div id="left">
       <table>
         <thead>
           <tr>
@@ -98,31 +101,31 @@
           </tr>
         </thead>
         <tbody>
-            <tr>
-              <td>Field</td>
-              <td><input type=number min=0 max=100 step=1 bind:value={$tinctures.field.metals}/></td>
-              <td><input type=number min=0 max=100 step=1 bind:value={$tinctures.field.colours}/></td>
-              <td><input type=number min=0 max=100 step=1 bind:value={$tinctures.field.stains}/></td>
-              <td><input type=number min=0 max=100 step=1 bind:value={$tinctures.field.patterns}/></td>
-            </tr>
-            <tr>
-              <td>Division</td>
-              <td><input type=number min=0 max=100 step=1 bind:value={$tinctures.division.metals}/></td>
-              <td><input type=number min=0 max=100 step=1 bind:value={$tinctures.division.colours}/></td>
-              <td><input type=number min=0 max=100 step=1 bind:value={$tinctures.division.stains}/></td>
-              <td><input type=number min=0 max=100 step=1 bind:value={$tinctures.division.patterns}/></td>
-            </tr>
-            <tr>
-              <td>Charge</td>
-              <td><input type=number min=0 max=100 step=1 bind:value={$tinctures.charge.metals}/></td>
-              <td><input type=number min=0 max=100 step=1 bind:value={$tinctures.charge.colours}/></td>
-              <td><input type=number min=0 max=100 step=1 bind:value={$tinctures.charge.stains}/></td>
-              <td><input type=number min=0 max=100 step=1 bind:value={$tinctures.charge.patterns}/></td>
-            </tr>
+          <tr>
+            <td>Field</td>
+            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.field.metals} /></td>
+            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.field.colours} /></td>
+            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.field.stains} /></td>
+            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.field.patterns} /></td>
+          </tr>
+          <tr>
+            <td>Division</td>
+            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.division.metals} /></td>
+            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.division.colours} /></td>
+            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.division.stains} /></td>
+            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.division.patterns} /></td>
+          </tr>
+          <tr>
+            <td>Charge</td>
+            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.charge.metals} /></td>
+            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.charge.colours} /></td>
+            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.charge.stains} /></td>
+            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.charge.patterns} /></td>
+          </tr>
         </tbody>
       </table>
 
-      <div class=contolButtons>
+      <div class="contolButtons">
         {#if add.show}
           <button on:click={applyAddTincture}>Apply Tincture</button>
         {:else}
@@ -132,8 +135,8 @@
       </div>
     </div>
 
-    <div id=right>
-      <table id=tincturesTable>
+    <div id="right">
+      <table id="tincturesTable">
         <thead>
           <tr>
             <th>Tincture</th>
@@ -147,23 +150,23 @@
           {#if add.show}
             <tr transition:fade>
               <td>
-                <input type=text placeholder=Tincture bind:value={add.name}/>
+                <input type="text" placeholder="Tincture" bind:value={add.name} />
               </td>
               <td>
                 <select bind:value={add.type}>
-                  <option value=metals>Metals</option>
-                  <option value=colours>Colours</option>
-                  <option value=stains>Stains</option>
+                  <option value="metals">Metals</option>
+                  <option value="colours">Colours</option>
+                  <option value="stains">Stains</option>
                 </select>
               </td>
               <td>
-                <input type=color bind:value={add.color}/>
+                <input type="color" bind:value={add.color} />
               </td>
               <td>
-                <input type=number min=0 max=100 step=1 bind:value={add.chance}/>
+                <input type="number" min="0" max="100" step="1" bind:value={add.chance} />
               </td>
               <td>
-                <span class=actionButton on:click={cancelAddTincture}>&times;</span>
+                <span class="actionButton" on:click={cancelAddTincture}>&times;</span>
               </td>
             </tr>
           {/if}
@@ -172,19 +175,19 @@
               <td>{t.t}</td>
               <td>{t.type}</td>
               <td>
-                <input type=color bind:value={$colors[t.t]}/>
+                <input type="color" bind:value={$colors[t.t]} />
                 {#if defaultColors[t.t] && $colors[t.t] !== defaultColors[t.t]}
-                  <svg on:click={() => $colors[t.t] = defaultColors[t.t]} width=12 height=12 fill=#fff title="Restore default color" use:tooltip>
-                    <use href="#undo-icon"></use>
+                  <svg on:click={() => ($colors[t.t] = defaultColors[t.t])} width="12" height="12" fill="#fff" title="Restore default color" use:tooltip>
+                    <use href="#undo-icon" />
                   </svg>
                 {/if}
               </td>
               <td>
-                <input type=number min=0 max=100 step=1 bind:value={$tinctures[t.type][t.t]}/>
-                <span class=totalChance>/ {getTotalChance(t.type)}</span>
+                <input type="number" min="0" max="100" step="1" bind:value={$tinctures[t.type][t.t]} />
+                <span class="totalChance">/ {getTotalChance(t.type)}</span>
               </td>
               <td>
-                <span class=actionButton on:click={() => removeTincture(t)}>&times;</span>
+                <span class="actionButton" on:click={() => removeTincture(t)}>&times;</span>
               </td>
             </tr>
           {/each}
@@ -202,8 +205,8 @@
     z-index: 1;
     left: 0;
     top: 0;
-    background-color: rgba(0,0,0, 0.9);
-    transition: .5s;
+    background-color: rgba(0, 0, 0, 0.9);
+    transition: 0.5s;
     text-align: center;
     user-select: none;
   }
@@ -238,15 +241,16 @@
   span.close {
     position: fixed;
     top: 0em;
-    right: .5em;
+    right: 0.5em;
     font-size: 4em;
-    padding: .2em 0;
+    padding: 0.2em 0;
     cursor: pointer;
     color: #ddd;
     z-index: 2;
   }
 
-  .close:hover, .actionButton:hover {
+  .close:hover,
+  .actionButton:hover {
     color: #fff;
   }
 
@@ -283,11 +287,11 @@
 
   .totalChance {
     position: absolute;
-    margin: .1em 0 0 -2.1em;
+    margin: 0.1em 0 0 -2.1em;
     color: #333;
     user-select: none;
     pointer-events: none;
-    font-size: .6em;
+    font-size: 0.6em;
   }
 
   .actionButton {
@@ -297,6 +301,6 @@
 
   .contolButtons > button {
     width: 9em;
-    margin: 1em .1em;
+    margin: 1em 0.1em;
   }
 </style>

@@ -1,7 +1,8 @@
 <script>
-  import {onMount} from 'svelte';
-  import {fly, fade} from 'svelte/transition';
-  import {message} from './../data/stores';
+  import {onMount} from "svelte";
+  import {fly, fade} from "svelte/transition";
+  import {message} from "@/data/stores";
+
   const {text, type = "info", timeout = 4000} = $message;
 
   onMount(async () => {
@@ -16,7 +17,7 @@
   }
 </script>
 
-<div class={type} in:fly={{y:200, duration: 500}} out:fade={{duration: 300}} on:click={hideMessage}>
+<div class={type} in:fly={{y: 200, duration: 500}} out:fade={{duration: 300}} on:click={hideMessage}>
   {text}
 </div>
 
@@ -26,7 +27,7 @@
     bottom: 0%;
     left: 50%;
     line-height: 1.4em;
-    padding: .8em;
+    padding: 0.8em;
     transform: translate(-50%, -50%);
     z-index: 99;
     max-width: 80%;

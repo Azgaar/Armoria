@@ -1,20 +1,21 @@
 <script>
-  import AnimatedCOA from './AnimatedCOA.svelte';
-  import {state} from './../../data/stores';
-  import {fade, fly} from 'svelte/transition';
+  import AnimatedCOA from "./AnimatedCOA.svelte";
+  import {state} from "@/data//stores";
+  import {fade, fly} from "svelte/transition";
+
   const duration = 1000;
 </script>
 
 <div id="about" transition:fade>
-  <span on:click={() => $state.about = 0} class="close">&times;</span>
+  <span on:click={() => ($state.about = 0)} class="close">&times;</span>
   <div id="aboutCont">
-    <AnimatedCOA {duration}/>
-    <div class=buttons in:fly="{{y:200, delay: duration, duration}}">
-      <a target=_blank href=https://github.com/Azgaar/Armoria/wiki/Armoria-Tutorial><span translate="no">Tutorial</span></a>
-      <a target=_blank href=https://discord.com/invite/X7E84HU><span translate="no">Discord</span></a>
-      <a target=_blank href=https://github.com/Azgaar/Armoria><span translate="no">GitHub</span></a>
-      <a target=_blank href=https://github.com/Azgaar/armoria-api#readme><span translate="no">API</span></a>
-      <a target=_blank href=https://www.patreon.com/azgaar><span translate="no">Patreon</span></a>
+    <AnimatedCOA {duration} />
+    <div class="buttons" in:fly={{y: 200, delay: duration, duration}}>
+      <a target="_blank" href="https://github.com/Azgaar/Armoria/wiki/Armoria-Tutorial"><span translate="no">Tutorial</span></a>
+      <a target="_blank" href="https://discord.com/invite/X7E84HU"><span translate="no">Discord</span></a>
+      <a target="_blank" href="https://github.com/Azgaar/Armoria"><span translate="no">GitHub</span></a>
+      <a target="_blank" href="https://github.com/Azgaar/armoria-api#readme"><span translate="no">API</span></a>
+      <a target="_blank" href="https://www.patreon.com/azgaar"><span translate="no">Patreon</span></a>
     </div>
   </div>
 </div>
@@ -27,8 +28,8 @@
     z-index: 1;
     left: 0;
     top: 0;
-    background-color: rgba(0,0,0, 0.9);
-    transition: .5s;
+    background-color: rgba(0, 0, 0, 0.9);
+    transition: 0.5s;
     text-align: center;
     user-select: none;
   }
@@ -40,13 +41,15 @@
     transform: translate(-50%, -50%);
   }
 
-  a, span {
+  a,
+  span {
     display: inline-block;
     cursor: pointer;
     color: #ddd;
   }
 
-  a:hover, span:hover {
+  a:hover,
+  span:hover {
     color: #fff;
   }
 
@@ -58,9 +61,9 @@
   span.close {
     position: fixed;
     top: 0em;
-    right: .5em;
+    right: 0.5em;
     font-size: 4em;
-    padding: .2em 0;
+    padding: 0.2em 0;
     z-index: 2;
   }
 </style>

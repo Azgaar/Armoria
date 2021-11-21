@@ -1,6 +1,6 @@
 <script>
-  import {state, shield} from "./../../data/stores";
-  import {capitalize, link} from "./../../scripts/utils";
+  import {state, shield} from "@/data/stores";
+  import {capitalize, link} from "@/scripts/utils";
   import {fade} from "svelte/transition";
 
   const wetaShield = shield => ["noldor", "gondor", "easterling", "ironHills", "urukHai", "moriaOrc"].includes(shield);

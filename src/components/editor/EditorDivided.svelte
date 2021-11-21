@@ -1,5 +1,6 @@
 <script>
-  export let divided, raster = null;
+  export let divided,
+    raster = null;
 </script>
 
 <span>Divided:</span>

@@ -1,13 +1,13 @@
 <script>
-  import Switch from './Switch.svelte';
-  import {state} from './../../data/stores';
-  import {positionsSelect} from "./../../data/dataModel";
-  import {getSize} from './../../scripts/generator';
-  import {tooltip} from './../../scripts/tooltip';
+  import Switch from "./Switch.svelte";
+  import {state} from "@/data//stores";
+  import {positionsSelect} from "@/data/dataModel";
+  import {getSize} from "@/scripts/generator";
+  import {tooltip} from "@/scripts/tooltip";
   export let charge;
 
   function showPositions() {
-    $state.transform = `rotate(${charge.angle||0}) translate(${charge.x||0}, ${charge.y||0})`;
+    $state.transform = `rotate(${charge.angle || 0}) translate(${charge.x || 0}, ${charge.y || 0})`;
     $state.positions = charge.p;
   }
 
@@ -23,7 +23,7 @@
 
 <span title="Points on shield to place a charge" use:tooltip>
   Positions:
-  <input bind:value={charge.p} on:input={showPositions} on:focus={showPositions} on:blur={hidePositions}/>
+  <input bind:value={charge.p} on:input={showPositions} on:focus={showPositions} on:blur={hidePositions} />
   <select bind:value={charge.p} on:change={changePosition} on:focus={showPositions} on:blur={hidePositions}>
     {#each positionsSelect as position}
       <option value={position}>{position}</option>
@@ -33,12 +33,12 @@
 
 <span title="Turn charge to the left" use:tooltip>
   <span style="margin-left: 1em">Sinister:</span>
-  <Switch bind:checked={charge.sinister}/>
+  <Switch bind:checked={charge.sinister} />
 </span>
 
 <span title="Show charge upside down" use:tooltip>
   <span style="margin-left: 1em">Reversed:</span>
-  <Switch bind:checked={charge.reversed}/>
+  <Switch bind:checked={charge.reversed} />
 </span>
 
 <style>

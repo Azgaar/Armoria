@@ -1,19 +1,25 @@
 <script>
-  import WindowEvents from './WindowEvents.svelte';
-  import Navbar from './navigation/Navbar.svelte';
-  import About from './navigation/About.svelte';
-  import License from './navigation/License.svelte';
-  import Viewer from './navigation/Viewer.svelte';
-  import Editor from './editor/Editor.svelte';
-  import Gallery from './navigation/Gallery.svelte';
-  import UploadRaster from './navigation/UploadRaster.svelte';
-  import UploadVector from './navigation/UploadVector.svelte';
-  import Tinctures from './navigation/Tinctures.svelte';
-  import Message from './Message.svelte';
-  import {background, size, history, matrices, matrix, state, message, shield} from '../data/stores';
-  import {shields} from '../data/shields';
-  import {rw} from '../scripts/utils';
-  let n, w, h, gallery = [], seed, coaSize = 200;
+  import WindowEvents from "./WindowEvents.svelte";
+  import Navbar from "./navigation/Navbar.svelte";
+  import About from "./navigation/About.svelte";
+  import License from "./navigation/License.svelte";
+  import Viewer from "./navigation/Viewer.svelte";
+  import Editor from "./editor/Editor.svelte";
+  import Gallery from "./navigation/Gallery.svelte";
+  import UploadRaster from "./navigation/UploadRaster.svelte";
+  import UploadVector from "./navigation/UploadVector.svelte";
+  import Tinctures from "./navigation/Tinctures.svelte";
+  import Message from "./Message.svelte";
+  import {background, size, history, matrices, matrix, state, message, shield} from "@/data/stores";
+  import {shields} from "@/data/shields";
+  import {rw} from "@/scripts/utils";
+
+  let n,
+    w,
+    h,
+    gallery = [],
+    seed,
+    coaSize = 200;
 
   checkLoadParameters(); // on load
   $: [n, w, h] = defineGallerySize($size);
@@ -26,12 +32,12 @@
     if (!$matrices[$matrix]) {
       if ($state.edit) {
         // generate new coa
-        $matrices[$matrix] = $matrices[$matrix-1].slice();
+        $matrices[$matrix] = $matrices[$matrix - 1].slice();
         $matrices[$matrix][$state.i] = l;
         seed = undefined; // use once
       } else {
         // reroll gallery
-        $matrices[$matrix] = Array.from({length: n}, (_, i) => l+i++);
+        $matrices[$matrix] = Array.from({length: n}, (_, i) => l + i++);
       }
 
       // change shield if it's not locked (manually selected)
@@ -43,7 +49,7 @@
     // add additional coas to matrix if size is smaller
     if ($matrices[$matrix].length < n) {
       const m = $matrices[$matrix];
-      $matrices[$matrix] = [...Array(n).keys()].map(i => m[i] !== undefined ? m[i] : l+i);
+      $matrices[$matrix] = [...Array(n).keys()].map(i => (m[i] !== undefined ? m[i] : l + i));
     }
     gallery = $matrices[$matrix].slice(0, n); // trim gallery if size was bigger
 
@@ -87,7 +93,7 @@
     try {
       JSON.parse(text);
       return true;
-    } catch(e) {
+    } catch (e) {
       console.error(e);
       $message = {type: "error", text: `URL error: ${e.message}`, timeout: 5000};
       return false;
@@ -107,21 +113,21 @@
 </script>
 
 {#if $state.view}
-  <Viewer c={$state.c} {seed} {coaSize}/>
+  <Viewer c={$state.c} {seed} {coaSize} />
 {:else}
   <main style="background-color: {$background}">
-    <Navbar/>
-    {#if $state.about}<About/>{/if}
-    {#if $state.license}<License/>{/if}
-    {#if $state.raster}<UploadRaster/>{/if}
-    {#if $state.vector}<UploadVector/>{/if}
-    {#if $state.tinctures}<Tinctures/>{/if}
-    {#if $state.edit}<Editor c={$state.c} {seed}/>
-    {:else}<Gallery {gallery} {w} {h}/>{/if}
-    {#if $message}<Message/>{/if}
+    <Navbar />
+    {#if $state.about}<About />{/if}
+    {#if $state.license}<License />{/if}
+    {#if $state.raster}<UploadRaster />{/if}
+    {#if $state.vector}<UploadVector />{/if}
+    {#if $state.tinctures}<Tinctures />{/if}
+    {#if $state.edit}<Editor c={$state.c} {seed} />
+    {:else}<Gallery {gallery} {w} {h} />{/if}
+    {#if $message}<Message />{/if}
   </main>
 {/if}
-<WindowEvents/>
+<WindowEvents />
 
 <style>
   main {

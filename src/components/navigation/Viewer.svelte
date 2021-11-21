@@ -1,8 +1,9 @@
 <script>
-  import COA from './../object/COA.svelte';
-  import {history} from './../../data/stores';
-	import {generate} from './../../scripts/generator';
+  import COA from "./../object/COA.svelte";
+  import {history} from "@/data//stores";
+  import {generate} from "@/scripts/generator";
   export let c, seed, coaSize;
+
   let coa = $history[c] || generate(seed || undefined); // on load
 
   function edit() {
@@ -13,6 +14,6 @@
   }
 </script>
 
-<div id=viewer on:click={edit}>
-  <COA {coa} i=View w={coaSize} h={coaSize}/>
+<div id="viewer" on:click={edit}>
+  <COA {coa} i="View" w={coaSize} h={coaSize} />
 </div>

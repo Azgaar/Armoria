@@ -1,6 +1,6 @@
 <script>
-  import EditorItem from './EditorItem.svelte';
-  import {defaultTinctures} from "./../../data/dataModel";
+  import EditorItem from "./EditorItem.svelte";
+  import {defaultTinctures} from "@/data/dataModel";
   export let pattern, t1, t2, size, itemSize;
   const patterns = Object.keys(defaultTinctures.patterns).filter(pattern => pattern !== "semy");
 
@@ -16,7 +16,7 @@
 
 <div>Pattern:</div>
 {#each coas as coa}
-  <div class=item class:selected={pattern === coa.pattern} on:click={() => pattern = coa.pattern}>
-    <EditorItem {coa} tip={coa.pattern} {itemSize}/>
+  <div class="item" class:selected={pattern === coa.pattern} on:click={() => (pattern = coa.pattern)}>
+    <EditorItem {coa} tip={coa.pattern} {itemSize} />
   </div>
 {/each}

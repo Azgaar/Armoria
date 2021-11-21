@@ -1,9 +1,9 @@
 <script>
-	import COA from './../object/COA.svelte';
-  import {fade} from 'svelte/transition';
-	import {generate} from './../../scripts/generator';
-  import {download} from './../../scripts/download';
-  import {history, matrices, matrix, state} from './../../data/stores';
+  import COA from "./../object/COA.svelte";
+  import {fade} from "svelte/transition";
+  import {generate} from "@/scripts/generator";
+  import {download} from "@/scripts/download";
+  import {history, matrices, matrix, state} from "@/data/stores";
   export let gallery, w, h;
 
   $: font = Math.max(Math.min(Math.ceil(w / 20), 12), 6);
@@ -17,7 +17,7 @@
   function regenerate(i) {
     $state.i = i;
     $matrix++;
-    $matrices[$matrix] = $matrices[$matrix-1].slice();
+    $matrices[$matrix] = $matrices[$matrix - 1].slice();
     $matrices[$matrix][$state.i] = $history.length;
   }
 
@@ -28,16 +28,16 @@
   }
 </script>
 
-<div id=gallery style="font-size: {font}px" transition:fade>
+<div id="gallery" style="font-size: {font}px" transition:fade>
   {#each coas as coa, i}
     <div>
       {#key coa}
-        <COA {coa} {i} {w} {h}/>
+        <COA {coa} {i} {w} {h} />
       {/key}
-      <div class=control>
-        <svg on:click={() => regenerate(i)}><use href="#dice-icon"></use></svg>
-        <svg on:click={() => editCOA(i)}><use href="#pencil-icon"></use></svg>
-        <svg on:click={() => download(i)}><use href="#download-icon"></use></svg>
+      <div class="control">
+        <svg on:click={() => regenerate(i)}><use href="#dice-icon" /></svg>
+        <svg on:click={() => editCOA(i)}><use href="#pencil-icon" /></svg>
+        <svg on:click={() => download(i)}><use href="#download-icon" /></svg>
       </div>
     </div>
   {/each}
@@ -52,7 +52,7 @@
     display: inline-block;
     position: relative;
     user-select: none;
-    transition: background .5s ease;
+    transition: background 0.5s ease;
   }
 
   #gallery > div:hover {
@@ -63,7 +63,7 @@
     display: block;
     position: absolute;
     opacity: 0;
-    transition: .5s ease-in-out;
+    transition: 0.5s ease-in-out;
     transform: translate(-50%, -150%);
     left: 50%;
     font-size: 2.4em;
@@ -79,9 +79,9 @@
     height: 1.2em;
     fill: #f1f1f1;
     stroke: #333;
-    stroke-width: .5em;
+    stroke-width: 0.5em;
     vertical-align: middle;
-    margin: 0 .5em;
+    margin: 0 0.5em;
   }
 
   .control > svg:hover {

@@ -1,7 +1,7 @@
 <script>
-  import {state, shield} from "./../../data/stores";
-  import {shieldPositions} from "./../../data/shields";
-  import {fade} from 'svelte/transition';
+  import {state, shield} from "@/data/stores";
+  import {shieldPositions} from "@/data/shields";
+  import {fade} from "svelte/transition";
 
   // on shield change
   $: points = shieldPositions[$shield] ? Object.entries(shieldPositions[$shield]) : Object.entries(shieldPositions.spanish);
@@ -15,11 +15,11 @@
 </script>
 
 {#if $state.positions}
-  <g transform={$state.transform || null} transform-origin=center>
-    <g id=positions transform="translate(100, 100)" transition:fade|local>
+  <g transform={$state.transform || null} transform-origin="center">
+    <g id="positions" transform="translate(100, 100)" transition:fade|local>
       {#each points as p}
         <g id={p[0]} class={getClass(p[0])}>
-          <circle cx={p[1][0]} cy={p[1][1]} r=3 class:active={$state.positions.includes(p[0])}/>
+          <circle cx={p[1][0]} cy={p[1][1]} r="3" class:active={$state.positions.includes(p[0])} />
           <text style="dominant-baseline: central" x={p[1][0]} y={p[1][1]} class:active={$state.positions.includes(p[0])}>{p[0]}</text>
         </g>
       {/each}
@@ -29,7 +29,7 @@
 
 <style>
   circle {
-    opacity: .6;
+    opacity: 0.6;
   }
 
   circle.active {

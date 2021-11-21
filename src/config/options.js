@@ -4,7 +4,7 @@ export const sizes = [
   [150, "Large"],
   [200, "Medium"],
   [300, "Small"],
-  [400, "Tiny"],
+  [400, "Tiny"]
 ];
 
 export const gradients = ["no", "luster", "spotlight", "backlight", "brink"];

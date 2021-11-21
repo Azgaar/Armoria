@@ -1,8 +1,19 @@
 <script>
-  import EditorItem from './EditorItem.svelte';
-  import {charges} from "./../../data/dataModel";
-  export let charge, type, category, t1, t2, size = null, sinister = null, reversed = null, division = false, itemSize;
-  let coas = [], query, queryOld;
+  import EditorItem from "./EditorItem.svelte";
+  import {charges} from "@/data/dataModel";
+  export let charge,
+    type,
+    category,
+    t1,
+    t2,
+    size = null,
+    sinister = null,
+    reversed = null,
+    division = false,
+    itemSize;
+  let coas = [],
+    query,
+    queryOld;
 
   const categories = Object.keys(charges.types);
   const allCharges = categories.map(category => Object.keys(charges[category])).flat();
@@ -33,7 +44,7 @@
 
   function getCharge(c) {
     if (type === "semy") return [];
-    return [{charge:c, t: t2, p: "e", size: 1.5, sinister, reversed}];
+    return [{charge: c, t: t2, p: "e", size: 1.5, sinister, reversed}];
   }
 
   function getTip(c) {
@@ -47,19 +58,19 @@
 {:else}
   <span class:indented={division}>Category:</span>
 {/if}
-<select bind:value={category} class:inactive={query} on:input={() => query = ""}>
+<select bind:value={category} class:inactive={query} on:input={() => (query = "")}>
   {#each categories as type}
     <option value={type}>{cap(type)}</option>
   {/each}
 </select>
 
 <span class:indented={true}>Search:</span>
-<input bind:value={query} class:inactive={!query}/>
+<input bind:value={query} class:inactive={!query} />
 
 <div>
   {#each coas as coa (coa)}
-    <div class=item class:selected={charge === coa.c} on:click={() => charge = coa.c}>
-      <EditorItem {coa} tip={getTip(coa.c)} {itemSize}/>
+    <div class="item" class:selected={charge === coa.c} on:click={() => (charge = coa.c)}>
+      <EditorItem {coa} tip={getTip(coa.c)} {itemSize} />
     </div>
   {/each}
 </div>

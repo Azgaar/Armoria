@@ -1,6 +1,6 @@
 <script>
-  import EditorItem from './EditorItem.svelte';
-  import {divisions} from "./../../data/dataModel";
+  import EditorItem from "./EditorItem.svelte";
+  import {divisions} from "@/data/dataModel";
   export let division, t1, t, line, itemSize;
 
   const divisionList = ["no"].concat(Object.keys(divisions.variants));
@@ -8,7 +8,7 @@
 </script>
 
 {#each coas as coa (coa)}
-  <div class=item class:selected={division === coa.d} on:click={() => division = coa.d}>
-    <EditorItem {coa} tip={"Division: " + coa.d} {itemSize}/>
+  <div class="item" class:selected={division === coa.d} on:click={() => (division = coa.d)}>
+    <EditorItem {coa} tip={"Division: " + coa.d} {itemSize} />
   </div>
 {/each}
