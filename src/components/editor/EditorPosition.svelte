@@ -1,6 +1,6 @@
 <script>
   import Switch from "./Switch.svelte";
-  import {state} from "data//stores";
+  import {state} from "data/stores";
   import {positionsSelect} from "data/dataModel";
   import {getSize} from "scripts/generator";
   import {tooltip} from "scripts/tooltip";
@@ -21,7 +21,7 @@
   }
 </script>
 
-<span title="Points on shield to place a charge" use:tooltip>
+<span data-tooltip="Points on shield to place a charge" use:tooltip>
   Positions:
   <input bind:value={charge.p} on:input={showPositions} on:focus={showPositions} on:blur={hidePositions} />
   <select bind:value={charge.p} on:change={changePosition} on:focus={showPositions} on:blur={hidePositions}>
@@ -31,12 +31,12 @@
   </select>
 </span>
 
-<span title="Turn charge to the left" use:tooltip>
+<span data-tooltip="Turn charge to the left" use:tooltip>
   <span style="margin-left: 1em">Sinister:</span>
   <Switch bind:checked={charge.sinister} />
 </span>
 
-<span title="Show charge upside down" use:tooltip>
+<span data-tooltip="Show charge upside down" use:tooltip>
   <span style="margin-left: 1em">Reversed:</span>
   <Switch bind:checked={charge.reversed} />
 </span>

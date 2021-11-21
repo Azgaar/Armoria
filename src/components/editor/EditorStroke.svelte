@@ -4,7 +4,7 @@
   export let element;
 </script>
 
-<span title="Element stroke. Check to render and select a color" use:tooltip>
+<span data-tooltip="Element stroke. Check to render and select a color" use:tooltip>
   <span>Stroke:</span>
   <Switch bind:checked={element.showStroke} />
   {#if element.showStroke}

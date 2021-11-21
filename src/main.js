@@ -1,4 +1,5 @@
 import App from "./components/App.svelte";
+import "scripts/aliases";
 
 // register serviceWorker
 if ("serviceWorker" in navigator && location.hostname !== "localhost") {
@@ -7,7 +8,7 @@ if ("serviceWorker" in navigator && location.hostname !== "localhost") {
 
 const app = new App({
   target: document.body,
-  props: {},
+  props: {}
 });
 
 export default app;

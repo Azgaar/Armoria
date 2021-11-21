@@ -96,7 +96,15 @@
   <span on:click={() => ($state.raster = 0)} class="close">&times;</span>
   <div class="container">
     {#if selected}
-      <svg width="100%" height="100%" stroke="#000" stroke-width="1" viewBox="0 0 200 200" title="Fit image into the rectangle for best result" use:tooltip>
+      <svg
+        width="100%"
+        height="100%"
+        stroke="#000"
+        stroke-width="1"
+        viewBox="0 0 200 200"
+        data-tooltip="Fit image into the rectangle for best result"
+        use:tooltip
+      >
         <g fill="#fff" fill-opacity=".05" stroke="#fff" stroke-width=".5">
           <image id="imageLoaded" x="{(100 - size) / 2 + offsetX}%" y="{(100 - size) / 2 + offsetY}%" width="{size}%" height="{size}%" />
           <path d={shieldPaths[$shield]} />
@@ -105,35 +113,35 @@
       </svg>
 
       <div class="inputs">
-        <div title="Image size in percents" use:tooltip>
+        <div data-tooltip="Image size in percents" use:tooltip>
           <div class="label">Size:</div>
           <input type="number" bind:value={size} />
         </div>
-        <div title="Offset by X axis in pixels" use:tooltip>
+        <div data-tooltip="Offset by X axis in pixels" use:tooltip>
           <div class="label">Offset X:</div>
           <input type="number" bind:value={offsetX} />
         </div>
-        <div title="Offset by Y axis in pixels" use:tooltip>
+        <div data-tooltip="Offset by Y axis in pixels" use:tooltip>
           <div class="label">Offset Y:</div>
           <input type="number" bind:value={offsetY} />
         </div>
-        <div title="Link to the image source" use:tooltip>
+        <div data-tooltip="Link to the image source" use:tooltip>
           <div class="label">Source:</div>
           <input bind:value={source} />
         </div>
-        <div title="Image author or source portal name" use:tooltip>
+        <div data-tooltip="Image author or source portal name" use:tooltip>
           <div class="label">Author:</div>
           <input bind:value={author} />
         </div>
-        <div title="Image license" use:tooltip>
+        <div data-tooltip="Image license" use:tooltip>
           <div class="label">License:</div>
           <LicenseList bind:license />
         </div>
-        <div title="Charge unique name (id)" use:tooltip>
+        <div data-tooltip="Charge unique name (id)" use:tooltip>
           <div class="label">Name:</div>
           <input placeholder="Charge id" required bind:value={name} />
         </div>
-        <div title="Category to put a charge" use:tooltip>
+        <div data-tooltip="Category to put a charge" use:tooltip>
           <div class="label">Category:</div>
           <select bind:value={category}>
             {#each Object.keys(charges.types) as c}

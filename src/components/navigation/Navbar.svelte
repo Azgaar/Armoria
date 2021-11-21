@@ -143,13 +143,13 @@
             </div>
           {/each}
         </div>
-        <bl title="Shield or banner shape. If not set, a random one is selected on reroll" use:tooltip>
+        <bl data-tooltip="Shield or banner shape. If not set, a random one is selected on reroll" use:tooltip>
           {#key $shield}<Lock key="shield" />{/key}
           <span>Shield</span>
         </bl>
       </div>
 
-      <bt on:click={() => ($state.tinctures = 1)} title="Setup tinctures selection chance and hue" use:tooltip>
+      <bt on:click={() => ($state.tinctures = 1)} data-tooltip="Setup tinctures selection chance and hue" use:tooltip>
         <Lock key="tinctures" />
         <Lock key="colors" />
         <span>Tinctures</span>
@@ -161,7 +161,7 @@
             <bt class:selected={g === $grad} on:click={e => change(e, grad, g, "grad")}>{g}</bt>
           {/each}
         </div>
-        <bl title="Overlay style to be applied on top of coat of arms" use:tooltip>
+        <bl data-tooltip="Overlay style to be applied on top of coat of arms" use:tooltip>
           {#key $grad}<Lock key="grad" />{/key}
           <span>Gradient</span>
         </bl>
@@ -173,7 +173,7 @@
             <bt class:selected={d === $diaper} on:click={e => change(e, diaper, d, "diaper")}>{d}</bt>
           {/each}
         </div>
-        <bl title="Backing style for coat of arms, also known as diaper" use:tooltip>
+        <bl data-tooltip="Backing style for coat of arms, also known as diaper" use:tooltip>
           {#key $diaper}<Lock key="diaper" />{/key}
           <span>Damasking</span>
         </bl>
@@ -185,7 +185,7 @@
             <bt class:selected={$size == s[0]} on:click={e => change(e, size, s[0], "size")}>{s[1]}</bt>
           {/each}
         </div>
-        <bl title="Coat of arms gallery size. Change to smaller value to make coat of arms bigger" use:tooltip>
+        <bl data-tooltip="Coat of arms gallery size. Change to smaller value to make coat of arms bigger" use:tooltip>
           {#key $size}<Lock key="size" />{/key}
           <span>Gallery</span>
         </bl>
@@ -196,7 +196,12 @@
           <bl
             >Color
             {#if $border !== "#333333"}
-              <svg on:click={e => restoreDefault(e, border, "border", "#333333")} class="navBarIcon active smaller" title="Restore default color" use:tooltip>
+              <svg
+                on:click={e => restoreDefault(e, border, "border", "#333333")}
+                class="navBarIcon active smaller"
+                data-tooltip="Restore default color"
+                use:tooltip
+              >
                 <use href="#undo-icon" />
               </svg>
             {/if}
@@ -208,7 +213,7 @@
               <svg
                 on:click={e => restoreDefault(e, borderWidth, "borderWidth", "#333333")}
                 class="navBarIcon active smaller"
-                title="Restore default border width"
+                data-tooltip="Restore default border width"
                 use:tooltip
               >
                 <use href="#undo-icon" />
@@ -227,7 +232,7 @@
             />
           </bl>
         </div>
-        <bl title="Coat of arms border style" use:tooltip>
+        <bl data-tooltip="Coat of arms border style" use:tooltip>
           <span>Border</span>
         </bl>
       </div>
@@ -236,14 +241,14 @@
         <div class="dropdown level2">
           <bl
             >Color
-            <svg on:click={getRandomColor} class="navBarIcon active smaller" title="Select random color" use:tooltip>
+            <svg on:click={getRandomColor} class="navBarIcon active smaller" data-tooltip="Select random color" use:tooltip>
               <use href="#random-icon" />
             </svg>
             {#if $background !== "#333333"}
               <svg
                 on:click={e => restoreDefault(e, background, "background", "#333333")}
                 class="navBarIcon active smaller"
-                title="Restore default color"
+                data-tooltip="Restore default color"
                 use:tooltip
               >
                 <use href="#undo-icon" />
@@ -252,7 +257,7 @@
             <input type="color" bind:value={$background} />
           </bl>
         </div>
-        <bl title="Window background color" use:tooltip>
+        <bl data-tooltip="Window background color" use:tooltip>
           <span>Background</span>
         </bl>
       </div>
@@ -264,26 +269,26 @@
             <input type="number" min="1" max="4" step=".1" bind:value={$scale} />
           </bl>
         </div>
-        <bl title="Downloaded image size, 1 is default size, 2 - 2x size, etc." use:tooltip>
+        <bl data-tooltip="Downloaded image size, 1 is default size, 2 - 2x size, etc." use:tooltip>
           <span>Scale</span>
         </bl>
       </div>
 
       {#if !wideScreen && $state.edit}
-        <bt on:click={() => ($state.license = 1)} title="Show information about license" use:tooltip> License </bt>
+        <bt on:click={() => ($state.license = 1)} data-tooltip="Show information about license" use:tooltip> License </bt>
       {/if}
     </div>
   </div>
 
   {#if $matrix}
-    <bt on:click={() => ($matrix -= 1)} title="Roll to the previous list" gesture="Swipe up" hotkey="Backspace" use:tooltip>
+    <bt on:click={() => ($matrix -= 1)} data-tooltip="Roll to the previous list" gesture="Swipe up" hotkey="Backspace" use:tooltip>
       {@html getIcon("rollback")}
     </bt>
   {:else}
     <bd>{@html getIcon("rollback", "inactive")}</bd>
   {/if}
 
-  <bt on:click={() => ($matrix += 1)} title="Regenerate coat of arms" gesture="Swipe down" hotkey="Enter" use:tooltip>
+  <bt on:click={() => ($matrix += 1)} data-tooltip="Regenerate coat of arms" gesture="Swipe down" hotkey="Enter" use:tooltip>
     {@html getIcon("reroll")}
   </bt>
 
@@ -292,31 +297,35 @@
     <div class="dropdown level1">
       <bt
         on:click={() => download(null, "svg")}
-        title="Download vector image or set of images. Open in browser or load to Map Generator. Size can be set in options"
+        data-tooltip="Download vector image or set of images. Open in browser or load to Map Generator. Size can be set in options"
         hotkey="Ctrl + S"
         use:tooltip
       >
         <span>Download SVG</span>
       </bt>
 
-      <bt on:click={() => download(null, "png")} title="Download as raster image. Size can be set in options" hotkey="Ctrl + P" use:tooltip>
+      <bt on:click={() => download(null, "png")} data-tooltip="Download as raster image. Size can be set in options" hotkey="Ctrl + P" use:tooltip>
         <span>Download PNG</span>
       </bt>
 
-      <bt on:click={() => download(null, "jpeg")} title="Download a compressed raster image. Size can be set in options" hotkey="Ctrl + J" use:tooltip>
+      <bt on:click={() => download(null, "jpeg")} data-tooltip="Download a compressed raster image. Size can be set in options" hotkey="Ctrl + J" use:tooltip>
         <span>Download JPEG</span>
       </bt>
 
       {#if $state.edit}
-        <bt on:click={copyEditLink} title="Copy link to the coat of arms in Edit mode to your clipbard" use:tooltip>
+        <bt on:click={copyEditLink} data-tooltip="Copy link to the coat of arms in Edit mode to your clipbard" use:tooltip>
           <span>Copy edit link</span>
         </bt>
 
-        <bt on:click={copyAPILink} title="Copy link to the coat of arms for embedding. Armoria API does not support custom charges" use:tooltip>
+        <bt on:click={copyAPILink} data-tooltip="Copy link to the coat of arms for embedding. Armoria API does not support custom charges" use:tooltip>
           <span>Copy API link</span>
         </bt>
 
-        <bt on:click={copyCOA} title="Copy coa object as encoded string to use in Armoria API or in Watabou's Medieval Fantasy City Generator" use:tooltip>
+        <bt
+          on:click={copyCOA}
+          data-tooltip="Copy coa object as encoded string to use in Armoria API or in Watabou's Medieval Fantasy City Generator"
+          use:tooltip
+        >
           <span>Copy COA string</span>
         </bt>
       {/if}
@@ -326,25 +335,25 @@
   <div class="container">
     <bl>{@html getIcon("upload")}</bl>
     <div class="dropdown level1">
-      <bt on:click={() => ($state.raster = 1)} title="Upload raster charge (one color, quality loss on scale) from jpg, png or svg image" use:tooltip>
+      <bt on:click={() => ($state.raster = 1)} data-tooltip="Upload raster charge (one color, quality loss on scale) from jpg, png or svg image" use:tooltip>
         <span>Raster charge</span>
       </bt>
 
-      <bt on:click={() => ($state.vector = 1)} title="Upload vector charge (multicolor and lossless scalable) from prepared svg" use:tooltip>
+      <bt on:click={() => ($state.vector = 1)} data-tooltip="Upload vector charge (multicolor and lossless scalable) from prepared svg" use:tooltip>
         <span>Vector charge</span>
       </bt>
     </div>
   </div>
 
   {#if installable}
-    <bt on:click={() => install()} class="flutter" in:fade title="Add Armoria application to the desktop or home screen" use:tooltip>
+    <bt on:click={() => install()} class="flutter" in:fade data-tooltip="Add Armoria application to the desktop or home screen" use:tooltip>
       {@html getIcon("install")}
     </bt>
   {/if}
 
   {#if $state.edit}
     {#if position > 0}
-      <bt on:click={() => changes.undo()} title="Revert the latest change" gesture="Swipe left" hotkey="Z" use:tooltip>
+      <bt on:click={() => changes.undo()} data-tooltip="Revert the latest change" gesture="Swipe left" hotkey="Z" use:tooltip>
         {@html getIcon("undo")}
       </bt>
     {:else}
@@ -352,7 +361,7 @@
     {/if}
 
     {#if position < changes.length() - 1}
-      <bt on:click={() => changes.redo()} title="Restore the next change" gesture="Swipe right" hotkey="X" use:tooltip>
+      <bt on:click={() => changes.redo()} data-tooltip="Restore the next change" gesture="Swipe right" hotkey="X" use:tooltip>
         {@html getIcon("redo")}
       </bt>
     {:else}
@@ -361,19 +370,19 @@
   {/if}
 
   {#if $state.edit}
-    <bt id="back" on:click={() => ($state.edit = 0)} transition:fade title="Get back to Gallery" hotkey="Escape" use:tooltip>
+    <bt id="back" on:click={() => ($state.edit = 0)} transition:fade data-tooltip="Get back to Gallery" hotkey="Escape" use:tooltip>
       {@html getIcon("back")}
     </bt>
   {/if}
 
   {#if wideScreen || !$state.edit}
-    <bt on:click={() => ($state.license = 1)} title="Show information about license" use:tooltip>
+    <bt on:click={() => ($state.license = 1)} data-tooltip="Show information about license" use:tooltip>
       {@html getIcon("license")}
     </bt>
-    <bt on:click={() => ($state.about = 1)} title="Show about screen" hotkey="F1" use:tooltip>
+    <bt on:click={() => ($state.about = 1)} data-tooltip="Show about screen" hotkey="F1" use:tooltip>
       {@html getIcon("about")}
     </bt>
-    <bt on:click={() => window.open("https://www.patreon.com/azgaar", "_blank")} title="Support the project on Patreon" use:tooltip>
+    <bt on:click={() => window.open("https://www.patreon.com/azgaar", "_blank")} data-tooltip="Support the project on Patreon" use:tooltip>
       {@html getIcon("support")}
     </bt>
   {/if}

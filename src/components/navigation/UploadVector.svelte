@@ -147,7 +147,7 @@
         stroke="#000"
         stroke-width="1"
         viewBox="0 0 200 200"
-        title="Fit image into the rectangle for best result"
+        data-tooltip="Fit image into the rectangle for best result"
         use:tooltip
       >
         <g fill="#fff" fill-opacity=".05" stroke="#fff" stroke-width=".5">
@@ -163,20 +163,20 @@
       </div>
 
       <div class="inputs">
-        <div title="Charge translate: X and Y px" use:tooltip>
+        <div data-tooltip="Charge translate: X and Y px" use:tooltip>
           <div class="label">Translate:</div>
           <input type="number" step=".1" class="paired" bind:value={transform.e} />
           <input type="number" step=".1" class="paired" bind:value={transform.f} />
         </div>
 
-        <div title="Charge scale: X and Y, where 1 is default size" use:tooltip>
+        <div data-tooltip="Charge scale: X and Y, where 1 is default size" use:tooltip>
           <div class="label">Scale:</div>
           <input type="number" step=".01" class="paired" bind:value={transform.a} />
           <input type="number" step=".01" class="paired" bind:value={transform.d} />
         </div>
 
         <div
-          title="Tincture preview color, does not affect uploaded actual color. Charges must not have exact color defined. In this case charge will support all tunctures"
+          data-tooltip="Tincture preview color, does not affect uploaded actual color. Charges must not have exact color defined. In this case charge will support all tunctures"
           use:tooltip
         >
           <div class="label">Tincture:</div>
@@ -187,23 +187,23 @@
           </select>
         </div>
 
-        <div title="Link to the image source" use:tooltip>
+        <div data-tooltip="Link to the image source" use:tooltip>
           <div class="label">Source:</div>
           <input bind:value={source} />
         </div>
-        <div title="Image author or source portal name" use:tooltip>
+        <div data-tooltip="Image author or source portal name" use:tooltip>
           <div class="label">Author:</div>
           <input bind:value={author} />
         </div>
-        <div title="Image license" use:tooltip>
+        <div data-tooltip="Image license" use:tooltip>
           <div class="label">License:</div>
           <LicenseList bind:license />
         </div>
-        <div title="Charge unique name (id)" use:tooltip>
+        <div data-tooltip="Charge unique name (id)" use:tooltip>
           <div class="label">Name:</div>
           <input placeholder="Charge id" required bind:value={name} />
         </div>
-        <div title="Category to put a charge" use:tooltip>
+        <div data-tooltip="Category to put a charge" use:tooltip>
           <div class="label">Category:</div>
           <select bind:value={category}>
             {#each Object.keys(charges.types) as c}

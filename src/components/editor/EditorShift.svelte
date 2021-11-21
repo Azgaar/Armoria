@@ -9,7 +9,7 @@
   }
 </script>
 
-<span title="Element size in percents" use:tooltip>
+<span data-tooltip="Element size in percents" use:tooltip>
   Size:
   <input
     type="number"
@@ -23,18 +23,18 @@
   />
 </span>
 
-<span title="Element rotation angle in degrees" use:tooltip>
+<span data-tooltip="Element rotation angle in degrees" use:tooltip>
   <span>Rotation:</span>
   <input type="number" min="-180" max="180" bind:value={e.angle} on:change={updateGrid} />
 </span>
 
-<span title="Element shift in pixels" use:tooltip>
+<span data-tooltip="Element shift in pixels" use:tooltip>
   <span>Shift:</span>
   <input type="number" min="-100" max="100" step={$grid} bind:value={e.x} />
   <input type="number" min="-100" max="100" step={$grid} bind:value={e.y} />
 </span>
 
-<span title="Define grid size, angle and position shift step (in pixels and degrees)" use:tooltip>
+<span data-tooltip="Define grid size, angle and position shift step (in pixels and degrees)" use:tooltip>
   <span>Step:</span>
   <input type="number" min="1" max="50" bind:value={$grid} />
   <Switch bind:checked={$showGrid} />

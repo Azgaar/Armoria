@@ -1,3 +1,9 @@
+export const forEach = (selector: string, callback: (element: Element) => void): void => {
+  Array.from(document.querySelectorAll(selector)).forEach(element => {
+    callback(element);
+  });
+};
+
 export function ra(array: any[]) {
   return array[Math.floor(Math.random() * array.length)];
 }

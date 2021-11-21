@@ -1,45 +1,45 @@
-<script>
+<script lang="ts">
   import {tooltip} from "scripts/tooltip";
-  export let els, el, i;
+  export let els: any[], el: any, i: number;
 
-  const remove = e => {
+  const remove = (event: Event) => {
+    event.stopPropagation();
     els = els.filter((e, n) => n !== i);
-    e.stopPropagation();
   };
 
-  const clone = e => {
+  const clone = (event: Event) => {
+    event.stopPropagation();
     els = [...els, JSON.parse(JSON.stringify(el))];
-    e.stopPropagation();
   };
 
-  const forward = e => {
+  const forward = (event: Event) => {
+    event.stopPropagation();
     [els[i], els[i + 1]] = [els[i + 1], els[i]];
-    e.stopPropagation();
   };
 
-  const backward = e => {
+  const backward = (event: Event) => {
+    event.stopPropagation();
     [els[i], els[i - 1]] = [els[i - 1], els[i]];
-    e.stopPropagation();
   };
 </script>
 
 <span>
-  <svg on:click={clone} title="Clone" use:tooltip>
+  <svg on:click={clone} data-tooltip="Clone" use:tooltip>
     <use href="#clone-icon" />
   </svg>
   {#if els.length > 1}
     {#if i}
-      <svg on:click={backward} title="Send backward" use:tooltip>
+      <svg on:click={backward} data-tooltip="Send backward" use:tooltip>
         <use href="#up-icon" />
       </svg>
     {/if}
     {#if i + 1 < els.length}
-      <svg on:click={forward} title="Bring forward" use:tooltip>
+      <svg on:click={forward} data-tooltip="Bring forward" use:tooltip>
         <use href="#down-icon" />
       </svg>
     {/if}
   {/if}
-  <svg on:click={remove} title="Remove" use:tooltip>
+  <svg on:click={remove} data-tooltip="Remove" use:tooltip>
     <use href="#remove-icon" />
   </svg>
 </span>
