@@ -79,14 +79,33 @@ font {
 
 .tooltip {
   position: absolute;
-  padding: .5em;
-  pointer-events: none;
+  padding: 0.5em;
   z-index: 99;
   color: #fff;
   background-color: #1e1e1e;
   border: 1px solid #333;
-  opacity: .9;
+  opacity: 0.9;
   max-width: 330px;
+
+  visibility: hidden;
+  opacity: 0;
+  animation: 1s fadeIn;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    visibility: hidden;
+    opacity: 0;
+  }
+  80% {
+    visibility: visible;
+    opacity: 0;
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+  }
 }
 
 .flutter {
@@ -95,9 +114,25 @@ font {
 }
 
 @keyframes shake {
-  2%, 18% {transform: translate3d(-.5px, 0, 0);}
-  4%, 16% {transform: translate3d(.5px, 0, 0);}
-  6%, 10%, 14% {transform: translate3d(-1px, 0, 0);}
-  8%, 12% {transform: translate3d(1px, 0, 0);}
-  20%, 100% {transform: translate3d(0, 0, 0);}
+  2%,
+  18% {
+    transform: translate3d(-0.5px, 0, 0);
+  }
+  4%,
+  16% {
+    transform: translate3d(0.5px, 0, 0);
+  }
+  6%,
+  10%,
+  14% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  8%,
+  12% {
+    transform: translate3d(1px, 0, 0);
+  }
+  20%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
 }
