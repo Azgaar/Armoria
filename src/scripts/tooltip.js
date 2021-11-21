@@ -1,5 +1,5 @@
 export function tooltip(element) {
-  const touch = 'ontouchstart' in window;
+  const touch = "ontouchstart" in window;
   let div, title, limit;
 
   function mouseEnter() {
@@ -45,6 +45,6 @@ export function tooltip(element) {
       element.removeEventListener("mouseenter", mouseEnter);
       element.removeEventListener("mouseleave", mouseLeave);
       element.removeEventListener("mousemove", mouseMove);
-    }
+    },
   };
 }

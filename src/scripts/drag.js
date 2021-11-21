@@ -1,9 +1,10 @@
-import {get} from "svelte/store";
-import {changes, grid} from "../data/stores";
+import { get } from "svelte/store";
+import { changes, grid } from "../data/stores";
 
 export function drag(e, c, coa) {
   const el = e.currentTarget;
-  const x0 = e.x, y0 = e.y;
+  const x0 = e.x,
+    y0 = e.y;
   const sizeAdj = +el.closest("svg").getAttribute("width") / 200;
   document.addEventListener("mouseup", dragStop, { once: true });
 
@@ -22,7 +23,7 @@ export function drag(e, c, coa) {
   } else {
     document.addEventListener("mousemove", move);
     document.body.style.cursor = "move";
-  };
+  }
 
   function move(e) {
     const dx = x + (e.x - x0) / sizeAdj;
@@ -41,12 +42,14 @@ export function drag(e, c, coa) {
   }
 
   function rotate(e) {
-    const cx = x + 100, cy = y + 100;
-    const x1 = e.x / sizeAdj, y1 = e.y / sizeAdj;
+    const cx = x + 100,
+      cy = y + 100;
+    const x1 = e.x / sizeAdj,
+      y1 = e.y / sizeAdj;
 
-    let a = 90 + Math.atan2(y1 - cy, x1 - cx) * 180 / Math.PI;
-    if (a > 180) a = a % 180 - 180;
-    if (a < -179) a = a % 180 + 180;
+    let a = 90 + (Math.atan2(y1 - cy, x1 - cx) * 180) / Math.PI;
+    if (a > 180) a = (a % 180) - 180;
+    if (a < -179) a = (a % 180) + 180;
 
     c.angle = Math.round(a / gridSize) * gridSize;
     setTransform(el, c);
@@ -72,7 +75,7 @@ function round(n) {
 }
 
 export function transform(charge) {
-  let {x = 0, y = 0, angle = 0, size = 1, p} = charge;
+  let { x = 0, y = 0, angle = 0, size = 1, p } = charge;
   if (p) size = 1; // size is defined on use element level
 
   if (size !== 1) {

@@ -12,7 +12,13 @@ export function rw(object, save = true) {
       }
     }
 
-    save && Object.defineProperty(object, "array", {enumerable: false, configurable: true, writable: false, value: array});
+    save &&
+      Object.defineProperty(object, "array", {
+        enumerable: false,
+        configurable: true,
+        writable: false,
+        value: array,
+      });
   }
 
   return object.array[Math.floor(Math.random() * object.array.length)];
@@ -35,7 +41,10 @@ export function capitalize(string) {
   return string
     .replace(/_/g, " ")
     .replace(/(?<!_)(?=[A-Z])/g, " ")
-    .replace(/\w\S*/g, s => s.charAt(0).toUpperCase() + s.substr(1).toLowerCase());
+    .replace(
+      /\w\S*/g,
+      (s) => s.charAt(0).toUpperCase() + s.substr(1).toLowerCase()
+    );
 }
 
 export function link(url, text) {

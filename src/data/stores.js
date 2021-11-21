@@ -1,7 +1,7 @@
-import {writable} from "svelte/store";
-import {defaultTinctures, defaultColors} from "./dataModel";
-import {shields} from "./shields";
-import {ra, rw} from "../scripts/utils";
+import { writable } from "svelte/store";
+import { defaultTinctures, defaultColors } from "./dataModel";
+import { shields } from "./shields";
+import { ra, rw } from "../scripts/utils";
 
 const options = defineInitialOptions();
 export const size = writable(options.size);
@@ -21,11 +21,11 @@ export const showGrid = writable(options.showGrid);
 export const history = writable([]);
 export const matrices = writable([]);
 export const matrix = writable(0);
-export const state = writable({edit: 0, about: 0, i: 0});
+export const state = writable({ edit: 0, about: 0, i: 0 });
 export const message = writable(null);
 
 const createChangesTracker = () => {
-  const {subscribe, set, update} = writable([undefined, -1]);
+  const { subscribe, set, update } = writable([undefined, -1]);
   let history = [];
   let position = -1;
 
@@ -39,7 +39,8 @@ const createChangesTracker = () => {
     },
     add(value) {
       if (value === history[position]) return; // no change
-      if (position < history.length - 1) history = history.slice(0, position + 1); // cut future history
+      if (position < history.length - 1)
+        history = history.slice(0, position + 1); // cut future history
       history.push(value);
       position += 1;
       set([history[position], position]);
@@ -53,19 +54,20 @@ const createChangesTracker = () => {
       update(() => {
         if (position < history.length - 1) position += 1;
         return [history[position], position];
-      })
+      }),
   };
 };
 export const changes = createChangesTracker();
 
 function defineInitialOptions() {
-  const stored = key => {
+  const stored = (key) => {
     const value = localStorage.getItem(key);
     if (value === "null") return null;
     return value;
   };
 
-  const storedObj = key => (localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : null);
+  const storedObj = (key) =>
+    localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : null;
 
   const getShieldFromURL = () => {
     const coaParam = new URL(window.location).searchParams.get("coa");
@@ -77,9 +79,12 @@ function defineInitialOptions() {
   const size = +stored("size") || 200;
   const diaper = stored("diaper") || "no";
   const grad = stored("grad") || ra(["luster", "spotlight", "backlight"]);
-  const shield = getShieldFromURL() || stored("shield") || rw(shields[rw(shields.types)]);
-  const colors = storedObj("colors") || JSON.parse(JSON.stringify(defaultColors));
-  const tinctures = storedObj("tinctures") || JSON.parse(JSON.stringify(defaultTinctures));
+  const shield =
+    getShieldFromURL() || stored("shield") || rw(shields[rw(shields.types)]);
+  const colors =
+    storedObj("colors") || JSON.parse(JSON.stringify(defaultColors));
+  const tinctures =
+    storedObj("tinctures") || JSON.parse(JSON.stringify(defaultTinctures));
   const border = stored("border") || "#333333";
   const borderWidth = +stored("borderWidth") || 1;
   const background = stored("background") || "#333333";
@@ -88,5 +93,18 @@ function defineInitialOptions() {
   const grid = +stored("grid") || 1;
   const showGrid = storedObj("showGrid") || 0;
 
-  return {size, diaper, grad, shield, colors, tinctures, border, borderWidth, background, scale, grid, showGrid};
+  return {
+    size,
+    diaper,
+    grad,
+    shield,
+    colors,
+    tinctures,
+    border,
+    borderWidth,
+    background,
+    scale,
+    grid,
+    showGrid,
+  };
 }

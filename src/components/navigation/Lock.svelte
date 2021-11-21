@@ -1,5 +1,5 @@
 <script>
-  import {tooltip} from '../../scripts/tooltip';
+  import {tooltip} from "../../scripts/tooltip";
   export let key;
   $: locked = localStorage.getItem(key);
 
