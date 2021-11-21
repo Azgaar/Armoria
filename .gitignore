@@ -1,4 +1,6 @@
 /node_modules/
 /public/build/
-/src/unused.js
+/public/*.js
+/public/*.css
+/public/*.map
 .DS_Store
