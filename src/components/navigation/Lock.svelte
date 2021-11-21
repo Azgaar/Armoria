@@ -15,5 +15,11 @@
 </script>
 
 {#if Boolean(locked)}
-  <span style="cursor: pointer" on:click={unlock} data-tooltip={tip} use:tooltip>🔖</span>
+  <span on:click={unlock} data-tooltip={tip} use:tooltip>🔖</span>
 {/if}
+
+<style>
+  span {
+    cursor: pointer;
+  }
+</style>
