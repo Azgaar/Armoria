@@ -1,6 +1,6 @@
 <script>
   import AnimatedCOA from "./AnimatedCOA.svelte";
-  import {state} from "@/data//stores";
+  import {state} from "data//stores";
   import {fade, fly} from "svelte/transition";
 
   const duration = 1000;

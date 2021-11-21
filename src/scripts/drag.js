@@ -1,5 +1,5 @@
 import {get} from "svelte/store";
-import {changes, grid} from "@/data/stores";
+import {changes, grid} from "data/stores";
 
 export function drag(e, c, coa) {
   const el = e.currentTarget;

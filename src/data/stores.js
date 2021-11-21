@@ -1,7 +1,7 @@
 import {writable} from "svelte/store";
 import {defaultTinctures, defaultColors} from "./dataModel";
 import {shields} from "./shields";
-import {ra, rw} from "@/scripts/utils";
+import {ra, rw} from "scripts/utils";
 
 const options = defineInitialOptions();
 export const size = writable(options.size);

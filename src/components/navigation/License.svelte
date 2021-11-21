@@ -1,9 +1,9 @@
-<script>
-  import {state, shield} from "@/data/stores";
-  import {capitalize, link} from "@/scripts/utils";
+<script lang="ts">
   import {fade} from "svelte/transition";
+  import {shield, state} from "data/stores";
+  import {capitalize, link} from "scripts/utils";
 
-  const wetaShield = shield => ["noldor", "gondor", "easterling", "ironHills", "urukHai", "moriaOrc"].includes(shield);
+  const wetaShield = (shield: string) => ["noldor", "gondor", "easterling", "ironHills", "urukHai", "moriaOrc"].includes(shield);
 
   const coas = Array.from(document.querySelectorAll("svg.coa"));
   const charges = coas.map(coa => Array.from(coa.querySelectorAll(".charge[charge]")).map(el => el.getAttribute("charge"))).flat();
@@ -21,13 +21,13 @@
 
       return {charge: capitalize(charge), license, source};
     })
-    .sort((a, b) => (a.licenseName < b.licenseName ? -1 : 1));
+    .sort((a, b) => (a.license < b.license ? -1 : 1));
 
-  const isLicenseSame = [...new Set(chargeData.map(d => [d.license, d.author].join(",")))].length === 1;
+  const isLicenseSame = [...new Set(chargeData.map(d => [d.license, d.source].join(",")))].length === 1;
   const charge = isLicenseSame ? chargeData[0] : null;
 
   // get mainly Creative Commons short names from license link
-  function getLicenseName(license) {
+  function getLicenseName(license: string) {
     if (!license) return null;
     if (license.includes("publicdomain")) return "public domain";
     if (license.includes("by-nc-sa")) return "CC BY-NC-SA";

@@ -1,6 +1,6 @@
 <script>
   import EditorItem from "./EditorItem.svelte";
-  import {divisions} from "@/data/dataModel";
+  import {divisions} from "data/dataModel";
   export let division, t1, t, line, itemSize;
 
   const divisionList = ["no"].concat(Object.keys(divisions.variants));

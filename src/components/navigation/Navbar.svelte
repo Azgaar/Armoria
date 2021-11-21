@@ -1,11 +1,11 @@
 <script>
   import Lock from "./Lock.svelte";
   import {fade} from "svelte/transition";
-  import {download} from "@/scripts/download";
-  import {sizes, gradients, diapers} from "@/config/options";
-  import {size, grad, diaper, shield, background, scale, border, borderWidth, matrix, state, changes, message} from "@/data/stores";
-  import {shields, shieldPaths} from "@/data/shields";
-  import {tooltip} from "@/scripts/tooltip";
+  import {download} from "scripts/download";
+  import {sizes, gradients, diapers} from "config/options";
+  import {size, grad, diaper, shield, background, scale, border, borderWidth, matrix, state, changes, message} from "data/stores";
+  import {shields, shieldPaths} from "data/shields";
+  import {tooltip} from "scripts/tooltip";
 
   let installable = false;
   let prompt = null;

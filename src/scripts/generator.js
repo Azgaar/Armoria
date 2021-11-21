@@ -1,8 +1,8 @@
 import {get} from "svelte/store";
 import {aleaPRNG} from "./alea";
 import {rw, P} from "./utils";
-import {charges, divisions, lines, ordinaries, positions, patternSize} from "@/data/dataModel";
-import {tinctures} from "@/data/stores";
+import {charges, divisions, lines, ordinaries, positions, patternSize} from "data/dataModel";
+import {tinctures} from "data/stores";
 
 const createConfig = function () {
   return {

@@ -1,9 +1,9 @@
-export function ra(array) {
+export function ra(array: any[]) {
   return array[Math.floor(Math.random() * array.length)];
 }
 
 // return random value from weighted array
-export function rw(object, save = true) {
+export function rw(object: {array: any[]}, save = true) {
   if (!object.array) {
     const array = [];
     for (const key in object) {
@@ -17,18 +17,18 @@ export function rw(object, save = true) {
         enumerable: false,
         configurable: true,
         writable: false,
-        value: array,
+        value: array
       });
   }
 
   return object.array[Math.floor(Math.random() * object.array.length)];
 }
 
-export function P(probability) {
+export function P(probability: number) {
   return Math.random() < probability;
 }
 
-export function camelize(str) {
+export function camelize(str: string) {
   return str
     .toLowerCase()
     .replace(/\.[^/.]+$/, "") // remove extension
@@ -37,16 +37,13 @@ export function camelize(str) {
     .replace(/^[0-9]/, "_"); // first char should not be a number
 }
 
-export function capitalize(string) {
+export function capitalize(string: string) {
   return string
     .replace(/_/g, " ")
     .replace(/(?<!_)(?=[A-Z])/g, " ")
-    .replace(
-      /\w\S*/g,
-      (s) => s.charAt(0).toUpperCase() + s.substr(1).toLowerCase()
-    );
+    .replace(/\w\S*/g, s => s.charAt(0).toUpperCase() + s.substr(1).toLowerCase());
 }
 
-export function link(url, text) {
+export function link(url: string, text: string) {
   return `<a href="${url}" target="_blank">${text}</a>`;
 }

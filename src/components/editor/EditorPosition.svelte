@@ -1,9 +1,9 @@
 <script>
   import Switch from "./Switch.svelte";
-  import {state} from "@/data//stores";
-  import {positionsSelect} from "@/data/dataModel";
-  import {getSize} from "@/scripts/generator";
-  import {tooltip} from "@/scripts/tooltip";
+  import {state} from "data//stores";
+  import {positionsSelect} from "data/dataModel";
+  import {getSize} from "scripts/generator";
+  import {tooltip} from "scripts/tooltip";
   export let charge;
 
   function showPositions() {

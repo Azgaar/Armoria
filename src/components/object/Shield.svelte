@@ -1,10 +1,10 @@
 <script>
   import Ordinary from "./Ordinary.svelte";
   import Charge from "./Charge.svelte";
-  import {charges as chargesData, ordinaries as ordinariesData} from "@/data/dataModel";
-  import {shield, colors, grad, diaper} from "@/data/stores";
-  import {shieldPaths} from "@/data/shields";
-  import {getTemplate, addPattern, addCharge} from "@/scripts/getters";
+  import {charges as chargesData, ordinaries as ordinariesData} from "data/dataModel";
+  import {shield, colors, grad, diaper} from "data/stores";
+  import {shieldPaths} from "data/shields";
+  import {getTemplate, addPattern, addCharge} from "scripts/getters";
   export let coa, border, borderWidth, type;
 
   const id = coa.seed || Math.floor(Math.random() * 1e9);

@@ -1,15 +1,14 @@
 import * as path from "path";
+import autoPreprocess from "svelte-preprocess";
 import svelte from "rollup-plugin-svelte";
+import typescript from "@rollup/plugin-typescript";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
-import alias from "@rollup/plugin-alias";
 import livereload from "rollup-plugin-livereload";
 import {terser} from "rollup-plugin-terser";
 import {generateSW} from "rollup-plugin-workbox";
 
 const production = !process.env.ROLLUP_WATCH;
-const projectRootDir = path.resolve(__dirname);
-console.log(projectRootDir);
 
 function serve() {
   let server;
@@ -42,6 +41,7 @@ export default {
   },
   plugins: [
     svelte({
+      preprocess: autoPreprocess(),
       // enable run-time checks when not in production
       dev: !production,
       // we'll extract any component CSS out into a separate file - better for performance
@@ -50,6 +50,8 @@ export default {
       }
     }),
 
+    typescript({sourceMap: !production}),
+
     resolve({
       browser: true,
       dedupe: ["svelte"]
@@ -57,10 +59,6 @@ export default {
 
     // convert CommonJS modules to ES6
     commonjs(),
-
-    alias({
-      entries: [{find: "@", replacement: path.resolve(projectRootDir, "src")}]
-    }),
 
     // In dev mode, call `npm run start` once the bundle has been generated
     !production && serve(),

@@ -1,6 +1,6 @@
 <script>
-  import {shieldPositions, shieldSize} from "@/data/shields";
-  import {drag, transform} from "@/scripts/drag";
+  import {shieldPositions, shieldSize} from "data/shields";
+  import {drag, transform} from "scripts/drag";
   export let coa, charge, i, shield, t, type;
   let chargeId, positions, sizeModifier, stroke;
 

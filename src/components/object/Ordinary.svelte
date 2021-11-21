@@ -1,6 +1,6 @@
 <script>
-  import {drag, transform} from "@/scripts/drag";
-  import {getTemplate} from "@/scripts/getters";
+  import {drag, transform} from "scripts/drag";
+  import {getTemplate} from "scripts/getters";
   export let coa, ordinary, i, shieldPath, t, type;
 
   let stroke, width;

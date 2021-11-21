@@ -1,7 +1,7 @@
 import {get} from "svelte/store";
-import {templates, lines, patterns} from "@/data/templates";
-import {shieldPaths} from "@/data/shields";
-import {colors, shield} from "@/data/stores";
+import {templates, lines, patterns} from "data/templates";
+import {shieldPaths} from "data/shields";
+import {colors, shield} from "data/stores";
 
 const chargesGroup = document.getElementById("charges");
 const colorsData = get(colors);

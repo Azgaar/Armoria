@@ -1,6 +1,6 @@
 <script>
   import EditorItem from "./EditorItem.svelte";
-  import {tinctures} from "@/data/stores";
+  import {tinctures} from "data/stores";
   export let t1, itemSize;
 
   const coas = ["metals", "colours", "stains"]

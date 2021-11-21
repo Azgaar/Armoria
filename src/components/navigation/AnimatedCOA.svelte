@@ -1,8 +1,8 @@
 <script>
-  import {colors} from "@/data//stores";
-  import {shieldPaths} from "@/data//shields";
+  import {colors} from "data//stores";
+  import {shieldPaths} from "data//shields";
   import {fade, draw} from "svelte/transition";
-  import {rw} from "@/scripts/utils";
+  import {rw} from "scripts/utils";
   export let duration;
 
   const delay = duration * 2.6;

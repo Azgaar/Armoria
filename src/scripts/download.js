@@ -1,5 +1,5 @@
 import {get} from "svelte/store";
-import {scale, grad, diaper} from "@/data/stores";
+import {scale, grad, diaper} from "data/stores";
 
 const isFirefox = navigator.userAgent.includes("Firefox");
 

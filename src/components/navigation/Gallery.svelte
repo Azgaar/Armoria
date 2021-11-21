@@ -1,9 +1,9 @@
 <script>
   import COA from "./../object/COA.svelte";
   import {fade} from "svelte/transition";
-  import {generate} from "@/scripts/generator";
-  import {download} from "@/scripts/download";
-  import {history, matrices, matrix, state} from "@/data/stores";
+  import {generate} from "scripts/generator";
+  import {download} from "scripts/download";
+  import {history, matrices, matrix, state} from "data/stores";
   export let gallery, w, h;
 
   $: font = Math.max(Math.min(Math.ceil(w / 20), 12), 6);

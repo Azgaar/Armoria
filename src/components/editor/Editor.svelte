@@ -15,10 +15,10 @@
   import EditorControls from "./EditorControls.svelte";
   import EditorAbove from "./EditorAbove.svelte";
   import {slide, fly} from "svelte/transition";
-  import {history, changes, tinctures, state, grid, showGrid, message, shield} from "@/data//stores";
-  import {charges, divisions, ordinaries} from "@/data/dataModel";
-  import {generate} from "@/scripts/generator";
-  import {rw, ra} from "@/scripts/utils";
+  import {history, changes, tinctures, state, grid, showGrid, message, shield} from "data//stores";
+  import {charges, divisions, ordinaries} from "data/dataModel";
+  import {generate} from "scripts/generator";
+  import {rw, ra} from "scripts/utils";
   export let c, seed;
   let menu = {},
     section = {field: 0, division: 0, ordinary: [], charge: []};

@@ -1,6 +1,6 @@
 <script>
-  import {state, matrix, changes, message} from "@/data/stores";
-  import {download} from "@/scripts/download";
+  import {state, matrix, changes, message} from "data/stores";
+  import {download} from "scripts/download";
   const touch = {startX: 0, startY: 0};
 
   // prevent unwanted refresh

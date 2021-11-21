@@ -1,7 +1,7 @@
 <script>
   import {onMount} from "svelte";
   import {fly, fade} from "svelte/transition";
-  import {message} from "@/data/stores";
+  import {message} from "data/stores";
 
   const {text, type = "info", timeout = 4000} = $message;
 

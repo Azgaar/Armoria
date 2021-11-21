@@ -1,6 +1,6 @@
 <script>
   import EditorItem from "./EditorItem.svelte";
-  import {defaultTinctures} from "@/data/dataModel";
+  import {defaultTinctures} from "data/dataModel";
   export let pattern, t1, t2, size, itemSize;
   const patterns = Object.keys(defaultTinctures.patterns).filter(pattern => pattern !== "semy");
 

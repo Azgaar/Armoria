@@ -1,6 +1,6 @@
 <script>
   import EditorItem from "./EditorItem.svelte";
-  import {lines} from "@/data/dataModel";
+  import {lines} from "data/dataModel";
   export let line,
     division = null,
     ordinary = null,

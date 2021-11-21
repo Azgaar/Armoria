@@ -1,10 +1,10 @@
 <script>
   import LicenseList from "./LicenseList.svelte";
-  import {state, message, shield} from "@/data/stores";
-  import {charges} from "@/data/dataModel";
-  import {shieldPaths} from "@/data/shields";
-  import {tooltip} from "@/scripts/tooltip";
-  import {camelize} from "@/scripts/utils";
+  import {state, message, shield} from "data/stores";
+  import {charges} from "data/dataModel";
+  import {shieldPaths} from "data/shields";
+  import {tooltip} from "scripts/tooltip";
+  import {camelize} from "scripts/utils";
 
   let dragging = false,
     selected = false;
