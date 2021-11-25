@@ -1,4 +1,3 @@
-import * as path from "path";
 import autoPreprocess from "svelte-preprocess";
 import svelte from "rollup-plugin-svelte";
 import typescript from "@rollup/plugin-typescript";
@@ -42,9 +41,7 @@ export default {
   plugins: [
     svelte({
       preprocess: autoPreprocess(),
-      // enable run-time checks when not in production
       dev: !production,
-      // we'll extract any component CSS out into a separate file - better for performance
       css: css => {
         css.write("bundle.css");
       }
@@ -52,34 +49,29 @@ export default {
 
     typescript({sourceMap: !production}),
 
-    resolve({
-      browser: true,
-      dedupe: ["svelte"]
-    }),
+    resolve({browser: true, dedupe: ["svelte"]}),
 
     // convert CommonJS modules to ES6
     commonjs(),
 
-    // In dev mode, call `npm run start` once the bundle has been generated
     !production && serve(),
-
-    // Watch the `public` directory and refresh the browser on changes when not in production
     !production && livereload("public"),
 
     // generate service worker and add charges folder to precache
     production &&
       generateSW({
         swDest: "./public/sw.js",
-        globDirectory: "public/charges/",
-        globPatterns: ["**/*.{svg}"],
-        cacheId: "armoria",
+        globDirectory: "public/",
+        globPatterns: ["**/*.svg"],
+        cacheId: "armoria-precache",
         cleanupOutdatedCaches: true,
+        inlineWorkboxRuntime: true,
         runtimeCaching: [
           {
-            urlPattern: "*.{js, json, png}",
-            handler: "NetworkFirst",
+            urlPattern: /\.(js|css|html)$/,
+            handler: "StaleWhileRevalidate",
             options: {
-              cacheName: "armoria-cache"
+              cacheName: "armoria-app-files"
             }
           }
         ]
