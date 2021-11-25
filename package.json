@@ -7,7 +7,7 @@
     "dev": "rollup -c -w",
     "start": "sirv public",
     "build": "rollup -c",
-    "deploy": "rollup -c && gh-pages -d public"
+    "deploy": "gh-pages -d public"
   },
   "repository": {
     "type": "git",
