@@ -1,6 +1,9 @@
 <script>
+  import Logo from "./Logo.svelte";
+  import NavItem from "./NavItem.svelte";
+  import NavButton from "./NavButton.svelte";
+  import BackButton from "./BackButton.svelte";
   import Lock from "./Lock.svelte";
-  import {fade} from "svelte/transition";
   import {download} from "scripts/download";
   import {sizes, gradients, diapers} from "config/options";
   import {size, grad, diaper, shield, background, scale, border, borderWidth, matrix, state, changes, message} from "data/stores";
@@ -13,6 +16,7 @@
   const wideScreen = window.innerWidth > 600;
 
   $: position = $changes[1];
+  $: redoable = position < changes.length() - 1;
 
   function getIcon(icon, active = "active") {
     if (wideScreen) return `<span class="navBarIcon ${active}">${icon}</span>`;
@@ -42,10 +46,6 @@
     e.stopPropagation();
     store.set(value);
     localStorage.removeItem(key);
-  }
-
-  function goHome() {
-    location.href = location.origin + location.pathname;
   }
 
   function copyEditLink() {
@@ -90,6 +90,22 @@
     prompt.userChoice.then(choise => (prompt = null));
   }
 
+  const rollback = () => {
+    $matrix -= 1;
+  };
+
+  const reroll = () => {
+    $matrix += 1;
+  };
+
+  const showLicense = () => {
+    $state.license = 1;
+  };
+
+  const showAbout = () => {
+    $state.about = 1;
+  };
+
   window.addEventListener("beforeinstallprompt", e => {
     console.log("beforeinstallprompt is fired");
     //e.preventDefault(); // no default prompt
@@ -110,16 +126,10 @@
 </script>
 
 <nav>
-  <svg on:click={goHome} class="logo" width="35" height="35" viewBox="-2 -1 55 55">
-    <path
-      fill="#fff"
-      stroke="none"
-      d="m 46,3 0.6,1.4 c -1.5,0.7 -2.6,1.4 -3.3,2.2 -0.7,0.7 -1.2,1.5 -1.5,2.4 -0.3,0.9 -0.4,2.2 -0.4,3.9 0,0.6 0,1.3 0,2.2 l 0.5,23.2 c 0,2.5 0.3,4.2 0.8,5 0.4,0.6 0.8,0.8 1.3,0.8 0.6,0 1.5,-0.6 2.8,-1.8 l 0.9,1.1 -5.8,4.9 -1.9,1.6 C 38.4,49.2 37.2,48.2 36.5,46.9 35.8,45.7 35.3,36.7 35.2,34 c -7.6,0.1 -20.2,0 -20.2,0 0,0 -7.4,9.1 -7.4,11.1 0,0.6 0.2,1.1 0.6,1.8 0.5,0.9 0.8,1.4 0.8,1.7 0,0.4 -0.1,0.7 -0.4,1 -0.3,0.3 -0.6,0.4 -1.1,0.4 -0.5,0 -0.9,-0.2 -1.2,-0.6 -0.5,-0.6 -0.7,-1.3 -0.7,-2.2 0,-1 0.3,-2.1 0.8,-3.3 C 8.8,39.9 11.3,36.7 14.1,32.9 11.1,30.7 9,28.5 7.8,26.4 6.6,24.4 6,22.1 6,19.5 c 0,-3 0.8,-5.7 2.3,-8.3 1.5,-2.5 3.8,-4.5 6.9,-6 3.1,-1.5 6.2,-2.2 9.4,-2.2 4.9,0 9.7,1.7 14.3,5.1 1.1,-1.2 2.2,-2.1 3.2,-2.9 1,-0.8 2.4,-1.5 4,-2.3 z M 30.7,10.2 c -2.6,-1.3 -5.2,-1.9 -7.8,-1.9 -2.7,0 -5.3,0.6 -7.8,1.8 -2.4,1.2 -4.2,2.8 -5.4,4.7 -1.2,1.9 -1.8,3.9 -1.8,5.9 0,4.2 2.3,8 6.9,11.3 L 25.2,17.7 c -1.6,-0.8 -2.9,-1.3 -4.2,-1.3 -1.7,0 -3.1,0.8 -4.2,2.4 -0.4,0.7 -1,0.5 -1.1,-0.2 0,-0.6 0.3,-1.5 1,-2.7 0.7,-1.1 1.6,-2.1 2.9,-2.8 1.3,-0.7 2.6,-1.1 4,-1.1 1.4,0 3.1,0.4 4.9,1.1 z m 4,3.2 C 34,12.4 32.8,11.5 32,11 L 18.4,29.4 h 16.7 z"
-    />
-  </svg>
+  <Logo />
 
   <div class="container">
-    <bl>{@html getIcon("options")}</bl>
+    <NavItem>{@html getIcon("options")}</NavItem>
 
     <div class="dropdown level1">
       <div class="container">
@@ -280,155 +290,118 @@
     </div>
   </div>
 
-  {#if $matrix}
-    <bt on:click={() => ($matrix -= 1)} data-tooltip="Roll to the previous list" gesture="Swipe up" hotkey="Backspace" use:tooltip>
-      {@html getIcon("rollback")}
-    </bt>
-  {:else}
-    <bd>{@html getIcon("rollback", "inactive")}</bd>
-  {/if}
+  <NavButton disabled={!$matrix} onclick={rollback} tip="Roll to the previous list" gesture="Swipe up" hotkey="Backspace">
+    {@html getIcon("rollback")}
+  </NavButton>
 
-  <bt on:click={() => ($matrix += 1)} data-tooltip="Regenerate coat of arms" gesture="Swipe down" hotkey="Enter" use:tooltip>
+  <NavButton onclick={reroll} tip="Regenerate coat of arms" gesture="Swipe down" hotkey="Enter">
     {@html getIcon("reroll")}
-  </bt>
+  </NavButton>
 
   <div class="container">
-    <bl>{@html getIcon("save")}</bl>
+    <NavItem>{@html getIcon("save")}</NavItem>
     <div class="dropdown level1">
-      <bt
-        on:click={() => download(null, "svg")}
-        data-tooltip="Download vector image or set of images. Open in browser or load to Map Generator. Size can be set in options"
+      <NavButton
+        onclick={() => download(null, "svg")}
+        tip="Download vector image or set of images. Open in browser or load to Map Generator. Size can be set in options"
         hotkey="Ctrl + S"
-        use:tooltip
       >
         <span>Download SVG</span>
-      </bt>
+      </NavButton>
 
-      <bt on:click={() => download(null, "png")} data-tooltip="Download as raster image. Size can be set in options" hotkey="Ctrl + P" use:tooltip>
+      <NavButton onclick={() => download(null, "png")} tip="Download as raster image. Size can be set in options" hotkey="Ctrl + P">
         <span>Download PNG</span>
-      </bt>
+      </NavButton>
 
-      <bt on:click={() => download(null, "jpeg")} data-tooltip="Download a compressed raster image. Size can be set in options" hotkey="Ctrl + J" use:tooltip>
+      <NavButton onclick={() => download(null, "jpeg")} tip="Download a compressed raster image. Size can be set in options" hotkey="Ctrl + J">
         <span>Download JPEG</span>
-      </bt>
+      </NavButton>
 
       {#if $state.edit}
-        <bt on:click={copyEditLink} data-tooltip="Copy link to the coat of arms in Edit mode to your clipbard" use:tooltip>
+        <NavButton onclick={copyEditLink} tip="Copy link to the coat of arms in Edit mode to your clipbard">
           <span>Copy edit link</span>
-        </bt>
+        </NavButton>
 
-        <bt on:click={copyAPILink} data-tooltip="Copy link to the coat of arms for embedding. Armoria API does not support custom charges" use:tooltip>
+        <NavButton onclick={copyAPILink} tip="Copy link to the coat of arms for embedding. Armoria API does not support custom charges">
           <span>Copy API link</span>
-        </bt>
+        </NavButton>
 
-        <bt
-          on:click={copyCOA}
-          data-tooltip="Copy coa object as encoded string to use in Armoria API or in Watabou's Medieval Fantasy City Generator"
-          use:tooltip
-        >
+        <NavButton onclick={copyCOA} tip="Copy coa object as encoded string to use in Armoria API or in Watabou's Medieval Fantasy City Generator">
           <span>Copy COA string</span>
-        </bt>
+        </NavButton>
       {/if}
     </div>
   </div>
 
   <div class="container">
-    <bl>{@html getIcon("upload")}</bl>
+    <NavItem>{@html getIcon("upload")}</NavItem>
     <div class="dropdown level1">
-      <bt on:click={() => ($state.raster = 1)} data-tooltip="Upload raster charge (one color, quality loss on scale) from jpg, png or svg image" use:tooltip>
+      <NavButton
+        onclick={() => {
+          $state.raster = 1;
+        }}
+        tip="Upload raster charge (one color, quality loss on scale) from jpg, png or svg image"
+      >
         <span>Raster charge</span>
-      </bt>
+      </NavButton>
 
-      <bt on:click={() => ($state.vector = 1)} data-tooltip="Upload vector charge (multicolor and lossless scalable) from prepared svg" use:tooltip>
+      <NavButton
+        onclick={() => {
+          $state.vector = 1;
+        }}
+        tip="Upload vector charge (multicolor and lossless scalable) from prepared svg"
+      >
         <span>Vector charge</span>
-      </bt>
+      </NavButton>
     </div>
   </div>
 
   {#if installable}
-    <bt on:click={() => install()} class="flutter" in:fade data-tooltip="Add Armoria application to the desktop or home screen" use:tooltip>
+    <NavButton onclick={install} flutter tip="Add Armoria application to the desktop or home screen">
       {@html getIcon("install")}
-    </bt>
+    </NavButton>
   {/if}
 
   {#if $state.edit}
-    {#if position > 0}
-      <bt on:click={() => changes.undo()} data-tooltip="Revert the latest change" gesture="Swipe left" hotkey="Z" use:tooltip>
-        {@html getIcon("undo")}
-      </bt>
-    {:else}
-      <bd>{@html getIcon("undo", "inactive")}</bd>
-    {/if}
+    <NavButton disabled={!position} onclick={changes.undo} tip="Revert the latest change" gesture="Swipe left" hotkey="Z">
+      {@html getIcon("undo")}
+    </NavButton>
 
-    {#if position < changes.length() - 1}
-      <bt on:click={() => changes.redo()} data-tooltip="Restore the next change" gesture="Swipe right" hotkey="X" use:tooltip>
-        {@html getIcon("redo")}
-      </bt>
-    {:else}
-      <bd>{@html getIcon("redo", "inactive")}</bd>
-    {/if}
+    <NavButton disabled={!redoable} onclick={changes.redo} tip="Restore the next change" gesture="Swipe right" hotkey="X">
+      {@html getIcon("redo")}
+    </NavButton>
   {/if}
 
-  {#if $state.edit}
-    <bt id="back" on:click={() => ($state.edit = 0)} transition:fade data-tooltip="Get back to Gallery" hotkey="Escape" use:tooltip>
-      {@html getIcon("back")}
-    </bt>
-  {/if}
+  <BackButton>{@html getIcon("back")}</BackButton>
 
   {#if wideScreen || !$state.edit}
-    <bt on:click={() => ($state.license = 1)} data-tooltip="Show information about license" use:tooltip>
+    <NavButton onclick={showLicense} tip="Show information about license">
       {@html getIcon("license")}
-    </bt>
-    <bt on:click={() => ($state.about = 1)} data-tooltip="Show about screen" hotkey="F1" use:tooltip>
+    </NavButton>
+
+    <NavButton onclick={showAbout} tip="Show about screen" hotkey="F1">
       {@html getIcon("about")}
-    </bt>
-    <bt on:click={() => window.open("https://www.patreon.com/azgaar", "_blank")} data-tooltip="Support the project on Patreon" use:tooltip>
+    </NavButton>
+
+    <NavButton onclick={() => window.open("https://www.patreon.com/azgaar", "_blank")} tip="Support the project on Patreon">
       {@html getIcon("support")}
-    </bt>
+    </NavButton>
   {/if}
 </nav>
 
 <style>
   nav {
-    top: 0;
-    width: 100%;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
     display: flex;
     align-items: center;
-    overflow: hidden;
     background-color: #1b1c1d;
-    z-index: 1;
-    white-space: nowrap;
-  }
-
-  .logo {
-    display: block;
-    margin: 0 0.5em 0 1em;
-    background-color: #35bdb2;
-    cursor: pointer;
+    height: 45px;
   }
 
   :global(svg.navBarIcon) {
     width: 1em;
     height: 1em;
-    fill: #333;
     stroke: none;
     vertical-align: middle;
-  }
-
-  :global(svg.navBarIcon.active) {
-    fill: #fff;
-    cursor: pointer;
-  }
-
-  :global(span.navBarIcon) {
-    color: #333;
-  }
-
-  :global(span.navBarIcon.active) {
-    color: #fff;
   }
 
   .navBarIcon.smaller {
@@ -441,11 +414,9 @@
   }
 
   bt,
-  bl,
-  bd {
+  bl {
     user-select: none;
     padding: 1em;
-    color: #fff;
     text-transform: capitalize;
   }
 
@@ -505,10 +476,6 @@
     z-index: 1;
   }
 
-  .level1 {
-    margin-top: 1em;
-  }
-
   .level2 {
     z-index: 1;
     margin-left: 10.25em;
@@ -542,10 +509,6 @@
 
   /* low-width (narrow) screen */
   @media only screen and (max-width: 720px) {
-    .logo {
-      display: none;
-    }
-
     .level3 {
       margin-left: -10.25em;
       background-color: #222;
@@ -570,18 +533,12 @@
   }
 
   @media only screen and (max-height: 640px) and (min-width: 520px) and (orientation: landscape) {
-    .logo {
-      display: none;
-    }
     .level3 {
       column-count: 2;
     }
   }
 
   @media only screen and (max-height: 640px) and (min-width: 680px) and (orientation: landscape) {
-    .logo {
-      display: none;
-    }
     .level3 {
       column-count: 3;
     }
@@ -602,10 +559,5 @@
   .shield.selected {
     fill: #777;
     stroke: #333;
-  }
-
-  #back {
-    position: absolute;
-    right: 0;
   }
 </style>

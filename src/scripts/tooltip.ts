@@ -5,6 +5,11 @@ const removalDelay = 20000;
 export const tooltip = (element: HTMLElement) => {
   const isTouchAvailable = "ontouchstart" in window;
   const tooltip = element.dataset.tooltip;
+
+  if (!tooltip) {
+    return;
+  }
+
   const div = document.createElement("div");
   let limit: number[];
 

@@ -1,6 +1,6 @@
 <script>
   import WindowEvents from "./WindowEvents.svelte";
-  import Navbar from "./navigation/Navbar.svelte";
+  import Navbar from "./navigation/header/Navbar.svelte";
   import About from "./navigation/About.svelte";
   import License from "./navigation/License.svelte";
   import Viewer from "./navigation/Viewer.svelte";
