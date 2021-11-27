@@ -1,8 +1,10 @@
 <script>
   import {tooltip} from "scripts/tooltip";
+
+  export let tip;
 </script>
 
-<li use:tooltip>
+<li data-tooltip={tip} use:tooltip>
   <slot />
 </li>
 

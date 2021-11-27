@@ -147,16 +147,18 @@
                 {/each}
               </div>
 
-              <bl>
-                {type.split(/(?=[A-Z])/).join(" ")}
-              </bl>
+              <NavItem>{type.split(/(?=[A-Z])/).join(" ")}</NavItem>
             </div>
           {/each}
         </div>
-        <bl data-tooltip="Shield or banner shape. If not set, a random one is selected on reroll" use:tooltip>
-          {#key $shield}<Lock key="shield" />{/key}
-          <span>Shield</span>
-        </bl>
+
+        {#key $shield}
+          <NavItem tip="Shield or banner shape. If not set, a random one is selected on reroll">
+            <Lock key="shield" />
+
+            <span>Shield</span>
+          </NavItem>
+        {/key}
       </div>
 
       <bt on:click={() => ($state.tinctures = 1)} data-tooltip="Setup tinctures selection chance and hue" use:tooltip>
@@ -171,10 +173,13 @@
             <bt class:selected={g === $grad} on:click={e => change(e, grad, g, "grad")}>{g}</bt>
           {/each}
         </div>
-        <bl data-tooltip="Overlay style to be applied on top of coat of arms" use:tooltip>
-          {#key $grad}<Lock key="grad" />{/key}
-          <span>Gradient</span>
-        </bl>
+
+        {#key $grad}
+          <NavItem tip="Overlay style to be applied on top of coat of arms">
+            <Lock key="grad" />
+            <span>Gradient</span>
+          </NavItem>
+        {/key}
       </div>
 
       <div class="container">
@@ -183,10 +188,13 @@
             <bt class:selected={d === $diaper} on:click={e => change(e, diaper, d, "diaper")}>{d}</bt>
           {/each}
         </div>
-        <bl data-tooltip="Backing style for coat of arms, also known as diaper" use:tooltip>
-          {#key $diaper}<Lock key="diaper" />{/key}
-          <span>Damasking</span>
-        </bl>
+
+        {#key $diaper}
+          <NavItem tip="Backing style for coat of arms, also known as diaper">
+            <Lock key="diaper" />
+            <span>Damasking</span>
+          </NavItem>
+        {/key}
       </div>
 
       <div class="container">
@@ -195,16 +203,19 @@
             <bt class:selected={$size == s[0]} on:click={e => change(e, size, s[0], "size")}>{s[1]}</bt>
           {/each}
         </div>
-        <bl data-tooltip="Coat of arms gallery size. Change to smaller value to make coat of arms bigger" use:tooltip>
-          {#key $size}<Lock key="size" />{/key}
-          <span>Gallery</span>
-        </bl>
+
+        {#key $size}
+          <NavItem tip="Coat of arms gallery size. Change to smaller value to make coat of arms bigger">
+            <Lock key="size" />
+            <span>Gallery</span>
+          </NavItem>
+        {/key}
       </div>
 
       <div class="container">
         <div class="dropdown level2">
-          <bl
-            >Color
+          <NavItem>
+            <span>Color</span>
             {#if $border !== "#333333"}
               <svg
                 on:click={e => restoreDefault(e, border, "border", "#333333")}
@@ -216,9 +227,10 @@
               </svg>
             {/if}
             <input type="color" bind:value={$border} />
-          </bl>
-          <bl
-            >Width
+          </NavItem>
+
+          <NavItem>
+            <span>Width</span>
             {#if $borderWidth !== 1}
               <svg
                 on:click={e => restoreDefault(e, borderWidth, "borderWidth", "#333333")}
@@ -240,11 +252,12 @@
               }}
               value={$borderWidth}
             />
-          </bl>
+          </NavItem>
         </div>
-        <bl data-tooltip="Coat of arms border style" use:tooltip>
+
+        <NavItem tip="Coat of arms border style">
           <span>Border</span>
-        </bl>
+        </NavItem>
       </div>
 
       <div class="container">
@@ -267,9 +280,10 @@
             <input type="color" bind:value={$background} />
           </bl>
         </div>
-        <bl data-tooltip="Window background color" use:tooltip>
+
+        <NavItem tip="Window background color">
           <span>Background</span>
-        </bl>
+        </NavItem>
       </div>
 
       <div class="container">
@@ -410,27 +424,6 @@
   }
 
   .navBarIcon.smaller:active {
-    transform: translateY(1px);
-  }
-
-  bt,
-  bl {
-    user-select: none;
-    padding: 1em;
-    text-transform: capitalize;
-  }
-
-  bt {
-    cursor: pointer;
-    transition: background-color 0.1s;
-  }
-
-  bt:hover,
-  bl:hover {
-    background-color: #2d2e2f;
-  }
-
-  bt:active:not(:last-child) {
     transform: translateY(1px);
   }
 
