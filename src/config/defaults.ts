@@ -1,6 +1,13 @@
 export const DEFAULT_SIZE = 200;
 export const DEFAULT_DIAPER = "no";
-export const DEFAULT_GRADIENTS = ["luster", "spotlight", "backlight"] as const;
+export const DEFAULT_GRADIENTS = ["luster", "spotlight", "backlight"];
+export const DEFAULT_BORDER = "#333333";
+export const DEFAULT_BORDER_WIDTH = 1;
+export const DEFAULT_BACKGROUND = "#333333";
+export const DEFAULT_SCALE = 2;
+
+export const DEFAULT_GRID = 1;
+export const DEFAULT_SHOW_GRID = false;
 
 export const DEFAULT_COLORS = {
   argent: "#fafafa",
@@ -13,7 +20,7 @@ export const DEFAULT_COLORS = {
   murrey: "#85185b",
   sanguine: "#b63a3a",
   tenné: "#cc7f19"
-} as const;
+};
 
 export const DEFAULT_TINCTURES = {
   field: {metals: 35, colours: 49, stains: 1, patterns: 14},
@@ -55,4 +62,4 @@ export const DEFAULT_TINCTURES = {
     maily: 2,
     honeycombed: 1
   }
-} as const;
+};

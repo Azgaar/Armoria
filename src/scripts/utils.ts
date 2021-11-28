@@ -4,7 +4,7 @@ export const forEach = (selector: string, callback: (element: Element) => void):
   });
 };
 
-export function ra(array: any[]) {
+export function ra<T>(array: T[]) {
   return array[Math.floor(Math.random() * array.length)];
 }
 

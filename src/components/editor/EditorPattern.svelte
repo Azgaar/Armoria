@@ -1,6 +1,9 @@
 <script>
   import EditorItem from "./EditorItem.svelte";
+  import {DEFAULT_TINCTURES} from "config/defaults";
+
   export let pattern, t1, t2, size, itemSize;
+
   const patterns = Object.keys(DEFAULT_TINCTURES.patterns).filter(pattern => pattern !== "semy");
 
   // clean group

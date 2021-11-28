@@ -15,8 +15,8 @@
 <div class="container">
   <div class="dropdown level2">
     {#each diapers as d}
-      <NavButton selected={d === $diaper} onclick={() => changeDamasking(diaper)}>
-        <span>{d}</span>
+      <NavButton selected={d === $diaper} onclick={() => changeDamasking(d)}>
+        {d}
       </NavButton>
     {/each}
   </div>
@@ -24,7 +24,7 @@
   {#key $diaper}
     <NavItem tip="Backing style for coat of arms, also known as diaper">
       <Lock key="diaper" />
-      <span>Damasking</span>
+      Damasking
     </NavItem>
   {/key}
 </div>

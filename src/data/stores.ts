@@ -1,7 +1,19 @@
 import {ra, rw} from "scripts/utils";
 import {writable} from "svelte/store";
 import {shields} from "./shields";
-import {DEFAULT_TINCTURES} from "config/defaults";
+import {
+  DEFAULT_SIZE,
+  DEFAULT_DIAPER,
+  DEFAULT_GRADIENTS,
+  DEFAULT_COLORS,
+  DEFAULT_TINCTURES,
+  DEFAULT_BORDER,
+  DEFAULT_BORDER_WIDTH,
+  DEFAULT_BACKGROUND,
+  DEFAULT_SCALE,
+  DEFAULT_GRID,
+  DEFAULT_SHOW_GRID
+} from "config/defaults";
 
 const options = defineInitialOptions();
 export const size = writable(options.size);
@@ -60,16 +72,18 @@ const createChangesTracker = () => {
 export const changes = createChangesTracker();
 
 function defineInitialOptions() {
-  const stored = key => {
+  const stored = (key: string) => {
     const value = localStorage.getItem(key);
     if (value === "null") return null;
     return value;
   };
 
-  const storedObj = key => (localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : null);
+  const storedObj = (key: string) => {
+    return localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : null;
+  };
 
   const getShieldFromURL = () => {
-    const coaParam = new URL(window.location).searchParams.get("coa");
+    const coaParam = new URL(window.location.href).searchParams.get("coa");
     if (!coaParam) return null;
     const coa = JSON.parse(coaParam);
     return coa?.shield;
@@ -81,13 +95,13 @@ function defineInitialOptions() {
   const shield = getShieldFromURL() || stored("shield") || rw(shields[rw(shields.types)]);
   const colors = storedObj("colors") || JSON.parse(JSON.stringify(DEFAULT_COLORS));
   const tinctures = storedObj("tinctures") || JSON.parse(JSON.stringify(DEFAULT_TINCTURES));
-  const border = stored("border") || "#333333";
-  const borderWidth = +stored("borderWidth") || 1;
-  const background = stored("background") || "#333333";
-  const scale = +stored("scale") || 2;
+  const border = stored("border") || DEFAULT_BORDER;
+  const borderWidth = +stored("borderWidth") || DEFAULT_BORDER_WIDTH;
+  const background = stored("background") || DEFAULT_BACKGROUND;
+  const scale = +stored("scale") || DEFAULT_SCALE;
 
-  const grid = +stored("grid") || 1;
-  const showGrid = storedObj("showGrid") || 0;
+  const grid = +stored("grid") || DEFAULT_GRID;
+  const showGrid = storedObj("showGrid") || DEFAULT_SHOW_GRID;
 
   return {
     size,

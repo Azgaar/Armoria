@@ -1,19 +1,20 @@
 <script lang="ts">
   // @ts-check
-  import type {Writable} from "svelte/store";
-  import Logo from "./menu/Logo.svelte";
-  import NavShieldOption from "./menu/options/NavShieldOption.svelte";
-  import NavColorsOption from "./menu/options/NavColorsOption.svelte";
-  import NavGradientOption from "./menu/options/NavGradientOption.svelte";
-  import NavItem from "./shared/NavItem.svelte";
-  import NavButton from "./shared/NavButton.svelte";
-  import BackButton from "./menu/BackButton.svelte";
-  import IconButton from "./shared/IconButton.svelte";
+  import {changes, matrix, message, scale, state} from "data/stores";
   import {download} from "scripts/download";
-  import {background, scale, border, borderWidth, matrix, state, changes, message} from "data/stores";
   import {openURL} from "scripts/utils";
-  import NavDamaskingOption from "./menu/options/NavDamaskingOption.svelte";
+  import BackButton from "./menu/BackButton.svelte";
+  import Logo from "./menu/Logo.svelte";
+  import NavBackgroundOption from "./menu/options/NavBackgroundOption.svelte";
   import NavBorderOption from "./menu/options/NavBorderOption.svelte";
+  import NavColorsOption from "./menu/options/NavColorsOption.svelte";
+  import NavDamaskingOption from "./menu/options/NavDamaskingOption.svelte";
+  import NavGalleryOption from "./menu/options/NavGalleryOption.svelte";
+  import NavGradientOption from "./menu/options/NavGradientOption.svelte";
+  import NavScaleOption from "./menu/options/NavScaleOption.svelte";
+  import NavShieldOption from "./menu/options/NavShieldOption.svelte";
+  import NavButton from "./shared/NavButton.svelte";
+  import NavItem from "./shared/NavItem.svelte";
 
   let installable = false;
   let prompt = null;
@@ -22,22 +23,6 @@
 
   $: position = $changes[1];
   $: redoable = position < changes.length() - 1;
-
-  function change(store: Writable<any>, value: any, key: string) {
-    store.set(value);
-    localStorage.setItem(key, value);
-  }
-
-  function getRandomColor() {
-    const l = "0123456789ABCDEF";
-    $background = "#" + [0, 0, 0, 0, 0, 0].map(() => l[Math.floor(Math.random() * 16)]).join("");
-    localStorage.setItem("background", $background);
-  }
-
-  const restoreDefaultBackground = () => {
-    background.set("#333333");
-    localStorage.removeItem("background");
-  };
 
   function copyEditLink() {
     const coa = ($changes[0] as string).replaceAll("#", "%23");
@@ -117,10 +102,6 @@
     console.log("App installation: success");
     $message = {type: "success", text: `Armoria application is installed`, timeout: 5000};
   });
-
-  // values to be always saved
-  $: localStorage.setItem("background", $background);
-  $: localStorage.setItem("scale", String($scale));
 </script>
 
 <nav>
@@ -138,37 +119,6 @@
       <NavBorderOption />
       <NavBackgroundOption />
       <NavScaleOption />
-
-      <div class="container">
-        <div class="dropdown level2">
-          <NavItem tip="Window background color">
-            <span>Color</span>
-            <IconButton icon="random" tip="Use random color" onclick={getRandomColor} />
-
-            {#if $background !== "#333333"}
-              <IconButton icon="undo" tip="Restore default color" onclick={restoreDefaultBackground} />
-            {/if}
-            <input type="color" bind:value={$background} />
-          </NavItem>
-        </div>
-
-        <NavItem tip="Window background color">
-          <span>Background</span>
-        </NavItem>
-      </div>
-
-      <div class="container">
-        <div class="dropdown level2">
-          <NavItem wide>
-            <input type="range" min="1" max="4" step=".1" bind:value={$scale} />
-            <input type="number" min="1" max="4" step=".1" bind:value={$scale} />
-          </NavItem>
-        </div>
-
-        <NavItem tip="Downloaded image size, 1 is default size, 2 - 2x size, etc.">
-          <span>Scale</span>
-        </NavItem>
-      </div>
 
       {#if !wideScreen && $state.edit}
         <NavButton onclick={showLicense} tip="Show information about license">

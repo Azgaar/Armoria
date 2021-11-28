@@ -4,6 +4,7 @@
   import {colors, tinctures, state, message, changes} from "data/stores";
   import {camelize} from "scripts/utils";
   import {tooltip} from "scripts/tooltip";
+  import {DEFAULT_COLORS, DEFAULT_TINCTURES} from "config/defaults";
 
   let add = {show: false, name: "", type: "colours", color: "#96C8FA", chance: 3};
 
