@@ -4,10 +4,15 @@
 
   export let icon: string;
   export let tip: string = undefined;
-  export let onclick: (event: Event) => void;
+  export let onclick: () => void;
+
+  const handleClick = (event: Event) => {
+    event.stopPropagation();
+    onclick();
+  };
 </script>
 
-<svg on:click={onclick} data-tooltip={tip} use:tooltip>
+<svg on:click={handleClick} data-tooltip={tip} use:tooltip>
   <use href="#{icon}-icon" />
 </svg>
 

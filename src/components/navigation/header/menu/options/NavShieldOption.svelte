@@ -1,0 +1,70 @@
+<script lang="ts">
+  // @ts-check
+  import NavButton from "../../shared/NavButton.svelte";
+  import NavItem from "../../shared/NavItem.svelte";
+  import Lock from "../../shared/Lock.svelte";
+  import {shields, shieldPaths} from "data/shields";
+  import {shield, changes} from "data/stores";
+  import {splitToWords} from "scripts/utils";
+
+  const changeShield = (value: string) => {
+    shield.set(value);
+    localStorage.setItem("shield", value);
+
+    if (changes.length()) {
+      const coa = JSON.parse($changes[0] as string);
+      coa.shield = $shield;
+      changes.add(JSON.stringify(coa));
+    }
+  };
+
+  const shieldTypes = Object.keys(shields.types);
+  const getShieldsInType = (type: string) => Object.keys(shields[type]);
+</script>
+
+<div class="container">
+  <div class="dropdown level2">
+    {#each shieldTypes as shieldType}
+      <div class="container">
+        <div class="dropdown level3 iconed">
+          {#each getShieldsInType(shieldType) as shieldName}
+            <NavButton onclick={() => changeShield(shieldName)}>
+              <svg class:selected={shieldName === $shield} width="26" height="26" viewBox="0 0 200 210">
+                <path d={shieldPaths[shieldName]} />
+              </svg>
+              {splitToWords(shieldName)}
+            </NavButton>
+          {/each}
+        </div>
+
+        <NavItem>{splitToWords(shieldType)}</NavItem>
+      </div>
+    {/each}
+  </div>
+
+  {#key $shield}
+    <NavItem tip="Shield or banner shape. If not set, a random one is selected on reroll">
+      <Lock key="shield" />
+      Shield
+    </NavItem>
+  {/key}
+</div>
+
+<style>
+  svg {
+    position: absolute;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 5px;
+    margin: -0.4em 0 0 -2.2em;
+  }
+
+  svg.selected {
+    fill: #777;
+    stroke: #333;
+  }
+
+  div.iconed {
+    text-indent: 1.8em;
+  }
+</style>

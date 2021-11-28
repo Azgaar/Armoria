@@ -1,6 +1,6 @@
 <script>
   import {fade} from "svelte/transition";
-  import NavButton from "./NavButton.svelte";
+  import NavButton from "../shared/NavButton.svelte";
   import {iconedNavbar} from "config/layout";
   import {state} from "data/stores";
 

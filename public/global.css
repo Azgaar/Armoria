@@ -160,3 +160,26 @@ font {
     columns: 2;
   }
 }
+
+/* Navbar dwopdown menu */
+.dropdown {
+  display: none;
+  position: fixed;
+  background-color: #1b1c1d;
+  min-width: 10em;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.level2 {
+  margin-left: 10em;
+}
+
+.level3 {
+  z-index: 2;
+  margin-left: 10em;
+}
+
+.container:hover > .dropdown {
+  display: block;
+}

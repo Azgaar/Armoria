@@ -1,7 +1,7 @@
-import {writable} from "svelte/store";
-import {defaultTinctures, defaultColors} from "./dataModel";
-import {shields} from "./shields";
 import {ra, rw} from "scripts/utils";
+import {writable} from "svelte/store";
+import {shields} from "./shields";
+import {DEFAULT_TINCTURES} from "config/defaults";
 
 const options = defineInitialOptions();
 export const size = writable(options.size);
@@ -75,12 +75,12 @@ function defineInitialOptions() {
     return coa?.shield;
   };
 
-  const size = +stored("size") || 200;
-  const diaper = stored("diaper") || "no";
-  const grad = stored("grad") || ra(["luster", "spotlight", "backlight"]);
+  const size = +stored("size") || DEFAULT_SIZE;
+  const diaper = stored("diaper") || DEFAULT_DIAPER;
+  const grad = stored("grad") || ra(DEFAULT_GRADIENTS);
   const shield = getShieldFromURL() || stored("shield") || rw(shields[rw(shields.types)]);
-  const colors = storedObj("colors") || JSON.parse(JSON.stringify(defaultColors));
-  const tinctures = storedObj("tinctures") || JSON.parse(JSON.stringify(defaultTinctures));
+  const colors = storedObj("colors") || JSON.parse(JSON.stringify(DEFAULT_COLORS));
+  const tinctures = storedObj("tinctures") || JSON.parse(JSON.stringify(DEFAULT_TINCTURES));
   const border = stored("border") || "#333333";
   const borderWidth = +stored("borderWidth") || 1;
   const background = stored("background") || "#333333";

@@ -10,10 +10,15 @@
   export let disabled: boolean = false;
   export let selected: boolean = false;
   export let flutter: boolean = false;
-  export let onclick: (event: Event) => void;
+  export let onclick: () => void;
+
+  const handleClick = (event: Event) => {
+    event.stopPropagation();
+    onclick();
+  };
 </script>
 
-<li class:disabled class:selected class:flutter data-tooltip={tip} data-gesture={gesture} data-hotkey={hotkey} on:click={onclick} use:tooltip>
+<li class:disabled class:selected class:flutter data-tooltip={tip} data-gesture={gesture} data-hotkey={hotkey} on:click={handleClick} use:tooltip>
   {#if value && iconedNavbar}
     <svg>
       <use href="#{value}-icon" />

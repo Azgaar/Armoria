@@ -1,0 +1,30 @@
+<script lang="ts">
+  // @ts-check
+  import NavButton from "../../shared/NavButton.svelte";
+  import NavItem from "../../shared/NavItem.svelte";
+  import Lock from "../../shared/Lock.svelte";
+  import {gradients} from "config/options";
+  import {grad} from "data/stores";
+
+  const changeGradient = (value: string) => {
+    grad.set(value);
+    localStorage.setItem("grad", value);
+  };
+</script>
+
+<div class="container">
+  <div class="dropdown level2">
+    {#each gradients as gradient}
+      <NavButton selected={gradient === $grad} onclick={() => changeGradient(gradient)}>
+        {gradient}
+      </NavButton>
+    {/each}
+  </div>
+
+  {#key $grad}
+    <NavItem tip="Overlay style to be applied on top of coat of arms">
+      <Lock key="grad" />
+      Gradient
+    </NavItem>
+  {/key}
+</div>

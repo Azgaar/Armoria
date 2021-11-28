@@ -2,7 +2,6 @@
   import {fade} from "svelte/transition";
   import {flip} from "svelte/animate";
   import {colors, tinctures, state, message, changes} from "data/stores";
-  import {defaultTinctures, defaultColors} from "data/dataModel";
   import {camelize} from "scripts/utils";
   import {tooltip} from "scripts/tooltip";
 
@@ -77,8 +76,8 @@
   }
 
   function restoreDefault() {
-    $tinctures = JSON.parse(JSON.stringify(defaultTinctures));
-    $colors = JSON.parse(JSON.stringify(defaultColors));
+    $tinctures = JSON.parse(JSON.stringify(DEFAULT_TINCTURES));
+    $colors = JSON.parse(JSON.stringify(DEFAULT_COLORS));
     localStorage.removeItem("tinctures");
     localStorage.removeItem("colors");
     loaded = [];
@@ -176,8 +175,15 @@
               <td>{t.type}</td>
               <td>
                 <input type="color" bind:value={$colors[t.t]} />
-                {#if defaultColors[t.t] && $colors[t.t] !== defaultColors[t.t]}
-                  <svg on:click={() => ($colors[t.t] = defaultColors[t.t])} width="12" height="12" fill="#fff" data-tooltip="Restore default color" use:tooltip>
+                {#if DEFAULT_COLORS[t.t] && $colors[t.t] !== DEFAULT_COLORS[t.t]}
+                  <svg
+                    on:click={() => ($colors[t.t] = DEFAULT_COLORS[t.t])}
+                    width="12"
+                    height="12"
+                    fill="#fff"
+                    data-tooltip="Restore default color"
+                    use:tooltip
+                  >
                     <use href="#undo-icon" />
                   </svg>
                 {/if}

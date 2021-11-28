@@ -50,6 +50,10 @@ export function capitalize(string: string) {
     .replace(/\w\S*/g, s => s.charAt(0).toUpperCase() + s.substr(1).toLowerCase());
 }
 
+export function splitToWords(string: string) {
+  return string.split(/(?=[A-Z])/).join(" ");
+}
+
 export function link(url: string, text: string) {
   return `<a href="${url}" target="_blank">${text}</a>`;
 }
