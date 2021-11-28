@@ -2,7 +2,7 @@ import {forEach} from "./utils";
 
 const removalDelay = 20000;
 
-export const tooltip = (element: HTMLElement) => {
+export const tooltip = (element: HTMLElement | SVGSVGElement) => {
   const isTouchAvailable = "ontouchstart" in window;
   const tooltip = element.dataset.tooltip;
   const gesture = element.dataset.gesture || element.getAttribute("gesture");

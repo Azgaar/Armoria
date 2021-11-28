@@ -5,6 +5,7 @@
   import NavItem from "./NavItem.svelte";
   import NavButton from "./NavButton.svelte";
   import BackButton from "./BackButton.svelte";
+  import IconButton from "./IconButton.svelte";
   import Lock from "./Lock.svelte";
   import {download} from "scripts/download";
   import {tooltip} from "scripts/tooltip";
@@ -20,11 +21,6 @@
 
   $: position = $changes[1];
   $: redoable = position < changes.length() - 1;
-
-  function getIcon(icon: string, active = "active") {
-    if (wideScreen) return `<span class="navBarIcon ${active}">${icon}</span>`;
-    return `<svg class="navBarIcon ${active}"><use href="#${icon}-icon"></use></svg>`;
-  }
 
   function change(event: Event, store: Writable<any>, value: any, key: string) {
     event.stopPropagation();
@@ -44,6 +40,24 @@
     $background = "#" + [0, 0, 0, 0, 0, 0].map(() => l[Math.floor(Math.random() * 16)]).join("");
     localStorage.setItem("background", $background);
   }
+
+  const restoreDefaultBorder = (event: Event) => {
+    event.stopPropagation();
+    border.set("#333333");
+    localStorage.removeItem("border");
+  };
+
+  const restoreDefaultBorderWidth = (event: Event) => {
+    event.stopPropagation();
+    borderWidth.set(1);
+    localStorage.removeItem("borderWidth");
+  };
+
+  const restoreDefaultBackground = (event: Event) => {
+    event.stopPropagation();
+    background.set("#333333");
+    localStorage.removeItem("background");
+  };
 
   function restoreDefault(e, store, key, value) {
     e.stopPropagation();
@@ -114,6 +128,14 @@
     $state.tinctures = 1;
   };
 
+  const showRasterUpload = () => {
+    $state.raster = 1;
+  };
+
+  const showVectorUpload = () => {
+    $state.vector = 1;
+  };
+
   window.addEventListener("beforeinstallprompt", e => {
     console.log("beforeinstallprompt is fired");
     //e.preventDefault(); // no default prompt
@@ -137,7 +159,7 @@
   <Logo />
 
   <div class="container">
-    <NavItem>{@html getIcon("options")}</NavItem>
+    <NavItem value="options" />
 
     <div class="dropdown level1">
       <div class="container">
@@ -231,14 +253,7 @@
           <NavItem>
             <span>Color</span>
             {#if $border !== "#333333"}
-              <svg
-                on:click={e => restoreDefault(e, border, "border", "#333333")}
-                class="navBarIcon active smaller"
-                data-tooltip="Restore default color"
-                use:tooltip
-              >
-                <use href="#undo-icon" />
-              </svg>
+              <IconButton icon="undo" tip="Restore default color" onclick={restoreDefaultBorder} />
             {/if}
             <input type="color" bind:value={$border} />
           </NavItem>
@@ -246,14 +261,7 @@
           <NavItem>
             <span>Width</span>
             {#if $borderWidth !== 1}
-              <svg
-                on:click={e => restoreDefault(e, borderWidth, "borderWidth", "#333333")}
-                class="navBarIcon active smaller"
-                data-tooltip="Restore default border width"
-                use:tooltip
-              >
-                <use href="#undo-icon" />
-              </svg>
+              <IconButton icon="undo" tip="Restore default border width" onclick={restoreDefaultBorderWidth} />
             {/if}
             <input
               class="right"
@@ -278,18 +286,10 @@
         <div class="dropdown level2">
           <NavItem tip="Window background color">
             <span>Color</span>
-            <svg on:click={getRandomColor} class="navBarIcon active smaller" data-tooltip="Select random color" use:tooltip>
-              <use href="#random-icon" />
-            </svg>
+            <IconButton icon="random" tip="Use random color" onclick={getRandomColor} />
+
             {#if $background !== "#333333"}
-              <svg
-                on:click={e => restoreDefault(e, background, "background", "#333333")}
-                class="navBarIcon active smaller"
-                data-tooltip="Restore default color"
-                use:tooltip
-              >
-                <use href="#undo-icon" />
-              </svg>
+              <IconButton icon="undo" tip="Restore default color" onclick={restoreDefaultBackground} />
             {/if}
             <input type="color" bind:value={$background} />
           </NavItem>
@@ -321,16 +321,11 @@
     </div>
   </div>
 
-  <NavButton disabled={!$matrix} onclick={rollback} tip="Roll to the previous list" gesture="Swipe up" hotkey="Backspace">
-    {@html getIcon("rollback")}
-  </NavButton>
-
-  <NavButton onclick={reroll} tip="Regenerate coat of arms" gesture="Swipe down" hotkey="Enter">
-    {@html getIcon("reroll")}
-  </NavButton>
+  <NavButton value="rollback" disabled={!$matrix} onclick={rollback} tip="Roll to the previous list" gesture="Swipe up" hotkey="Backspace" />
+  <NavButton value="reroll" onclick={reroll} tip="Regenerate coat of arms" gesture="Swipe down" hotkey="Enter" />
 
   <div class="container">
-    <NavItem>{@html getIcon("save")}</NavItem>
+    <NavItem value="save" />
     <div class="dropdown level1">
       <NavButton
         onclick={() => download(null, "svg")}
@@ -365,58 +360,33 @@
   </div>
 
   <div class="container">
-    <NavItem>{@html getIcon("upload")}</NavItem>
+    <NavItem value="upload" />
     <div class="dropdown level1">
-      <NavButton
-        onclick={() => {
-          $state.raster = 1;
-        }}
-        tip="Upload raster charge (one color, quality loss on scale) from jpg, png or svg image"
-      >
+      <NavButton onclick={showRasterUpload} tip="Upload raster charge (one color, quality loss on scale) from jpg, png or svg image">
         <span>Raster charge</span>
       </NavButton>
 
-      <NavButton
-        onclick={() => {
-          $state.vector = 1;
-        }}
-        tip="Upload vector charge (multicolor and lossless scalable) from prepared svg"
-      >
+      <NavButton onclick={showVectorUpload} tip="Upload vector charge (multicolor and lossless scalable) from prepared svg">
         <span>Vector charge</span>
       </NavButton>
     </div>
   </div>
 
   {#if installable}
-    <NavButton onclick={install} flutter tip="Add Armoria application to the desktop or home screen">
-      {@html getIcon("install")}
-    </NavButton>
+    <NavButton value="install" onclick={install} flutter tip="Add Armoria application to the desktop or home screen" />
   {/if}
 
   {#if $state.edit}
-    <NavButton disabled={!position} onclick={changes.undo} tip="Revert the latest change" gesture="Swipe left" hotkey="Z">
-      {@html getIcon("undo")}
-    </NavButton>
-
-    <NavButton disabled={!redoable} onclick={changes.redo} tip="Restore the next change" gesture="Swipe right" hotkey="X">
-      {@html getIcon("redo")}
-    </NavButton>
+    <NavButton value="undo" disabled={!position} onclick={changes.undo} tip="Revert the latest change" gesture="Swipe left" hotkey="Z" />
+    <NavButton value="redo" disabled={!redoable} onclick={changes.redo} tip="Restore the next change" gesture="Swipe right" hotkey="X" />
   {/if}
 
-  <BackButton>{@html getIcon("back")}</BackButton>
+  <BackButton />
 
   {#if wideScreen || !$state.edit}
-    <NavButton onclick={showLicense} tip="Show information about license">
-      {@html getIcon("license")}
-    </NavButton>
-
-    <NavButton onclick={showAbout} tip="Show about screen" hotkey="F1">
-      {@html getIcon("about")}
-    </NavButton>
-
-    <NavButton onclick={() => openURL("https://www.patreon.com/azgaar")} tip="Support the project on Patreon">
-      {@html getIcon("support")}
-    </NavButton>
+    <NavButton value="license" onclick={showLicense} tip="Show information about license" />
+    <NavButton value="about" onclick={showAbout} tip="Show about screen" hotkey="F1" />
+    <NavButton value="support" onclick={() => openURL("https://www.patreon.com/azgaar")} tip="Support the project on Patreon" />
   {/if}
 </nav>
 
@@ -426,22 +396,6 @@
     align-items: center;
     background-color: #1b1c1d;
     height: 45px;
-  }
-
-  :global(svg.navBarIcon) {
-    width: 1em;
-    height: 1em;
-    stroke: none;
-    vertical-align: middle;
-  }
-
-  .navBarIcon.smaller {
-    width: 0.8em;
-    height: 0.8em;
-  }
-
-  .navBarIcon.smaller:active {
-    transform: translateY(1px);
   }
 
   input[type="color"] {

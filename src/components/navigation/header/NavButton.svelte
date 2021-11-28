@@ -1,6 +1,7 @@
 <script lang="ts">
   // @ts-check
   import {tooltip} from "scripts/tooltip";
+  export let value: string = undefined;
   export let tip: string = undefined;
   export let gesture: string = undefined;
   export let hotkey: string = undefined;
@@ -8,9 +9,19 @@
   export let selected: boolean = false;
   export let flutter: boolean = false;
   export let onclick: (event: Event) => void;
+
+  $: showIcon = window.innerWidth <= 600;
 </script>
 
 <li class:disabled class:selected class:flutter data-tooltip={tip} data-gesture={gesture} data-hotkey={hotkey} on:click={onclick} use:tooltip>
+  {#if value && showIcon}
+    <svg>
+      <use href="#{value}-icon" />
+    </svg>
+  {:else if value}
+    {value}
+  {/if}
+
   <slot />
 </li>
 
@@ -45,5 +56,13 @@
     content: "\2713";
     display: inline-block;
     padding: 0 6px 0 0;
+  }
+
+  svg {
+    fill: currentColor;
+    stroke: none;
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
   }
 </style>
