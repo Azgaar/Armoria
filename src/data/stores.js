@@ -21,11 +21,11 @@ export const showGrid = writable(options.showGrid);
 export const history = writable([]);
 export const matrices = writable([]);
 export const matrix = writable(0);
-export const state = writable({edit: 0, about: 0, i: 0});
+export const state = writable({edit: 0, about: 0, license: 0, tinctures: 0, i: 0});
 export const message = writable(null);
 
 const createChangesTracker = () => {
-  const {subscribe, set, update} = writable([undefined, -1]);
+  const {subscribe, set, update} = writable(["", -1]);
   let history = [];
   let position = -1;
 
@@ -34,8 +34,9 @@ const createChangesTracker = () => {
     refresh: () => set([history[position], position]), // trigger coa refresh
     length: () => history.length,
     reset: () => {
-      (history = []), (position = -1);
-      set([undefined, -1]);
+      history = [];
+      position = -1;
+      set(["", -1]);
     },
     add(value) {
       if (value === history[position]) return; // no change

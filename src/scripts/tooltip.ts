@@ -5,6 +5,8 @@ const removalDelay = 20000;
 export const tooltip = (element: HTMLElement) => {
   const isTouchAvailable = "ontouchstart" in window;
   const tooltip = element.dataset.tooltip;
+  const gesture = element.dataset.gesture || element.getAttribute("gesture");
+  const hotkey = element.dataset.hotkey || element.getAttribute("hotkey");
 
   if (!tooltip) {
     return;
@@ -15,9 +17,6 @@ export const tooltip = (element: HTMLElement) => {
 
   function mouseEnter() {
     forEach(".tooltip", el => el.remove());
-
-    const gesture = element.getAttribute("gesture");
-    const hotkey = element.getAttribute("hotkey");
 
     let text = tooltip;
     if (isTouchAvailable && gesture) text += ". Gesture: " + gesture;

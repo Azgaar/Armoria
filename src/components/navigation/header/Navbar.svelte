@@ -1,14 +1,17 @@
-<script>
+<script lang="ts">
+  // @ts-check
+  import type {Writable} from "svelte/store";
   import Logo from "./Logo.svelte";
   import NavItem from "./NavItem.svelte";
   import NavButton from "./NavButton.svelte";
   import BackButton from "./BackButton.svelte";
   import Lock from "./Lock.svelte";
   import {download} from "scripts/download";
+  import {tooltip} from "scripts/tooltip";
   import {sizes, gradients, diapers} from "config/options";
   import {size, grad, diaper, shield, background, scale, border, borderWidth, matrix, state, changes, message} from "data/stores";
   import {shields, shieldPaths} from "data/shields";
-  import {tooltip} from "scripts/tooltip";
+  import {openURL} from "scripts/utils";
 
   let installable = false;
   let prompt = null;
@@ -18,19 +21,19 @@
   $: position = $changes[1];
   $: redoable = position < changes.length() - 1;
 
-  function getIcon(icon, active = "active") {
+  function getIcon(icon: string, active = "active") {
     if (wideScreen) return `<span class="navBarIcon ${active}">${icon}</span>`;
     return `<svg class="navBarIcon ${active}"><use href="#${icon}-icon"></use></svg>`;
   }
 
-  function change(e, store, value, key) {
-    e.stopPropagation();
+  function change(event: Event, store: Writable<any>, value: any, key: string) {
+    event.stopPropagation();
     store.set(value);
     localStorage.setItem(key, value);
 
     // update coa on shield change
     if (key === "shield" && changes.length()) {
-      const coa = JSON.parse($changes[0]);
+      const coa = JSON.parse($changes[0] as string);
       coa.shield = $shield;
       changes.add(JSON.stringify(coa));
     }
@@ -49,36 +52,35 @@
   }
 
   function copyEditLink() {
-    const coa = $changes[0].replaceAll("#", "%23");
+    const coa = ($changes[0] as string).replaceAll("#", "%23");
     const url = location.origin + location.pathname + "?coa=" + coa;
     copyToClipboard(url, "Coat of arms link is copied to your clipboard");
   }
 
   function copyAPILink() {
-    const encoded = encodeURI($changes[0]);
+    const encoded = encodeURI($changes[0] as string);
     const API = "https://armoria.herokuapp.com/";
     const url = `${API}?size=500&format=png&coa=${encoded}`;
     copyToClipboard(url, "API link is copied to your clipboard");
   }
 
   function copyCOA() {
-    const encoded = encodeURI($changes[0]);
+    const encoded = encodeURI($changes[0] as string);
     copyToClipboard(encoded, "Encoded COA string is copied to your clipboard");
   }
 
-  function copyToClipboard(stringToCopy, response) {
+  function copyToClipboard(stringToCopy: string, text: string) {
     $message = null;
 
     navigator.clipboard.writeText(stringToCopy).then(
       () => {
         $message = null;
         setTimeout(() => {
-          $message = {type: "success", text: response, timeout: 5000};
+          $message = {type: "success", text, timeout: 5000};
         }, 500);
       },
       err => {
-        const text = "Cannot copy to the clipboard!";
-        $message = {type: "error", text, timeout: 5000};
+        $message = {type: "error", text: "Cannot copy to the clipboard!", timeout: 5000};
         console.error(err);
       }
     );
@@ -87,7 +89,9 @@
   function install() {
     installable = false;
     prompt.prompt();
-    prompt.userChoice.then(choise => (prompt = null));
+    prompt.userChoice.then(() => {
+      prompt = null;
+    });
   }
 
   const rollback = () => {
@@ -125,8 +129,8 @@
   // values to be always saved
   $: localStorage.setItem("background", $background);
   $: localStorage.setItem("border", $border);
-  $: localStorage.setItem("borderWidth", $borderWidth);
-  $: localStorage.setItem("scale", $scale);
+  $: localStorage.setItem("borderWidth", String($borderWidth));
+  $: localStorage.setItem("scale", String($scale));
 </script>
 
 <nav>
@@ -142,12 +146,12 @@
             <div class="container">
               <div class="dropdown level3 iconed">
                 {#each Object.keys(shields[type]) as sh}
-                  <bt on:click={e => change(e, shield, sh, "shield")}>
+                  <NavButton onclick={event => change(event, shield, sh, "shield")}>
                     <svg class="shield" class:selected={sh === $shield} width="26" height="26" viewBox="0 0 200 210">
                       <path d={shieldPaths[sh]} />
                     </svg>
                     {sh.split(/(?=[A-Z])/).join(" ")}
-                  </bt>
+                  </NavButton>
                 {/each}
               </div>
 
@@ -191,7 +195,9 @@
       <div class="container">
         <div class="dropdown level2">
           {#each diapers as d}
-            <bt class:selected={d === $diaper} on:click={e => change(e, diaper, d, "diaper")}>{d}</bt>
+            <NavButton selected={d === $diaper} onclick={e => change(e, diaper, d, "diaper")}>
+              <span>{d}</span>
+            </NavButton>
           {/each}
         </div>
 
@@ -206,7 +212,9 @@
       <div class="container">
         <div class="dropdown level2">
           {#each sizes as s}
-            <bt class:selected={$size == s[0]} on:click={e => change(e, size, s[0], "size")}>{s[1]}</bt>
+            <NavButton selected={s[0] === $size} onclick={e => change(e, size, s[0], "size")}>
+              <span>{s[1]}</span>
+            </NavButton>
           {/each}
         </div>
 
@@ -294,10 +302,10 @@
 
       <div class="container">
         <div class="dropdown level2">
-          <bl class="wide">
+          <NavItem wide>
             <input type="range" min="1" max="4" step=".1" bind:value={$scale} />
             <input type="number" min="1" max="4" step=".1" bind:value={$scale} />
-          </bl>
+          </NavItem>
         </div>
 
         <NavItem tip="Downloaded image size, 1 is default size, 2 - 2x size, etc.">
@@ -406,7 +414,7 @@
       {@html getIcon("about")}
     </NavButton>
 
-    <NavButton onclick={() => window.open("https://www.patreon.com/azgaar", "_blank")} tip="Support the project on Patreon">
+    <NavButton onclick={() => openURL("https://www.patreon.com/azgaar")} tip="Support the project on Patreon">
       {@html getIcon("support")}
     </NavButton>
   {/if}
@@ -487,17 +495,6 @@
     margin-left: 9em;
   }
 
-  .dropdown bt,
-  .dropdown bl {
-    padding: 12px 16px;
-    width: 8em;
-    display: block;
-  }
-
-  .dropdown bl.wide {
-    width: 12em;
-  }
-
   .container:hover > .dropdown {
     display: block;
   }
@@ -512,12 +509,6 @@
 
   /* low-height screen */
   @media only screen and (max-height: 640px) and (orientation: landscape) {
-    .dropdown bt,
-    .dropdown bl {
-      padding: 6px 16px;
-      width: 7em;
-    }
-
     .level2 {
       margin-left: 9.25em;
     }

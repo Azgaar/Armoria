@@ -53,3 +53,7 @@ export function capitalize(string: string) {
 export function link(url: string, text: string) {
   return `<a href="${url}" target="_blank">${text}</a>`;
 }
+
+export function openURL(url: string) {
+  return window.open(url, "_blank");
+}

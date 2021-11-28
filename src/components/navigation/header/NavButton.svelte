@@ -1,15 +1,16 @@
-<script>
+<script lang="ts">
+  // @ts-check
   import {tooltip} from "scripts/tooltip";
-  export let tip;
-  export let gesture;
-  export let hotkey;
-  export let disabled;
-  export let selected;
-  export let flutter;
-  export let onclick;
+  export let tip: string = undefined;
+  export let gesture: string = undefined;
+  export let hotkey: string = undefined;
+  export let disabled: boolean = false;
+  export let selected: boolean = false;
+  export let flutter: boolean = false;
+  export let onclick: (event: Event) => void;
 </script>
 
-<li class:disabled class:selected class:flutter data-tooltip={tip} {gesture} {hotkey} on:click={onclick} use:tooltip>
+<li class:disabled class:selected class:flutter data-tooltip={tip} data-gesture={gesture} data-hotkey={hotkey} on:click={onclick} use:tooltip>
   <slot />
 </li>
 

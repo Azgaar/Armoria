@@ -1,10 +1,12 @@
-<script>
+<script lang="ts">
+  // @ts-check
   import {tooltip} from "scripts/tooltip";
 
-  export let tip;
+  export let tip: string = undefined;
+  export let wide: boolean = false;
 </script>
 
-<li data-tooltip={tip} use:tooltip>
+<li class:wide data-tooltip={tip} use:tooltip>
   <slot />
 </li>
 
@@ -20,5 +22,9 @@
 
   li:hover {
     background-color: #2d2e2f;
+  }
+
+  li.wide {
+    width: 12em;
   }
 </style>
