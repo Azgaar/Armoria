@@ -434,53 +434,22 @@
     display: none;
     position: fixed;
     background-color: #1b1c1d;
-    min-width: 9em;
+    min-width: 10em;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
   }
 
   .level2 {
-    margin-left: 9em;
+    margin-left: 10em;
   }
 
   .level3 {
     z-index: 2;
-    margin-left: 9em;
+    margin-left: 10em;
   }
 
   .container:hover > .dropdown {
     display: block;
-  }
-
-  /* low-width (narrow) screen */
-  @media only screen and (max-width: 720px) {
-    .level3 {
-      margin-left: -10.25em;
-      background-color: #222;
-    }
-  }
-
-  /* low-height screen */
-  @media only screen and (max-height: 640px) and (orientation: landscape) {
-    .level2 {
-      margin-left: 9.25em;
-    }
-
-    .level3 {
-      margin-left: 9.25em;
-    }
-  }
-
-  @media only screen and (max-height: 640px) and (min-width: 520px) and (orientation: landscape) {
-    .level3 {
-      column-count: 2;
-    }
-  }
-
-  @media only screen and (max-height: 640px) and (min-width: 680px) and (orientation: landscape) {
-    .level3 {
-      column-count: 3;
-    }
   }
 
   .dropdown.iconed {

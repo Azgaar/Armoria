@@ -136,3 +136,27 @@ font {
     transform: translate3d(0, 0, 0);
   }
 }
+
+/* Navbar */
+/* low-height screen */
+@media (max-height: 640px) {
+  nav div.container > li,
+  nav div.dropdown > li {
+    padding: 0.5em 1em;
+  }
+}
+
+/* low-width (narrow) screen */
+@media (max-width: 540px) {
+  nav div.container > div.dropdown.level3 {
+    margin-left: -10em;
+    background-color: #222;
+  }
+}
+
+/* low-height screen */
+@media (min-width: 540px) and (max-height: 640px) {
+  nav div.level3 {
+    columns: 2;
+  }
+}
