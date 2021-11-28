@@ -1,6 +1,8 @@
 <script lang="ts">
   // @ts-check
   import {tooltip} from "scripts/tooltip";
+  import {iconedNavbar} from "config/layout";
+
   export let value: string = undefined;
   export let tip: string = undefined;
   export let gesture: string = undefined;
@@ -9,12 +11,10 @@
   export let selected: boolean = false;
   export let flutter: boolean = false;
   export let onclick: (event: Event) => void;
-
-  $: showIcon = window.innerWidth <= 600;
 </script>
 
 <li class:disabled class:selected class:flutter data-tooltip={tip} data-gesture={gesture} data-hotkey={hotkey} on:click={onclick} use:tooltip>
-  {#if value && showIcon}
+  {#if value && iconedNavbar}
     <svg>
       <use href="#{value}-icon" />
     </svg>

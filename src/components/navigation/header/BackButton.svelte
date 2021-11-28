@@ -1,6 +1,7 @@
 <script>
   import {fade} from "svelte/transition";
   import NavButton from "./NavButton.svelte";
+  import {iconedNavbar} from "config/layout";
   import {state} from "data/stores";
 
   const exitEdit = () => {
@@ -11,7 +12,13 @@
 {#if $state.edit}
   <div transition:fade>
     <NavButton onclick={exitEdit} tip="Get back to Gallery" hotkey="Escape">
-      <slot />
+      {#if iconedNavbar}
+        <svg>
+          <use href="#back-icon" />
+        </svg>
+      {:else}
+        Back
+      {/if}
     </NavButton>
   </div>
 {/if}
@@ -20,5 +27,13 @@
   div {
     position: absolute;
     right: 0;
+  }
+
+  svg {
+    fill: currentColor;
+    stroke: none;
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
   }
 </style>

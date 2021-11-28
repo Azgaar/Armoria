@@ -1,16 +1,15 @@
 <script lang="ts">
   // @ts-check
   import {tooltip} from "scripts/tooltip";
+  import {iconedNavbar} from "config/layout";
 
   export let value: string = undefined;
   export let tip: string = undefined;
   export let wide: boolean = false;
-
-  $: showIcon = window.innerWidth <= 600;
 </script>
 
 <li class:wide data-tooltip={tip} use:tooltip>
-  {#if value && showIcon}
+  {#if value && iconedNavbar}
     <svg>
       <use href="#{value}-icon" />
     </svg>

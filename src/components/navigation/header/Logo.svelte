@@ -1,6 +1,6 @@
 <script lang="ts">
   // @ts-check
-  const showLogo = window.innerWidth > 600;
+  import {showLogo} from "config/layout";
 
   const redirectToHome = () => {
     location.href = location.origin + location.pathname;
