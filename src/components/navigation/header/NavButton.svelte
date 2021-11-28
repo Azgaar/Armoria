@@ -4,11 +4,12 @@
   export let gesture;
   export let hotkey;
   export let disabled;
+  export let selected;
   export let flutter;
   export let onclick;
 </script>
 
-<li class:disabled class:flutter data-tooltip={tip} {gesture} {hotkey} on:click={onclick} use:tooltip>
+<li class:disabled class:selected class:flutter data-tooltip={tip} {gesture} {hotkey} on:click={onclick} use:tooltip>
   <slot />
 </li>
 
@@ -37,5 +38,11 @@
   li.disabled {
     pointer-events: none;
     color: #333;
+  }
+
+  li.selected:before {
+    content: "\2713";
+    display: inline-block;
+    padding: 0 6px 0 0;
   }
 </style>

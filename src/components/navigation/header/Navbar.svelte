@@ -106,6 +106,10 @@
     $state.about = 1;
   };
 
+  const showTinctures = () => {
+    $state.tinctures = 1;
+  };
+
   window.addEventListener("beforeinstallprompt", e => {
     console.log("beforeinstallprompt is fired");
     //e.preventDefault(); // no default prompt
@@ -161,16 +165,18 @@
         {/key}
       </div>
 
-      <bt on:click={() => ($state.tinctures = 1)} data-tooltip="Setup tinctures selection chance and hue" use:tooltip>
+      <NavButton onclick={showTinctures} tip="Setup tinctures (colors)">
         <Lock key="tinctures" />
         <Lock key="colors" />
-        <span>Tinctures</span>
-      </bt>
+        <span>Colors</span>
+      </NavButton>
 
       <div class="container">
         <div class="dropdown level2">
-          {#each gradients as g}
-            <bt class:selected={g === $grad} on:click={e => change(e, grad, g, "grad")}>{g}</bt>
+          {#each gradients as gradient}
+            <NavButton selected={gradient === $grad} onclick={e => change(e, grad, gradient, "grad")}>
+              <span>{gradient}</span>
+            </NavButton>
           {/each}
         </div>
 
@@ -262,8 +268,8 @@
 
       <div class="container">
         <div class="dropdown level2">
-          <bl
-            >Color
+          <NavItem tip="Window background color">
+            <span>Color</span>
             <svg on:click={getRandomColor} class="navBarIcon active smaller" data-tooltip="Select random color" use:tooltip>
               <use href="#random-icon" />
             </svg>
@@ -278,7 +284,7 @@
               </svg>
             {/if}
             <input type="color" bind:value={$background} />
-          </bl>
+          </NavItem>
         </div>
 
         <NavItem tip="Window background color">
@@ -293,13 +299,16 @@
             <input type="number" min="1" max="4" step=".1" bind:value={$scale} />
           </bl>
         </div>
-        <bl data-tooltip="Downloaded image size, 1 is default size, 2 - 2x size, etc." use:tooltip>
+
+        <NavItem tip="Downloaded image size, 1 is default size, 2 - 2x size, etc.">
           <span>Scale</span>
-        </bl>
+        </NavItem>
       </div>
 
       {#if !wideScreen && $state.edit}
-        <bt on:click={() => ($state.license = 1)} data-tooltip="Show information about license" use:tooltip> License </bt>
+        <NavButton onclick={showLicense} tip="Show information about license">
+          <span>License</span>
+        </NavButton>
       {/if}
     </div>
   </div>
@@ -470,13 +479,12 @@
   }
 
   .level2 {
-    z-index: 1;
-    margin-left: 10.25em;
+    margin-left: 9em;
   }
 
   .level3 {
     z-index: 2;
-    margin-left: 10.25em;
+    margin-left: 9em;
   }
 
   .dropdown bt,
@@ -492,12 +500,6 @@
 
   .container:hover > .dropdown {
     display: block;
-  }
-
-  .dropdown bt.selected:before {
-    content: "\2713";
-    display: inline-block;
-    padding: 0 6px 0 0;
   }
 
   /* low-width (narrow) screen */
