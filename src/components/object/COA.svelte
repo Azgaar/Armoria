@@ -4,7 +4,10 @@
   import Positions from "./../editor/Positions.svelte";
   import {shield, border, borderWidth} from "data/stores";
   import {shieldBox} from "data/shields";
-  export let coa, i, w, h;
+  export let coa,
+    i,
+    w = "100%",
+    h = "100%";
   $: viewBox = shieldBox[$shield] || "0 0 200 200";
 </script>
 

@@ -61,3 +61,7 @@ export function link(url: string, text: string) {
 export function openURL(url: string) {
   return window.open(url, "_blank");
 }
+
+export const minmax = (value: number, min: number, max: number) => {
+  return Math.max(Math.min(Math.round(value), max), min);
+};

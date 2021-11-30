@@ -1,34 +1,32 @@
 <script>
-  import COA from "./../object/COA.svelte";
-  import EditorType from "./EditorType.svelte";
-  import EditorSize from "./EditorSize.svelte";
-  import EditorTincture from "./EditorTincture.svelte";
-  import EditorPattern from "./EditorPattern.svelte";
-  import EditorCharge from "./EditorCharge.svelte";
-  import EditorDivision from "./EditorDivision.svelte";
-  import EditorDivided from "./EditorDivided.svelte";
-  import EditorLine from "./EditorLine.svelte";
-  import EditorOrdinary from "./EditorOrdinary.svelte";
-  import EditorStroke from "./EditorStroke.svelte";
-  import EditorPosition from "./EditorPosition.svelte";
-  import EditorShift from "./EditorShift.svelte";
-  import EditorControls from "./EditorControls.svelte";
-  import EditorAbove from "./EditorAbove.svelte";
-  import {slide, fly} from "svelte/transition";
-  import {history, changes, tinctures, state, grid, showGrid, message, shield} from "data//stores";
+  import {changes, grid, history, message, shield, showGrid, state, tinctures} from "data//stores";
   import {charges, divisions, ordinaries} from "data/dataModel";
   import {generate} from "scripts/generator";
-  import {rw, ra} from "scripts/utils";
+  import {minmax, ra, rw} from "scripts/utils";
+  import {fade, fly, slide} from "svelte/transition";
+  import COA from "./../object/COA.svelte";
+  import EditorAbove from "./EditorAbove.svelte";
+  import EditorCharge from "./EditorCharge.svelte";
+  import EditorControls from "./EditorControls.svelte";
+  import EditorDivided from "./EditorDivided.svelte";
+  import EditorDivision from "./EditorDivision.svelte";
+  import EditorLine from "./EditorLine.svelte";
+  import EditorOrdinary from "./EditorOrdinary.svelte";
+  import EditorPattern from "./EditorPattern.svelte";
+  import EditorPosition from "./EditorPosition.svelte";
+  import EditorShift from "./EditorShift.svelte";
+  import EditorSize from "./EditorSize.svelte";
+  import EditorStroke from "./EditorStroke.svelte";
+  import EditorTincture from "./EditorTincture.svelte";
+  import EditorType from "./EditorType.svelte";
   export let c, seed;
-  let menu = {},
-    section = {field: 0, division: 0, ordinary: [], charge: []};
+  let menu = {};
+  let section = {field: 0, division: 0, ordinary: [], charge: []};
 
-  const ratio = window.innerHeight / window.innerWidth;
-  const coaSize = window.innerWidth > window.innerHeight ? Math.round(window.innerHeight * 0.9) : "100%";
-  let width = window.innerWidth < 600 || ratio > 1 ? 100 : Math.round((1.06 - ratio) * 100);
-  if ((width / 100) * window.innerWidth < 300) width = 100;
-  let itemSize = Math.floor((width / 1000) * window.innerWidth - 5); // 10 items in row
-  if (window.innerWidth < 600) itemSize *= 2; // 5 items in row for narrow screens
+  const {innerWidth: width, innerHeight: height} = window;
+  const isLandscape = innerWidth > innerHeight;
+  const rawSize = width < 600 ? width / 10 - 5 : width / 5 - 10;
+  const itemSize = minmax(rawSize, 50, 100);
 
   $state.transform = null;
   $state.positions = null;
@@ -307,11 +305,11 @@
   }
 </script>
 
-<div id="editor">
+<div id="editor" transition:fade={{duration: 500}}>
   {#key coa}
-    <COA {coa} i="Edit" w={coaSize} h={coaSize} />
+    <COA {coa} i="Edit" />
   {/key}
-  <div id="menu" in:fly={{x: 1000, duration: 1000}} style="width:{width}%">
+  <div id="menu" in:fly={{x: isLandscape ? 1000 : 0, y: isLandscape ? 0 : 1000, duration: 1000}} out:fly={{x: 0, y: 0, duration: 400}}>
     <!-- Field -->
     <div class="section" class:expanded={section.field} on:click={() => (section.field = !section.field)}>Field</div>
     {#if section.field}
@@ -524,25 +522,24 @@
   #editor {
     width: 100%;
     height: calc(100% - 45px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    user-select: none;
-    flex-direction: row;
+    display: grid;
+    justify-items: center;
+    grid-template-columns: auto minmax(40%, 60%);
   }
 
   #menu {
+    width: 100%;
     overflow-x: hidden;
     overflow-y: auto;
     scrollbar-width: thin;
-    transition: 0.5s;
+    transition: 1s;
     background-color: #11111180;
-    height: 100%;
   }
 
   @media only screen and (orientation: portrait) {
     #editor {
-      flex-direction: column;
+      grid-template-columns: none;
+      grid-template-rows: minmax(25%, 1fr) auto;
     }
   }
 
