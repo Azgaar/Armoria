@@ -1,9 +1,9 @@
 <script>
-  import COA from "./../object/COA.svelte";
-  import {fade} from "svelte/transition";
-  import {generate} from "scripts/generator";
-  import {download} from "scripts/download";
   import {history, matrices, matrix, state} from "data/stores";
+  import {download} from "scripts/download";
+  import {generate} from "scripts/generator";
+  import {fade} from "svelte/transition";
+  import COA from "./../object/COA.svelte";
   export let gallery, w, h;
 
   $: font = Math.max(Math.min(Math.ceil(w / 20), 12), 6);
@@ -28,7 +28,7 @@
   }
 </script>
 
-<div id="gallery" style="font-size: {font}px" transition:fade>
+<div id="gallery" style="font-size: {font}px" in:fade={{duration: 1800}} out:fade={{duration: 500}}>
   {#each coas as coa, i}
     <div>
       {#key coa}

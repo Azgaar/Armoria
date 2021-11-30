@@ -1,13 +1,14 @@
 <script>
-  import Shield from "./Shield.svelte";
+  import {shieldBox} from "data/shields";
+  import {border, borderWidth, shield} from "data/stores";
   import Grid from "./../editor/Grid.svelte";
   import Positions from "./../editor/Positions.svelte";
-  import {shield, border, borderWidth} from "data/stores";
-  import {shieldBox} from "data/shields";
+  import Shield from "./Shield.svelte";
   export let coa,
     i,
     w = "100%",
     h = "100%";
+
   $: viewBox = shieldBox[$shield] || "0 0 200 200";
 </script>
 
