@@ -82,6 +82,7 @@
     stroke-width: 0.5em;
     vertical-align: middle;
     margin: 0 0.5em;
+    transition: 0.1s ease-in-out;
   }
 
   .control > svg:hover {
@@ -90,6 +91,6 @@
   }
 
   .control > svg:active {
-    transform: translateY(1px);
+    transform: translateY(1px) rotate(180deg);
   }
 </style>
