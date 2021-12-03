@@ -4,6 +4,7 @@
   import {iconedNavbar} from "config/layout";
 
   export let value: string = undefined;
+  export let label: string = undefined;
   export let tip: string = undefined;
   export let gesture: string = undefined;
   export let hotkey: string = undefined;
@@ -23,8 +24,8 @@
     <svg>
       <use href="#{value}-icon" />
     </svg>
-  {:else if value}
-    {value}
+  {:else if label}
+    {label}
   {/if}
 
   <slot />
@@ -34,7 +35,6 @@
   li {
     user-select: none;
     padding: 1em;
-    text-transform: capitalize;
     list-style: none;
     transition: all 0.1s;
   }

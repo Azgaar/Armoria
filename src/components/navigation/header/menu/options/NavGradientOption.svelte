@@ -1,5 +1,6 @@
 <script lang="ts">
   // @ts-check
+  import {_ as t} from "svelte-i18n";
   import NavButton from "../../shared/NavButton.svelte";
   import NavItem from "../../shared/NavItem.svelte";
   import Lock from "../../shared/Lock.svelte";
@@ -16,7 +17,7 @@
   <div class="dropdown level2">
     {#each gradients as gradient}
       <NavButton selected={gradient === $grad} onclick={() => changeGradient(gradient)}>
-        {gradient}
+        {$t(`gradient.${gradient}`)}
       </NavButton>
     {/each}
   </div>
@@ -24,7 +25,7 @@
   {#key $grad}
     <NavItem tip="Overlay style to be applied on top of coat of arms">
       <Lock key="grad" />
-      Gradient
+      {$t(`menu.gradient`)}
     </NavItem>
   {/key}
 </div>

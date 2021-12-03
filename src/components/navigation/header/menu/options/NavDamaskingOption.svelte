@@ -1,5 +1,6 @@
 <script lang="ts">
   // @ts-check
+  import {_ as t} from "svelte-i18n";
   import NavButton from "../../shared/NavButton.svelte";
   import NavItem from "../../shared/NavItem.svelte";
   import Lock from "../../shared/Lock.svelte";
@@ -16,7 +17,7 @@
   <div class="dropdown level2">
     {#each diapers as d}
       <NavButton selected={d === $diaper} onclick={() => changeDamasking(d)}>
-        {d}
+        {$t(`diaper.${d}`)}
       </NavButton>
     {/each}
   </div>
@@ -24,7 +25,7 @@
   {#key $diaper}
     <NavItem tip="Backing style for coat of arms, also known as diaper">
       <Lock key="diaper" />
-      Damasking
+      {$t(`menu.damasking`)}
     </NavItem>
   {/key}
 </div>

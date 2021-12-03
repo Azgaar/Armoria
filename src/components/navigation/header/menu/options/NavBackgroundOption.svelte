@@ -1,5 +1,6 @@
 <script lang="ts">
   // @ts-check
+  import {_ as t} from "svelte-i18n";
   import NavItem from "../../shared/NavItem.svelte";
   import IconButton from "../../shared/IconButton.svelte";
   import {background} from "data/stores";
@@ -23,7 +24,7 @@
 <div class="container">
   <div class="dropdown level2">
     <NavItem tip="Window background color">
-      Color
+      {$t(`menu.color`)}
       <IconButton icon="random" tip="Use random color" onclick={getRandomColor} />
 
       {#if $background !== DEFAULT_BACKGROUND}
@@ -33,5 +34,7 @@
     </NavItem>
   </div>
 
-  <NavItem tip="Window background color">Background</NavItem>
+  <NavItem tip="Window background color">
+    {$t(`menu.background`)}
+  </NavItem>
 </div>

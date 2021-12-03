@@ -1,5 +1,6 @@
 <script lang="ts">
   // @ts-check
+  import {_ as t} from "svelte-i18n";
   import NavButton from "../../shared/NavButton.svelte";
   import NavItem from "../../shared/NavItem.svelte";
   import Lock from "../../shared/Lock.svelte";
@@ -32,12 +33,12 @@
               <svg class:selected={shieldName === $shield} width="26" height="26" viewBox="0 0 200 210">
                 <path d={shieldPaths[shieldName]} />
               </svg>
-              {splitToWords(shieldName)}
+              {$t(`shield.${shieldType}.${shieldName}`)}
             </NavButton>
           {/each}
         </div>
 
-        <NavItem>{splitToWords(shieldType)}</NavItem>
+        <NavItem>{$t(`shield.types.${shieldType}`)}</NavItem>
       </div>
     {/each}
   </div>
@@ -45,7 +46,7 @@
   {#key $shield}
     <NavItem tip="Shield or banner shape. If not set, a random one is selected on reroll">
       <Lock key="shield" />
-      Shield
+      {$t(`menu.shield`)}
     </NavItem>
   {/key}
 </div>

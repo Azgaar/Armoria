@@ -1,5 +1,6 @@
 <script lang="ts">
   // @ts-check
+  import {_ as t} from "svelte-i18n";
   import {state} from "data/stores";
   import Lock from "../../shared/Lock.svelte";
   import NavButton from "../../shared/NavButton.svelte";
@@ -12,5 +13,5 @@
 <NavButton onclick={showTinctures} tip="Setup tinctures (colors)">
   <Lock key="tinctures" />
   <Lock key="colors" />
-  Colors
+  {$t(`menu.colors`)}
 </NavButton>

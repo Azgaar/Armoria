@@ -4,6 +4,7 @@
   import {iconedNavbar} from "config/layout";
 
   export let value: string = undefined;
+  export let label: string = undefined;
   export let tip: string = undefined;
   export let wide: boolean = false;
 </script>
@@ -13,8 +14,8 @@
     <svg>
       <use href="#{value}-icon" />
     </svg>
-  {:else if value}
-    {value}
+  {:else if label}
+    {label}
   {/if}
 
   <slot />

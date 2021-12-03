@@ -13,6 +13,7 @@
   import {background, size, history, matrices, matrix, state, message, shield} from "data/stores";
   import {shields} from "data/shields";
   import {rw} from "scripts/utils";
+  import "scripts/i18n";
 
   let n,
     w,

@@ -1,0 +1,124 @@
+{
+  "menu": {
+    "options": "Options",
+    "rollback": "Rollback",
+    "reroll": "Reroll",
+    "save": "Save",
+    "upload": "Upload",
+    "license": "License",
+    "about": "About",
+    "support": "Support",
+    "language": "Language",
+    "shield": "Shield",
+    "colors": "Colors",
+    "gradient": "Gradient",
+    "damasking": "Damasking",
+    "gallery": "Gallery",
+    "border": "Border",
+    "background": "Background",
+    "scale": "Scale",
+    "width": "Width",
+    "color": "Color",
+    "downloadSVG": "Download SVG",
+    "downloadPNG": "Download PNG",
+    "downloadJPEG": "Download JPEG",
+    "copyEditLink": "Copy edit link",
+    "copyApiLink": "Copy API link",
+    "copyCoaString": "Copy COA string",
+    "rasterCharge": "Raster сharge",
+    "vectorCharge": "Vector сharge"
+  },
+  "shield": {
+    "types": {
+      "basic": "Basic",
+      "regional": "Regional",
+      "historical": "Historical",
+      "specific": "Specific",
+      "banner": "Banner",
+      "simple": "Simple",
+      "fantasy": "Fantasy",
+      "middleEarth": "Middle Earth"
+    },
+    "basic": {
+      "heater": "Heater",
+      "spanish": "Spanish",
+      "french": "French"
+    },
+    "regional": {
+      "horsehead": "Horsehead",
+      "horsehead2": "Horsehead 2",
+      "polish": "Polish",
+      "hessen": "Hessen",
+      "swiss": "Swiss"
+    },
+    "historical": {
+      "boeotian": "Boeotian",
+      "roman": "Roman",
+      "kite": "Kite",
+      "oldFrench": "Old French",
+      "renaissance": "Renaissance",
+      "baroque": "Baroque"
+    },
+    "specific": {
+      "targe": "Targe",
+      "targe2": "Targe 2",
+      "pavise": "Pavise",
+      "wedged": "Wedged"
+    },
+    "banner": {
+      "flag": "Flag",
+      "pennon": "Pennon",
+      "guidon": "Guidon",
+      "banner": "Banner",
+      "dovetail": "Dovetail",
+      "gonfalon": "Gonfalon",
+      "pennant": "Pennant"
+    },
+    "simple": {
+      "round": "Round",
+      "oval": "Oval",
+      "vesicaPiscis": "Vesica Piscis",
+      "square": "Square",
+      "diamond": "Diamond",
+      "no": "No"
+    },
+    "fantasy": {
+      "fantasy1": "Fantasy 1",
+      "fantasy2": "Fantasy 2",
+      "fantasy3": "Fantasy 3",
+      "fantasy4": "Fantasy 4",
+      "fantasy5": "Fantasy 5"
+    },
+    "middleEarth": {
+      "noldor": "Noldor",
+      "gondor": "Gondor",
+      "easterling": "Easterling",
+      "erebor": "Erebor",
+      "ironHills": "Iron Hills",
+      "urukHai": "Uruk Hai",
+      "moriaOrc": "Moria Orc"
+    }
+  },
+  "gallery": {
+    "giant": "Giant",
+    "huge": "Huge",
+    "large": "Large",
+    "medium": "Medium",
+    "small": "Small",
+    "tiny": "Tiny"
+  },
+  "gradient": {
+    "no": "No",
+    "luster": "Luster",
+    "spotlight": "Spotlight",
+    "backlight": "Backlight",
+    "brink": "Brink"
+  },
+  "diaper": {
+    "no": "No",
+    "nourse": "Nourse",
+    "tessellation": "Tessellation",
+    "sennwald": "Sennwald",
+    "sulzbach": "Sulzbach"
+  }
+}

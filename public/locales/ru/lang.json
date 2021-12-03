@@ -1,0 +1,124 @@
+{
+  "menu": {
+    "options": "Опции",
+    "rollback": "Возврат",
+    "reroll": "Перегенерировать",
+    "save": "Сохранить",
+    "upload": "Загрузить",
+    "license": "Лицензии",
+    "about": "О программе",
+    "support": "Поддержать",
+    "language": "Язык",
+    "shield": "Щит",
+    "colors": "Цвета",
+    "gradient": "Градиент",
+    "damasking": "Дамасцировка",
+    "gallery": "Галерея",
+    "border": "Границы",
+    "background": "Фон",
+    "scale": "Масштаб",
+    "width": "Ширина",
+    "color": "Цвет",
+    "downloadSVG": "Cкачать SVG",
+    "downloadPNG": "Скачать PNG",
+    "downloadJPEG": "Скачать JPEG",
+    "copyEditLink": "Скопировать ссылку",
+    "copyApiLink": "Скопировать ссылку на API",
+    "copyCoaString": "Скопировать строку герба",
+    "rasterCharge": "Растровое изображение",
+    "vectorCharge": "Векторное изображение"
+  },
+  "shield": {
+    "types": {
+      "basic": "Базовый",
+      "regional": "Региональный",
+      "historical": "Исторический",
+      "specific": "Специфический",
+      "banner": "Знамя",
+      "simple": "Простой",
+      "fantasy": "Фэнтези",
+      "middleEarth": "Средиземье"
+    },
+    "basic": {
+      "heater": "Норманский",
+      "spanish": "Испанский",
+      "french": "Французский"
+    },
+    "regional": {
+      "horsehead": "Лошадиная голова",
+      "horsehead2": "Лошадиная голова 2",
+      "polish": "Польский",
+      "hessen": "Гессенский",
+      "swiss": "Швейцарский"
+    },
+    "historical": {
+      "boeotian": "Беотический",
+      "roman": "Римский",
+      "kite": "Миндалевидный",
+      "oldFrench": "Старофранцузский",
+      "renaissance": "Ренессансный",
+      "baroque": "Барокко"
+    },
+    "specific": {
+      "targe": "Тарч",
+      "targe2": "Тарч 2",
+      "pavise": "Павиза",
+      "wedged": "С выемками"
+    },
+    "banner": {
+      "flag": "Флаг",
+      "pennon": "Флажок",
+      "guidon": "Вымпел",
+      "banner": "Знамя",
+      "dovetail": "Ласточкин хвост",
+      "gonfalon": "Гонфалон",
+      "pennant": "Пеннант"
+    },
+    "simple": {
+      "round": "Круглый",
+      "oval": "Овальный",
+      "vesicaPiscis": "Рыбий пузырь",
+      "square": "Квадратный",
+      "diamond": "Робовидный",
+      "no": "Нет"
+    },
+    "fantasy": {
+      "fantasy1": "Фантастический 1",
+      "fantasy2": "Фантастический 2",
+      "fantasy3": "Фантастический 3",
+      "fantasy4": "Фантастический 4",
+      "fantasy5": "Фантастический 5"
+    },
+    "middleEarth": {
+      "noldor": "Нолдорcкий",
+      "gondor": "Гондорский",
+      "easterling": "Восточный",
+      "erebor": "Гновом Эребора",
+      "ironHills": "Гномов Железных Холмов",
+      "urukHai": "Урук-Хай",
+      "moriaOrc": "Орков Мории"
+    }
+  },
+  "gallery": {
+    "giant": "Гиганская",
+    "huge": "Огромная",
+    "large": "Большая",
+    "medium": "Средняя",
+    "small": "Маленькая",
+    "tiny": "Крошечная"
+  },
+  "gradient": {
+    "no": "Нет",
+    "luster": "Край",
+    "spotlight": "Пятно",
+    "backlight": "Подсветка",
+    "brink": "Грань"
+  },
+  "diaper": {
+    "no": "Нет",
+    "nourse": "Нёрс",
+    "tessellation": "Мозаика",
+    "sennwald": "Зенвальд",
+    "sulzbach": "Зульцбах"
+  }
+}

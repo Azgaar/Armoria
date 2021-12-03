@@ -1,6 +1,9 @@
 <script lang="ts">
   // @ts-check
-  import {changes, matrix, message, scale, state} from "data/stores";
+  import {_ as t} from "svelte-i18n";
+  import {locale, locales, dictionary} from "svelte-i18n";
+  import {changes, matrix, message, state} from "data/stores";
+  import {localeMap} from "scripts/i18n";
   import {download} from "scripts/download";
   import {openURL} from "scripts/utils";
   import BackButton from "./menu/BackButton.svelte";
@@ -15,6 +18,9 @@
   import NavShieldOption from "./menu/options/NavShieldOption.svelte";
   import NavButton from "./shared/NavButton.svelte";
   import NavItem from "./shared/NavItem.svelte";
+
+  $locale = "en"; // fallback locale
+  console.log($locales, $locale, $dictionary);
 
   let installable = false;
   let prompt = null;
@@ -91,15 +97,16 @@
     $state.vector = 1;
   };
 
+  const changeLanguage = (newLocale: string) => {
+    locale.set(newLocale);
+  };
+
   window.addEventListener("beforeinstallprompt", e => {
-    console.log("beforeinstallprompt is fired");
-    //e.preventDefault(); // no default prompt
     prompt = e;
     installable = true;
   });
 
   window.addEventListener("appinstalled", e => {
-    console.log("App installation: success");
     $message = {type: "success", text: `Armoria application is installed`, timeout: 5000};
   });
 </script>
@@ -108,7 +115,7 @@
   <Logo />
 
   <div class="container">
-    <NavItem value="options" />
+    <NavItem value="options" label={$t(`menu.options`)} />
 
     <div class="dropdown level1">
       <NavShieldOption />
@@ -128,72 +135,107 @@
     </div>
   </div>
 
-  <NavButton value="rollback" disabled={!$matrix} onclick={rollback} tip="Roll to the previous list" gesture="Swipe up" hotkey="Backspace" />
-  <NavButton value="reroll" onclick={reroll} tip="Regenerate coat of arms" gesture="Swipe down" hotkey="Enter" />
+  <NavButton
+    value="rollback"
+    label={$t(`menu.rollback`)}
+    disabled={!$matrix}
+    onclick={rollback}
+    tip="Roll to the previous list"
+    gesture="Swipe up"
+    hotkey="Backspace"
+  />
+  <NavButton value="reroll" label={$t(`menu.reroll`)} onclick={reroll} tip="Regenerate coat of arms" gesture="Swipe down" hotkey="Enter" />
 
   <div class="container">
-    <NavItem value="save" />
+    <NavItem value="save" label={$t(`menu.save`)} />
     <div class="dropdown level1">
       <NavButton
         onclick={() => download(null, "svg")}
         tip="Download vector image or set of images. Open in browser or load to Map Generator. Size can be set in options"
         hotkey="Ctrl + S"
       >
-        <span>Download SVG</span>
+        {$t(`menu.downloadSVG`)}
       </NavButton>
 
       <NavButton onclick={() => download(null, "png")} tip="Download as raster image. Size can be set in options" hotkey="Ctrl + P">
-        <span>Download PNG</span>
+        {$t(`menu.downloadPNG`)}
       </NavButton>
 
       <NavButton onclick={() => download(null, "jpeg")} tip="Download a compressed raster image. Size can be set in options" hotkey="Ctrl + J">
-        <span>Download JPEG</span>
+        {$t(`menu.downloadJPEG`)}
       </NavButton>
 
       {#if $state.edit}
         <NavButton onclick={copyEditLink} tip="Copy link to the coat of arms in Edit mode to your clipbard">
-          <span>Copy edit link</span>
+          {$t(`menu.copyEditLink`)}
         </NavButton>
 
         <NavButton onclick={copyAPILink} tip="Copy link to the coat of arms for embedding. Armoria API does not support custom charges">
-          <span>Copy API link</span>
+          {$t(`menu.copyApiLink`)}
         </NavButton>
 
         <NavButton onclick={copyCOA} tip="Copy coa object as encoded string to use in Armoria API or in Watabou's Medieval Fantasy City Generator">
-          <span>Copy COA string</span>
+          {$t(`menu.copyCoaString`)}
         </NavButton>
       {/if}
     </div>
   </div>
 
   <div class="container">
-    <NavItem value="upload" />
+    <NavItem value="upload" label={$t(`menu.upload`)} />
     <div class="dropdown level1">
       <NavButton onclick={showRasterUpload} tip="Upload raster charge (one color, quality loss on scale) from jpg, png or svg image">
-        <span>Raster charge</span>
+        {$t(`menu.rasterCharge`)}
       </NavButton>
 
       <NavButton onclick={showVectorUpload} tip="Upload vector charge (multicolor and lossless scalable) from prepared svg">
-        <span>Vector charge</span>
+        {$t(`menu.vectorCharge`)}
       </NavButton>
     </div>
   </div>
 
   {#if installable}
-    <NavButton value="install" onclick={install} flutter tip="Add Armoria application to the desktop or home screen" />
+    <NavButton value="install" label={$t(`menu.install`)} onclick={install} flutter tip="Add Armoria application to the desktop or home screen" />
   {/if}
 
   {#if $state.edit}
-    <NavButton value="undo" disabled={!position} onclick={changes.undo} tip="Revert the latest change" gesture="Swipe left" hotkey="Z" />
-    <NavButton value="redo" disabled={!redoable} onclick={changes.redo} tip="Restore the next change" gesture="Swipe right" hotkey="X" />
+    <NavButton
+      value="undo"
+      label={$t(`menu.undo`)}
+      disabled={!position}
+      onclick={changes.undo}
+      tip="Revert the latest change"
+      gesture="Swipe left"
+      hotkey="Z"
+    />
+    <NavButton
+      value="redo"
+      label={$t(`menu.redo`)}
+      disabled={!redoable}
+      onclick={changes.redo}
+      tip="Restore the next change"
+      gesture="Swipe right"
+      hotkey="X"
+    />
   {/if}
 
   <BackButton />
 
   {#if wideScreen || !$state.edit}
-    <NavButton value="license" onclick={showLicense} tip="Show information about license" />
-    <NavButton value="about" onclick={showAbout} tip="Show about screen" hotkey="F1" />
-    <NavButton value="support" onclick={() => openURL("https://www.patreon.com/azgaar")} tip="Support the project on Patreon" />
+    <NavButton value="license" label={$t(`menu.license`)} onclick={showLicense} tip="Show information about license" />
+    <NavButton value="about" label={$t(`menu.about`)} onclick={showAbout} tip="Show about screen" hotkey="F1" />
+    <NavButton value="support" label={$t(`menu.support`)} onclick={() => openURL("https://www.patreon.com/azgaar")} tip="Support the project on Patreon" />
+  {/if}
+
+  {#if !$state.edit}
+    <div class="container">
+      <NavItem value="language" label={$t(`menu.language`)} />
+      <div class="dropdown level1">
+        {#each $locales as locale}
+          <NavButton label={localeMap[locale]} onclick={() => changeLanguage(locale)} />
+        {/each}
+      </div>
+    </div>
   {/if}
 </nav>
 

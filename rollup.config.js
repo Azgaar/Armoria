@@ -3,6 +3,7 @@ import svelte from "rollup-plugin-svelte";
 import typescript from "@rollup/plugin-typescript";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
+import json from "@rollup/plugin-json";
 import livereload from "rollup-plugin-livereload";
 import {terser} from "rollup-plugin-terser";
 import {generateSW} from "rollup-plugin-workbox";
@@ -36,7 +37,8 @@ export default {
     sourcemap: true,
     format: "iife",
     name: "app",
-    file: "public/build/bundle.js"
+    file: "public/build/bundle.js",
+    inlineDynamicImports: true
   },
   plugins: [
     svelte({
@@ -76,6 +78,8 @@ export default {
           }
         ]
       }),
+
+    json(),
 
     // minify
     production && terser()

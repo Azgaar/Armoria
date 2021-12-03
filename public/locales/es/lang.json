@@ -1,0 +1,124 @@
+{
+  "menu": {
+    "options": "Opciones",
+    "rollback": "Revertir",
+    "reroll": "Reroll",
+    "save": "Guardar",
+    "upload": "Subir",
+    "license": "Licencia",
+    "about": "Acerca de",
+    "support": "Soporte",
+    "language": "Idioma",
+    "shield": "Escudo",
+    "colors": "Colores",
+    "gradient": "Gradiente",
+    "damasking": "Damask",
+    "gallery": "Galería",
+    "border": "Borde",
+    "background": "Fondo",
+    "scale": "Escala",
+    "width": "Ancho",
+    "color": "Color",
+    "downloadSVG": "Descargar SVG",
+    "downloadPNG": "Descargar PNG",
+    "downloadJPEG": "Descargar JPEG",
+    "copyEditLink": "Copiar enlace de edición",
+    "copyApiLink": "Copiar enlace de API",
+    "copyCoaString": "Copiar cadena de COA",
+    "rasterCharge": "Carga ráster",
+    "vectorCharge": "Carga vectorial"
+  },
+  "shield": {
+    "types": {
+      "basic": "Básico",
+      "regional": "Regional",
+      "historical": "Histórico",
+      "specific": "Específico",
+      "banner": "Banner",
+      "simple": "Simple",
+      "fantasy": "Fantasía",
+      "middleEarth": "Medio Mundo"
+    },
+    "basic": {
+      "heater": "Calentador",
+      "spanish": "Español",
+      "french": "Francés"
+    },
+    "regional": {
+      "horsehead": "Cabeza de Caballo",
+      "horsehead2": "Cabeza de Caballo 2",
+      "polish": "Polaco",
+      "hessen": "Hessen",
+      "swiss": "Suiza"
+    },
+    "historical": {
+      "boeotian": "Boeotian",
+      "roman": "Roman",
+      "kite": "Kite",
+      "oldFrench": "Old French",
+      "renaissance": "Renaissance",
+      "baroque": "Baroque"
+    },
+    "specific": {
+      "targe": "Targe",
+      "targe2": "Targe 2",
+      "pavise": "Pavise",
+      "wedged": "Wedged"
+    },
+    "banner": {
+      "flag": "Bandera",
+      "pennon": "Pennon",
+      "guidon": "Guidon",
+      "banner": "Banner",
+      "dovetail": "Dovetail",
+      "gonfalon": "Gonfalon",
+      "pennant": "Pennant"
+    },
+    "simple": {
+      "round": "Round",
+      "oval": "Oval",
+      "vesicaPiscis": "Vesica Piscis",
+      "square": "Square",
+      "diamond": "Diamond",
+      "no": "No"
+    },
+    "fantasy": {
+      "fantasy1": "Fantasy 1",
+      "fantasy2": "Fantasy 2",
+      "fantasy3": "Fantasy 3",
+      "fantasy4": "Fantasy 4",
+      "fantasy5": "Fantasy 5"
+    },
+    "middleEarth": {
+      "noldor": "Noldor",
+      "gondor": "Gondor",
+      "easterling": "Easterling",
+      "erebor": "Erebor",
+      "ironHills": "Iron Hills",
+      "urukHai": "Uruk Hai",
+      "moriaOrc": "Moria Orc"
+    }
+  },
+  "gallery": {
+    "giant": "Giant",
+    "huge": "Huge",
+    "large": "Large",
+    "medium": "Medium",
+    "small": "Small",
+    "tiny": "Tiny"
+  },
+  "gradient": {
+    "no": "No",
+    "luster": "Luster",
+    "spotlight": "Spotlight",
+    "backlight": "Backlight",
+    "brink": "Brink"
+  },
+  "diaper": {
+    "no": "No",
+    "nourse": "Nourse",
+    "tessellation": "Tessellation",
+    "sennwald": "Sennwald",
+    "sulzbach": "Sulzbach"
+  }
+}
