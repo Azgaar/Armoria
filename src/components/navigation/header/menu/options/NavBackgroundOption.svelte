@@ -5,6 +5,7 @@
   import IconButton from "../../shared/IconButton.svelte";
   import {background} from "data/stores";
   import {DEFAULT_BACKGROUND} from "config/defaults";
+  import ColorInput from "../../../../shared/ColorInput.svelte";
 
   const restoreDefaultBackground = () => {
     background.set(DEFAULT_BACKGROUND);
@@ -12,13 +13,16 @@
   };
 
   const getRandomColor = () => {
-    const l = "0123456789ABCDEF";
-    const color = "#" + [0, 0, 0, 0, 0, 0].map(() => l[Math.floor(Math.random() * 16)]).join("");
-    $background = color;
+    const symbols = "0123456789ABCDEF";
+    const color = "#" + [0, 0, 0, 0, 0, 0].map(() => symbols[Math.floor(Math.random() * 16)]).join("");
+    background.set(color);
     localStorage.setItem("background", color);
   };
 
-  $: localStorage.setItem("background", $background);
+  const changeColor = (color: string) => {
+    background.set(color);
+    localStorage.setItem("background", color);
+  };
 </script>
 
 <div class="container">
@@ -30,7 +34,8 @@
       {#if $background !== DEFAULT_BACKGROUND}
         <IconButton icon="undo" tip="Restore default color" onclick={restoreDefaultBackground} />
       {/if}
-      <input type="color" bind:value={$background} />
+
+      <ColorInput value={$background} oninput={changeColor} />
     </NavItem>
   </div>
 

@@ -2,16 +2,19 @@
   // @ts-check
   import {_ as t} from "svelte-i18n";
   import NavItem from "../../shared/NavItem.svelte";
+  import RangeInput from "../../../../shared/RangeInput.svelte";
   import {scale} from "data/stores";
 
-  $: localStorage.setItem("scale", String($scale));
+  const handleInput = (value: number) => {
+    scale.set(value);
+    localStorage.setItem("scale", String($scale));
+  };
 </script>
 
 <div class="container">
   <div class="dropdown level2">
     <NavItem wide>
-      <input type="range" min="1" max="4" step=".1" bind:value={$scale} />
-      <input type="number" min="1" max="4" step=".1" bind:value={$scale} />
+      <RangeInput min={1} max={4} step={0.1} value={$scale} oninput={handleInput} />
     </NavItem>
   </div>
 

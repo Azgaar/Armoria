@@ -246,22 +246,4 @@
     background-color: #1b1c1d;
     height: 45px;
   }
-
-  input[type="color"] {
-    position: absolute;
-    padding: 0;
-    margin: -0.3em 0;
-    right: 0.4em;
-    border: 0;
-    width: 3em;
-    cursor: pointer;
-  }
-
-  input[type="range"] {
-    padding: 0;
-    width: 72%;
-    margin: 0;
-    height: 0.6em;
-    cursor: pointer;
-  }
 </style>
