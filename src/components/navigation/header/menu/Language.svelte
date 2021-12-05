@@ -1,7 +1,7 @@
 <script lang="ts">
   // @ts-check
   import {onMount} from "svelte";
-  import {locale, locales, _ as t} from "svelte-i18n";
+  import {locale, locales, t} from "svelte-i18n";
   import {localeMap, localeNavMaxWidth} from "scripts/i18n";
   import {iconedNav} from "data/stores";
   import NavButton from "../shared/NavButton.svelte";

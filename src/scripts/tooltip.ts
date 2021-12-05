@@ -1,26 +1,29 @@
+import {get} from "svelte/store";
+import {t} from "svelte-i18n";
 import {forEach} from "./utils";
 
 const removalDelay = 20000;
+const translate = get(t);
 
 export const tooltip = (element: HTMLElement | SVGSVGElement) => {
-  const isTouchAvailable = "ontouchstart" in window;
-  const tooltip = element.dataset.tooltip;
-  const gesture = element.dataset.gesture || element.getAttribute("gesture");
-  const hotkey = element.dataset.hotkey || element.getAttribute("hotkey");
-
-  if (!tooltip) {
+  if (!element.dataset.tooltip) {
     return;
   }
 
+  const isTouchAvailable = "ontouchstart" in window;
   const div = document.createElement("div");
   let limit: number[];
+
+  const gesture = element.dataset.gesture;
+  const hotkey = element.dataset.hotkey;
 
   function mouseEnter() {
     forEach(".tooltip", el => el.remove());
 
-    let text = tooltip;
-    if (isTouchAvailable && gesture) text += ". Gesture: " + gesture;
-    if (!isTouchAvailable && hotkey) text += ". Hotkey: " + hotkey;
+    let text = element.dataset.tooltip;
+
+    if (isTouchAvailable && gesture) text = `${text}. ${translate("tooltip.gesture")}: ${gesture}`;
+    if (!isTouchAvailable && hotkey) text = `${text}. ${translate("tooltip.hotkey")}: ${hotkey}`;
     div.textContent = text;
     div.className = "tooltip";
     document.body.appendChild(div);

@@ -124,5 +124,22 @@
     "tessellation": "Tessellation",
     "sennwald": "Sennwald",
     "sulzbach": "Sulzbach"
+  },
+  "tooltip": {
+    "gesture": "Gesture",
+    "hotkey": "Hotkey",
+    "swipeUp": "Swipe up",
+    "swipeDown": "Swipe down",
+    "locked": "Value is saved and auto-applied. Click to remove saved value and use default settings on load",
+    "rollback": "Roll to the previous coat of arms gallery",
+    "rollbackEdit": "Roll to the previous coat of arms",
+    "reroll": "Regenerate coat of arms gallery",
+    "rerollEdit": "Regenerate coat of arms",
+    "downloadSVG": "Download vector image or set of images. Open in browser or load to Map Generator. Size can be set in options",
+    "downloadPNG": "Download as raster image. Size can be set in options",
+    "downloadJPEG": "Download a compressed raster image. Size can be set in options",
+    "copyEditLink": "Copy link to the coat of arms in Edit mode to your clipbard",
+    "copyApiLink": "Copy link to the coat of arms for embedding. Armoria API does not support custom charges",
+    "copyCoaString": "Copy coa object as encoded string to use in Armoria API or in Watabou's Medieval Fantasy City Generator"
   }
 }

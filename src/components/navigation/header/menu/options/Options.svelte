@@ -1,6 +1,6 @@
 <script lang="ts">
   // @ts-check
-  import {_ as t} from "svelte-i18n";
+  import {t} from "svelte-i18n";
   import {iconedNav, state} from "data/stores";
   import NavItem from "../../shared/NavItem.svelte";
   import NavShieldOption from "./NavShieldOption.svelte";

@@ -1,6 +1,6 @@
 <script lang="ts">
   // @ts-check
-  import {_ as t} from "svelte-i18n";
+  import {t} from "svelte-i18n";
   import NavItem from "../../shared/NavItem.svelte";
   import IconButton from "../../shared/IconButton.svelte";
   import {background} from "data/stores";

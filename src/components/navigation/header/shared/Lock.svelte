@@ -1,11 +1,11 @@
 <script lang="ts">
+  // @ts-check
+  import {t} from "svelte-i18n";
   import {tooltip} from "scripts/tooltip";
-  import {capitalize} from "scripts/utils";
   export let key: string;
 
   $: locked = localStorage.getItem(key);
-
-  const tip = capitalize(key) + " value is saved and auto-applied. Click to remove saved value and use default settings on load";
+  $: tip = $t(`tooltip.locked`);
 
   function unlock(event: Event) {
     event.stopPropagation();

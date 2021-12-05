@@ -1,7 +1,7 @@
 <script lang="ts">
   // @ts-check
-  import {_ as t} from "svelte-i18n";
-  import {matrix} from "data/stores";
+  import {t} from "svelte-i18n";
+  import {state, matrix} from "data/stores";
   import NavButton from "../shared/NavButton.svelte";
 
   const reroll = () => {
@@ -9,4 +9,11 @@
   };
 </script>
 
-<NavButton value="reroll" label={$t(`menu.reroll`)} onclick={reroll} tip="Regenerate coat of arms" gesture="Swipe down" hotkey="Enter" />
+<NavButton
+  value="reroll"
+  label={$t(`menu.reroll`)}
+  onclick={reroll}
+  tip={$t($state.edit ? "tooltip.rerollEdit" : "tooltip.reroll")}
+  gesture={$t("tooltip.swipeDown")}
+  hotkey="Enter"
+/>

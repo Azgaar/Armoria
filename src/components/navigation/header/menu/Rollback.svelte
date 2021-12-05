@@ -1,7 +1,7 @@
 <script lang="ts">
   // @ts-check
-  import {_ as t} from "svelte-i18n";
-  import {matrix} from "data/stores";
+  import {t} from "svelte-i18n";
+  import {state, matrix} from "data/stores";
   import NavButton from "../shared/NavButton.svelte";
 
   const rollback = () => {
@@ -14,7 +14,7 @@
   label={$t(`menu.rollback`)}
   disabled={!$matrix}
   onclick={rollback}
-  tip="Roll to the previous list"
-  gesture="Swipe up"
+  tip={$t($state.edit ? "tooltip.rollbackEdit" : "tooltip.rollback")}
+  gesture={$t("tooltip.swipeUp")}
   hotkey="Backspace"
 />
