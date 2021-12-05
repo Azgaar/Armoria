@@ -91,7 +91,8 @@
   }
 
   const setIconedNav = () => {
-    const iconed = localeNavMaxWidth[$locale] > window.innerWidth;
+    const maxWidth = localeNavMaxWidth[$locale] || localeNavMaxWidth.en;
+    const iconed = maxWidth > window.innerWidth;
     if ($iconedNav !== iconed) $iconedNav = iconed;
   };
 </script>

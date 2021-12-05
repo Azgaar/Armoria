@@ -8,7 +8,8 @@
   import NavItem from "../shared/NavItem.svelte";
 
   const setIconedNav = (currentLocale: string) => {
-    const iconed = localeNavMaxWidth[currentLocale] > window.innerWidth;
+    const maxWidth = localeNavMaxWidth[currentLocale] || localeNavMaxWidth.en;
+    const iconed = maxWidth > window.innerWidth;
     iconedNav.set(iconed);
   };
 
@@ -21,6 +22,7 @@
   const changeLanguage = (newLocale: string) => {
     locale.set(newLocale);
     setIconedNav(newLocale);
+    localStorage.setItem("locale", newLocale);
   };
 </script>
 
