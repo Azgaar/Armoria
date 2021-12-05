@@ -1,4 +1,5 @@
 <script>
+  import {locale} from "svelte-i18n";
   import WindowEvents from "./WindowEvents.svelte";
   import Navbar from "./navigation/header/Navbar.svelte";
   import About from "./navigation/About.svelte";
@@ -21,6 +22,8 @@
     gallery = [],
     seed,
     coaSize = 200;
+
+  $locale = "en"; // fallback locale
 
   checkLoadParameters(); // on load
   $: [n, w, h] = defineGallerySize($size);

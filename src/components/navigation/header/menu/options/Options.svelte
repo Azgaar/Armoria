@@ -4,19 +4,15 @@
   import {state} from "data/stores";
   import {iconedNavbar} from "config/layout";
   import NavItem from "../../shared/NavItem.svelte";
-  import NavButton from "../../shared/NavButton.svelte";
-  import NavBackgroundOption from "./NavBackgroundOption.svelte";
-  import NavBorderOption from "./NavBorderOption.svelte";
+  import NavShieldOption from "./NavShieldOption.svelte";
   import NavColorsOption from "./NavColorsOption.svelte";
+  import NavGradientOption from "./NavGradientOption.svelte";
   import NavDamaskingOption from "./NavDamaskingOption.svelte";
   import NavGalleryOption from "./NavGalleryOption.svelte";
-  import NavGradientOption from "./NavGradientOption.svelte";
+  import NavBorderOption from "./NavBorderOption.svelte";
+  import NavBackgroundOption from "./NavBackgroundOption.svelte";
   import NavScaleOption from "./NavScaleOption.svelte";
-  import NavShieldOption from "./NavShieldOption.svelte";
-
-  const showLicense = () => {
-    $state.license = 1;
-  };
+  import ShowLicense from "../ShowLicense.svelte";
 </script>
 
 <div class="container">
@@ -33,7 +29,7 @@
     <NavScaleOption />
 
     {#if iconedNavbar && $state.edit}
-      <NavButton onclick={showLicense} tip="Show information about license" label={$t(`menu.license`)} />
+      <ShowLicense />
     {/if}
   </div>
 </div>
