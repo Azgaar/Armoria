@@ -1,7 +1,10 @@
 <script>
-  import {state, matrix, changes, message} from "data/stores";
+  import {state, matrix, changes, message, iconedNav} from "data/stores";
+  import {locale} from "svelte-i18n";
+  import {localeNavMaxWidth} from "scripts/i18n";
   import {download} from "scripts/download";
-  const touch = {startX: 0, startY: 0};
+
+  let touch = {startX: 0, startY: 0};
 
   // prevent unwanted refresh
   if (location.host === "azgaar.github.io" && !navigator.userAgent.includes("Electron")) {
@@ -86,6 +89,11 @@
   function swipeUp() {
     if ($matrix > 0) $matrix -= 1;
   }
+
+  const setIconedNav = () => {
+    const iconed = localeNavMaxWidth[$locale] > window.innerWidth;
+    if ($iconedNav !== iconed) $iconedNav = iconed;
+  };
 </script>
 
-<svelte:window on:keydown={handleKeydown} on:touchstart={handleTouchStart} on:touchend={handleTouchEnd} />
+<svelte:window on:keydown={handleKeydown} on:touchstart={handleTouchStart} on:touchend={handleTouchEnd} on:resize={setIconedNav} />

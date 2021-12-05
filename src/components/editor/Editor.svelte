@@ -1,5 +1,5 @@
 <script>
-  import {changes, grid, history, message, shield, showGrid, state, tinctures} from "data//stores";
+  import {changes, grid, history, message, shield, showGrid, state, tinctures, iconedNav} from "data/stores";
   import {charges, divisions, ordinaries} from "data/dataModel";
   import {generate} from "scripts/generator";
   import {minmax, ra, rw} from "scripts/utils";
@@ -20,6 +20,7 @@
   import EditorTincture from "./EditorTincture.svelte";
   import EditorType from "./EditorType.svelte";
   export let c, seed;
+
   let menu = {};
   let section = {field: 0, division: 0, ordinary: [], charge: []};
 

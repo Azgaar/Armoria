@@ -9,4 +9,4 @@
   };
 </script>
 
-<NavButton onclick={showLicense} tip="Show information about license" label={$t(`menu.license`)} />
+<NavButton value="license" label={$t(`menu.license`)} onclick={showLicense} tip="Show information about license" />

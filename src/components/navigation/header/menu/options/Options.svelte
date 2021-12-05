@@ -1,8 +1,7 @@
 <script lang="ts">
   // @ts-check
   import {_ as t} from "svelte-i18n";
-  import {state} from "data/stores";
-  import {iconedNavbar} from "config/layout";
+  import {iconedNav, state} from "data/stores";
   import NavItem from "../../shared/NavItem.svelte";
   import NavShieldOption from "./NavShieldOption.svelte";
   import NavColorsOption from "./NavColorsOption.svelte";
@@ -12,7 +11,7 @@
   import NavBorderOption from "./NavBorderOption.svelte";
   import NavBackgroundOption from "./NavBackgroundOption.svelte";
   import NavScaleOption from "./NavScaleOption.svelte";
-  import ShowLicense from "../ShowLicense.svelte";
+  import License from "../License.svelte";
 </script>
 
 <div class="container">
@@ -28,8 +27,8 @@
     <NavBackgroundOption />
     <NavScaleOption />
 
-    {#if iconedNavbar && $state.edit}
-      <ShowLicense />
+    {#if $iconedNav && $state.edit}
+      <License />
     {/if}
   </div>
 </div>

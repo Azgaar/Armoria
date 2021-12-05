@@ -1,7 +1,7 @@
 <script lang="ts">
   // @ts-check
   import {tooltip} from "scripts/tooltip";
-  import {iconedNavbar} from "config/layout";
+  import {iconedNav} from "data/stores";
 
   export let value: string = undefined;
   export let label: string = undefined;
@@ -11,6 +11,7 @@
   export let disabled: boolean = false;
   export let selected: boolean = false;
   export let flutter: boolean = false;
+  export let right: boolean = false;
   export let onclick: () => void;
 
   const handleClick = (event: Event) => {
@@ -19,8 +20,8 @@
   };
 </script>
 
-<li class:disabled class:selected class:flutter data-tooltip={tip} data-gesture={gesture} data-hotkey={hotkey} on:click={handleClick} use:tooltip>
-  {#if value && iconedNavbar}
+<li class:disabled class:selected class:flutter class:right data-tooltip={tip} data-gesture={gesture} data-hotkey={hotkey} on:click={handleClick} use:tooltip>
+  {#if value && $iconedNav}
     <svg>
       <use href="#{value}-icon" />
     </svg>
@@ -61,6 +62,10 @@
     content: "\2713";
     display: inline-block;
     padding: 0 6px 0 0;
+  }
+
+  li.right {
+    margin-left: auto;
   }
 
   svg {

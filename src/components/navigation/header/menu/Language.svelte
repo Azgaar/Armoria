@@ -1,12 +1,26 @@
 <script lang="ts">
   // @ts-check
+  import {onMount} from "svelte";
   import {locale, locales, _ as t} from "svelte-i18n";
-  import {localeMap} from "scripts/i18n";
+  import {localeMap, localeNavMaxWidth} from "scripts/i18n";
+  import {iconedNav} from "data/stores";
   import NavButton from "../shared/NavButton.svelte";
   import NavItem from "../shared/NavItem.svelte";
 
+  const setIconedNav = (currentLocale: string) => {
+    const iconed = localeNavMaxWidth[currentLocale] > window.innerWidth;
+    iconedNav.set(iconed);
+  };
+
+  onMount(() => {
+    setTimeout(() => {
+      setIconedNav($locale);
+    }, 0);
+  });
+
   const changeLanguage = (newLocale: string) => {
     locale.set(newLocale);
+    setIconedNav(newLocale);
   };
 </script>
 

@@ -1,7 +1,7 @@
 <script lang="ts">
   // @ts-check
   import {tooltip} from "scripts/tooltip";
-  import {iconedNavbar} from "config/layout";
+  import {iconedNav} from "data/stores";
 
   export let value: string = undefined;
   export let label: string = undefined;
@@ -10,7 +10,7 @@
 </script>
 
 <li class:wide data-tooltip={tip} use:tooltip>
-  {#if value && iconedNavbar}
+  {#if value && $iconedNav}
     <svg>
       <use href="#{value}-icon" />
     </svg>
@@ -26,7 +26,6 @@
     user-select: none;
     padding: 1em;
     color: #fff;
-    text-transform: capitalize;
     list-style: none;
     transition: all 0.1s;
   }

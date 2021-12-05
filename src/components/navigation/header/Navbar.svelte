@@ -1,6 +1,6 @@
 <script lang="ts">
   // @ts-check
-  import {state} from "data/stores";
+  import {state, iconedNav} from "data/stores";
   import Logo from "./menu/Logo.svelte";
   import Options from "./menu/options/Options.svelte";
   import Rollback from "./menu/Rollback.svelte";
@@ -10,13 +10,11 @@
   import Install from "./menu/Install.svelte";
   import Undo from "./menu/Undo.svelte";
   import Redo from "./menu/Redo.svelte";
-  import ShowLicense from "./menu/ShowLicense.svelte";
+  import License from "./menu/License.svelte";
   import About from "./menu/About.svelte";
   import Support from "./menu/Support.svelte";
   import Language from "./menu/Language.svelte";
   import Back from "./menu/Back.svelte";
-
-  const wideScreen = window.innerWidth > 600;
 </script>
 
 <nav>
@@ -33,8 +31,8 @@
     <Redo />
   {/if}
 
-  {#if wideScreen || !$state.edit}
-    <ShowLicense />
+  {#if !$iconedNav || !$state.edit}
+    <License />
     <About />
     <Support />
   {/if}
@@ -51,6 +49,5 @@
     display: flex;
     align-items: center;
     background-color: #1b1c1d;
-    height: 45px;
   }
 </style>

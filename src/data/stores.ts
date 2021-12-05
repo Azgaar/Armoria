@@ -118,3 +118,5 @@ function defineInitialOptions() {
     showGrid
   };
 }
+
+export const iconedNav = writable(false);
