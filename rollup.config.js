@@ -1,12 +1,13 @@
-import autoPreprocess from "svelte-preprocess";
-import svelte from "rollup-plugin-svelte";
-import typescript from "@rollup/plugin-typescript";
-import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
+import resolve from "@rollup/plugin-node-resolve";
+import replace from "@rollup/plugin-replace";
+import typescript from "@rollup/plugin-typescript";
 import livereload from "rollup-plugin-livereload";
+import svelte from "rollup-plugin-svelte";
 import {terser} from "rollup-plugin-terser";
 import {generateSW} from "rollup-plugin-workbox";
+import autoPreprocess from "svelte-preprocess";
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -41,6 +42,11 @@ export default {
     inlineDynamicImports: true
   },
   plugins: [
+    // pass env var to the Svelte app
+    replace({
+      "process.env.production": production
+    }),
+
     svelte({
       preprocess: autoPreprocess(),
       dev: !production,

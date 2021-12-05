@@ -6,16 +6,9 @@
   import {localeMap} from "scripts/i18n";
   import {download} from "scripts/download";
   import {openURL} from "scripts/utils";
-  import BackButton from "./menu/BackButton.svelte";
   import Logo from "./menu/Logo.svelte";
-  import NavBackgroundOption from "./menu/options/NavBackgroundOption.svelte";
-  import NavBorderOption from "./menu/options/NavBorderOption.svelte";
-  import NavColorsOption from "./menu/options/NavColorsOption.svelte";
-  import NavDamaskingOption from "./menu/options/NavDamaskingOption.svelte";
-  import NavGalleryOption from "./menu/options/NavGalleryOption.svelte";
-  import NavGradientOption from "./menu/options/NavGradientOption.svelte";
-  import NavScaleOption from "./menu/options/NavScaleOption.svelte";
-  import NavShieldOption from "./menu/options/NavShieldOption.svelte";
+  import Options from "./menu/options/Options.svelte";
+  import BackButton from "./menu/BackButton.svelte";
   import NavButton from "./shared/NavButton.svelte";
   import NavItem from "./shared/NavItem.svelte";
 
@@ -81,10 +74,6 @@
     $matrix += 1;
   };
 
-  const showLicense = () => {
-    $state.license = 1;
-  };
-
   const showAbout = () => {
     $state.about = 1;
   };
@@ -101,6 +90,10 @@
     locale.set(newLocale);
   };
 
+  const showLicense = () => {
+    $state.license = 1;
+  };
+
   window.addEventListener("beforeinstallprompt", e => {
     prompt = e;
     installable = true;
@@ -113,27 +106,7 @@
 
 <nav>
   <Logo />
-
-  <div class="container">
-    <NavItem value="options" label={$t(`menu.options`)} />
-
-    <div class="dropdown level1">
-      <NavShieldOption />
-      <NavColorsOption />
-      <NavGradientOption />
-      <NavDamaskingOption />
-      <NavGalleryOption />
-      <NavBorderOption />
-      <NavBackgroundOption />
-      <NavScaleOption />
-
-      {#if !wideScreen && $state.edit}
-        <NavButton onclick={showLicense} tip="Show information about license">
-          <span>License</span>
-        </NavButton>
-      {/if}
-    </div>
-  </div>
+  <Options />
 
   <NavButton
     value="rollback"
