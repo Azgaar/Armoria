@@ -1,12 +1,15 @@
-<script>
+<script lang="ts">
+  // @ts-check
+  import {t} from "svelte-i18n";
+
   export let license;
 </script>
 
 <select bind:value={license} style="width: 10em">
-  <option value="Unknown" selected>Unknown</option>
-  <option value="Proprietary">Proprietary</option>
-  <option value="Copyright Free">Copyright Free</option>
-  <option value="https://creativecommons.org/publicdomain/zero/1.0">Public Domain</option>
+  <option value="Unknown" selected>{$t(`license.unknown`)}</option>
+  <option value="Proprietary">{$t(`license.proprietary`)}</option>
+  <option value="Copyright Free">{$t(`license.copyleft`)}</option>
+  <option value="https://creativecommons.org/publicdomain/zero/1.0">{$t(`license.publicDomain`)}</option>
   <option value="https://creativecommons.org/licenses/by/4.0">CC BY</option>
   <option value="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA</option>
   <option value="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC</option>
