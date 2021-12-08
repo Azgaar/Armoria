@@ -9,4 +9,4 @@
   };
 </script>
 
-<NavButton value="support" label={$t(`menu.support`)} onclick={openPatreon} tip="Support the project on Patreon" />
+<NavButton value="support" label={$t(`menu.support`)} onclick={openPatreon} tip={$t("tooltip.support")} />

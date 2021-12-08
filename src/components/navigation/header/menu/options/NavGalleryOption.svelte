@@ -25,7 +25,7 @@
   </div>
 
   {#key $size}
-    <NavItem tip="Coat of arms gallery size. Change to smaller value to make coat of arms bigger">
+    <NavItem tip={$t("tooltip.gallery")}>
       <Lock key="size" />
       {$t(`menu.gallery`)}
     </NavItem>

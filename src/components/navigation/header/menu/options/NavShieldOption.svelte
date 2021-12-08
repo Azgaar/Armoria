@@ -6,7 +6,6 @@
   import Lock from "../../shared/Lock.svelte";
   import {shields, shieldPaths} from "data/shields";
   import {shield, changes} from "data/stores";
-  import {splitToWords} from "scripts/utils";
 
   const changeShield = (value: string) => {
     shield.set(value);
@@ -44,7 +43,7 @@
   </div>
 
   {#key $shield}
-    <NavItem tip="Shield or banner shape. If not set, a random one is selected on reroll">
+    <NavItem tip={$t("tooltip.shield")}>
       <Lock key="shield" />
       {$t(`menu.shield`)}
     </NavItem>

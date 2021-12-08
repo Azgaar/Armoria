@@ -9,5 +9,5 @@
 </script>
 
 {#if $state.edit}
-  <NavButton right value="back" label={$t(`menu.back`)} onclick={exitEdit} tip="Get back to Gallery" hotkey="Escape" />
+  <NavButton right value="back" label={$t(`menu.back`)} onclick={exitEdit} tip={$t("tooltip.back")} hotkey="Escape" />
 {/if}

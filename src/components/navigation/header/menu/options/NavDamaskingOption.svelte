@@ -23,7 +23,7 @@
   </div>
 
   {#key $diaper}
-    <NavItem tip="Backing style for coat of arms, also known as diaper">
+    <NavItem tip={$t("tooltip.damasking")}>
       <Lock key="diaper" />
       {$t(`menu.damasking`)}
     </NavItem>

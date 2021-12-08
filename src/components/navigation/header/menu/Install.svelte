@@ -26,5 +26,5 @@
 </script>
 
 {#if installable}
-  <NavButton value="install" label={$t(`menu.install`)} onclick={install} flutter tip="Add Armoria application to the desktop or home screen" />
+  <NavButton value="install" label={$t(`menu.install`)} onclick={install} flutter tip={$t("tooltip.install")} />
 {/if}

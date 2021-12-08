@@ -27,19 +27,19 @@
 
 <div class="container">
   <div class="dropdown level2">
-    <NavItem tip="Window background color">
+    <NavItem>
       {$t(`menu.color`)}
-      <IconButton icon="random" tip="Use random color" onclick={getRandomColor} />
+      <IconButton icon="random" tip={$t("tooltip.randomColor")} onclick={getRandomColor} />
 
       {#if $background !== DEFAULT_BACKGROUND}
-        <IconButton icon="undo" tip="Restore default color" onclick={restoreDefaultBackground} />
+        <IconButton icon="undo" tip={$t("tooltip.undoColorChange")} onclick={restoreDefaultBackground} />
       {/if}
 
       <ColorInput value={$background} oninput={changeColor} />
     </NavItem>
   </div>
 
-  <NavItem tip="Window background color">
+  <NavItem tip={$t("tooltip.background")}>
     {$t(`menu.background`)}
   </NavItem>
 </div>

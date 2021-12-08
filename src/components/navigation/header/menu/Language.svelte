@@ -27,7 +27,7 @@
 </script>
 
 <div class="container">
-  <NavItem value="language" label={$t(`menu.language`)} />
+  <NavItem value="language" label={$t(`menu.language`)} tip={$t("tooltip.language")} />
   <div class="dropdown level1">
     {#each $locales as locale}
       <NavButton label={localeMap[locale]} onclick={() => changeLanguage(locale)} />

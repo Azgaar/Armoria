@@ -23,7 +23,7 @@
   </div>
 
   {#key $grad}
-    <NavItem tip="Overlay style to be applied on top of coat of arms">
+    <NavItem tip={$t("tooltip.gradient")}>
       <Lock key="grad" />
       {$t(`menu.gradient`)}
     </NavItem>

@@ -17,11 +17,11 @@
 <div class="container">
   <NavItem value="upload" label={$t(`menu.upload`)} />
   <div class="dropdown level1">
-    <NavButton onclick={showRasterUpload} tip="Upload raster charge (one color, quality loss on scale) from jpg, png or svg image">
+    <NavButton onclick={showRasterUpload} tip={$t("tooltip.rasterCharge")}>
       {$t(`menu.rasterCharge`)}
     </NavButton>
 
-    <NavButton onclick={showVectorUpload} tip="Upload vector charge (multicolor and lossless scalable) from prepared svg">
+    <NavButton onclick={showVectorUpload} tip={$t("tooltip.vectorCharge")}>
       {$t(`menu.vectorCharge`)}
     </NavButton>
   </div>

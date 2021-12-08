@@ -18,7 +18,7 @@
     </NavItem>
   </div>
 
-  <NavItem tip="Downloaded image size, 1 is default size, 2 - 2x size, etc.">
+  <NavItem tip={$t("tooltip.scale")}>
     {$t(`menu.scale`)}
   </NavItem>
 </div>

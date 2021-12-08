@@ -22,6 +22,7 @@
 <style>
   li {
     list-style: none;
+    display: flex;
   }
 
   svg {

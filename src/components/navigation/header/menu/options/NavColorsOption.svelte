@@ -10,7 +10,7 @@
   };
 </script>
 
-<NavButton onclick={showTinctures} tip="Setup tinctures (colors)">
+<NavButton onclick={showTinctures} tip={$t("tooltip.colors")}>
   <Lock key="tinctures" />
   <Lock key="colors" />
   {$t(`menu.colors`)}

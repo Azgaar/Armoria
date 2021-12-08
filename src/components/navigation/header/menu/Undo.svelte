@@ -7,4 +7,12 @@
   $: position = $changes[1];
 </script>
 
-<NavButton value="undo" label={$t(`menu.undo`)} disabled={!position} onclick={changes.undo} tip="Revert the latest change" gesture="Swipe left" hotkey="Z" />
+<NavButton
+  value="undo"
+  label={$t(`menu.undo`)}
+  disabled={!position}
+  onclick={changes.undo}
+  tip={$t("tooltip.undo")}
+  gesture={$t("tooltip.swipeLeft")}
+  hotkey="Z"
+/>

@@ -9,4 +9,4 @@
   };
 </script>
 
-<NavButton value="about" label={$t(`menu.about`)} onclick={showAbout} tip="Show about screen" hotkey="F1" />
+<NavButton value="about" label={$t(`menu.about`)} onclick={showAbout} tip={$t("tooltip.about")} hotkey="F1" />
