@@ -167,8 +167,8 @@
   },
   "error": {
     "copyToClipboard": "Cannot copy to the clipboard!",
-    "tinctureRemove": "There should be at least 2 tinctures of each type!",
-    "nonUniqueTincture": "Tinctures must be unique!",
+    "tinctureRemove": "There should be at least 2 colors of each type!",
+    "nonUniqueTincture": "Color must be unique!",
     "notAnImage": "File is not an image!",
     "notSvgOrText": "File must be text or svg!",
     "notUniqueName": "Name must be unique id!",
@@ -179,13 +179,13 @@
     "copyApiLink": "API link is copied to your clipboard",
     "copyCoaString": "Encoded COA string is copied to your clipboard",
     "install": "Armoria application is installed",
-    "tinctureAdded": "Tincture is added",
+    "tinctureAdded": "Color is added",
     "chargeAdded": "Charge is added"
   },
   "info": {
     "tipFromFmg": "Configure emblem, save it in SVG format and then load back to the Fantasy Map Generator",
     "tipEditControls": "Drag to move, hold SHIFT and drag vertically to resize, hold CONTROL and drag horizontally to rotate",
-    "tipAddTincture": "Set tincture name, type, color and chance and then click on 'Apply Tincture'",
+    "tipAddTincture": "Set color details and chance and then click on 'Apply Color'",
     "restoredDefaults": "Default values are restored",
     "tipUploadImageSize": "Fit image into the rectangle for best result"
   }
