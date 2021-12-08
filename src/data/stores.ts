@@ -36,6 +36,8 @@ export const matrix = writable(0);
 export const state = writable({edit: 0, about: 0, license: 0, tinctures: 0, raster: 0, vector: 0, i: 0});
 export const message = writable(null);
 
+export const iconedNav = writable(false);
+
 const createChangesTracker = () => {
   const {subscribe, set, update} = writable(["", -1]);
   let history = [];
@@ -118,5 +120,3 @@ function defineInitialOptions() {
     showGrid
   };
 }
-
-export const iconedNav = writable(false);

@@ -164,5 +164,13 @@
     "randomColor": "Use random color",
     "background": "Window background color",
     "scale": "Downloaded image size, 1 is default size, 2 - 2x size, etc."
+  },
+  "error": {
+    "copyToClipboard": "Cannot copy to the clipboard!"
+  },
+  "success": {
+    "copyEditLink": "Coat of arms link is copied to your clipboard",
+    "copyApiLink": "API link is copied to your clipboard",
+    "copyCoaString": "Encoded COA string is copied to your clipboard"
   }
 }

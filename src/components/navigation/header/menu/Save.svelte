@@ -17,7 +17,7 @@
         }, 500);
       },
       err => {
-        $message = {type: "error", text: "Cannot copy to the clipboard!", timeout: 5000};
+        $message = {type: "error", text: $t("error.copyToClipboard"), timeout: 5000};
         console.error(err);
       }
     );
@@ -26,19 +26,19 @@
   function copyEditLink() {
     const coa = ($changes[0] as string).replaceAll("#", "%23");
     const url = location.origin + location.pathname + "?coa=" + coa;
-    copyToClipboard(url, "Coat of arms link is copied to your clipboard");
+    copyToClipboard(url, $t("success.copyEditLink"));
   }
 
-  function copyAPILink() {
+  function copyApiLink() {
     const encoded = encodeURI($changes[0] as string);
     const API = "https://armoria.herokuapp.com/";
     const url = `${API}?size=500&format=png&coa=${encoded}`;
-    copyToClipboard(url, "API link is copied to your clipboard");
+    copyToClipboard(url, $t("success.copyApiLink"));
   }
 
-  function copyCOA() {
+  function copyCoaString() {
     const encoded = encodeURI($changes[0] as string);
-    copyToClipboard(encoded, "Encoded COA string is copied to your clipboard");
+    copyToClipboard(encoded, $t("success.copyCoaString"));
   }
 </script>
 
@@ -51,8 +51,8 @@
 
     {#if $state.edit}
       <NavButton onclick={copyEditLink} tip={$t("tooltip.copyEditLink")}>{$t(`menu.copyEditLink`)}</NavButton>
-      <NavButton onclick={copyAPILink} tip={$t("tooltip.copyApiLink")}>{$t(`menu.copyApiLink`)}</NavButton>
-      <NavButton onclick={copyCOA} tip={$t("tooltip.copyCoaString")}>{$t(`menu.copyCoaString`)}</NavButton>
+      <NavButton onclick={copyApiLink} tip={$t("tooltip.copyApiLink")}>{$t(`menu.copyApiLink`)}</NavButton>
+      <NavButton onclick={copyCoaString} tip={$t("tooltip.copyCoaString")}>{$t(`menu.copyCoaString`)}</NavButton>
     {/if}
   </div>
 </div>
