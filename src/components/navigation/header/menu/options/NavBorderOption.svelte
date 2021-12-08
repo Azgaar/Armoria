@@ -34,7 +34,7 @@
     <NavItem>
       {$t(`menu.color`)}
       {#if $border !== DEFAULT_BORDER}
-        <IconButton icon="undo" tip={$t("tooltip.undoColor")} onclick={restoreDefaultBorder} />
+        <IconButton icon="undo" tip={$t("tooltip.undoColorChange")} onclick={restoreDefaultBorder} />
       {/if}
       <ColorInput value={$border} oninput={changeColor} />
     </NavItem>
