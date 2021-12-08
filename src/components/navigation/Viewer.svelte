@@ -15,5 +15,5 @@
 </script>
 
 <div id="viewer" on:click={edit}>
-  <COA {coa} i="View" w={coaSize} h={coaSize} />
+  <COA {coa} i="View" width={coaSize} height={coaSize} />
 </div>

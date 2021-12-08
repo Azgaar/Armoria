@@ -1,9 +1,11 @@
-<script>
+<script lang="ts">
+  // @ts-check
   import {colors} from "data//stores";
   import {shieldPaths} from "data//shields";
   import {fade, draw} from "svelte/transition";
   import {rw} from "scripts/utils";
-  export let duration;
+
+  export let duration: number;
 
   const delay = duration * 2.6;
 
@@ -12,7 +14,7 @@
   const t1 = metal ? rw(tinctures.metals) : rw(tinctures.colors);
   const t2 = metal ? rw(tinctures.colors) : rw(tinctures.metals);
 
-  const division = rw({
+  const divisionVariants = {
     perPale: 2,
     perFess: 2,
     perBend: 2,
@@ -24,7 +26,8 @@
     perSaltire: 5,
     gyronny: 1,
     chevronny: 1
-  });
+  };
+  const division = rw(divisionVariants);
 
   const paths = {
     perPale: ["M100,25 v175", "M100,0 v200 h100 v-200 Z"],

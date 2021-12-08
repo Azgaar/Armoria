@@ -9,25 +9,29 @@ export function ra<T>(array: T[]) {
 }
 
 // return random value from weighted array
-export function rw(object: {array: any[]}, save = true) {
-  if (!object.array) {
-    const array = [];
-    for (const key in object) {
-      for (let i = 0; i < object[key]; i++) {
-        array.push(key);
-      }
-    }
-
-    save &&
-      Object.defineProperty(object, "array", {
-        enumerable: false,
-        configurable: true,
-        writable: false,
-        value: array
-      });
+export function rw(object: {[key: string]: number}, save = true) {
+  if (object.array) {
+    return ra(object.array as unknown as string[]);
   }
 
-  return object.array[Math.floor(Math.random() * object.array.length)];
+  const array: string[] = [];
+
+  for (const key in object) {
+    for (let i = 0; i < object[key]; i++) {
+      array.push(key);
+    }
+  }
+
+  if (save) {
+    Object.defineProperty(object, "array", {
+      enumerable: false,
+      configurable: true,
+      writable: false,
+      value: array
+    });
+  }
+
+  return ra(array);
 }
 
 export function P(probability: number) {

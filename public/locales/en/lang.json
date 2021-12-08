@@ -188,5 +188,26 @@
     "tipAddTincture": "Set color details and chance and then click on 'Apply Color'",
     "restoredDefaults": "Default values are restored",
     "tipUploadImageSize": "Fit image into the rectangle for best result"
+  },
+  "about": {
+    "tutorial": "Tutorial",
+    "discord": "Discord",
+    "gitHub": "GitHub",
+    "api": "API",
+    "patreon": "Patreon"
+  },
+  "license": {
+    "armoriaLicense": "Armoria License",
+    "currentCoas": "Currently displayed Coat of Arms",
+    "charges": "Charges",
+    "noLicenseData": "no license data",
+    "noSourceData": "no source data",
+    "publicDomain": "public domain",
+    "fairUse": "fair use",
+    "wetaShield": "As per my information, shield shape close to the used one is designed for the Lord of the Rings film series by <a target='_blank' href='www.wetanz.com'>Weta Workshop</a>. The shape itself is drawn by Azgaar, but the design may be owned by <a target='_blank' href='https://www.middleearth.com'>Middle-earth Enterprises</a> or <a target='_blank' href='https://www.warnerbros.com/company/divisions/motion-pictures'>New Line Productions</a>. Hereby I recommended not use this shape for any purposes outside of the <i>fair use</i> concept.",
+    "textMain": "Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.",
+    "textRest": "The software is provided 'As is', without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.",
+    "code": "Code",
+    "icons": "Icons"
   }
 }

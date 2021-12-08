@@ -17,17 +17,17 @@
   import {rw} from "scripts/utils";
   import "scripts/i18n";
 
-  let n;
-  let w;
-  let h;
+  let quantity: number;
+  let width: number;
+  let height: number;
   let gallery = [];
-  let seed;
+  let seed: string = undefined;
   let coaSize = 200;
 
   $locale = "en"; // fallback locale
 
   checkLoadParameters(); // on load
-  $: [n, w, h] = defineGallerySize($size);
+  $: [quantity, width, height] = defineGallerySize($size);
   $: handleMatrixChange($matrix, $size);
 
   function handleMatrixChange() {
@@ -42,7 +42,7 @@
         seed = undefined; // use once
       } else {
         // reroll gallery
-        $matrices[$matrix] = Array.from({length: n}, (_, i) => l + i++);
+        $matrices[$matrix] = Array.from({length: quantity}, (_, i) => l + i++);
       }
 
       // change shield if it's not locked (manually selected)
@@ -52,19 +52,19 @@
     }
 
     // add additional coas to matrix if size is smaller
-    if ($matrices[$matrix].length < n) {
+    if ($matrices[$matrix].length < quantity) {
       const m = $matrices[$matrix];
-      $matrices[$matrix] = [...Array(n).keys()].map(i => (m[i] !== undefined ? m[i] : l + i));
+      $matrices[$matrix] = [...Array(quantity).keys()].map(i => (m[i] !== undefined ? m[i] : l + i));
     }
-    gallery = $matrices[$matrix].slice(0, n); // trim gallery if size was bigger
+    gallery = $matrices[$matrix].slice(0, quantity); // trim gallery if size was bigger
 
     // on coa edit or view mode
     if ($state.edit || $state.view) $state.c = $matrices[$matrix][$state.i];
   }
 
   function checkLoadParameters() {
-    const url = new URL(window.location);
-    const viewParam = url.searchParams.get("view") == 1;
+    const url = new URL(window.location.href);
+    const viewParam = url.searchParams.get("view") === "1";
     const sizeParam = +url.searchParams.get("size");
     const coaParam = url.searchParams.get("coa");
     const seedParam = url.searchParams.get("seed");
@@ -77,20 +77,22 @@
       if (!validateJSON(coaParam)) return;
       $history.push(JSON.parse(coaParam));
     } else if (seedParam) {
-      // exact seed to use
-      seed = isNaN(+seedParam) ? seedParam : +seedParam;
+      seed = seedParam;
     }
 
     if (coaParam || seedParam) {
       if (from === "FMG") {
-        const text = $t("info.tipFromFmg");
-        message.info(text, 10000);
+        message.info($t("info.tipFromFmg"), 10000);
       }
+
       $matrices[0] = [0];
+
       if (viewParam) {
         if (sizeParam) coaSize = sizeParam;
         $state.view = 1; // open in view only mode
-      } else $state.edit = 1; // open in edit mode
+      } else {
+        $state.edit = 1; // open in edit mode
+      }
     }
   }
 
@@ -132,7 +134,7 @@
     {#if $state.vector}<UploadVector />{/if}
     {#if $state.tinctures}<Tinctures />{/if}
     {#if $state.edit}<Editor c={$state.c} {seed} />
-    {:else}<Gallery {gallery} {w} {h} />{/if}
+    {:else}<Gallery {gallery} {width} {height} />{/if}
     {#if $message}<Message />{/if}
   </main>
 {/if}

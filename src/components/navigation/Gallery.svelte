@@ -1,12 +1,17 @@
-<script>
+<script lang="ts">
+  // @ts-check
   import {history, matrices, matrix, state} from "data/stores";
   import {download} from "scripts/download";
   import {generate} from "scripts/generator";
+  import {minmax} from "scripts/utils";
   import {fade} from "svelte/transition";
   import COA from "./../object/COA.svelte";
-  export let gallery, w, h;
 
-  $: font = Math.max(Math.min(Math.ceil(w / 20), 12), 6);
+  export let gallery: number[];
+  export let width: number;
+  export let height: number;
+
+  $: fontSize = minmax(width / 20, 6, 12);
 
   $: coas = gallery.map(c => {
     let coa = $history[c] || generate();
@@ -28,11 +33,11 @@
   }
 </script>
 
-<div id="gallery" style="font-size: {font}px" in:fade={{duration: 1800}} out:fade={{duration: 500}}>
+<div id="gallery" style="font-size: {fontSize}px" in:fade={{duration: 1800}} out:fade={{duration: 500}}>
   {#each coas as coa, i}
     <div>
       {#key coa}
-        <COA {coa} {i} {w} {h} />
+        <COA {coa} {i} {width} {height} />
       {/key}
       <div class="control">
         <svg on:click={() => regenerate(i)}><use href="#dice-icon" /></svg>

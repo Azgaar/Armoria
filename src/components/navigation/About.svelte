@@ -1,9 +1,12 @@
-<script>
+<script lang="ts">
+  // @ts-check
+  import {t} from "svelte-i18n";
   import AnimatedCOA from "./AnimatedCOA.svelte";
   import {state} from "data//stores";
   import {fade, fly} from "svelte/transition";
 
   const duration = 1000;
+
   const handleClose = () => {
     $state.about = 0;
   };
@@ -13,11 +16,11 @@
   <span on:click={handleClose} class="close">&times;</span>
   <AnimatedCOA {duration} />
   <div class="buttons" in:fly={{y: 200, delay: duration, duration}}>
-    <a target="_blank" href="https://github.com/Azgaar/Armoria/wiki/Armoria-Tutorial"><span translate="no">Tutorial</span></a>
-    <a target="_blank" href="https://discord.com/invite/X7E84HU"><span translate="no">Discord</span></a>
-    <a target="_blank" href="https://github.com/Azgaar/Armoria"><span translate="no">GitHub</span></a>
-    <a target="_blank" href="https://github.com/Azgaar/armoria-api#readme"><span translate="no">API</span></a>
-    <a target="_blank" href="https://www.patreon.com/azgaar"><span translate="no">Patreon</span></a>
+    <a target="_blank" href="https://github.com/Azgaar/Armoria/wiki/Armoria-Tutorial"><span>{$t("about.tutorial")}</span></a>
+    <a target="_blank" href="https://discord.com/invite/X7E84HU"><span>{$t("about.discord")}</span></a>
+    <a target="_blank" href="https://github.com/Azgaar/Armoria"><span>{$t("about.gitHub")}</span></a>
+    <a target="_blank" href="https://github.com/Azgaar/armoria-api#readme"><span>{$t("about.api")}</span></a>
+    <a target="_blank" href="https://www.patreon.com/azgaar"><span>{$t("about.patreon")}</span></a>
   </div>
 </div>
 

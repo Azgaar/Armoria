@@ -1,13 +1,16 @@
-<script>
+<script lang="ts">
+  // @ts-check
   import {shieldBox} from "data/shields";
   import {border, borderWidth, shield} from "data/stores";
+  import {number} from "svelte-i18n";
   import Grid from "./../editor/Grid.svelte";
   import Positions from "./../editor/Positions.svelte";
   import Shield from "./Shield.svelte";
-  export let coa,
-    i,
-    w = "100%",
-    h = "100%";
+
+  export let coa: unknown;
+  export let i: string | number;
+  export let width: string | number = "100%";
+  export let height: string | number = "100%";
 
   $: viewBox = shieldBox[$shield] || "0 0 200 200";
 </script>
@@ -15,8 +18,8 @@
 <svg
   id="coa{i}"
   class="coa"
-  width={w}
-  height={h}
+  {width}
+  {height}
   {viewBox}
   xmlns="http://www.w3.org/2000/svg"
   xmlns:xlink="http://www.w3.org/1999/xlink"

@@ -1,4 +1,6 @@
 <script lang="ts">
+  // @ts-check
+  import {t} from "svelte-i18n";
   import {fade} from "svelte/transition";
   import {shield, state} from "data/stores";
   import {capitalize, link} from "scripts/utils";
@@ -8,6 +10,17 @@
   const coas = Array.from(document.querySelectorAll("svg.coa"));
   const charges = coas.map(coa => Array.from(coa.querySelectorAll(".charge[charge]")).map(el => el.getAttribute("charge"))).flat();
 
+  // translation-related constants
+  const noLicenseData = $t("license.noLicenseData");
+  const noSourceData = $t("license.noSourceData");
+  const publicDomain = $t("license.publicDomain");
+  const fairUse = $t("license.fairUse");
+
+  // links
+  const armoriaGitHub = link("https://github.com/Azgaar/Armoria", "Azgaar");
+  const ccBy = link("https://creativecommons.org/licenses/by/4.0/", "CC BY 4.0");
+  const fontAwesome = link("https://fontawesome.com/license/free", "Font Awesome");
+
   const chargeData = [...new Set(charges)]
     .map(charge => {
       const el = document.getElementById(charge);
@@ -16,8 +29,8 @@
       const sourceURL = el.getAttribute("source");
       const author = el.getAttribute("author") || (sourceURL ? new URL(sourceURL).host : null);
 
-      const license = licenseURL && licenseName ? link(licenseURL, licenseName) : "no license data";
-      const source = sourceURL ? link(sourceURL, author) : author || "no source data";
+      const license = licenseURL && licenseName ? link(licenseURL, licenseName) : noLicenseData;
+      const source = sourceURL ? link(sourceURL, author) : author || noSourceData;
 
       return {charge: capitalize(charge), license, source};
     })
@@ -29,30 +42,31 @@
   // get mainly Creative Commons short names from license link
   function getLicenseName(license: string) {
     if (!license) return null;
-    if (license.includes("publicdomain")) return "public domain";
+    if (license.includes("publicdomain")) return publicDomain;
     if (license.includes("by-nc-sa")) return "CC BY-NC-SA";
     if (license.includes("by-nc-nd")) return "CC BY-NC-ND";
     if (license.includes("by-nc")) return "CC BY-NC";
     if (license.includes("by-nd")) return "CC BY-ND";
     if (license.includes("by-sa")) return "CC BY-SA";
     if (license.includes("by")) return "CC BY";
-    if (license.includes("Fair")) return "fair use";
+    if (license.includes("Fair")) return fairUse;
     return license;
   }
 </script>
 
 <div id="license" transition:fade>
   <span on:click={() => ($state.license = 0)} class="close">&times;</span>
+
   <div id="licenseContainer">
-    <h1>Armoria License</h1>
+    <h1>{$t("license.armoriaLicense")}</h1>
 
     {#if chargeData.length}
       <hr />
-      <h2>Currently displayed Coat of Arms</h2>
+      <h2>{$t("license.currentCoas")}</h2>
     {/if}
 
     {#if isLicenseSame}
-      <h3>{chargeData.length > 1 ? "Charges" : charge.charge}: {@html charge.license}, {@html charge.source}</h3>
+      <h3>{chargeData.length > 1 ? $t("license.charges") : charge.charge}: {@html charge.license}, {@html charge.source}</h3>
     {:else}
       <div class="chargesList">
         {#each chargeData as {charge, license, source}}
@@ -62,35 +76,16 @@
     {/if}
 
     {#if wetaShield($shield)}
-      <p>
-        As per my information, shield shape close to <i>{capitalize($shield)}</i> is designed for the Lord of the Rings film series by
-        <a target="_blank" href="www.wetanz.com">Weta Workshop</a>. The shape itself is drawn by Azgaar, but as design itself may be protected and owned by {@html link(
-          "https://www.middleearth.com",
-          "Middle-earth Enterprises"
-        )} or {@html link("https://www.warnerbros.com/company/divisions/motion-pictures", "New Line Productions")}, it is recommended to not use this shape for
-        any purposes outside of the {@html link("https://en.wikipedia.org/wiki/Fair_use", "fair use")} concept.
-      </p>
+      <p>{@html $t("license.wetaShield")}</p>
     {/if}
 
     <hr />
-    <h2>Code: MIT License, {@html link("https://github.com/Azgaar/Armoria", "Azgaar")}</h2>
-    <p>
-      Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
-      in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-      copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: The above copyright notice
-      and this permission notice shall be included in all copies or substantial portions of the Software.
-    </p>
-    <p>
-      The software is provided "As is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability,
-      fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other
-      liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in
-      the software.
-    </p>
+    <h2>{$t("license.code")}: MIT License, {@html armoriaGitHub}</h2>
+    <p>{$t("license.textMain")}</p>
+    <p>{$t("license.textRest")}</p>
 
     <hr />
-    <h2>
-      Icons: {@html link("https://creativecommons.org/licenses/by/4.0", "CC BY 4.0")}, {@html link("https://fontawesome.com/license/free", "Font Awesome")}
-    </h2>
+    <h2>{$t("license.icons")}: {@html ccBy}, {@html fontAwesome}</h2>
     <br />
   </div>
 </div>
