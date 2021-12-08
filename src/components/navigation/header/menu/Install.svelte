@@ -20,8 +20,8 @@
     installable = true;
   });
 
-  window.addEventListener("appinstalled", e => {
-    $message = {type: "success", text: `Armoria application is installed`, timeout: 5000};
+  window.addEventListener("appinstalled", () => {
+    message.success($t("success.install"));
   });
 </script>
 

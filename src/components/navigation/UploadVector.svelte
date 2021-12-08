@@ -1,4 +1,5 @@
 <script>
+  import {t} from "svelte-i18n";
   import LicenseList from "./LicenseList.svelte";
   import {state, colors, tinctures, message, shield} from "data/stores";
   import {charges} from "data/dataModel";
@@ -35,7 +36,7 @@
     const file = files.length ? files[0] : [];
 
     if (!file.type.match(/text.*|svg.*/)) {
-      $message = {type: "error", text: "File must be text or svg!"};
+      message.error($t("error.notSvgOrText"));
       return;
     }
 
@@ -71,7 +72,7 @@
 
       const g = el.querySelector("g");
       if (!g) {
-        $message = {type: "error", text: "File must be prepared svg. Download template for guidance!"};
+        message.error($t("error.incorrectSvg"));
         selected = false;
         return;
       }
@@ -95,7 +96,7 @@
     name = camelize(name);
 
     if (!name || document.getElementById(name) || allCharges.includes(name)) {
-      $message = {type: "error", text: "Name must be unique id!"};
+      message.error($t("error.notUniqueName"));
       return;
     }
 
@@ -116,7 +117,7 @@
 
     selected = false;
     $state.vector = 0;
-    $message = {type: "success", text: `Charge "${name}" is added to the category "${category}"`};
+    message.success($t("success.chargeAdded"));
   }
 
   function downloadTemplate() {

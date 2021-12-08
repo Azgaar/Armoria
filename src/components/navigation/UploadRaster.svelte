@@ -1,4 +1,5 @@
 <script>
+  import {t} from "svelte-i18n";
   import LicenseList from "./LicenseList.svelte";
   import {state, message, shield} from "data/stores";
   import {charges} from "data/dataModel";
@@ -6,16 +7,18 @@
   import {tooltip} from "scripts/tooltip";
   import {camelize} from "scripts/utils";
 
-  let dragging = false,
-    selected = false;
-  let size = 50,
-    offsetX = 0,
-    offsetY = 0;
-  let name,
-    category = "uploaded",
-    source,
-    license,
-    author;
+  let dragging = false;
+  let selected = false;
+
+  let size = 50;
+  let offsetX = 0;
+  let offsetY = 0;
+
+  let name;
+  let category = "uploaded";
+  let source;
+  let license;
+  let author;
 
   const onFile = getFilesFunction => event => {
     dragging = false;
@@ -23,12 +26,12 @@
     const file = files.length ? files[0] : [];
 
     if (!file.type.match(/image.*/)) {
-      $message = {type: "error", text: "Not an image file!"};
+      message.error($t("error.notAnImage"));
       return;
     }
 
     selected = true;
-    $message = {type: "info", text: "Fit image into the rectangle for best result"};
+    message.info($t("info.tipUploadImageSize"));
     name = camelize(file.name);
     loadImage(file);
   };
@@ -60,7 +63,7 @@
     name = camelize(name);
 
     if (!name || document.getElementById(name) || allCharges.includes(name)) {
-      $message = {type: "error", text: "Name must be unique id!"};
+      message.error($t("error.notUniqueName"));
       return;
     }
 
@@ -83,7 +86,7 @@
 
     selected = false;
     $state.raster = 0;
-    $message = {type: "success", text: `Charge "${name}" is added to the category "${category}"`};
+    message.success($t("success.chargeAdded"));
   }
 </script>
 

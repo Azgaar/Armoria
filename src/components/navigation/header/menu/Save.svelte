@@ -7,17 +7,16 @@
   import NavItem from "../shared/NavItem.svelte";
 
   function copyToClipboard(stringToCopy: string, text: string) {
-    $message = null;
+    message.clear();
 
     navigator.clipboard.writeText(stringToCopy).then(
       () => {
-        $message = null;
         setTimeout(() => {
-          $message = {type: "success", text, timeout: 5000};
+          message.success(text);
         }, 500);
       },
       err => {
-        $message = {type: "error", text: $t("error.copyToClipboard"), timeout: 5000};
+        message.error($t("error.copyToClipboard"));
         console.error(err);
       }
     );

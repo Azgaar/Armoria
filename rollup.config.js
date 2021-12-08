@@ -44,6 +44,7 @@ export default {
   plugins: [
     // pass env var to the Svelte app
     replace({
+      preventAssignment: true,
       "process.env.production": production
     }),
 

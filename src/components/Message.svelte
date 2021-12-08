@@ -1,23 +1,21 @@
-<script>
+<script lang="ts">
+  // @ts-check
   import {onMount} from "svelte";
   import {fly, fade} from "svelte/transition";
   import {message} from "data/stores";
 
-  const {text, type = "info", timeout = 4000} = $message;
+  const {text, type, timeout} = $message;
 
   onMount(async () => {
-    const text = $message.text;
+    const textOnMount = $message.text;
+
     setTimeout(() => {
-      if ($message?.text === text) $message = null;
+      if ($message?.text === textOnMount) message.clear();
     }, timeout);
   });
-
-  function hideMessage() {
-    $message = null;
-  }
 </script>
 
-<div class={type} in:fly={{y: 200, duration: 500}} out:fade={{duration: 300}} on:click={hideMessage}>
+<div class={type} in:fly={{y: 200, duration: 500}} out:fade={{duration: 300}} on:click={() => message.clear()}>
   {text}
 </div>
 

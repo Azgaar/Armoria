@@ -34,11 +34,30 @@ export const history = writable([]);
 export const matrices = writable([]);
 export const matrix = writable(0);
 export const state = writable({edit: 0, about: 0, license: 0, tinctures: 0, raster: 0, vector: 0, i: 0});
-export const message = writable(null);
 
 export const iconedNav = writable(false);
 
-const createChangesTracker = () => {
+const createMessageStore = () => {
+  const {subscribe, set} = writable(null);
+  const defaultTimeout = 5000;
+
+  return {
+    subscribe,
+    clear: () => set(null),
+    success: (text: string, timeout: number = defaultTimeout) => {
+      set({type: "success", text, timeout});
+    },
+    info: (text: string, timeout: number = defaultTimeout) => {
+      set({type: "info", text, timeout});
+    },
+    error: (text: string, timeout: number = defaultTimeout) => {
+      set({type: "error", text, timeout});
+    }
+  };
+};
+export const message = createMessageStore();
+
+const createChangesStore = () => {
   const {subscribe, set, update} = writable(["", -1]);
   let history = [];
   let position = -1;
@@ -52,7 +71,7 @@ const createChangesTracker = () => {
       position = -1;
       set(["", -1]);
     },
-    add(value) {
+    add: (value: unknown) => {
       if (value === history[position]) return; // no change
       if (position < history.length - 1) history = history.slice(0, position + 1); // cut future history
       history.push(value);
@@ -71,7 +90,7 @@ const createChangesTracker = () => {
       })
   };
 };
-export const changes = createChangesTracker();
+export const changes = createChangesStore();
 
 function defineInitialOptions() {
   const stored = (key: string) => {

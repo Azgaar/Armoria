@@ -1,4 +1,5 @@
 <script>
+  import {t} from "svelte-i18n";
   import {changes, grid, history, message, shield, showGrid, state, tinctures, iconedNav} from "data/stores";
   import {charges, divisions, ordinaries} from "data/dataModel";
   import {generate} from "scripts/generator";
@@ -287,8 +288,7 @@
   }
 
   if (!isTouchDevice() && (coa.ordinaries || coa.charges)) {
-    if (!$message)
-      $message = {type: "info", text: "Drag to move, hold SHIFT and drag vertically to resize, hold CONTROL and drag horizontally to rotate", timeout: 4000};
+    if (!$message) message.info($t("info.tipEditControls"));
   }
 
   function isTouchDevice() {

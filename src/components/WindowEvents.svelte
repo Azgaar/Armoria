@@ -45,7 +45,7 @@
       $state.vector = 0;
       $state.tinctures = 0;
       $state.edit = 0;
-      $message = null;
+      message.clear();
     }
   }
 

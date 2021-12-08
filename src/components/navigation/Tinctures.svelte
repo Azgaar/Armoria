@@ -1,4 +1,5 @@
 <script>
+  import {t} from "svelte-i18n";
   import {fade} from "svelte/transition";
   import {flip} from "svelte/animate";
   import {colors, tinctures, state, message, changes} from "data/stores";
@@ -40,22 +41,22 @@
     return Object.entries($tinctures[type]).reduce((a, b) => a + b[1], 0);
   }
 
-  function removeTincture(t) {
-    if (t.type === "metals" || t.type === "colours") {
-      const typeItems = Object.keys($tinctures[t.type]);
+  function removeTincture(tincture) {
+    if (tincture.type === "metals" || tincture.type === "colours") {
+      const typeItems = Object.keys($tinctures[tincture.type]);
       if (typeItems.length < 3) {
-        $message = {type: "error", text: `There should be at least 2 tinctures of type '${t.type}'!`};
+        message.error($t("error.tinctureRemove"));
         return;
       }
     }
 
-    delete $tinctures[t.type][t.t];
+    delete $tinctures[tincture.type][tincture.t];
     $tinctures = $tinctures;
   }
 
   function addTincture() {
     add.show = true;
-    $message = {type: "warn", text: `Set tincture name, type, color and chance and then click on 'Apply Tincture'`, timeout: 8000};
+    message.info($t("info.tipAddTincture"), 8000);
   }
 
   function cancelAddTincture() {
@@ -66,14 +67,14 @@
     const name = camelize(add.name);
 
     if (!name || $colors[name]) {
-      $message = {type: "error", text: `Tincture name must be unique!`};
+      message.error($t("error.nonUniqueTincture"));
       return;
     }
 
     $tinctures[add.type][name] = add.chance;
     $colors[name] = add.color;
     add.show = false;
-    $message = {type: "info", text: `Tincture ${name} is added`};
+    message.info($t("success.tinctureAdded"));
   }
 
   function restoreDefault() {
@@ -82,7 +83,7 @@
     localStorage.removeItem("tinctures");
     localStorage.removeItem("colors");
     loaded = [];
-    $message = {type: "info", text: `Default values are restored`};
+    message.info($t("info.restoredDefaults"));
   }
 </script>
 
