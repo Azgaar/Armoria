@@ -28,7 +28,6 @@
   #about {
     position: fixed;
     inset: 0;
-    z-index: 1;
     background-color: rgba(0, 0, 0, 0.9);
     transition: 0.5s;
     text-align: center;

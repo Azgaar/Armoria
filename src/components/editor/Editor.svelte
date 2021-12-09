@@ -306,7 +306,7 @@
   }
 </script>
 
-<div id="editor" transition:fade={{duration: 500}}>
+<main transition:fade={{duration: 500}}>
   {#key coa}
     <COA {coa} i="Edit" />
   {/key}
@@ -517,15 +517,22 @@
     <div class="buttonLine" on:click={addOrdinary}>Add Ordinary</div>
     <div class="buttonLine" on:click={addCharge}>Add Charge</div>
   </div>
-</div>
+</main>
 
 <style>
-  #editor {
+  main {
     width: 100%;
     height: calc(100% - 45px);
     display: grid;
     justify-items: center;
     grid-template-columns: auto minmax(40%, 60%);
+  }
+
+  @media only screen and (orientation: portrait) {
+    main {
+      grid-template-columns: none;
+      grid-template-rows: minmax(25%, 1fr) auto;
+    }
   }
 
   #menu {
@@ -535,13 +542,6 @@
     scrollbar-width: thin;
     transition: 1s;
     background-color: #11111180;
-  }
-
-  @media only screen and (orientation: portrait) {
-    #editor {
-      grid-template-columns: none;
-      grid-template-rows: minmax(25%, 1fr) auto;
-    }
   }
 
   #menu::-webkit-scrollbar {

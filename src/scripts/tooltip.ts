@@ -18,7 +18,8 @@ export const tooltip = (element: HTMLElement | SVGSVGElement) => {
   const hotkey = element.dataset.hotkey;
 
   function mouseEnter() {
-    forEach(".tooltip", el => el.remove());
+    removeTooltip();
+    setTimeout(removeTooltip, removalDelay);
 
     let text = element.dataset.tooltip;
 
@@ -30,7 +31,6 @@ export const tooltip = (element: HTMLElement | SVGSVGElement) => {
 
     const bbox = div.getBoundingClientRect();
     limit = [window.innerWidth - bbox.width, window.innerHeight - bbox.height];
-    setTimeout(mouseLeave, removalDelay);
   }
 
   function mouseMove(event: MouseEvent) {
@@ -38,19 +38,17 @@ export const tooltip = (element: HTMLElement | SVGSVGElement) => {
     div.style.top = `${Math.min(event.pageY + 10, limit[1])}px`;
   }
 
-  function mouseLeave() {
-    if (div) div.remove();
+  function removeTooltip() {
+    forEach(".tooltip", el => el.remove());
   }
 
   element.on("mouseenter", mouseEnter);
-  element.on("mouseleave", mouseLeave);
   element.on("mousemove", mouseMove);
+  element.on("mouseleave", removeTooltip);
 
   return {
     destroy() {
-      element.off("mouseenter", mouseEnter);
-      element.off("mouseleave", mouseLeave);
-      element.off("mousemove", mouseMove);
+      removeTooltip();
     }
   };
 };

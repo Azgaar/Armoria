@@ -33,7 +33,7 @@
   }
 </script>
 
-<div id="gallery" style="font-size: {fontSize}px" in:fade={{duration: 1800}} out:fade={{duration: 500}}>
+<main style="font-size: {fontSize}px" in:fade={{duration: 1800}} out:fade={{duration: 500}}>
   {#each coas as coa, i}
     <div>
       {#key coa}
@@ -46,21 +46,17 @@
       </div>
     </div>
   {/each}
-</div>
+</main>
 
 <style>
-  div {
-    display: inline-table;
-  }
-
-  #gallery > div {
+  main > div {
     display: inline-block;
     position: relative;
     user-select: none;
     transition: background 0.5s ease;
   }
 
-  #gallery > div:hover {
+  main > div:hover {
     background: #00000020;
   }
 
@@ -75,7 +71,7 @@
     white-space: nowrap;
   }
 
-  #gallery > div:hover > .control {
+  main > div:hover > .control {
     opacity: 1;
   }
 

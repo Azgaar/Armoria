@@ -69,7 +69,7 @@
       <h3>{chargeData.length > 1 ? $t("license.charges") : charge.charge}: {@html charge.license}, {@html charge.source}</h3>
     {:else}
       <div class="chargesList">
-        {#each chargeData as {charge, license, source}}
+        {#each chargeData as { charge, license, source }}
           <div>{charge}: {@html license}, {@html source}</div>
         {/each}
       </div>
@@ -95,7 +95,6 @@
     height: 100%;
     width: 100%;
     position: fixed;
-    z-index: 1;
     left: 0;
     top: 0;
     background-color: #000000e6;
