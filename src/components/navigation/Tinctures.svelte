@@ -8,7 +8,7 @@
   import {tooltip} from "scripts/tooltip";
   import {DEFAULT_COLORS, DEFAULT_TINCTURES} from "config/defaults";
 
-  let add = {show: false, name: "", type: "colours", color: "#96C8FA", chance: 3};
+  const addLine = {show: false, name: "", type: "colours", color: "#96C8FA", chance: 3};
 
   // remove stored weighted array
   for (const key in $tinctures) {
@@ -53,12 +53,12 @@
   }
 
   function addTincture() {
-    add.show = true;
+    addLine.show = true;
     message.info($t("info.tipAddTincture"), 8000);
   }
 
   function cancelAddTincture() {
-    add.show = false;
+    addLine.show = false;
   }
 
   function closeTincturesScreen() {
@@ -66,16 +66,17 @@
   }
 
   function applyAddTincture() {
-    const name = camelize(add.name);
+    const name = camelize(addLine.name);
 
     if (!name || $colors[name]) {
       message.error($t("error.nonUniqueTincture"));
       return;
     }
 
-    $tinctures[add.type][name] = add.chance;
-    $colors[name] = add.color;
-    add.show = false;
+    $tinctures[addLine.type][name] = addLine.chance;
+    $colors[name] = addLine.color;
+    addLine.show = false;
+    addLine.name = "";
     message.info($t("success.tinctureAdded"));
   }
 
@@ -96,159 +97,139 @@
 
 <div id="tinctures" transition:fade|local>
   <span on:click={closeTincturesScreen} class="close">&times;</span>
-  <div id="tincturesCont">
-    <div id="left">
-      <table>
-        <thead>
-          <tr>
-            <th />
-            <th>{$t("tinctures.metals")}</th>
-            <th>{$t("tinctures.colours")}</th>
-            <th>{$t("tinctures.stains")}</th>
-            <th>{$t("tinctures.patterns")}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{$t("tinctures.field")}</td>
-            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.field.metals} /></td>
-            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.field.colours} /></td>
-            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.field.stains} /></td>
-            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.field.patterns} /></td>
-          </tr>
-          <tr>
-            <td>{$t("tinctures.division")}</td>
-            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.division.metals} /></td>
-            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.division.colours} /></td>
-            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.division.stains} /></td>
-            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.division.patterns} /></td>
-          </tr>
-          <tr>
-            <td>{$t("tinctures.charge")}</td>
-            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.charge.metals} /></td>
-            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.charge.colours} /></td>
-            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.charge.stains} /></td>
-            <td><input type="number" min="0" max="100" step="1" bind:value={$tinctures.charge.patterns} /></td>
-          </tr>
-        </tbody>
-      </table>
 
-      <div class="contolButtons">
-        {#if add.show}
-          <button on:click={applyAddTincture}>{$t("tinctures.apply")}</button>
-        {:else}
-          <button on:click={addTincture}>{$t("tinctures.add")}</button>
-        {/if}
-        <button on:click={restoreDefault}>{$t("tinctures.restore")}</button>
-      </div>
-    </div>
-
-    <div id="right">
-      <table id="tincturesTable">
-        <thead>
-          <tr>
-            <th>{$t("tinctures.name")}</th>
-            <th>{$t("tinctures.type")}</th>
-            <th>{$t("tinctures.color")}</th>
-            <th>{$t("tinctures.chance")}</th>
-            <th>{$t("tinctures.remove")}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {#if add.show}
-            <tr transition:fade>
-              <td>
-                <input type="text" placeholder={$t("tinctures.name")} bind:value={add.name} />
-              </td>
-              <td>
-                <select bind:value={add.type}>
-                  <option value="metals">{$t("tinctures.metals")}</option>
-                  <option value="colours">{$t("tinctures.colours")}</option>
-                  <option value="stains">{$t("tinctures.stains")}</option>
-                </select>
-              </td>
-              <td>
-                <input type="color" bind:value={add.color} />
-              </td>
-              <td>
-                <input type="number" min="0" max="100" step="1" bind:value={add.chance} />
-              </td>
-              <td>
-                <span class="actionButton" on:click={cancelAddTincture}>&times;</span>
-              </td>
-            </tr>
-          {/if}
-          {#each tData as {t: tinctureName, type} (tinctureName)}
-            <tr animate:flip>
-              <td>{getTinctureName(tinctureName)}</td>
-              <td>{$t(`tinctures.${type}`)}</td>
-              <td>
-                <input type="color" bind:value={$colors[tinctureName]} />
-                {#if DEFAULT_COLORS[tinctureName] && $colors[tinctureName] !== DEFAULT_COLORS[tinctureName]}
-                  <svg
-                    on:click={() => ($colors[tinctureName] = DEFAULT_COLORS[tinctureName])}
-                    width="12"
-                    height="12"
-                    fill="#fff"
-                    data-tooltip={$t("tooltip.undoColorChange")}
-                    use:tooltip
-                  >
-                    <use href="#undo-icon" />
-                  </svg>
-                {/if}
-              </td>
-              <td>
-                <input type="number" min="0" max="100" step="1" bind:value={$tinctures[type][tinctureName]} />
-                <span class="totalChance">/ {getTotalChance(type)}</span>
-              </td>
-              <td>
-                <span class="actionButton" on:click={() => removeTincture(tinctureName, type)}>&times;</span>
-              </td>
-            </tr>
+  <div id="left">
+    <table>
+      <thead>
+        <tr>
+          <th />
+          {#each Object.keys($tinctures.field) as type (type)}
+            <th>{$t(`tinctures.${type}`)}</th>
           {/each}
-        </tbody>
-      </table>
-    </div>
+        </tr>
+      </thead>
+      <tbody>
+        {#each ["field", "division", "charge"] as element (element)}
+          <tr>
+            <td>{$t(`tinctures.${element}`)}</td>
+            {#each Object.keys($tinctures[element]) as type (type)}
+              <td>
+                <input type="number" min="0" max="100" step="1" bind:value={$tinctures[element][type]} />
+                <span class="totalChance">/ {getTotalChance(element)}</span>
+              </td>
+            {/each}
+          </tr>
+        {/each}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td />
+          <td colspan="2">
+            {#if addLine.show}
+              <button on:click={applyAddTincture}>{$t("tinctures.apply")}</button>
+            {:else}
+              <button on:click={addTincture}>{$t("tinctures.add")}</button>
+            {/if}
+          </td>
+          <td colspan="2">
+            <button on:click={restoreDefault}>{$t("tinctures.restore")}</button>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div id="right">
+    <table id="tincturesTable">
+      <thead>
+        <tr>
+          {#each ["name", "type", "color", "chance", "remove"] as header}
+            <th>{$t(`tinctures.${header}`)}</th>
+          {/each}
+        </tr>
+      </thead>
+      <tbody>
+        {#if addLine.show}
+          <tr transition:fade>
+            <td>
+              <input type="text" placeholder={$t("tinctures.name")} bind:value={addLine.name} />
+            </td>
+            <td>
+              <select bind:value={addLine.type}>
+                <option value="metals">{$t("tinctures.metals")}</option>
+                <option value="colours">{$t("tinctures.colours")}</option>
+                <option value="stains">{$t("tinctures.stains")}</option>
+              </select>
+            </td>
+            <td>
+              <input type="color" bind:value={addLine.color} />
+            </td>
+            <td>
+              <input type="number" min="0" max="100" step="1" bind:value={addLine.chance} />
+            </td>
+            <td>
+              <span class="actionButton" on:click={cancelAddTincture}>&times;</span>
+            </td>
+          </tr>
+        {/if}
+        {#each tData as { t: tinctureName, type } (tinctureName)}
+          <tr animate:flip>
+            <td>{getTinctureName(tinctureName)}</td>
+            <td>{$t(`tinctures.${type}`)}</td>
+            <td>
+              <input type="color" bind:value={$colors[tinctureName]} />
+              {#if DEFAULT_COLORS[tinctureName] && $colors[tinctureName] !== DEFAULT_COLORS[tinctureName]}
+                <svg
+                  on:click={() => ($colors[tinctureName] = DEFAULT_COLORS[tinctureName])}
+                  width="12"
+                  height="12"
+                  data-tooltip={$t("tooltip.undoColorChange")}
+                  use:tooltip
+                >
+                  <use href="#undo-icon" />
+                </svg>
+              {/if}
+            </td>
+            <td>
+              <input type="number" min="0" max="100" step="1" bind:value={$tinctures[type][tinctureName]} />
+              <span class="totalChance">/ {getTotalChance(type)}</span>
+            </td>
+            <td>
+              <span class="actionButton" on:click={() => removeTincture(tinctureName, type)}>&times;</span>
+            </td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
   </div>
 </div>
 
 <style>
   #tinctures {
-    height: 100%;
-    width: 100%;
     position: fixed;
+    inset: 0;
     z-index: 1;
-    left: 0;
-    top: 0;
     background-color: rgba(0, 0, 0, 0.9);
     transition: 0.5s;
     text-align: center;
     user-select: none;
-  }
-
-  #tincturesCont {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     overflow: auto;
-    scrollbar-width: thin;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
   }
 
-  #tincturesCont::-webkit-scrollbar {
+  #tinctures::-webkit-scrollbar {
     width: 6px;
     background-color: #cccccc80;
   }
 
-  #tincturesCont::-webkit-scrollbar-thumb {
+  #tinctures::-webkit-scrollbar-thumb {
     background-color: #111;
   }
 
   @media only screen and (orientation: portrait) {
-    #tincturesCont {
+    #tinctures {
       flex-direction: column;
     }
   }
@@ -279,15 +260,21 @@
   }
 
   td {
+    position: relative;
     width: 4em;
+  }
+
+  tfoot td {
+    text-align: right;
   }
 
   #tincturesTable td:nth-child(3) {
     width: 5em;
   }
 
-  svg {
-    cursor: pointer;
+  input {
+    position: absolute;
+    transform: translate(-50%, -50%);
   }
 
   input[type="color"] {
@@ -301,25 +288,32 @@
   }
 
   input[type="number"] {
-    width: 4em;
+    width: 100%;
   }
 
   .totalChance {
     position: absolute;
-    margin: 0.1em 0 0 -2.1em;
+    top: 6%;
+    right: 10%;
     color: #333;
     user-select: none;
     pointer-events: none;
     font-size: 0.6em;
   }
 
+  svg {
+    cursor: pointer;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    fill: currentColor;
+  }
+
+  svg:hover {
+    fill: #fff;
+  }
+
   .actionButton {
     font-size: 2em;
     cursor: pointer;
-  }
-
-  .contolButtons > button {
-    width: 9em;
-    margin: 1em 0.1em;
   }
 </style>

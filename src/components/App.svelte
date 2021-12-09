@@ -126,21 +126,29 @@
 {:else if $state.view}
   <Viewer c={$state.c} {seed} {coaSize} />
 {:else if !$isLoading}
-  <main style="background-color: {$background}">
+  <header>
     <Navbar />
+  </header>
+  <main style="background-color: {$background}">
     {#if $state.about}<About />{/if}
     {#if $state.license}<License />{/if}
     {#if $state.raster}<UploadRaster />{/if}
     {#if $state.vector}<UploadVector />{/if}
     {#if $state.tinctures}<Tinctures />{/if}
+
     {#if $state.edit}<Editor c={$state.c} {seed} />
     {:else}<Gallery {gallery} {width} {height} />{/if}
+
     {#if $message}<Message />{/if}
   </main>
 {/if}
 <WindowEvents />
 
 <style>
+  main {
+    background-image: url(/background.svg);
+  }
+
   h1 {
     inset: 0;
     margin: 0;
@@ -150,9 +158,5 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  main {
-    background-image: url(/background.svg);
   }
 </style>
