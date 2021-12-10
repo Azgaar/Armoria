@@ -1,8 +1,12 @@
-<script>
+<script lang="ts">
+  // @ts-check
   import Shield from "./../object/Shield.svelte";
   import {tooltip} from "scripts/tooltip";
   import {capitalize} from "scripts/utils";
-  export let coa, tip, itemSize;
+
+  export let coa: any;
+  export let tip: string;
+  export let itemSize: number;
 
   const i = Math.floor(1e6 * Math.random());
 </script>

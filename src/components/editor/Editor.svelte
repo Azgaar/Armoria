@@ -287,12 +287,8 @@
     menu.charges = [...menu.charges, с];
   }
 
-  if (!isTouchDevice() && (coa.ordinaries || coa.charges)) {
+  if (!("ontouchstart" in window) && (coa.ordinaries || coa.charges)) {
     if (!$message) message.info($t("info.tipEditControls"));
-  }
-
-  function isTouchDevice() {
-    return "ontouchstart" in window;
   }
 
   function isRaster(charge) {
@@ -309,7 +305,7 @@
   </div>
   <div id="menu" in:fly={{x: isLandscape ? 1000 : 0, y: isLandscape ? 0 : 1000, duration: 1000}}>
     <!-- Field -->
-    <div class="section" class:expanded={section.field} on:click={() => (section.field = !section.field)}>Field</div>
+    <div class="section" class:expanded={section.field} on:click={() => (section.field = !section.field)}>{$t("tinctures.field")}</div>
     {#if section.field}
       <div class="panel" transition:slide>
         <div class="subsection">
@@ -353,7 +349,7 @@
 
     <!-- Division -->
     <div class="section" class:expanded={section.division} on:click={() => (section.division = !section.division)}>
-      Division: {capitalize(menu.division.division)}
+      {$t("tinctures.division")}: {capitalize(menu.division.division)}
     </div>
     {#if section.division}
       <div class="panel" transition:slide>
@@ -423,7 +419,7 @@
     <!-- Ordinaries -->
     {#each menu.ordinaries as o, i}
       <div class="section" transition:slide class:expanded={section.ordinary[i]} on:click={() => (section.ordinary[i] = !section.ordinary[i])}>
-        Ordinary{menu.ordinaries.length > 1 ? " " + (i + 1) : ""}: {capitalize(o.ordinary)}
+        {$t("editor.ordinary")}{menu.ordinaries.length > 1 ? ` ${i + 1}` : ""}: {capitalize(o.ordinary)}
         {#if o.above}
           <i>[above charges]</i>
         {/if}
@@ -470,7 +466,7 @@
     <!-- Charges -->
     {#each menu.charges as charge, i}
       <div class="section" transition:slide class:expanded={section.charge[i]} on:click={() => (section.charge[i] = !section.charge[i])}>
-        Charge{menu.charges.length > 1 ? " " + (i + 1) : ""}: {capitalize(charge.charge)}
+        {$t("tinctures.charge")}{menu.charges.length > 1 ? ` ${i + 1}` : ""}: {capitalize(charge.charge)}
         <EditorControls bind:els={menu.charges} el={charge} {i} />
       </div>
       {#if section.charge[i]}
@@ -513,8 +509,8 @@
       {/if}
     {/each}
 
-    <div class="buttonLine" on:click={addOrdinary}>Add Ordinary</div>
-    <div class="buttonLine" on:click={addCharge}>Add Charge</div>
+    <div class="buttonLine" on:click={addOrdinary}>{$t("editor.addOrdinary")}</div>
+    <div class="buttonLine" on:click={addCharge}>{$t("editor.addCharge")}</div>
   </div>
 </main>
 

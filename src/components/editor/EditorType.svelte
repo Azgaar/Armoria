@@ -1,10 +1,13 @@
-<script>
-  export let type;
+<script lang="ts">
+  // @ts-check
+  import {t} from "svelte-i18n";
+
+  export let type: string;
 </script>
 
-Type:
+{$t("editor.type")}
 <select bind:value={type}>
-  <option value="tincture">Tincture</option>
-  <option value="pattern">Pattern</option>
-  <option value="semy">Semy</option>
+  <option value="tincture">{$t("editor.tincture")}</option>
+  <option value="pattern">{$t("editor.pattern")}</option>
+  <option value="semy">{$t("editor.semy")}</option>
 </select>
