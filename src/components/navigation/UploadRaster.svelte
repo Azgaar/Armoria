@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+  // @ts-check
   import {t} from "svelte-i18n";
   import LicenseList from "./LicenseList.svelte";
   import {state, message, shield} from "data/stores";
@@ -6,6 +7,7 @@
   import {shieldPaths} from "data/shields";
   import {tooltip} from "scripts/tooltip";
   import {camelize} from "scripts/utils";
+  import {query} from "scripts/aliases";
 
   let dragging = false;
   let selected = false;
@@ -14,11 +16,11 @@
   let offsetX = 0;
   let offsetY = 0;
 
-  let name;
+  let name: string;
   let category = "uploaded";
-  let source;
-  let license;
-  let author;
+  let source: string;
+  let license: string;
+  let author: string;
 
   const onFile = getFilesFunction => event => {
     dragging = false;
@@ -46,10 +48,10 @@
     return files;
   }
 
-  function loadImage(file) {
+  function loadImage(file: Blob) {
     const reader = new FileReader();
     reader.onload = function (readerEvent) {
-      const dataURL = readerEvent.target.result;
+      const dataURL = readerEvent.target.result as string;
       const image = document.getElementById("rasterUpload").querySelector("svg image");
       image.setAttribute("href", dataURL);
     };
@@ -76,7 +78,7 @@
     delete charges.single.array;
     delete charges[category].array;
 
-    const image = document.getElementById("rasterUpload").querySelector("svg image").cloneNode(true);
+    const image = query("#rasterUpload svg image").cloneNode(true) as Element;
     image.id = name;
     if (source) image.setAttribute("source", source);
     if (license) image.setAttribute("license", license);

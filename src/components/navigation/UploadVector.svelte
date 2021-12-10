@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+  // @ts-check
   import {t} from "svelte-i18n";
   import LicenseList from "./LicenseList.svelte";
   import {state, colors, tinctures, message, shield} from "data/stores";
@@ -6,21 +7,27 @@
   import {shieldPaths} from "data/shields";
   import {camelize} from "scripts/utils";
   import {tooltip} from "scripts/tooltip";
+  import {query} from "scripts/aliases";
 
-  let dragging = false,
-    selected = false;
-  let svg,
-    transform = {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0},
-    name,
-    category = "uploaded",
-    color = "#d7374a";
-  let source, license, author;
+  let dragging = false;
+  let selected = false;
+  let svg: string;
+  let transform = {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0};
+  let name: string;
+  let category = "uploaded";
+  let color = "#d7374a";
+
+  let source: string;
+  let license: string;
+  let author: string;
+
   const tinctureList = ["metals", "colours", "stains"].map(type => Object.keys($tinctures[type])).flat();
 
   $: updateTransform(transform);
 
-  function updateTransform(transform) {
-    if (!svg) return; // on component on load
+  function updateTransform(transform: {[key: string]: number}) {
+    if (!svg) return; // on component load
+
     const el = document.createElement("html");
     el.innerHTML = svg;
     const g = el.querySelector("g");
@@ -30,7 +37,7 @@
     svg = g.outerHTML;
   }
 
-  const onFile = getFilesFunction => event => {
+  const onFile = (getFilesFunction: any) => (event: any) => {
     dragging = false;
     const files = getFilesFunction(event);
     const file = files.length ? files[0] : [];
@@ -55,10 +62,10 @@
     return files;
   }
 
-  function loadImage(file) {
+  function loadImage(file: Blob) {
     const reader = new FileReader();
     reader.onload = function (readerEvent) {
-      const svgText = readerEvent.target.result;
+      const svgText = readerEvent.target.result as string;
       const el = document.createElement("html");
       el.innerHTML = svgText;
 
@@ -113,7 +120,7 @@
     if (license) image.setAttribute("license", license);
     if (author) image.setAttribute("author", author);
 
-    defs.insertAdjacentHTML("beforeend", image.outerHTML);
+    query("defs").insertAdjacentHTML("beforeend", image.outerHTML);
 
     selected = false;
     $state.vector = 0;

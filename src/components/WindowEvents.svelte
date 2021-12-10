@@ -11,6 +11,30 @@
     window.onbeforeunload = () => "Are you sure you want to navigate away?";
   }
 
+  function close() {
+    state.set({
+      ...$state,
+      about: 0,
+      raster: 0,
+      vector: 0,
+      tinctures: 0,
+      edit: 0
+    });
+    message.clear();
+  }
+
+  const keybinding = {
+    Backspace: () => $matrix > 0 && matrix.set($matrix - 1), // Rollback
+    Enter: () => matrix.set(($matrix += 1)), // Reroll
+    KeyZ: changes.undo,
+    KeyX: changes.redo,
+    KeyS: ctrl => ctrl && download(null, "svg"),
+    KeyP: ctrl => ctrl && download(null, "png"),
+    KeyJ: ctrl => ctrl && download(null, "jpeg"),
+    F1: () => state.set({...$state, about: !$state.about}),
+    Escape: close // Close all windows
+  };
+
   // keyboard shortcuts
   function handleKeydown(event) {
     const code = event.code;
@@ -22,36 +46,14 @@
     if (active === "INPUT" || active === "SELECT" || active === "TEXTAREA") return;
 
     event.preventDefault();
-    if (code === "Backspace" && $matrix > 0) $matrix -= 1;
-    // Rollback
-    else if (code === "Enter") $matrix += 1;
-    // Reroll
-    else if (code === "KeyZ") changes.undo();
-    // Undo
-    else if (code === "KeyX") changes.redo();
-    // Redo
-    else if (ctrl && code === "KeyS") download(null, "svg");
-    // Download SVG
-    else if (ctrl && code === "KeyP") download(null, "png");
-    // Download PNG
-    else if (ctrl && code === "KeyJ") download(null, "jpeg");
-    // Download JPEG
-    else if (code === "F1") $state.about = !$state.about; // About
-    if (code === "Escape") close(); // Close all windows
-
-    function close() {
-      $state.about = 0;
-      $state.raster = 0;
-      $state.vector = 0;
-      $state.tinctures = 0;
-      $state.edit = 0;
-      message.clear();
-    }
+    const action = keybinding[code];
+    if (action) action(ctrl);
   }
 
-  function handleTouchStart(e) {
-    touch.startX = e.changedTouches[0].screenX;
-    touch.startY = e.changedTouches[0].screenY;
+  function handleTouchStart(event) {
+    const {screenX, screenY} = event.changedTouches[0];
+    touch.startX = screenX;
+    touch.startY = screenY;
   }
 
   function handleTouchEnd(e) {
