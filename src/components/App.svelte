@@ -131,7 +131,7 @@
       <Navbar />
     </header>
 
-    {#if $state.edit}<Editor c={$state.c} {seed} />
+    {#if $state.edit}<Editor historyId={$state.c} {seed} />
     {:else}<Gallery {gallery} {width} {height} />{/if}
 
     {#if $state.about}<About />{/if}

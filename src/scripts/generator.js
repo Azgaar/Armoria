@@ -15,7 +15,8 @@ const createConfig = function () {
 };
 
 // main generation routine
-export const generate = function (seed = Math.floor(Math.random() * 1e9)) {
+export const generate = function (providedSeed) {
+  const seed = providedSeed || Math.floor(Math.random() * 1e9);
   Math.random = aleaPRNG(seed);
 
   const config = createConfig();

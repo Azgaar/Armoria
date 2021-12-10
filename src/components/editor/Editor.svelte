@@ -1,10 +1,10 @@
 <script>
   import {t} from "svelte-i18n";
+  import {fade, fly, slide} from "svelte/transition";
   import {changes, grid, history, message, shield, showGrid, state, tinctures, iconedNav} from "data/stores";
   import {charges, divisions, ordinaries} from "data/dataModel";
   import {generate} from "scripts/generator";
-  import {minmax, ra, rw} from "scripts/utils";
-  import {fade, fly, slide} from "svelte/transition";
+  import {capitalize, minmax, ra, rw} from "scripts/utils";
   import COA from "./../object/COA.svelte";
   import EditorAbove from "./EditorAbove.svelte";
   import EditorCharge from "./EditorCharge.svelte";
@@ -20,7 +20,7 @@
   import EditorStroke from "./EditorStroke.svelte";
   import EditorTincture from "./EditorTincture.svelte";
   import EditorType from "./EditorType.svelte";
-  export let c, seed;
+  export let historyId, seed;
 
   let menu = {};
   let section = {field: 0, division: 0, ordinary: [], charge: []};
@@ -33,17 +33,17 @@
   $state.transform = null;
   $state.positions = null;
 
-  let coa = $history[c] || generate(seed || undefined); // on load
+  let coa = $history[historyId] || generate(seed || undefined); // on load
   $: restore($changes); // on undo/redo
-  $: reroll(c); // on reroll
+  $: reroll(historyId); // on reroll
   $: update(menu); // on menu update
   $: edit(coa); // on edit
   $: localStorage.setItem("grid", $grid); // on grid change
   $: localStorage.setItem("showGrid", $showGrid); // on grid change
 
-  function reroll(c) {
-    coa = $history[c] || generate(seed || undefined);
-    if (!$history[c]) $history.push(coa);
+  function reroll(historyId) {
+    coa = $history[historyId] || generate(seed || undefined);
+    if (!$history[historyId]) $history.push(coa);
     changes.reset();
     defineMenuState();
   }
@@ -299,18 +299,15 @@
     const el = document.getElementById(charge);
     return el ? el.tagName === "image" : false;
   }
-
-  function cap(string = "no") {
-    const split = string.split(/(?=[A-Z])/).join(" ");
-    return split.charAt(0).toUpperCase() + split.slice(1);
-  }
 </script>
 
-<main transition:fade={{duration: 500}}>
-  {#key coa}
-    <COA {coa} i="Edit" />
-  {/key}
-  <div id="menu" in:fly={{x: isLandscape ? 1000 : 0, y: isLandscape ? 0 : 1000, duration: 1000}} out:fly={{x: 0, y: 0, duration: 400}}>
+<main out:fade>
+  <div in:fly={{x: isLandscape ? 0 : 1000, y: isLandscape ? 1000 : 0, duration: 800}}>
+    {#key coa}
+      <COA {coa} i="Edit" />
+    {/key}
+  </div>
+  <div id="menu" in:fly={{x: isLandscape ? 1000 : 0, y: isLandscape ? 0 : 1000, duration: 1000}}>
     <!-- Field -->
     <div class="section" class:expanded={section.field} on:click={() => (section.field = !section.field)}>Field</div>
     {#if section.field}
@@ -355,7 +352,9 @@
     {/if}
 
     <!-- Division -->
-    <div class="section" class:expanded={section.division} on:click={() => (section.division = !section.division)}>Division: {cap(menu.division.division)}</div>
+    <div class="section" class:expanded={section.division} on:click={() => (section.division = !section.division)}>
+      Division: {capitalize(menu.division.division)}
+    </div>
     {#if section.division}
       <div class="panel" transition:slide>
         <div class="subsection">
@@ -424,7 +423,7 @@
     <!-- Ordinaries -->
     {#each menu.ordinaries as o, i}
       <div class="section" transition:slide class:expanded={section.ordinary[i]} on:click={() => (section.ordinary[i] = !section.ordinary[i])}>
-        Ordinary{menu.ordinaries.length > 1 ? " " + (i + 1) : ""}: {cap(o.ordinary)}
+        Ordinary{menu.ordinaries.length > 1 ? " " + (i + 1) : ""}: {capitalize(o.ordinary)}
         {#if o.above}
           <i>[above charges]</i>
         {/if}
@@ -471,7 +470,7 @@
     <!-- Charges -->
     {#each menu.charges as charge, i}
       <div class="section" transition:slide class:expanded={section.charge[i]} on:click={() => (section.charge[i] = !section.charge[i])}>
-        Charge{menu.charges.length > 1 ? " " + (i + 1) : ""}: {cap(charge.charge)}
+        Charge{menu.charges.length > 1 ? " " + (i + 1) : ""}: {capitalize(charge.charge)}
         <EditorControls bind:els={menu.charges} el={charge} {i} />
       </div>
       {#if section.charge[i]}

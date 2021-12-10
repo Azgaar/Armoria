@@ -33,7 +33,7 @@
   }
 </script>
 
-<main style="font-size: {fontSize}px" in:fade={{duration: 1800}} out:fade={{duration: 500}}>
+<main style="font-size: {fontSize}px" transition:fade={{duration: 500}}>
   {#each coas as coa, i}
     <div>
       {#key coa}

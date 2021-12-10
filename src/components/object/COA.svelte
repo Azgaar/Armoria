@@ -2,7 +2,6 @@
   // @ts-check
   import {shieldBox} from "data/shields";
   import {border, borderWidth, shield} from "data/stores";
-  import {number} from "svelte-i18n";
   import Grid from "./../editor/Grid.svelte";
   import Positions from "./../editor/Positions.svelte";
   import Shield from "./Shield.svelte";
@@ -11,6 +10,8 @@
   export let i: string | number;
   export let width: string | number = "100%";
   export let height: string | number = "100%";
+
+  const isEdit = i === "Edit";
 
   $: viewBox = shieldBox[$shield] || "0 0 200 200";
 </script>
@@ -27,7 +28,7 @@
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 >
   <Shield {coa} border={$border} borderWidth={$borderWidth} type={i} />
-  {#if i === "Edit"}
+  {#if isEdit}
     <Grid />
     <Positions />
   {/if}
