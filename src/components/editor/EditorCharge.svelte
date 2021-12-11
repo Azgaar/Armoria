@@ -1,6 +1,6 @@
 <script lang="ts">
   // @ts-check
-  import {t} from "svelte-i18n";
+  import {t, dictionary, locale} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
   import {charges} from "data/dataModel";
   import {capitalize} from "scripts/utils";
@@ -56,8 +56,13 @@
     return [{charge, t: t2, p: "e", size: 1.5, sinister, reversed}];
   }
 
+  const translateSafely = (group: string, key: string) => {
+    const isInDictionary = $dictionary?.[$locale]?.[group]?.[key];
+    return isInDictionary ? $t(`${group}.${key}`) : key;
+  };
+
   function getTip(charge: string) {
-    const chargeName = $t(`charges.${charge}`);
+    const chargeName = translateSafely("charges", charge);
     if (type === "semy") return `${$t("editor.semyOf")} ${chargeName}`;
     return `${$t("tinctures.charge")}: ${chargeName}`;
   }

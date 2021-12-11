@@ -1,42 +1,51 @@
-<script>
+<script lang="ts">
+  // @ts-check
+  import {t} from "svelte-i18n";
   import Switch from "./Switch.svelte";
   import {grid, showGrid, state} from "data/stores";
   import {tooltip} from "scripts/tooltip";
-  export let e;
 
-  function updateGrid() {
-    $state.transform = `rotate(${e.angle || 0})`;
+  interface IElement {
+    size: number;
+    angle: number;
+    x: number;
+    y: number;
   }
+
+  export let element: IElement;
+
+  const hadleSizeChange = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    element.size = parseInt(target.value) / 100;
+  };
+
+  const updateGrid = () => {
+    $state.transform = `rotate(${element.angle || 0})`;
+  };
 </script>
 
-<span data-tooltip="Element size in percents" use:tooltip>
-  Size:
-  <input
-    type="number"
-    min="1"
-    max="500"
-    step="1"
-    value={(e.size * 100) | 0}
-    on:input={function () {
-      e.size = this.value / 100;
-    }}
-  />
+<span data-tooltip={$t("tooltip.size")} use:tooltip>
+  {$t("editor.size")}:
+  <input type="number" min="1" max="500" step="1" value={(element.size * 100) | 0} on:input={hadleSizeChange} />
 </span>
 
-<span data-tooltip="Element rotation angle in degrees" use:tooltip>
-  <span>Rotation:</span>
-  <input type="number" min="-180" max="180" bind:value={e.angle} on:change={updateGrid} />
+<span data-tooltip={$t("tooltip.rotation")} use:tooltip>
+  <span>{$t("editor.rotation")}:</span>
+  <input type="number" min="-180" max="180" bind:value={element.angle} on:change={updateGrid} />
 </span>
 
-<span data-tooltip="Element shift in pixels" use:tooltip>
-  <span>Shift:</span>
-  <input type="number" min="-100" max="100" step={$grid} bind:value={e.x} />
-  <input type="number" min="-100" max="100" step={$grid} bind:value={e.y} />
+<span data-tooltip={$t("tooltip.shift")} use:tooltip>
+  <span>{$t("editor.shift")}:</span>
+  <input type="number" min="-100" max="100" step={$grid} bind:value={element.x} />
+  <input type="number" min="-100" max="100" step={$grid} bind:value={element.y} />
 </span>
 
-<span data-tooltip="Define grid size, angle and position shift step (in pixels and degrees)" use:tooltip>
-  <span>Step:</span>
+<span data-tooltip={$t("tooltip.step")} use:tooltip>
+  <span>{$t("editor.step")}:</span>
   <input type="number" min="1" max="50" bind:value={$grid} />
+</span>
+
+<span data-tooltip={$t("tooltip.showGrid")} use:tooltip>
   <Switch bind:checked={$showGrid} />
 </span>
 

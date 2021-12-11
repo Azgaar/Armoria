@@ -1,5 +1,5 @@
 <script>
-  import {t} from "svelte-i18n";
+  import {t, dictionary, locale} from "svelte-i18n";
   import {fade, fly, slide} from "svelte/transition";
   import {changes, grid, history, message, shield, showGrid, state, tinctures, iconedNav} from "data/stores";
   import {charges, divisions, ordinaries} from "data/dataModel";
@@ -48,6 +48,14 @@
     if (!coa.shield) coa.shield = $shield;
     changes.add(JSON.stringify(coa));
   }
+
+  const toggleSection = (name, index) => () => {
+    if (index !== undefined) {
+      section[name][index] = !section[name][index];
+    } else {
+      section[name] = !section[name];
+    }
+  };
 
   // get coa from menu on menu change
   function update() {
@@ -291,6 +299,11 @@
     const el = document.getElementById(charge);
     return el ? el.tagName === "image" : false;
   }
+
+  const translateSafely = (group, key) => {
+    const isInDictionary = $dictionary?.[$locale]?.[group]?.[key];
+    return isInDictionary ? $t(`${group}.${key}`) : key;
+  };
 </script>
 
 <main out:fade>
@@ -301,7 +314,7 @@
   </div>
   <div id="menu" in:fly={{x: isLandscape ? 1000 : 0, y: isLandscape ? 0 : 1000, duration: 1000}}>
     <!-- Field -->
-    <div class="section" class:expanded={section.field} on:click={() => (section.field = !section.field)}>{$t("tinctures.field")}</div>
+    <div class="section" class:expanded={section.field} on:click={toggleSection("field")}>{$t("tinctures.field")}</div>
     {#if section.field}
       <div class="panel" transition:slide>
         <div class="subsection">
@@ -343,8 +356,8 @@
     {/if}
 
     <!-- Division -->
-    <div class="section" class:expanded={section.division} on:click={() => (section.division = !section.division)}>
-      {$t("tinctures.division")}: {capitalize(menu.division.division)}
+    <div class="section" class:expanded={section.division} on:click={toggleSection("division")}>
+      {$t("tinctures.division")}: {translateSafely("divisions", menu.division.division)}
     </div>
     {#if section.division}
       <div class="panel" transition:slide>
@@ -400,10 +413,10 @@
 
     <!-- Ordinaries -->
     {#each menu.ordinaries as o, i}
-      <div class="section" transition:slide class:expanded={section.ordinary[i]} on:click={() => (section.ordinary[i] = !section.ordinary[i])}>
-        {$t("editor.ordinary")}{menu.ordinaries.length > 1 ? ` ${i + 1}` : ""}: {capitalize(o.ordinary)}
+      <div class="section" transition:slide class:expanded={section.ordinary[i]} on:click={toggleSection("ordinary", i)}>
+        {$t("editor.ordinary")}{menu.ordinaries.length > 1 ? ` ${i + 1}` : ""}: {translateSafely("ordinaries", o.ordinary)}
         {#if o.above}
-          <i>[above charges]</i>
+          <i>[{$t("editor.aboveCharges")}]</i>
         {/if}
         <EditorControls bind:els={menu.ordinaries} el={o} {i} />
       </div>
@@ -439,7 +452,7 @@
           </div>
 
           <div class="subsection">
-            <EditorShift bind:e={o} />
+            <EditorShift bind:element={o} />
           </div>
         </div>
       {/if}
@@ -447,8 +460,8 @@
 
     <!-- Charges -->
     {#each menu.charges as charge, i}
-      <div class="section" transition:slide class:expanded={section.charge[i]} on:click={() => (section.charge[i] = !section.charge[i])}>
-        {$t("tinctures.charge")}{menu.charges.length > 1 ? ` ${i + 1}` : ""}: {capitalize(charge.charge)}
+      <div class="section" transition:slide class:expanded={section.charge[i]} on:click={toggleSection("charge", i)}>
+        {$t("tinctures.charge")}{menu.charges.length > 1 ? ` ${i + 1}` : ""}: {translateSafely("charges", charge.charge)}
         <EditorControls bind:els={menu.charges} el={charge} {i} />
       </div>
       {#if section.charge[i]}
@@ -484,7 +497,7 @@
           </div>
 
           <div class="subsection">
-            <EditorShift bind:e={charge} />
+            <EditorShift bind:element={charge} />
           </div>
         </div>
       {/if}

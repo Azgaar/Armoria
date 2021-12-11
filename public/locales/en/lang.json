@@ -165,7 +165,12 @@
     "background": "Window background color",
     "scale": "Downloaded image size, 1 is default size, 2 - 2x size, etc.",
     "stroke": "Element stroke. Check to render and select a color",
-    "aboveCharges": "Check to render ordinary above charges"
+    "aboveCharges": "Check to render ordinary above charges",
+    "size": "Element size in percents",
+    "rotation": "Element rotation angle in degrees",
+    "shift": "Element shift X and Y in pixels",
+    "step": "Grid cell size and position shift step in pixels",
+    "showGrid": "Show grid"
   },
   "error": {
     "copyToClipboard": "Cannot copy to the clipboard!",
@@ -268,7 +273,10 @@
     "stroke": "Stroke",
     "color": "Color",
     "width": "Width",
-    "aboveCharges": "Above charges"
+    "aboveCharges": "Above charges",
+    "rotation": "Rotation",
+    "shift": "Shift",
+    "step": "Step"
   },
   "patterns": {
     "barry": "Barry",
