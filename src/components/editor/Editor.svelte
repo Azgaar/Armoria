@@ -24,11 +24,7 @@
 
   let menu = {};
   let section = {field: 0, division: 0, ordinary: [], charge: []};
-
-  const {innerWidth: width, innerHeight: height} = window;
   const isLandscape = innerWidth > innerHeight;
-  const rawSize = width < 600 ? width / 10 - 5 : width / 5 - 10;
-  const itemSize = minmax(rawSize, 50, 100);
 
   $state.transform = null;
   $state.positions = null;
@@ -316,18 +312,18 @@
         </div>
 
         <div class="subsection">
-          <EditorTincture bind:t1={menu.field.t1} {itemSize} />
+          <EditorTincture bind:t1={menu.field.t1} />
         </div>
 
         {#if menu.field.type !== "tincture"}
           <div class="subsection">
-            <EditorTincture bind:t1={menu.field.t2} {itemSize} />
+            <EditorTincture bind:t1={menu.field.t2} />
           </div>
         {/if}
 
         {#if menu.field.type === "pattern"}
           <div class="subsection">
-            <EditorPattern bind:pattern={menu.field.pattern} t1={menu.field.t1} t2={menu.field.t2} size={menu.field.size} {itemSize} />
+            <EditorPattern bind:pattern={menu.field.pattern} t1={menu.field.t1} t2={menu.field.t2} size={menu.field.size} />
           </div>
         {/if}
 
@@ -340,7 +336,6 @@
               t1={menu.field.t1}
               t2={menu.field.t2}
               size={menu.field.size}
-              {itemSize}
             />
           </div>
         {/if}
@@ -354,24 +349,12 @@
     {#if section.division}
       <div class="panel" transition:slide>
         <div class="subsection">
-          <EditorDivision
-            bind:division={menu.division.division}
-            t1={coa.t1}
-            t={coa.division ? coa.division.t : menu.division.t1}
-            line={menu.division.line}
-            {itemSize}
-          />
+          <EditorDivision bind:division={menu.division.division} t1={coa.t1} t2={coa.division ? coa.division.t : menu.division.t1} line={menu.division.line} />
         </div>
 
         {#if divisions[coa.division?.division]}
           <div class="subsection">
-            <EditorLine
-              bind:line={menu.division.line}
-              division={menu.division.division}
-              t1={coa.t1}
-              t={coa.division ? coa.division.t : menu.division.t1}
-              {itemSize}
-            />
+            <EditorLine bind:line={menu.division.line} division={menu.division.division} t1={coa.t1} t2={coa.division ? coa.division.t : menu.division.t1} />
           </div>
         {/if}
 
@@ -384,18 +367,18 @@
           </div>
 
           <div class="subsection">
-            <EditorTincture bind:t1={menu.division.t1} {itemSize} />
+            <EditorTincture bind:t1={menu.division.t1} />
           </div>
 
           {#if menu.division.type !== "tincture"}
             <div class="subsection">
-              <EditorTincture bind:t1={menu.division.t2} {itemSize} />
+              <EditorTincture bind:t1={menu.division.t2} />
             </div>
           {/if}
 
           {#if menu.division.type === "pattern"}
             <div class="subsection">
-              <EditorPattern bind:pattern={menu.division.pattern} t1={menu.division.t1} t2={menu.division.t2} size={menu.division.size} {itemSize} />
+              <EditorPattern bind:pattern={menu.division.pattern} t1={menu.division.t1} t2={menu.division.t2} size={menu.division.size} />
             </div>
           {/if}
 
@@ -408,7 +391,6 @@
                 t1={menu.division.t1}
                 t2={menu.division.t2}
                 size={menu.division.size}
-                {itemSize}
               />
             </div>
           {/if}
@@ -434,18 +416,18 @@
           {/if}
 
           <div class="subsection">
-            <EditorOrdinary bind:ordinary={o.ordinary} t1={coa.t1} line={o.line} t={o.t} {itemSize} />
+            <EditorOrdinary bind:ordinary={o.ordinary} t1={coa.t1} line={o.line} t2={o.t} />
           </div>
 
           {#if ordinaries.lined[o.ordinary]}
             <div class="subsection">
-              <EditorLine bind:line={o.line} ordinary={o.ordinary} t1={coa.t1} t={o.t} {itemSize} />
+              <EditorLine bind:line={o.line} ordinary={o.ordinary} t1={coa.t1} t={o.t} />
             </div>
           {/if}
 
           {#if o.divided !== "counter"}
             <div class="subsection">
-              <EditorTincture bind:t1={o.t} {itemSize} />
+              <EditorTincture bind:t1={o.t} />
             </div>
           {/if}
 
@@ -484,13 +466,12 @@
               sinister={charge.sinister}
               reversed={charge.reversed}
               division={coa.division}
-              {itemSize}
             />
           </div>
 
           {#if !isRaster(charge.charge) && charge.divided !== "counter"}
             <div class="subsection">
-              <EditorTincture bind:t1={charge.t} {itemSize} />
+              <EditorTincture bind:t1={charge.t} />
             </div>
           {/if}
 
@@ -593,11 +574,6 @@
     overflow: hidden;
   }
 
-  .subsection {
-    color: #fff;
-    padding: 0.5em 1em;
-  }
-
   .buttonLine {
     padding: 1em 1.14em;
     color: #fff;
@@ -610,8 +586,17 @@
     background-color: #00000080;
   }
 
+  .subsection {
+    color: #fff;
+    padding: 0.5em 0.5em 0.5em 1em;
+  }
+
+  :global(.items) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  }
+
   :global(.item) {
-    display: inline-block;
     cursor: pointer;
     transition: background-color 0.2s ease;
   }

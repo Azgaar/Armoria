@@ -14,7 +14,6 @@
   export let sinister = null;
   export let reversed = null;
   export let division = false;
-  export let itemSize: number;
 
   let chargesData = [];
   let query: string;
@@ -22,6 +21,7 @@
 
   const categories = Object.keys(charges.types);
   const allCharges = categories.map(category => Object.keys(charges[category])).flat();
+  const allChargesTranslated = allCharges.map(charge => $t(`charges.${charge}`));
 
   $: update(category, t1, t2, size, sinister, reversed);
   $: filterCharges(query);
@@ -38,7 +38,7 @@
     if (!query) return;
 
     const regEx = new RegExp(query.replaceAll(" ", ""), "i");
-    const results = allCharges.filter(c => regEx.test(c));
+    const results = allCharges.filter((charge, index) => regEx.test(allChargesTranslated[index]));
     chargesData = results.map(charge => new Object({charge, t1: getTincture(charge), charges: getCharge(charge)}));
   }
 
@@ -77,10 +77,10 @@
 <span class:indented={true}>{$t("editor.search")}:</span>
 <input bind:value={query} class:inactive={!query} />
 
-<div>
+<div class="items">
   {#each chargesData as coa (coa)}
     <div class="item" class:selected={charge === coa.charge} on:click={handleChange(coa.charge)}>
-      <EditorItem {coa} tip={getTip(coa.charge)} {itemSize} />
+      <EditorItem {coa} tip={getTip(coa.charge)} />
     </div>
   {/each}
 </div>

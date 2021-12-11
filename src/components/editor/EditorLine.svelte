@@ -1,23 +1,33 @@
-<script>
+<script lang="ts">
+  // @ts-check
+  import {t} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
   import {lines} from "data/dataModel";
-  export let line,
-    division = null,
-    ordinary = null,
-    t1,
-    t,
-    itemSize;
+
+  export let line: string;
+  export let division = null;
+  export let ordinary = null;
+  export let t1: string;
+  export let t2: string;
 
   const lineList = Object.keys(lines);
-  $: coas = division
-    ? lineList.map(line => new Object({line, t1, division: {division, t, line}}))
-    : lineList.map(line => new Object({line, t1, ordinaries: [{ordinary, t, line}]}));
-  const getTip = l => (division ? "Division line: " + l : "Ordinary line: " + l);
+
+  $: linesData = division
+    ? lineList.map(line => ({coa: {t1, division: {division, t: t2, line}}, newLine: line}))
+    : lineList.map(line => ({coa: {t1, ordinaries: [{ordinary, t: t2, line}]}, newLine: line}));
+
+  const getTip = (line: string) => `${$t("editor.line")}: ${$t(`lines.${line}`)}`;
+
+  const handleChange = (newLine: string) => () => {
+    line = newLine;
+  };
 </script>
 
-<div>Line:</div>
-{#each coas as coa (coa)}
-  <div class="item" class:selected={line === coa.line} on:click={() => (line = coa.line)}>
-    <EditorItem {coa} tip={getTip(coa.line)} {itemSize} />
-  </div>
-{/each}
+{$t("editor.line")}:
+<div class="items">
+  {#each linesData as { coa, newLine } (coa)}
+    <div class="item" class:selected={line === newLine} on:click={handleChange(newLine)}>
+      <EditorItem {coa} tip={getTip(newLine)} />
+    </div>
+  {/each}
+</div>

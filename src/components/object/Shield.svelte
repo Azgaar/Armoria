@@ -5,7 +5,11 @@
   import {shield, colors, grad, diaper} from "data/stores";
   import {shieldPaths} from "data/shields";
   import {getTemplate, addPattern, addCharge} from "scripts/getters";
-  export let coa, border, borderWidth, type;
+
+  export let coa;
+  export let border;
+  export let borderWidth;
+  export let type;
 
   const id = coa.seed || Math.floor(Math.random() * 1e9);
   const {division, ordinaries = [], charges = []} = coa;

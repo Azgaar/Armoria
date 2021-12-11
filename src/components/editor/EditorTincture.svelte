@@ -22,9 +22,11 @@
   };
 </script>
 
-<div>{$t("editor.tincture")}:</div>
-{#each tincturesData as { coa, tip }}
-  <div class="item" class:selected={t1 === coa.t1} on:click={handleChange(coa.t1)}>
-    <EditorItem {coa} {tip} {itemSize} />
-  </div>
-{/each}
+{$t("editor.tincture")}:
+<div class="items">
+  {#each tincturesData as { coa, tip }}
+    <div class="item" class:selected={t1 === coa.t1} on:click={handleChange(coa.t1)}>
+      <EditorItem {coa} {tip} {itemSize} />
+    </div>
+  {/each}
+</div>

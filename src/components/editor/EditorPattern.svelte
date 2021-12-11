@@ -8,7 +8,6 @@
   export let t1: string;
   export let t2: string;
   export let size: string;
-  export let itemSize: number;
 
   const patterns = Object.keys(DEFAULT_TINCTURES.patterns).filter(pattern => pattern !== "semy");
 
@@ -28,9 +27,11 @@
   };
 </script>
 
-<div>{$t("editor.pattern")}:</div>
-{#each patternsData as { coa, tip }}
-  <div class="item" class:selected={pattern === coa.pattern} on:click={handleChange(coa.pattern)}>
-    <EditorItem {coa} {tip} {itemSize} />
-  </div>
-{/each}
+{$t("editor.pattern")}:
+<div class="items">
+  {#each patternsData as { coa, tip }}
+    <div class="item" class:selected={pattern === coa.pattern} on:click={handleChange(coa.pattern)}>
+      <EditorItem {coa} {tip} />
+    </div>
+  {/each}
+</div>
