@@ -2,7 +2,6 @@ import {get} from "svelte/store";
 import {t} from "svelte-i18n";
 import {forEach} from "./utils";
 
-const removalDelay = 20000;
 const translate = get(t);
 
 export const tooltip = (element: HTMLElement | SVGSVGElement) => {
@@ -19,7 +18,6 @@ export const tooltip = (element: HTMLElement | SVGSVGElement) => {
 
   function mouseEnter() {
     removeTooltip();
-    setTimeout(removeTooltip, removalDelay);
 
     let text = element.dataset.tooltip;
 

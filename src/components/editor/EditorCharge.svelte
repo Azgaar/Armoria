@@ -1,76 +1,86 @@
-<script>
+<script lang="ts">
+  // @ts-check
+  import {t} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
   import {charges} from "data/dataModel";
-  export let charge,
-    type,
-    category,
-    t1,
-    t2,
-    size = null,
-    sinister = null,
-    reversed = null,
-    division = false,
-    itemSize;
-  let coas = [],
-    query,
-    queryOld;
+  import {capitalize} from "scripts/utils";
+
+  export let charge: string;
+  export let type: string;
+  export let category: string;
+  export let t1: string;
+  export let t2: string;
+  export let size = null;
+  export let sinister = null;
+  export let reversed = null;
+  export let division = false;
+  export let itemSize: number;
+
+  let chargesData = [];
+  let query: string;
+  let queryOld: string;
 
   const categories = Object.keys(charges.types);
   const allCharges = categories.map(category => Object.keys(charges[category])).flat();
-  const cap = string => string.charAt(0).toUpperCase() + string.slice(1);
 
   $: update(category, t1, t2, size, sinister, reversed);
-  $: showResults(query);
+  $: filterCharges(query);
 
   function update() {
     const chargeList = Object.keys(charges[category]);
-    coas = chargeList.map(c => new Object({c, t1: getTincture(c), charges: getCharge(c)}));
+    chargesData = chargeList.map(charge => new Object({charge, t1: getTincture(charge), charges: getCharge(charge)}));
   }
 
-  function showResults(query) {
+  function filterCharges(query: string) {
     if (!query && query !== queryOld) update();
+
     queryOld = query;
     if (!query) return;
 
     const regEx = new RegExp(query.replaceAll(" ", ""), "i");
     const results = allCharges.filter(c => regEx.test(c));
-    coas = results.map(c => new Object({c, t1: getTincture(c), charges: getCharge(c)}));
+    chargesData = results.map(charge => new Object({charge, t1: getTincture(charge), charges: getCharge(charge)}));
   }
 
-  function getTincture(c) {
-    if (type === "semy") return `semy_of_${c}-${t1}-${t2}-${size}`;
+  function resetQuery() {
+    query = "";
+  }
+
+  function getTincture(charge: string) {
+    if (type === "semy") return `semy_of_${charge}-${t1}-${t2}-${size}`;
     return t1;
   }
 
-  function getCharge(c) {
+  function getCharge(charge: string) {
     if (type === "semy") return [];
-    return [{charge: c, t: t2, p: "e", size: 1.5, sinister, reversed}];
+    return [{charge, t: t2, p: "e", size: 1.5, sinister, reversed}];
   }
 
-  function getTip(c) {
-    if (type === "semy") return `Semy of ${c}`;
-    return `Charge: ${c}`;
+  function getTip(charge: string) {
+    const chargeName = $t(`charges.${charge}`);
+    if (type === "semy") return `${$t("editor.semyOf")} ${chargeName}`;
+    return `${$t("tinctures.charge")}: ${chargeName}`;
   }
+
+  const handleChange = (newCharge: string) => () => {
+    charge = newCharge;
+  };
 </script>
 
-{#if type === "semy"}
-  <span>Charge:</span>
-{:else}
-  <span class:indented={division}>Category:</span>
-{/if}
-<select bind:value={category} class:inactive={query} on:input={() => (query = "")}>
-  {#each categories as type}
-    <option value={type}>{cap(type)}</option>
+<span class:indented={division}>{$t("editor.category")}:</span>
+<select bind:value={category} class:inactive={query} on:input={resetQuery}>
+  {#each categories as category}
+    <option value={category}>{$t(`categories.${category}`)}</option>
   {/each}
 </select>
 
-<span class:indented={true}>Search:</span>
+<span class:indented={true}>{$t("editor.search")}:</span>
 <input bind:value={query} class:inactive={!query} />
 
 <div>
-  {#each coas as coa (coa)}
-    <div class="item" class:selected={charge === coa.c} on:click={() => (charge = coa.c)}>
-      <EditorItem {coa} tip={getTip(coa.c)} {itemSize} />
+  {#each chargesData as coa (coa)}
+    <div class="item" class:selected={charge === coa.charge} on:click={handleChange(coa.charge)}>
+      <EditorItem {coa} tip={getTip(coa.charge)} {itemSize} />
     </div>
   {/each}
 </div>
