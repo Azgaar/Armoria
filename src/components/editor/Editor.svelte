@@ -421,7 +421,7 @@
 
           {#if ordinaries.lined[o.ordinary]}
             <div class="subsection">
-              <EditorLine bind:line={o.line} ordinary={o.ordinary} t1={coa.t1} t={o.t} />
+              <EditorLine bind:line={o.line} ordinary={o.ordinary} t1={coa.t1} t2={o.t} />
             </div>
           {/if}
 

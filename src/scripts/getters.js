@@ -15,6 +15,7 @@ export const getTemplate = (id, line) => {
 };
 
 export const addPattern = patternId => {
+  if (!patternId) return console.error("No patternId");
   if (document.getElementById(patternId)) return; // already added;
 
   const [pattern, t1, t2, size] = patternId.split("-");
