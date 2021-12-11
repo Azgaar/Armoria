@@ -163,7 +163,9 @@
     "border": "Coat of arms border style",
     "randomColor": "Use random color",
     "background": "Window background color",
-    "scale": "Downloaded image size, 1 is default size, 2 - 2x size, etc."
+    "scale": "Downloaded image size, 1 is default size, 2 - 2x size, etc.",
+    "stroke": "Element stroke. Check to render and select a color",
+    "aboveCharges": "Check to render ordinary above charges"
   },
   "error": {
     "copyToClipboard": "Cannot copy to the clipboard!",
@@ -262,7 +264,11 @@
     "semyOf": "Semy of",
     "category": "Category",
     "division": "Division",
-    "line": "Line"
+    "line": "Line",
+    "stroke": "Stroke",
+    "color": "Color",
+    "width": "Width",
+    "aboveCharges": "Above charges"
   },
   "patterns": {
     "barry": "Barry",

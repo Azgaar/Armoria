@@ -1,19 +1,29 @@
-<script>
+<script lang="ts">
+  // @ts-check
+  import {t} from "svelte-i18n";
   import Switch from "./Switch.svelte";
   import {tooltip} from "scripts/tooltip";
-  export let element;
+
+  interface IElement {
+    showStroke: boolean;
+    stroke: string;
+    strokeWidth: number;
+    ordinary?: string;
+  }
+
+  export let element: IElement;
 </script>
 
-<span data-tooltip="Element stroke. Check to render and select a color" use:tooltip>
-  <span>Stroke:</span>
+<span data-tooltip={$t("tooltip.stroke")} use:tooltip>
+  <span>{$t("editor.stroke")}:</span>
   <Switch bind:checked={element.showStroke} />
   {#if element.showStroke}
-    <span style="margin-left: 1em">Color:</span>
+    <span style="margin-left: 1em">{$t("editor.color")}:</span>
     <input type="color" bind:value={element.stroke} />
 
     {#if element.ordinary}
-      <span style="margin-left: 1em">Width:</span>
-      <input type="number" min=".1" max="5" step=".1" bind:value={element.strokeWidth} />
+      <span style="margin-left: 1em">{$t("editor.width")}:</span>
+      <input type="number" min=".1" max="99" step=".1" bind:value={element.strokeWidth} />
     {/if}
   {/if}
 </span>
