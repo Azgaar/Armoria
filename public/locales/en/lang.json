@@ -170,7 +170,10 @@
     "rotation": "Element rotation angle in degrees",
     "shift": "Element shift X and Y in pixels",
     "step": "Grid cell size and position shift step in pixels",
-    "showGrid": "Show grid"
+    "showGrid": "Show grid",
+    "positions": "Points on shield to place a charge",
+    "sinister": "Turn charge to the left",
+    "reversed": "Show charge upside down"
   },
   "error": {
     "copyToClipboard": "Cannot copy to the clipboard!",
@@ -276,7 +279,10 @@
     "aboveCharges": "Above charges",
     "rotation": "Rotation",
     "shift": "Shift",
-    "step": "Step"
+    "step": "Step",
+    "positions": "Positions",
+    "sinister": "Sinister",
+    "reversed": "Reversed"
   },
   "patterns": {
     "barry": "Barry",

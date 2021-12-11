@@ -1,10 +1,21 @@
-<script>
+<script lang="ts">
+  // @ts-check
+  import {t} from "svelte-i18n";
   import Switch from "./Switch.svelte";
   import {state} from "data/stores";
   import {positionsSelect} from "data/dataModel";
   import {getSize} from "scripts/generator";
   import {tooltip} from "scripts/tooltip";
-  export let charge;
+
+  interface ICharge {
+    angle: number;
+    size: number;
+    p: string;
+    sinister: boolean;
+    reversed: boolean;
+  }
+
+  export let charge: ICharge;
 
   function showPositions() {
     $state.transform = `rotate(${charge.angle || 0}) translate(${charge.x || 0}, ${charge.y || 0})`;
@@ -21,8 +32,8 @@
   }
 </script>
 
-<span data-tooltip="Points on shield to place a charge" use:tooltip>
-  Positions:
+<span data-tooltip={$t("tooltip.positions")} use:tooltip>
+  {$t("editor.positions")}:
   <input bind:value={charge.p} on:input={showPositions} on:focus={showPositions} on:blur={hidePositions} />
   <select bind:value={charge.p} on:change={changePosition} on:focus={showPositions} on:blur={hidePositions}>
     {#each positionsSelect as position}
@@ -31,13 +42,13 @@
   </select>
 </span>
 
-<span data-tooltip="Turn charge to the left" use:tooltip>
-  <span style="margin-left: 1em">Sinister:</span>
+<span data-tooltip={$t("tooltip.sinister")} use:tooltip>
+  <span style="margin-left: 1em">{$t("editor.sinister")}:</span>
   <Switch bind:checked={charge.sinister} />
 </span>
 
-<span data-tooltip="Show charge upside down" use:tooltip>
-  <span style="margin-left: 1em">Reversed:</span>
+<span data-tooltip={$t("tooltip.reversed")} use:tooltip>
+  <span style="margin-left: 1em">{$t("editor.reversed")}:</span>
   <Switch bind:checked={charge.reversed} />
 </span>
 
