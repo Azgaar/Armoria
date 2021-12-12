@@ -1,9 +1,9 @@
 <script lang="ts">
   // @ts-check
-  import {t} from "svelte-i18n";
+  import {t, dictionary, locale} from "svelte-i18n";
   import {fade} from "svelte/transition";
   import {shield, state} from "data/stores";
-  import {capitalize, link} from "scripts/utils";
+  import {link} from "scripts/utils";
 
   const wetaShield = (shield: string) => ["noldor", "gondor", "easterling", "ironHills", "urukHai", "moriaOrc"].includes(shield);
 
@@ -21,6 +21,11 @@
   const ccBy = link("https://creativecommons.org/licenses/by/4.0/", "CC BY 4.0");
   const fontAwesome = link("https://fontawesome.com/license/free", "Font Awesome");
 
+  const translateSafely = (group: string, key: string) => {
+    const isInDictionary = $dictionary?.[$locale]?.[group]?.[key];
+    return isInDictionary ? $t(`${group}.${key}`) : key;
+  };
+
   const chargeData = [...new Set(charges)]
     .map(charge => {
       const el = document.getElementById(charge);
@@ -32,7 +37,7 @@
       const license = licenseURL && licenseName ? link(licenseURL, licenseName) : noLicenseData;
       const source = sourceURL ? link(sourceURL, author) : author || noSourceData;
 
-      return {charge: capitalize(charge), license, source};
+      return {charge: translateSafely("charges", charge), license, source};
     })
     .sort((a, b) => (a.license < b.license ? -1 : 1));
 
@@ -70,7 +75,7 @@
     {:else}
       <div class="chargesList">
         {#each chargeData as { charge, license, source }}
-          <div>{charge}: {@html license}, {@html source}</div>
+          <div><span class="charge">{charge}</span>: {@html license}, {@html source}</div>
         {/each}
       </div>
     {/if}
@@ -150,9 +155,13 @@
 
   .chargesList {
     column-count: 2;
-    column-gap: 7em;
+    column-gap: 4em;
     text-align: left;
-    margin: 0 2em;
+    margin: 0 1em;
+  }
+
+  .charge {
+    text-transform: capitalize;
   }
 
   @media only screen and (orientation: portrait) {

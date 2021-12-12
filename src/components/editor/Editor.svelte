@@ -4,7 +4,7 @@
   import {changes, grid, history, message, shield, showGrid, state, tinctures, iconedNav} from "data/stores";
   import {charges, divisions, ordinaries} from "data/dataModel";
   import {generate} from "scripts/generator";
-  import {capitalize, minmax, ra, rw} from "scripts/utils";
+  import {ra, rw} from "scripts/utils";
   import COA from "./../object/COA.svelte";
   import EditorAbove from "./EditorAbove.svelte";
   import EditorCharge from "./EditorCharge.svelte";
@@ -515,6 +515,7 @@
     display: grid;
     justify-items: center;
     grid-template-columns: auto minmax(40%, 60%);
+    user-select: none;
   }
 
   @media only screen and (orientation: portrait) {

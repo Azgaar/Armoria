@@ -282,7 +282,11 @@
     "step": "Step",
     "positions": "Positions",
     "sinister": "Sinister",
-    "reversed": "Reversed"
+    "reversed": "Reversed",
+    "clone": "Clone element",
+    "backward": "Send backward",
+    "forward": "Bring forward",
+    "remove": "Remove element"
   },
   "patterns": {
     "barry": "Barry",
@@ -571,6 +575,7 @@
     "uploaded": "Uploaded"
   },
   "divisions": {
+    "no": "no",
     "perPale": "Per Pale",
     "perFess": "Per Fess",
     "perBend": "Per Bend",
