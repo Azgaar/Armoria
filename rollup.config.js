@@ -69,7 +69,7 @@ export default {
     // generate service worker and add charges folder to precache
     production &&
       generateSW({
-        swDest: "./public/build/sw.js",
+        swDest: "./public/sw.js",
         globDirectory: "public/",
         globPatterns: ["**/charges/*.svg"],
         cacheId: "armoria-charges",
