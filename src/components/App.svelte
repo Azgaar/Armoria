@@ -1,6 +1,6 @@
 <script lang="ts">
   // @ts-check
-  import {t, isLoading, locale, dictionary} from "svelte-i18n";
+  import {t, isLoading, locale} from "svelte-i18n";
   import WindowEvents from "./WindowEvents.svelte";
   import Navbar from "./navigation/header/Navbar.svelte";
   import About from "./navigation/About.svelte";

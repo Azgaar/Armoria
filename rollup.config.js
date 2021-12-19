@@ -71,8 +71,8 @@ export default {
       generateSW({
         swDest: "./public/build/sw.js",
         globDirectory: "public/",
-        globPatterns: ["**/*.svg"],
-        cacheId: "armoria-precache",
+        globPatterns: ["**/charges/*.svg"],
+        cacheId: "armoria-charges",
         cleanupOutdatedCaches: true,
         inlineWorkboxRuntime: true,
         runtimeCaching: [
@@ -80,7 +80,7 @@ export default {
             urlPattern: /\.(js|css|html)$/,
             handler: "StaleWhileRevalidate",
             options: {
-              cacheName: "armoria-app-files"
+              cacheName: "armoria-app"
             }
           }
         ]
