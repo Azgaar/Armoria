@@ -32,6 +32,9 @@
     "rasterCharge": "Raster сharge",
     "vectorCharge": "Vector сharge"
   },
+  "loading": {
+    "loading": "Loading"
+  },
   "shield": {
     "types": {
       "basic": "Basic",

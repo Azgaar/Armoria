@@ -122,7 +122,7 @@
 </script>
 
 {#if $isLoading}
-  <h1>Loading...</h1>
+  <h1>{$t("loading.loading")}...</h1>
 {:else if $state.view}
   <Viewer c={$state.c} {seed} {coaSize} />
 {:else if !$isLoading}

@@ -32,6 +32,9 @@
     "rasterCharge": "Растровое изображение",
     "vectorCharge": "Векторное изображение"
   },
+  "loading": {
+    "loading": "Загрузка"
+  },
   "shield": {
     "types": {
       "basic": "Базовый",
