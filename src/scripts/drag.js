@@ -9,7 +9,7 @@ export function drag(event, charge, coa) {
   const sizeAdj = el.closest("svg").clientWidth / 200;
   document.addEventListener("mouseup", stopDragging, {once: true});
 
-  const {x = 0, y = 0, size = 1, angle = 0} = charge;
+  const {x = 0, y = 0, size = 1} = charge;
   const gridSize = get(grid);
 
   if (event.shiftKey) {
@@ -54,8 +54,8 @@ export function drag(event, charge, coa) {
     setTransform(el, charge);
   }
 
-  function setTransform(el, c) {
-    const tr = transform(c);
+  function setTransform(el, charge) {
+    const tr = transform(charge);
     if (tr) el.setAttribute("transform", tr);
     else el.removeAttribute("transform");
   }
