@@ -1,6 +1,6 @@
 <script lang="ts">
   // @ts-check
-  import {t, isLoading, locale} from "svelte-i18n";
+  import {t, isLoading, locale, dictionary} from "svelte-i18n";
   import WindowEvents from "./WindowEvents.svelte";
   import Navbar from "./navigation/header/Navbar.svelte";
   import About from "./navigation/About.svelte";
@@ -122,7 +122,7 @@
 </script>
 
 {#if $isLoading}
-  <h1>{$t("loading.loading")}...</h1>
+  <h1>Loading...</h1>
 {:else if $state.view}
   <Viewer c={$state.c} {seed} {coaSize} />
 {:else if !$isLoading}
