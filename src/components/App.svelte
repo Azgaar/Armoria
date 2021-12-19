@@ -149,7 +149,7 @@
   div {
     height: 100%;
     width: 100%;
-    background-image: url(/background.svg);
+    background-image: url(../background.svg);
   }
 
   h1 {
