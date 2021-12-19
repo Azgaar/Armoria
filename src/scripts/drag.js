@@ -1,23 +1,21 @@
 import {get} from "svelte/store";
 import {changes, grid} from "data/stores";
 
-export function drag(e, c, coa) {
-  const el = e.currentTarget;
-  const x0 = e.x,
-    y0 = e.y;
-  const sizeAdj = +el.closest("svg").getAttribute("width") / 200;
-  document.addEventListener("mouseup", dragStop, {once: true});
+export function drag(event, charge, coa) {
+  const el = event.currentTarget;
+  const x0 = event.x;
+  const y0 = event.y;
 
-  const x = c.x || 0;
-  const y = c.y || 0;
-  const size = c.size || 1;
-  const angle = c.angle || 0;
+  const sizeAdj = el.closest("svg").clientWidth / 200;
+  document.addEventListener("mouseup", stopDragging, {once: true});
+
+  const {x = 0, y = 0, size = 1, angle = 0} = charge;
   const gridSize = get(grid);
 
-  if (e.shiftKey) {
+  if (event.shiftKey) {
     document.addEventListener("mousemove", resize);
     document.body.style.cursor = "ns-resize";
-  } else if (e.ctrlKey || e.metaKey) {
+  } else if (event.ctrlKey || event.metaKey) {
     document.addEventListener("mousemove", rotate);
     document.body.style.cursor = "ew-resize";
   } else {
@@ -25,34 +23,35 @@ export function drag(e, c, coa) {
     document.body.style.cursor = "move";
   }
 
-  function move(e) {
-    const dx = x + (e.x - x0) / sizeAdj;
-    const dy = y + (e.y - y0) / sizeAdj;
+  function move(event) {
+    const dx = x + (event.x - x0) / sizeAdj;
+    const dy = y + (event.y - y0) / sizeAdj;
 
-    c.x = Math.round(dx / gridSize) * gridSize;
-    c.y = Math.round(dy / gridSize) * gridSize;
-    setTransform(el, c);
+    charge.x = Math.round(dx / gridSize) * gridSize;
+    charge.y = Math.round(dy / gridSize) * gridSize;
+    setTransform(el, charge);
   }
 
-  function resize(e) {
-    const dy = y + (e.y - y0) / sizeAdj;
-    c.size = round(size + dy / -100);
-    setTransform(el, c);
-    if (c.p) changes.add(JSON.stringify(coa));
+  function resize(event) {
+    const dy = y + (event.y - y0) / sizeAdj;
+    charge.size = round(size + dy / -100);
+    setTransform(el, charge);
+    if (charge.p) changes.add(JSON.stringify(coa));
   }
 
-  function rotate(e) {
-    const cx = x + 100,
-      cy = y + 100;
-    const x1 = e.x / sizeAdj,
-      y1 = e.y / sizeAdj;
+  function rotate(event) {
+    const cx = x + 100;
+    const cy = y + 100;
+
+    const x1 = event.x / sizeAdj;
+    const y1 = event.y / sizeAdj;
 
     let a = 90 + (Math.atan2(y1 - cy, x1 - cx) * 180) / Math.PI;
     if (a > 180) a = (a % 180) - 180;
     if (a < -179) a = (a % 180) + 180;
 
-    c.angle = Math.round(a / gridSize) * gridSize;
-    setTransform(el, c);
+    charge.angle = Math.round(a / gridSize) * gridSize;
+    setTransform(el, charge);
   }
 
   function setTransform(el, c) {
@@ -61,7 +60,7 @@ export function drag(e, c, coa) {
     else el.removeAttribute("transform");
   }
 
-  function dragStop() {
+  function stopDragging() {
     document.removeEventListener("mousemove", move);
     document.removeEventListener("mousemove", resize);
     document.removeEventListener("mousemove", rotate);
