@@ -1,14 +1,17 @@
-<script>
-  export let divided,
-    raster = null;
+<script lang="ts">
+  // @ts-check
+  import {t} from "svelte-i18n";
+
+  export let divided: "" | "field" | "division" | "counter";
+  export let raster = false;
 </script>
 
-<span>Divided:</span>
+<span>{$t("editor.divided")}:</span>
 <select bind:value={divided}>
-  <option value="">No (standard)</option>
-  <option value="field">Crop by main field</option>
-  <option value="division">Crop by division</option>
+  <option value="">{$t("editor.notDivided")}</option>
+  <option value="field">{$t("editor.cropByField")}</option>
+  <option value="division">{$t("editor.cropByDivision")}</option>
   {#if !raster}
-    <option value="counter">Сounterchanged</option>
+    <option value="counter">{$t("editor.counterchanged")}</option>
   {/if}
 </select>
