@@ -4,7 +4,7 @@ import "scripts/aliases";
 const isProduction = process.env.production;
 
 if (isProduction && "serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./sw.js");
+  navigator.serviceWorker.register("./build/sw.js");
 }
 
 const app = new App({
