@@ -1,7 +1,5 @@
 import {register, init} from "svelte-i18n";
-
-register("en", () => import("./../../public/locales/en/lang.json"));
-register("ru", () => import("./../../public/locales/ru/lang.json"));
+import {fetcher} from "./utils";
 
 const getLocaleFromNavigator = () => {
   const navigatorLang = navigator.language;
@@ -15,15 +13,23 @@ const getInitialLocale = () => {
   return locale;
 };
 
-init({
-  fallbackLocale: "en",
-  initialLocale: getInitialLocale()
-});
+const registerSupportedLocales = async () => {
+  const hash = "b12697186f40ee9c2da1f58yf2f";
+  const manifest = await fetcher(`https://distributions.crowdin.net/${hash}/manifest.json`)();
+  const {files, languages} = manifest;
+  const file = files[0];
 
-export const localeMap = {
-  en: "English",
-  ru: "Русский"
+  if (!languages?.length || !file) {
+    console.error("Could not load languages from manifest");
+  }
+
+  for (const language of languages) {
+    register(language, fetcher(`https://distributions.crowdin.net/${hash}/content/${language}${file}`));
+  }
+
+  init({fallbackLocale: "en", initialLocale: getInitialLocale()});
 };
+registerSupportedLocales();
 
 export const localeNavMaxWidth = {
   en: 810,

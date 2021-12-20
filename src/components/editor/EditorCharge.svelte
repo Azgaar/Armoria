@@ -3,7 +3,6 @@
   import {t, dictionary, locale} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
   import {charges} from "data/dataModel";
-  import {capitalize} from "scripts/utils";
 
   export let charge: string;
   export let type: string;

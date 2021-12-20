@@ -471,7 +471,7 @@ export const charges = {
     wyvernWithWingsDisplayed: 1,
     griffinPassant: 1,
     griffinRampant: 1,
-    eagleTwoHeards: 2,
+    eagleTwoHeads: 2,
     unicornRampant: 1,
     pegasus: 1,
     serpent: 1,

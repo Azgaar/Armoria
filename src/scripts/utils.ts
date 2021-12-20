@@ -47,6 +47,8 @@ export function camelize(str: string) {
     .replace(/^[0-9]/, "_"); // first char should not be a number
 }
 
+export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+
 export function link(url: string, text: string) {
   return `<a href="${url}" target="_blank">${text}</a>`;
 }
@@ -57,4 +59,8 @@ export function openURL(url: string) {
 
 export const minmax = (value: number, min: number, max: number) => {
   return Math.max(Math.min(Math.round(value), max), min);
+};
+
+export const fetcher = (url: string) => () => {
+  return fetch(url).then(result => result.json());
 };
