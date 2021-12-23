@@ -2,6 +2,7 @@
   // @ts-check
   import {tooltip} from "scripts/tooltip";
   import {iconedNav} from "data/stores";
+  import NavLabel from "./NavLabel.svelte";
 
   export let value: string = undefined;
   export let label: string = undefined;
@@ -14,8 +15,8 @@
     <svg>
       <use href="#{value}-icon" />
     </svg>
-  {:else if label}
-    {label}
+  {:else}
+    <NavLabel {label} />
   {/if}
 
   <slot />

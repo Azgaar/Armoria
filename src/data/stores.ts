@@ -15,6 +15,8 @@ import {
   DEFAULT_SHOW_GRID
 } from "config/defaults";
 
+export const isTextReady = writable(false);
+
 const options = defineInitialOptions();
 export const size = writable(options.size);
 export const grad = writable(options.grad);

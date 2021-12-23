@@ -1,6 +1,6 @@
 <script lang="ts">
   // @ts-check
-  import {t, isLoading, locale} from "svelte-i18n";
+  import {t, locale} from "svelte-i18n";
   import WindowEvents from "./WindowEvents.svelte";
   import Navbar from "./navigation/header/Navbar.svelte";
   import About from "./navigation/About.svelte";
@@ -119,15 +119,11 @@
 
     return [numberX * numberY, w, h];
   }
-
-  console.log($isLoading);
 </script>
 
-{#if $isLoading}
-  <h1>Loading...</h1>
-{:else if $state.view}
+{#if $state.view}
   <Viewer c={$state.c} {seed} {coaSize} />
-{:else if !$isLoading}
+{:else}
   <div style="background-color: {$background}">
     <header>
       <Navbar />
@@ -152,16 +148,5 @@
     height: 100%;
     width: 100%;
     background-image: url(../background.svg);
-  }
-
-  h1 {
-    inset: 0;
-    margin: 0;
-    position: absolute;
-    background-color: #222;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 </style>

@@ -1,4 +1,5 @@
 import {register, init} from "svelte-i18n";
+import {isTextReady} from "data/stores";
 import {fetcher} from "./utils";
 
 const getLocaleFromNavigator = () => {
@@ -21,13 +22,16 @@ const registerSupportedLocales = async () => {
 
   if (!languages?.length || !file) {
     console.error("Could not load languages from manifest");
+    isTextReady.set(true);
+    return;
   }
 
   for (const language of languages) {
     register(language, fetcher(`https://distributions.crowdin.net/${hash}/content/${language}${file}`));
   }
 
-  init({fallbackLocale: "en", initialLocale: getInitialLocale()});
+  await init({fallbackLocale: "en", initialLocale: getInitialLocale()});
+  isTextReady.set(true);
 };
 registerSupportedLocales();
 

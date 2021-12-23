@@ -49,6 +49,7 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    min-height: 45px;
     background-color: #1b1c1d;
   }
 </style>
