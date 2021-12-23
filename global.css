@@ -138,14 +138,6 @@ font {
 }
 
 /* Navbar */
-/* low-height screen */
-@media (max-height: 640px) {
-  nav div.container > li,
-  nav div.dropdown > li {
-    padding: 0.5em 1em;
-  }
-}
-
 /* low-width (narrow) screen */
 @media (max-width: 540px) {
   nav div.container > div.dropdown.level3 {
@@ -161,7 +153,15 @@ font {
   }
 }
 
-/* Navbar dwopdown menu */
+/* low-height screen */
+@media (max-height: 440px) {
+  nav div.container > li,
+  nav div.dropdown > li {
+    padding-block: 0.5em;
+  }
+}
+
+/* Navbar dropdown menu */
 .dropdown {
   display: none;
   position: fixed;
@@ -182,4 +182,8 @@ font {
 
 .container:hover > .dropdown {
   display: block;
+}
+
+.container:hover > .dropdown.horizontal {
+  display: flex;
 }
