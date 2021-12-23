@@ -6,7 +6,7 @@
   export let label: string = undefined;
 </script>
 
-{#if $isTextReady}
+{#if label && $isTextReady}
   <span in:fade={{duration: 100}}>
     {label}
   </span>
