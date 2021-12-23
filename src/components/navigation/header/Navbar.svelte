@@ -48,6 +48,7 @@
   nav {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     background-color: #1b1c1d;
   }
 </style>

@@ -35,8 +35,8 @@
 <div class="container">
   <NavItem value="language" label={$t(`menu.language`)} tip={$t("tooltip.language")} />
   <div class="dropdown level1">
-    {#each $locales as locale}
-      <NavButton label={getLocaleName(locale)} onclick={() => changeLanguage(locale)} />
+    {#each $locales as langCode}
+      <NavButton selected={$locale === langCode} label={getLocaleName(langCode)} onclick={() => changeLanguage(langCode)} />
     {/each}
   </div>
 </div>

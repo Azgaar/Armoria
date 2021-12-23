@@ -77,7 +77,7 @@ export default {
         inlineWorkboxRuntime: true,
         runtimeCaching: [
           {
-            urlPattern: /\.(js|css|html)$/,
+            urlPattern: /\.(js|css|html|json)$/,
             handler: "StaleWhileRevalidate",
             options: {
               cacheName: "armoria-app"

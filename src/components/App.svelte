@@ -119,6 +119,8 @@
 
     return [numberX * numberY, w, h];
   }
+
+  console.log($isLoading);
 </script>
 
 {#if $isLoading}
