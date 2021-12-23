@@ -1,6 +1,6 @@
 <script lang="ts">
   // @ts-check
-  import {state, iconedNav} from "data/stores";
+  import {iconedNav, state} from "data/stores";
   import Logo from "./menu/Logo.svelte";
   import Options from "./menu/options/Options.svelte";
   import Rollback from "./menu/Rollback.svelte";
@@ -8,6 +8,7 @@
   import Save from "./menu/Save.svelte";
   import Upload from "./menu/Upload.svelte";
   import Install from "./menu/Install.svelte";
+  import Other from "./menu/Other.svelte";
   import Undo from "./menu/Undo.svelte";
   import Redo from "./menu/Redo.svelte";
   import License from "./menu/License.svelte";
@@ -26,22 +27,20 @@
   <Upload />
   <Install />
 
+  {#if $iconedNav && $state.edit}
+    <Other />
+  {:else}
+    <License />
+    <Support />
+    <Language />
+    <About />
+  {/if}
+
   {#if $state.edit}
     <Undo />
     <Redo />
+    <Back />
   {/if}
-
-  {#if !$iconedNav || !$state.edit}
-    <License />
-    <About />
-    <Support />
-  {/if}
-
-  {#if !$state.edit}
-    <Language />
-  {/if}
-
-  <Back />
 </nav>
 
 <style>

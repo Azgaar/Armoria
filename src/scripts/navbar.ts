@@ -1,7 +1,7 @@
 import {get} from "svelte/store";
 import {iconedNav} from "data/stores";
 
-const MIN_WIDTH = 1072;
+const MIN_WIDTH = 1132;
 
 export const checkForIconedNav = () => {
   const isIconed = get(iconedNav);

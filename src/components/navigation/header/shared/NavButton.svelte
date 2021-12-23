@@ -40,6 +40,12 @@
     transition: all 0.1s;
   }
 
+  @media (max-width: 380px) {
+    li {
+      padding-inline: 0.75em;
+    }
+  }
+
   li:hover {
     background-color: #2d2e2f;
   }
