@@ -612,6 +612,7 @@
 
   :global(.item) {
     cursor: pointer;
+    max-width: 200px;
     transition: background-color 0.2s ease;
   }
 
