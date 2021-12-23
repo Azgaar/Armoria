@@ -2,17 +2,7 @@ import {register, init} from "svelte-i18n";
 import {isTextReady} from "data/stores";
 import {fetcher} from "./utils";
 
-const getLocaleFromNavigator = () => {
-  const navigatorLang = navigator.language;
-  const locale = navigatorLang.split("-")[0];
-  return locale;
-};
-
-const getInitialLocale = () => {
-  const stored = localStorage.getItem("locale");
-  const locale = stored || getLocaleFromNavigator();
-  return locale;
-};
+const fallbackLocale = "en";
 
 const registerSupportedLocales = async () => {
   const hash = "b12697186f40ee9c2da1f58yf2f";
@@ -30,7 +20,13 @@ const registerSupportedLocales = async () => {
     register(language, fetcher(`https://distributions.crowdin.net/${hash}/content/${language}${file}`));
   }
 
-  await init({fallbackLocale: "en", initialLocale: getInitialLocale()});
+  const storedLocale = localStorage.getItem("locale");
+  const navigatorLocale = navigator.language;
+  const baseNavigatorLocale = navigatorLocale.split("-")[0];
+  const desiredLocale = [storedLocale, navigatorLocale, baseNavigatorLocale];
+  const initialLocale = languages.find((language: string) => desiredLocale.includes(language)) || fallbackLocale;
+
+  await init({fallbackLocale, initialLocale});
   isTextReady.set(true);
 };
 registerSupportedLocales();
