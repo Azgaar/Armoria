@@ -34,8 +34,3 @@ const registerSupportedLocales = async () => {
   isTextReady.set(true);
 };
 registerSupportedLocales();
-
-export const localeNavMaxWidth = {
-  en: 810,
-  ru: 1080
-};

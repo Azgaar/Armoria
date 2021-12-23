@@ -1,8 +1,7 @@
 <script>
   import {state, matrix, changes, message, iconedNav} from "data/stores";
-  import {locale} from "svelte-i18n";
-  import {localeNavMaxWidth} from "scripts/i18n";
   import {download} from "scripts/download";
+  import {checkForIconedNav} from "scripts/navbar";
 
   let touch = {startX: 0, startY: 0};
 
@@ -91,12 +90,6 @@
   function swipeUp() {
     if ($matrix > 0) $matrix -= 1;
   }
-
-  const setIconedNav = () => {
-    const maxWidth = localeNavMaxWidth[$locale] || localeNavMaxWidth.en;
-    const iconed = maxWidth > window.innerWidth;
-    if ($iconedNav !== iconed) $iconedNav = iconed;
-  };
 </script>
 
-<svelte:window on:keydown={handleKeydown} on:touchstart={handleTouchStart} on:touchend={handleTouchEnd} on:resize={setIconedNav} />
+<svelte:window on:keydown={handleKeydown} on:touchstart={handleTouchStart} on:touchend={handleTouchEnd} on:resize={checkForIconedNav} />
