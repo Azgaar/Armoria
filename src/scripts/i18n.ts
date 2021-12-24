@@ -22,10 +22,9 @@ const registerSupportedLocales = async () => {
   }
 
   const storedLocale = localStorage.getItem("locale");
-  const navigatorLocale = navigator.language;
-  const baseNavigatorLocale = navigatorLocale.split("-")[0];
-  const desiredLocale = [storedLocale, navigatorLocale, baseNavigatorLocale];
-  const initialLocale = languages.find((language: string) => desiredLocale.includes(language)) || fallbackLocale;
+  const preferredLocale = storedLocale || navigator.language;
+  const shortLocale = preferredLocale.split("-")[0];
+  const initialLocale = languages.find((language: string) => language === preferredLocale || language === shortLocale) || fallbackLocale;
 
   await init({fallbackLocale, initialLocale});
   isTextReady.set(true);

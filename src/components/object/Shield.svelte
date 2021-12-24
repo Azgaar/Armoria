@@ -15,17 +15,21 @@
   const {division, ordinaries = [], charges = []} = coa;
   const ordinariesRegular = ordinaries.filter(o => !o.above);
   const ordinariesAboveCharges = ordinaries.filter(o => o.above);
-  charges.forEach(charge => addCharge(charge.charge));
+  charges.forEach(({charge}) => addCharge(charge));
 
-  let shieldPath, coaDiaper, diaperType, overFill;
-  $: {
-    shieldPath = shieldPaths[$shield];
-    coaDiaper = type === "menuItem" ? null : coa.diaper || $diaper;
-    diaperType = getDieperType();
-    overFill = !$grad || $grad === "no" ? "none" : `url(#${$grad})`;
-  }
+  $: shieldPath = shieldPaths[$shield];
+  $: coaDiaper = type === "menuItem" ? null : coa.diaper || $diaper;
+  $: diaperType = getDieperType(coaDiaper);
+  $: overFill = !$grad || $grad === "no" ? "none" : `url(#${$grad})`;
 
-  function getDieperType() {
+  // get color or link to pattern
+  $: clr = tincture => {
+    if ($colors[tincture]) return $colors[tincture];
+    addPattern(tincture);
+    return "url(#" + tincture + ")";
+  };
+
+  function getDieperType(coaDiaper) {
     if (!coaDiaper || coaDiaper === "no") return null;
     const f = !coa.t1.includes("-");
     const d = !division?.t.includes("-");
@@ -41,13 +45,6 @@
     if (chargesData.patternable.includes(charge)) return clr(t); // patternable
     if (ordinariesData.patternable.includes(charge)) return clr(t); // patternable
     return clr(t.split("-")[1]); // not patternable, return basic color
-  }
-
-  // get color or link to pattern
-  function clr(tincture) {
-    if ($colors[tincture]) return $colors[tincture];
-    addPattern(tincture);
-    return "url(#" + tincture + ")";
   }
 </script>
 

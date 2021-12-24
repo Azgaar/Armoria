@@ -66,7 +66,6 @@ const createChangesStore = () => {
 
   return {
     subscribe,
-    refresh: () => set([history[position], position]), // trigger coa refresh
     length: () => history.length,
     reset: () => {
       history = [];
