@@ -55,19 +55,22 @@
     touch.startY = screenY;
   }
 
-  function handleTouchEnd(e) {
+  function handleTouchEnd(event) {
     const menu = document.getElementById("menu");
     const navbar = document.getElementById("navbar");
-    if (menu?.contains(e.target)) return; // cancel touch event if start area is menu
-    if (navbar?.contains(e.target)) return; // cancel touch event if start area is nav bar
+    if (menu?.contains(event.target)) return; // cancel touch event if start area is menu
+    if (navbar?.contains(event.target)) return; // cancel touch event if start area is nav bar
 
-    const diffX = e.changedTouches[0].screenX - touch.startX;
-    const diffY = e.changedTouches[0].screenY - touch.startY;
+    const {screenX, screenY} = event.changedTouches[0];
+    const {startX, startY} = touch;
+
+    const diffX = screenX - startX;
+    const diffY = screenY - startY;
     const ratioX = Math.abs(diffX / diffY);
     const ratioY = Math.abs(diffY / diffX);
     const absDiff = Math.abs(ratioX > ratioY ? diffX : diffY);
 
-    if (absDiff < 50) return; // ignore small movements
+    if (absDiff < 100) return; // ignore small movements
 
     if (ratioX > ratioY) diffX >= 0 ? swipeRight() : swipeLeft();
     else diffY >= 0 ? swipeDown() : swipeUp();
