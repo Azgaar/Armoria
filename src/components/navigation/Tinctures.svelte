@@ -20,17 +20,12 @@
 
   $: lock("tinctures", $tinctures);
   $: lock("colors", $colors);
-  $: updateCOAonColorChange($colors);
 
   // don't lock options on load
   let loaded = [];
   function lock(key: string, value: unknown) {
     if (loaded.includes(key)) localStorage.setItem(key, JSON.stringify(value));
     else loaded.push(key);
-  }
-
-  function updateCOAonColorChange() {
-    changes.refresh();
   }
 
   function getTotalChance(type: string) {
@@ -177,7 +172,7 @@
             <td>{getTinctureName(tinctureName)}</td>
             <td>{$t(`tinctures.${type}`)}</td>
             <td>
-              <input type="color" bind:value={$colors[tinctureName]} />
+              <input type="color" bind:value={$colors[tinctureName]} data-tooltip={$t("tooltip.changeColor")} use:tooltip />
               {#if DEFAULT_COLORS[tinctureName] && $colors[tinctureName] !== DEFAULT_COLORS[tinctureName]}
                 <svg
                   on:click={() => ($colors[tinctureName] = DEFAULT_COLORS[tinctureName])}
