@@ -30,9 +30,9 @@
   {#if $iconedNav && $state.edit}
     <Other />
   {:else}
+    <Language />
     <License />
     <Support />
-    <Language />
     <About />
   {/if}
 
