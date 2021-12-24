@@ -149,7 +149,14 @@ font {
 /* low-height screen */
 @media (min-width: 540px) and (max-height: 640px) {
   nav div.level3 {
-    columns: 2;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* low-height screen */
+@media (min-width: 640px) and (max-height: 540px) {
+  nav div.level3 {
+    grid-template-columns: 1fr 1fr 1fr;
   }
 }
 
@@ -181,7 +188,7 @@ font {
 }
 
 .container:hover > .dropdown {
-  display: block;
+  display: grid;
 }
 
 .container:hover > .dropdown.horizontal {
