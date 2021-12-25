@@ -25,9 +25,3 @@ jobs:
           BRANCH: gh-pages
           FOLDER: public
           CLEAN: true
-
-      - name: Update languages
-        uses: gautemo/fetch-api-data-action@1.0.2
-        with:
-          url: 'https://distributions.crowdin.net/b12697186f40ee9c2da1f58yf2f/manifest.json'
-          file: 'locales/manifest.json'
