@@ -1,0 +1,19 @@
+name: Get supported languages
+on:
+  push:
+    branches:
+      - gh-pages
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.1
+        with:
+          persist-credentials: false
+
+      - name: Fetch languages
+        uses: gautemo/fetch-api-data-action@1.0.2
+        with:
+          url: 'https://distributions.crowdin.net/b12697186f40ee9c2da1f58yf2f/manifest.json'
+          file: 'locales/manifest.json'
