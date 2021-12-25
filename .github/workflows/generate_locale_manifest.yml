@@ -1,0 +1,58 @@
+# It does not seem there is a way to get the manifest file automatically without hardcoding a hash, but we can generate it.
+name: Create the Crowdin manifest file
+
+on:
+
+  # Look at the l10n_master branch, because we want the language file changes and any manifest file
+  # changes to come in at the same time.
+  push:
+    branches: [ l10n_master ]
+    paths:
+      - "/public/locale/*"
+      
+  pull_request:
+    branches: [ l10n_master ]
+    paths:
+      - "/public/locale/*"
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - name: Compute new manifest
+        run: |
+          import os
+          import time
+          import json
+          languages = []
+          for i in os.listdir('public/locales'):
+              languages.append(i)
+
+          # Start with a default in case there is no file found.
+          old = {"files":["\/lang.json"],"languages":[],"language_mapping":[],"custom_languages":[]}
+          new = {}
+
+          if os.path.exists("public/locales/manifest.json"):
+              with open("public/locales/manifest.json") as f:
+                  old = json.load(f)
+
+          # Timestamp is not part of the keys we want to check for updates to
+          old.pop('timestamp',None)
+
+          # Carry over any keys that aren't being changed
+          new.update(old)
+
+          new['languages'] = languages
+
+          if not old==new:
+              new['timestamp'] = int(time.time())
+              with open("public/locales/manifest.json", 'w') as f:
+                  json.dump(new,f)
+                  
+        shell: python
+                  
+      - uses: peter-evans/create-pull-request@v3
+        with:
+             commit-message: "Auto-update manifest.json on changes to public/locale"
