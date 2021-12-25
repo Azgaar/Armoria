@@ -2,12 +2,10 @@ import {register, init} from "svelte-i18n";
 import {isTextReady} from "data/stores";
 import {fetcher} from "./utils";
 
-const cdn = "https://distributions.crowdin.net";
-const hash = "b12697186f40ee9c2da1f58yf2f";
 const fallbackLocale = "en";
 
 const registerSupportedLocales = async () => {
-  const manifest = await fetcher(`${cdn}/${hash}/manifest.json`)();
+  const manifest = await fetcher(`/locales/manifest.json`)();
   const {files, languages} = manifest;
   const file = files[0];
 
@@ -18,7 +16,7 @@ const registerSupportedLocales = async () => {
   }
 
   for (const language of languages) {
-    register(language, fetcher(`${cdn}/${hash}/content/${language}${file}`));
+    register(language, fetcher(`/locales/${language}${file}`));
   }
 
   const storedLocale = localStorage.getItem("locale");
