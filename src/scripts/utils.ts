@@ -64,3 +64,14 @@ export const minmax = (value: number, min: number, max: number) => {
 export const fetcher = (url: string) => () => {
   return fetch(url).then(result => result.json());
 };
+
+export const fallbackFetcher = async function(url: string, fallback: string) {
+  try {
+    var res = await fetch(url);
+    return res.json();
+  }
+  catch {
+    var res = await fetch(fallback);
+    return res.json();
+  }
+};
