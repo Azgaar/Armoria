@@ -544,6 +544,7 @@
   }
 
   .section {
+    position: relative;
     padding: 1em 1.14em;
     color: #fff;
     background-color: #00000060;
