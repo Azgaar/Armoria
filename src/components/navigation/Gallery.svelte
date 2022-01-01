@@ -1,7 +1,6 @@
 <script lang="ts">
   // @ts-check
   import {history, matrices, matrix, state} from "data/stores";
-  import {aleaPRNG} from "scripts/alea";
   import {download} from "scripts/download";
   import {generate} from "scripts/generator";
   import {minmax} from "scripts/utils";
