@@ -2,10 +2,11 @@ import {register, init} from "svelte-i18n";
 import {isTextReady} from "data/stores";
 import {fetcher} from "./utils";
 
+const localesPath = "./locales/";
 const fallbackLocale = "en";
 
 const registerSupportedLocales = async () => {
-  const manifest = await fetcher(`/locales/manifest.json`)();
+  const manifest = await fetcher(`${localesPath}manifest.json`)();
   const {files, languages} = manifest;
   const file = files[0];
 
@@ -16,7 +17,7 @@ const registerSupportedLocales = async () => {
   }
 
   for (const language of languages) {
-    register(language, fetcher(`/locales/${language}${file}`));
+    register(language, fetcher(`${localesPath}${language}${file}`));
   }
 
   const storedLocale = localStorage.getItem("locale");
