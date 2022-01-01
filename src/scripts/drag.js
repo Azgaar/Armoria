@@ -1,5 +1,6 @@
 import {get} from "svelte/store";
-import {changes, grid} from "data/stores";
+import {changes, grid, shield} from "data/stores";
+import {shieldPositions, shieldSize} from "data/shields";
 
 export function drag(event, charge, coa) {
   const el = event.currentTarget;
@@ -11,6 +12,8 @@ export function drag(event, charge, coa) {
 
   const {x = 0, y = 0, size = 1} = charge;
   const gridSize = get(grid);
+  const positionElements = el.querySelectorAll("use");
+  const positions = shieldPositions[get(shield)] || shieldPositions.spanish;
 
   if (event.shiftKey) {
     document.addEventListener("mousemove", resize);
@@ -29,14 +32,18 @@ export function drag(event, charge, coa) {
 
     charge.x = Math.round(dx / gridSize) * gridSize;
     charge.y = Math.round(dy / gridSize) * gridSize;
-    setTransform(el, charge);
+    setGroupTransform(el, charge);
   }
 
   function resize(event) {
     const dy = y + (event.y - y0) / sizeAdj;
     charge.size = round(size + dy / -100);
-    setTransform(el, charge);
-    if (charge.p) changes.add(JSON.stringify(coa));
+
+    if (charge.p) {
+      setElementTransform(charge);
+    } else {
+      setGroupTransform(el, charge);
+    }
   }
 
   function rotate(event) {
@@ -51,13 +58,26 @@ export function drag(event, charge, coa) {
     if (a < -179) a = (a % 180) + 180;
 
     charge.angle = Math.round(a / gridSize) * gridSize;
-    setTransform(el, charge);
+    setGroupTransform(el, charge);
   }
 
-  function setTransform(el, charge) {
+  function setGroupTransform(el, charge) {
     const tr = transform(charge);
+
     if (tr) el.setAttribute("transform", tr);
     else el.removeAttribute("transform");
+  }
+
+  function setElementTransform(charge) {
+    const validPositions = [...new Set(charge.p)].filter(p => positions[p]);
+    validPositions.forEach((p, i) => {
+      const element = positionElements[i];
+      if (element) {
+        const transform = getElTransform(charge, p, get(shield));
+        if (transform) element.setAttribute("transform", transform);
+        else element.removeAttribute("transform");
+      }
+    });
   }
 
   function stopDragging() {
@@ -88,4 +108,20 @@ export function transform(charge) {
   if (size !== 1) transform += ` scale(${size})`;
 
   return transform ? transform.trim() : null;
+}
+
+export function getElTransform(charge, p, shield) {
+  const positions = shieldPositions[shield] || shieldPositions.spanish;
+  const sizeModifier = shieldSize[shield] || 1;
+
+  const size = round((charge.size || 1) * sizeModifier);
+  const sx = charge.sinister ? -size : size;
+  const sy = charge.reversed ? -size : size;
+  let [x, y] = positions[p];
+  x = round(x - 100 * (sx - 1));
+  y = round(y - 100 * (sy - 1));
+
+  const translate = x || y ? `translate(${x} ${y})` : null;
+  const scale = sx !== 1 || sy !== 1 ? (sx === sy ? `scale(${sx})` : `scale(${sx} ${sy})`) : null;
+  return translate && scale ? `${translate} ${scale}` : translate ? translate : scale ? scale : null;
 }

@@ -35,7 +35,7 @@ export const showGrid = writable(options.showGrid);
 export const history = writable([]);
 export const matrices = writable([]);
 export const matrix = writable(0);
-export const state = writable({edit: 0, about: 0, license: 0, tinctures: 0, raster: 0, vector: 0, i: 0, с: 0});
+export const state = writable({edit: 0, about: 0, license: 0, tinctures: 0, raster: 0, vector: 0, i: 0, c: 0, view: 0});
 
 export const iconedNav = writable(false);
 
@@ -60,7 +60,7 @@ const createMessageStore = () => {
 export const message = createMessageStore();
 
 const createChangesStore = () => {
-  const {subscribe, set, update} = writable(["", -1]);
+  const {subscribe, set, update} = writable(["", -1] as [string, number]);
   let history = [];
   let position = -1;
 

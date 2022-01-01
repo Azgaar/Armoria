@@ -1,5 +1,5 @@
 <script>
-  import {state, matrix, changes, message, iconedNav} from "data/stores";
+  import {state, matrix, changes, history, message} from "data/stores";
   import {download} from "scripts/download";
   import {checkForIconedNav} from "scripts/navbar";
 
@@ -11,6 +11,11 @@
   }
 
   function close() {
+    if ($state.edit) {
+      // save current edit to gallery history
+      $history[$state.c] = JSON.parse($changes[0]);
+    }
+
     state.set({
       ...$state,
       about: 0,

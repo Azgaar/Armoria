@@ -1,6 +1,7 @@
 <script lang="ts">
   // @ts-check
   import {history, matrices, matrix, state} from "data/stores";
+  import {aleaPRNG} from "scripts/alea";
   import {download} from "scripts/download";
   import {generate} from "scripts/generator";
   import {minmax} from "scripts/utils";
@@ -11,22 +12,23 @@
   export let width: number;
   export let height: number;
 
+  Math.random = aleaPRNG(1);
+
   $: fontSize = minmax(width / 20, 6, 12);
 
   $: coas = gallery.map(c => {
-    let coa = $history[c] || generate();
-    if (!$history[c]) $history[c] = coa;
-    return coa;
+    if (!$history[c]) $history[c] = generate();
+    return $history[c];
   });
 
-  function regenerate(i) {
+  function regenerate(i: number) {
     $state.i = i;
     $matrix++;
     $matrices[$matrix] = $matrices[$matrix - 1].slice();
     $matrices[$matrix][$state.i] = $history.length;
   }
 
-  function editCOA(i) {
+  function editCOA(i: number) {
     $state.edit = 1;
     $state.c = gallery[i];
     $state.i = i;
