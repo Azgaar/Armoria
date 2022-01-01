@@ -1,13 +1,14 @@
-# It does not seem there is a way to get the manifest file automatically without hardcoding a hash, but we can generate it.
-name: Create the Crowdin manifest file
+name: Update Crowdin locales manifest
 
 on:
   push:
-    branches: 
+    branches:
       - master
     paths:
       - "public/locales/*"
-
+  workflow_dispatch:
+    branches:
+      - master
 
 jobs:
   build:
@@ -24,8 +25,8 @@ jobs:
           for i in os.listdir('public/locales'):
               if os.path.isdir(os.path.join('public/locales',i)):
                 languages.append(i)
-          # Start with a default in case there is no file found.
-          old = {"files":["\/lang.json"],"languages":[],"language_mapping":[],"custom_languages":[]}
+          # Start with a default in case there is no file found
+          old = {"files":["\/lang.json"],"languages":["en"],"language_mapping":[],"custom_languages":[]}
           new = {}
           if os.path.exists("public/locales/manifest.json"):
               with open("public/locales/manifest.json") as f:
@@ -43,5 +44,5 @@ jobs:
 
       - uses: peter-evans/create-pull-request@v3
         with:
-            commit-message: "Auto-update Crowdin manifest.json on changes to public/locale" 
-            title: "Update the Crowdin locales manifest" 
+          commit-message: "Auto-update Crowdin manifest.json on changes to public/locales"
+          title: "Update locales manifest"
