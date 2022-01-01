@@ -12,8 +12,6 @@
   export let width: number;
   export let height: number;
 
-  Math.random = aleaPRNG(1);
-
   $: fontSize = minmax(width / 20, 6, 12);
 
   $: coas = gallery.map(c => {
