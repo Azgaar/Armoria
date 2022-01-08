@@ -98,7 +98,7 @@
           item.y = o.y;
         }
         if (o.angle) item.angle = o.angle;
-        if (o.above) item.above = 1;
+        if (o.above) item.above = true;
         return item;
       });
     } else delete coa.ordinaries;
@@ -215,7 +215,7 @@
         const y = o.y || 0;
         const angle = o.angle || 0;
         const divided = o.divided || "";
-        const above = o.above || 0;
+        const above = o.above || false;
         if (angle) $state.transform = `rotate(${angle})`;
         return {ordinary, t, line, showStroke, stroke, strokeWidth, size, x, y, angle, divided, above};
       });
