@@ -20,7 +20,9 @@
   import EditorStroke from "./EditorStroke.svelte";
   import EditorTincture from "./EditorTincture.svelte";
   import EditorType from "./EditorType.svelte";
-  export let historyId, seed;
+
+  export let historyId;
+  export let seed;
 
   let menu = {};
   let section = {field: 0, division: 0, ordinary: [], charge: []};
@@ -30,14 +32,17 @@
   $state.positions = null;
 
   let coa = $history[historyId] || generate(seed || undefined); // on load
+
   $: restore($changes); // on undo/redo
   $: reroll(historyId); // on reroll
   $: update(menu); // on menu update
   $: edit(coa); // on edit
+
   $: localStorage.setItem("grid", $grid); // on grid change
   $: localStorage.setItem("showGrid", $showGrid); // on grid change
 
   function reroll(historyId) {
+    console.log("reroll", historyId);
     coa = $history[historyId] || generate(seed || undefined);
     if (!$history[historyId]) $history.push(coa);
     changes.reset();
@@ -46,6 +51,7 @@
 
   function edit(coa) {
     if (!coa.shield) coa.shield = $shield;
+    console.log("edit", JSON.stringify(coa));
     changes.add(JSON.stringify(coa));
   }
 
@@ -59,6 +65,8 @@
 
   // get coa from menu on menu change
   function update() {
+    console.log("update", JSON.stringify(coa));
+
     // remove see reference as it would be confusing
     delete coa.seed;
 
@@ -130,6 +138,8 @@
 
   // define initial menu state
   function defineMenuState() {
+    console.log("defineMenuState", JSON.stringify(coa));
+
     // Shield
     if (coa.shield) $shield = coa.shield;
 

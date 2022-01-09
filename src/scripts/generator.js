@@ -16,6 +16,28 @@ const createConfig = function () {
 
 // main generation routine
 export const generate = function (providedSeed) {
+  return {
+    t1: "sable",
+    division: {division: "perPale", line: "straight", t: "vair-argent-azure"},
+    charges: [
+      {
+        charge: "arrow",
+        t: "argent",
+        p: "e",
+        divided: "counter",
+        elements: [
+          {charge: "delf", t: "argent", p: "e", size: 0.5, x: 0, y: 0},
+          {charge: "arrow", t: "argent", p: "e", size: 1.5, x: 0, y: -15, angle: 90},
+          {charge: "arrow", t: "or", p: "e", size: 1.5, reversed: 1, x: 0, y: 15, angle: 90}
+        ],
+        size: 1.5,
+        x: 0,
+        y: 0
+      }
+    ],
+    shield: "heater"
+  };
+
   const seed = providedSeed || Math.floor(Math.random() * 1e9);
   Math.random = aleaPRNG(seed);
 

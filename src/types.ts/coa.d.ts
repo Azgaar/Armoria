@@ -18,7 +18,21 @@ interface Charge {
   charge: string;
   t: string;
   p: string;
+  elements?: ChargeElement[];
   divided?: Divided;
+  size?: number;
+  x?: number;
+  y?: number;
+  angle?: number;
+  stroke?: string;
+  reversed?: true;
+  sinister?: true;
+}
+
+interface ChargeElement {
+  charge: string;
+  t: string;
+  p: string;
   size?: number;
   x?: number;
   y?: number;
@@ -39,6 +53,7 @@ interface Ordinary {
   angle?: number;
   above?: true;
   stroke?: string;
+  strokeWidth?: number;
 }
 
 type Divided = "field" | "division" | "counter";

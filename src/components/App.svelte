@@ -76,6 +76,7 @@
       // exact coa to render
       if (!validateJSON(coaParam)) return;
       $history.push(JSON.parse(coaParam));
+      console.log("load from url", JSON.parse(coaParam));
     } else if (seedParam) {
       seed = seedParam;
     }
