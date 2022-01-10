@@ -1,15 +1,17 @@
-<script>
+<script lang="ts">
+  // @ts-check
   import Ordinary from "./Ordinary.svelte";
   import Charge from "./Charge.svelte";
   import {charges as chargesData, ordinaries as ordinariesData} from "data/dataModel";
   import {shield, colors, grad, diaper} from "data/stores";
   import {shieldPaths} from "data/shields";
   import {getTemplate, addPattern, addCharge} from "scripts/getters";
+  import type {Coa} from "types.ts/coa";
 
-  export let coa;
-  export let border;
-  export let borderWidth;
-  export let type;
+  export let coa: Coa;
+  export let border: string;
+  export let borderWidth: number;
+  export let type: "menuItem" | undefined;
 
   const id = coa.seed || Math.floor(Math.random() * 1e9);
   const {division, ordinaries = [], charges = []} = coa;
@@ -23,13 +25,13 @@
   $: overFill = !$grad || $grad === "no" ? "none" : `url(#${$grad})`;
 
   // get color or link to pattern
-  $: clr = tincture => {
+  $: clr = (tincture: string) => {
     if ($colors[tincture]) return $colors[tincture];
     addPattern(tincture);
     return "url(#" + tincture + ")";
   };
 
-  function getDieperType(coaDiaper) {
+  function getDieperType(coaDiaper: string) {
     if (!coaDiaper || coaDiaper === "no") return null;
     const f = !coa.t1.includes("-");
     const d = !division?.t.includes("-");
@@ -40,7 +42,7 @@
   }
 
   // if charge doesn't support pattern, return basic tincture
-  function counterChange(t, charge) {
+  function counterChange(t: string, charge: string) {
     if (!/-/.test(t)) return clr(t); // not a pattern
     if (chargesData.patternable.includes(charge)) return clr(t); // patternable
     if (ordinariesData.patternable.includes(charge)) return clr(t); // patternable

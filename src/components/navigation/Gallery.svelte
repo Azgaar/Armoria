@@ -14,19 +14,18 @@
   $: fontSize = minmax(width / 20, 6, 12);
 
   $: coas = gallery.map(c => {
-    let coa = $history[c] || generate();
-    if (!$history[c]) $history[c] = coa;
-    return coa;
+    if (!$history[c]) $history[c] = generate();
+    return $history[c];
   });
 
-  function regenerate(i) {
+  function regenerate(i: number) {
     $state.i = i;
     $matrix++;
     $matrices[$matrix] = $matrices[$matrix - 1].slice();
     $matrices[$matrix][$state.i] = $history.length;
   }
 
-  function editCOA(i) {
+  function editCOA(i: number) {
     $state.edit = 1;
     $state.c = gallery[i];
     $state.i = i;

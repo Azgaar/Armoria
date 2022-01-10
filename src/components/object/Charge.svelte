@@ -1,44 +1,40 @@
-<script>
-  import {shieldPositions, shieldSize} from "data/shields";
-  import {drag, transform} from "scripts/drag";
-  export let coa, charge, i, shield, t, type;
-  let chargeId, positions, sizeModifier, stroke;
+<script lang="ts">
+  // @ts-check
+  import {shieldPositions} from "data/shields";
+  import {drag, transform, getElTransform} from "scripts/drag";
+  import type {Coa, Charge} from "types.ts/coa";
+
+  export let coa: Coa;
+  export let charge: Charge;
+  export let i: number;
+  export let shield: string;
+  export let t: string;
+  export let type: string;
+
+  console.log(coa);
+
+  let chargeId: string;
+  let validPositions: string[];
 
   $: {
-    positions = shieldPositions[shield] || shieldPositions.spanish;
-    sizeModifier = shieldSize[shield] || 1;
-    stroke = charge.stroke || "#000";
+    const positions = shieldPositions[shield] || shieldPositions.spanish;
+    validPositions = [...new Set(charge.p)].filter(p => positions[p]);
+  }
 
+  $: {
     chargeId = charge.charge;
     // select shield shape if charge is just 'inescutcheon'
     if (chargeId === "inescutcheon") chargeId = "inescutcheon" + shield.charAt(0).toUpperCase() + shield.slice(1);
   }
 
-  function round(n) {
-    return Math.round(n * 100) / 100;
-  }
-
-  function getElTransform(c, p) {
-    const s = round((c.size || 1) * sizeModifier);
-    const sx = c.sinister ? -s : s;
-    const sy = c.reversed ? -s : s;
-    let [x, y] = positions[p];
-    x = round(x - 100 * (sx - 1));
-    y = round(y - 100 * (sy - 1));
-
-    const translate = x || y ? `translate(${x} ${y})` : null;
-    const scale = sx !== 1 || sy !== 1 ? (sx === sy ? `scale(${sx})` : `scale(${sx} ${sy})`) : null;
-    return translate && scale ? `${translate} ${scale}` : translate ? translate : scale ? scale : null;
-  }
-
-  function addDrag(event) {
+  function addDrag(event: Event) {
     if (type !== "Edit") return;
     drag(event, charge, coa);
   }
 </script>
 
-<g class="charge" {i} charge={chargeId} fill={t} transform={transform(charge)} {stroke} on:mousedown={addDrag}>
-  {#each [...new Set(charge.p)].filter(p => positions[p]) as p}
-    <use xlink:href="#{chargeId}" transform={getElTransform(charge, p)} />
+<g class="charge" {i} charge={chargeId} fill={t} transform={transform(charge)} stroke={charge.stroke || "#000"} on:mousedown={addDrag}>
+  {#each validPositions as position}
+    <use xlink:href="#{chargeId}" transform={getElTransform(charge, position, shield)} />
   {/each}
 </g>

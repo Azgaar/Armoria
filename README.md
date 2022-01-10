@@ -2,10 +2,11 @@
 
 Armoria is a procedural heraldry generator and editor by Azgaar. It's both a serverless GUI tool and server-side API. Almost the same code is also used as a part of the [Fantasy Map Generator](https://github.com/Azgaar/Fantasy-Map-Generator) project.
 
-Armoria is under development, the GUI version is available on [Github Pages](https://azgaar.github.io/Armoria/) and [here is the tutorial](https://github.com/Azgaar/Armoria/wiki/Armoria-Tutorial). Join our [Reddit community](https://www.reddit.com/r/FantasyMapGenerator) and [Discord server](https://discordapp.com/invite/X7E84HU) to share your creations, discuss the tool, suggest ideas and get the most recent updates.
+The GUI version is available on [Github Pages](https://azgaar.github.io/Armoria/). Join our [Reddit community](https://www.reddit.com/r/FantasyMapGenerator) and [Discord server](https://discordapp.com/invite/X7E84HU) to share your creations, discuss the tool, suggest ideas and get the most recent updates.
 
 You can support the project on [Patreon](https://www.patreon.com/azgaar).
 
+A tutorial is available [on Wiki](https://github.com/Azgaar/Armoria/wiki/Armoria-Tutorial). In you want to help with translation, join the project on [Crowdin](https://crowdin.com/project/armoria).
 
 ![Gallery View](public/preview.png)
 
@@ -13,9 +14,9 @@ You can support the project on [Patreon](https://www.patreon.com/azgaar).
 
 ## For Developers
 
-The tool is almost zero-dependency vanilla JS with just [Svelte](https://github.com/sveltejs/svelte) to build GUI. Svelte is a bit specific framework that compiles components to vanilla JS.
+The tool is almost zero-dependency vanilla JS with just [Svelte](https://github.com/sveltejs/svelte) used for GUI. Svelte is a bit specific framework that compiles components to vanilla JS.
 
-I am not a profi in web-development or Svelte, so help from professional developers and Pull Requests are welcomed.
+Pull requests are welcomed.
 
 ### Installation
 
@@ -36,10 +37,18 @@ To create an optimised version run `npm run build`.
 
 Armoria API is available as a seperate project, see [the documentation](https://github.com/Azgaar/armoria-api#readme). The API allows to `GET` random or predefined vector and raster heraldic images of a given size.
 
+## Alternatives
+
+While Armoria is focused on coat of arms generation and UI simplicity, there are some alternatives that covers heraldry more precisely.
+
+[Heraldry.Digital](https://github.com/heraldry/armory) aims to support most of the heraldry features and create a system able to convert between blazonry and metadata. It allows users to create much more complex coat of arms, while it is not a generator and can be hard to use.
+
+[DrawShield](https://github.com/drawshield/Drawshield-Code) is another wonderful project. It allows to render coat of arms taking heraldic blazon as an input.
+
 ## License
 
-The code is distributed under [MIT](https://opensource.org/licenses/MIT).
+The code is distributed under [MIT](https://opensource.org/licenses/MIT). Feel free to use it for any purpose.
 
-Simple svg shapes and charges are self-made and available under [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/). Complex charges are historical, svg renders are coming from [WappenWiki](http://wappenwiki.org) and available for non-commercial use under [CC3](https://creativecommons.org/licenses/by-nc/3.0/). Source info is added to svg files as a comment.
+Simple svg shapes and charges are self-made and available under [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/). A lot of the complex charge renders are from [WappenWiki](http://wappenwiki.org) and available for [non-commercial use only](https://creativecommons.org/licenses/by-nc/3.0/). Check out the license details added to svg files and can available on the _License_ screen on UI.
 
 All images are manually optimized by me.
