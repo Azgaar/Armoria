@@ -179,6 +179,9 @@
   "error": {
     "copyToClipboard": "Cannot copy to the clipboard!",
     "tinctureRemove": "There should be at least 2 colors of each type!",
+    "mustBeNumber": "Chance must be a number!",
+    "totalChanceMustNotBeZero": "Total chance of colors in type must not be zero!",
+    "valueCannotBeThatLow": "Value cannot be that low!",
     "nonUniqueTincture": "Color must be unique!",
     "notAnImage": "File is not an image!",
     "notSvgOrText": "File must be text or svg!",
