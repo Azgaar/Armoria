@@ -3,12 +3,14 @@
   import {t} from "svelte-i18n";
   import {fade} from "svelte/transition";
   import {flip} from "svelte/animate";
-  import {colors, tinctures, state, message, changes} from "data/stores";
+  import {colors, tinctures, state, message} from "data/stores";
   import {camelize} from "scripts/utils";
   import {tooltip} from "scripts/tooltip";
   import {DEFAULT_COLORS, DEFAULT_TINCTURES} from "config/defaults";
+  import type {ChancesObject} from "types.ts/tinctures";
 
   const addLine = {show: false, name: "", type: "colours", color: "#96C8FA", chance: 3};
+  const mandatoryTypes = ["metals", "colours"];
 
   // remove stored weighted array
   for (const key in $tinctures) {
@@ -21,6 +23,11 @@
   $: lock("tinctures", $tinctures);
   $: lock("colors", $colors);
 
+  $: getTotalChance = (type: string) => {
+    const chances = Object.values($tinctures[type] as ChancesObject);
+    return chances.reduce((a, b) => a + b, 0);
+  };
+
   // don't lock options on load
   let loaded = [];
   function lock(key: string, value: unknown) {
@@ -28,9 +35,46 @@
     else loaded.push(key);
   }
 
-  function getTotalChance(type: string) {
-    const chances = Object.values($tinctures[type]) as number[];
-    return chances.reduce((a, b) => a + b, 0);
+  function changeElementChance(element: string, type: string, event: Event) {
+    const target = event.target as HTMLInputElement;
+    const newValue = +target.value;
+    const min = +target.min;
+
+    if (isNaN(newValue)) {
+      message.error($t("error.mustBeNumber"));
+      return;
+    }
+
+    if (newValue < min) {
+      message.error($t("error.valueCannotBeThatLow"));
+      target.value = String(min);
+      return;
+    }
+
+    $tinctures[element][type] = newValue;
+  }
+
+  function changeTinctureChance(type: string, tinctureName: string, event: Event) {
+    const target = event.target as HTMLInputElement;
+    const newValue = +target.value;
+
+    if (isNaN(newValue)) {
+      message.error($t("error.mustBeNumber"));
+      return;
+    }
+
+    if (newValue < 1) {
+      const typeTinctures: ChancesObject = {...$tinctures[type]};
+      typeTinctures[tinctureName] = 0;
+      const totalChance = Object.values(typeTinctures).reduce((a, b) => a + b, 0);
+      if (totalChance < 1) {
+        message.error($t("error.totalChanceMustNotBeZero"));
+        target.value = String(1);
+        return;
+      }
+    }
+
+    $tinctures[type][tinctureName] = newValue;
   }
 
   function removeTincture(tinctureName: string, type: string) {
@@ -109,7 +153,14 @@
             <td>{$t(`tinctures.${element}`)}</td>
             {#each Object.keys($tinctures[element]) as type (type)}
               <td>
-                <input type="number" min="0" max="100" step="1" bind:value={$tinctures[element][type]} />
+                <input
+                  type="number"
+                  min={mandatoryTypes.includes(type) ? 1 : 0}
+                  max="100"
+                  step="1"
+                  value={$tinctures[element][type]}
+                  on:change={event => changeElementChance(element, type, event)}
+                />
                 <span class="totalChance">/ {getTotalChance(element)}</span>
               </td>
             {/each}
@@ -186,7 +237,14 @@
               {/if}
             </td>
             <td>
-              <input type="number" min="0" max="100" step="1" bind:value={$tinctures[type][tinctureName]} />
+              <input
+                type="number"
+                min="0"
+                max="100"
+                step="1"
+                value={$tinctures[type][tinctureName]}
+                on:change={event => changeTinctureChance(type, tinctureName, event)}
+              />
               <span class="totalChance">/ {getTotalChance(type)}</span>
             </td>
             <td>
@@ -310,5 +368,10 @@
   .actionButton {
     font-size: 2em;
     cursor: pointer;
+  }
+
+  select {
+    padding: 5.5px 0px;
+    margin: 0;
   }
 </style>

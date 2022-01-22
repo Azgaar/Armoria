@@ -23,7 +23,7 @@ export const DEFAULT_COLORS = {
 };
 
 export const DEFAULT_TINCTURES = {
-  field: {metals: 35, colours: 49, stains: 1, patterns: 14},
+  field: {metals: 32, colours: 49, stains: 1, patterns: 14},
   division: {metals: 35, colours: 49, stains: 1, patterns: 8},
   charge: {metals: 16, colours: 24, stains: 1, patterns: 0},
   metals: {argent: 3, or: 2},

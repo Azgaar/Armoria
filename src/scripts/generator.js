@@ -4,15 +4,13 @@ import {rw, P} from "./utils";
 import {charges, divisions, lines, ordinaries, positions, patternSize} from "data/dataModel";
 import {tinctures} from "data/stores";
 
-const createConfig = function () {
-  return {
-    usedPattern: null,
-    usedTinctures: [],
-    tData: get(tinctures),
-    divisioned: null,
-    ordinary: null
-  };
-};
+const createConfig = () => ({
+  usedPattern: null,
+  usedTinctures: [],
+  tData: get(tinctures),
+  divisioned: null,
+  ordinary: null
+});
 
 // main generation routine
 export const generate = function (providedSeed) {
@@ -37,12 +35,8 @@ export const generate = function (providedSeed) {
   }
 
   if (config.ordinary) {
-    coa.ordinaries = [
-      {
-        ordinary: config.ordinary,
-        t: getTincture(config, "charge", config.usedTinctures, coa.t1)
-      }
-    ];
+    const t = getTincture(config, "charge", config.usedTinctures, coa.t1);
+    coa.ordinaries = [{ordinary: config.ordinary, t}];
     if (linedOrdinary) coa.ordinaries[0].line = config.usedPattern || (division && P(0.7)) ? "straight" : rw(lines);
     if (division && !charge && !config.usedPattern && P(0.5) && config.ordinary !== "bordure" && config.ordinary !== "orle") {
       if (P(0.8)) coa.ordinaries[0].divided = "counter";
@@ -56,8 +50,8 @@ export const generate = function (providedSeed) {
   if (charge) {
     charge = selectCharge(config);
 
-    let p = "e",
-      t = "gules";
+    let p = "e";
+    let t = "gules";
 
     const ordinaryT = coa.ordinaries ? coa.ordinaries[0].t : null;
     if (positions.ordinariesOn[config.ordinary] && P(0.8)) {
@@ -177,31 +171,39 @@ function selectCharge(config, set) {
   return type === "inescutcheon" ? "inescutcheon" : rw(charges[type]);
 }
 
-function replaceTincture(config, t, n) {
-  const type = getType(config, t);
-  while (!n || n === t) {
-    n = rw(config.tData[type]);
+function replaceTincture(config, tincture) {
+  const type = getType(config, tincture);
+  const typeTinctures = config.tData[type];
+
+  const candidateTinctures = {...typeTinctures};
+  delete candidateTinctures[tincture];
+
+  const newTincture = rw(candidateTinctures, false);
+  if (!newTincture) {
+    console.warn(`Type ${type} has only one valid tincture. Cannot follow the Rule of Tincture`);
+    return tincture;
   }
-  return n;
+
+  return rw(candidateTinctures, false);
 }
 
 function getType(config, t) {
-  const tincture = t.includes("-") ? t.split("-")[1] : t;
+  const tincture = getBaseTincture(t);
   if (Object.keys(config.tData.metals).includes(tincture)) return "metals";
   if (Object.keys(config.tData.colours).includes(tincture)) return "colours";
   if (Object.keys(config.tData.stains).includes(tincture)) return "stains";
-  debugger; // exception
+  throw new Error("Unknown tincture type", t);
 }
 
-function definePattern(config, pattern, element) {
-  let t1 = null,
-    t2 = null;
+function definePattern(config, patternName, element) {
+  let t1 = null;
+  let t2 = null;
 
   // apply standard tinctures
-  if (P(0.5) && (pattern.includes("air") || pattern.includes("otent"))) {
+  if (P(0.5) && (patternName.includes("air") || patternName.includes("otent"))) {
     t1 = "argent";
     t2 = "azure";
-  } else if (pattern === "ermine") {
+  } else if (patternName === "ermine") {
     if (P(0.7)) {
       t1 = "argent";
       t2 = "sable";
@@ -218,7 +220,7 @@ function definePattern(config, pattern, element) {
       t1 = "gules";
       t2 = "argent";
     }
-  } else if (pattern.includes("pappellony") || pattern === "scaly") {
+  } else if (patternName.includes("pappellony") || patternName === "scaly") {
     if (P(0.2)) {
       t1 = "gules";
       t2 = "or";
@@ -232,10 +234,10 @@ function definePattern(config, pattern, element) {
       t1 = "azure";
       t2 = "argent";
     }
-  } else if (P(0.2) && pattern === "plumetty") {
+  } else if (P(0.2) && patternName === "plumetty") {
     t1 = "gules";
     t2 = "or";
-  } else if (pattern === "masoned") {
+  } else if (patternName === "masoned") {
     if (P(0.3)) {
       t1 = "gules";
       t2 = "argent";
@@ -246,7 +248,7 @@ function definePattern(config, pattern, element) {
       t1 = "or";
       t2 = "sable";
     }
-  } else if (pattern === "fretty" || pattern === "grillage" || pattern === "chainy") {
+  } else if (patternName === "fretty" || patternName === "grillage" || patternName === "chainy") {
     if (P(0.35)) {
       t1 = "argent";
       t2 = "gules";
@@ -257,7 +259,7 @@ function definePattern(config, pattern, element) {
       t1 = "gules";
       t2 = "argent";
     }
-  } else if (pattern === "honeycombed") {
+  } else if (patternName === "honeycombed") {
     if (P(0.4)) {
       t1 = "sable";
       t2 = "or";
@@ -265,7 +267,7 @@ function definePattern(config, pattern, element) {
       t1 = "or";
       t2 = "sable";
     }
-  } else if (pattern === "semy") pattern += "_of_" + selectCharge(charges.semy);
+  } else if (patternName === "semy") patternName += "_of_" + selectCharge(charges.semy);
 
   if (!t1 || !t2) {
     const startWithMetal = P(0.7);
@@ -283,28 +285,46 @@ function definePattern(config, pattern, element) {
   const size = rw(patternSize);
   const sizeString = size === "standard" ? "" : "-" + size;
 
-  return `${pattern}-${t1}-${t2}${sizeString}`;
+  return `${patternName}-${t1}-${t2}${sizeString}`;
+}
+
+function getBaseTincture(tincture) {
+  return tincture.includes("-") ? tincture.split("-")[1] : tincture;
+}
+
+function excludeTinctures(typeTinctures, usedTinctures) {
+  const unusedTinctures = {...typeTinctures};
+  usedTinctures.forEach(usedTincture => {
+    delete unusedTinctures[usedTincture];
+  });
+
+  const isAnyUnused = Object.keys(unusedTinctures).length && Object.values(unusedTinctures).reduce((a, b) => a + b, 0);
+  return isAnyUnused ? unusedTinctures : typeTinctures;
 }
 
 // select tincture: element type (field, division, charge), used field tinctures, field type to follow RoT
 function getTincture(config, element, fields = [], RoT) {
-  const base = RoT ? (RoT.includes("-") ? RoT.split("-")[1] : RoT) : null;
-
-  let type = rw(config.tData[element]); // metals, colours, stains, patterns
-  if (RoT && type !== "patterns") type = getType(config, base) === "metals" ? "colours" : "metals"; // follow RoT
-  if (type === "metals" && fields.includes("or") && fields.includes("argent")) type = "colours"; // exclude metals overuse
-  let tincture = rw(config.tData[type]);
-
-  while (tincture === base || fields.includes(tincture)) {
-    tincture = rw(config.tData[type]);
-  } // follow RoT
-
-  if (type !== "patterns" && element !== "charge") config.usedTinctures.push(tincture); // add field tincture
+  let type = rw(config.tData[element]); // random type
 
   if (type === "patterns") {
-    config.usedPattern = tincture;
-    tincture = definePattern(config, tincture, element);
+    const patternName = rw(config.tData[type]);
+    config.usedPattern = patternName;
+    const tincture = definePattern(config, patternName, element);
+    return tincture;
   }
+
+  // follow Rule of Tinctures: metal should not be put on metal, nor colour on colour
+  if (RoT) {
+    const underlyingTincture = getBaseTincture(RoT);
+    const underlyingType = getType(config, underlyingTincture);
+    type = underlyingType === "metals" ? "colours" : "metals";
+  }
+
+  const typeTinctures = config.tData[type];
+  const candidateTinctures = fields.length ? excludeTinctures(typeTinctures, fields) : typeTinctures;
+  let tincture = rw(candidateTinctures, false);
+
+  if (element !== "charge") config.usedTinctures.push(tincture); // add field tincture
 
   return tincture;
 }

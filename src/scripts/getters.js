@@ -80,7 +80,7 @@ function fetchCharge(charge) {
 }
 
 function clr(tincture) {
-  if (!colorsData[tincture]) throw new error(`Tincture ${tincture} is not available in ${tincture}`);
+  if (!colorsData[tincture]) throw new Error(`Tincture ${tincture} is not found`);
   return colorsData[tincture];
 }
 

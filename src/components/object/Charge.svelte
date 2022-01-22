@@ -11,8 +11,6 @@
   export let t: string;
   export let type: string;
 
-  console.log(coa);
-
   let chargeId: string;
   let validPositions: string[];
 

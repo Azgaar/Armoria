@@ -14,6 +14,8 @@ import {
   DEFAULT_GRID,
   DEFAULT_SHOW_GRID
 } from "config/defaults";
+import type { Tinctures } from "types.ts/tinctures";
+import { validateTinctures } from "./validators";
 
 export const isTextReady = writable(false);
 
@@ -115,8 +117,7 @@ function defineInitialOptions() {
   const diaper = stored("diaper") || DEFAULT_DIAPER;
   const grad = stored("grad") || ra(DEFAULT_GRADIENTS);
   const shield = getShieldFromURL() || stored("shield") || rw(shields[rw(shields.types)]);
-  const colors = storedObj("colors") || JSON.parse(JSON.stringify(DEFAULT_COLORS));
-  const tinctures = storedObj("tinctures") || JSON.parse(JSON.stringify(DEFAULT_TINCTURES));
+  const colors = storedObj("colors") || DEFAULT_COLORS);
   const border = stored("border") || DEFAULT_BORDER;
   const borderWidth = +stored("borderWidth") || DEFAULT_BORDER_WIDTH;
   const background = stored("background") || DEFAULT_BACKGROUND;
@@ -124,6 +125,10 @@ function defineInitialOptions() {
 
   const grid = +stored("grid") || DEFAULT_GRID;
   const showGrid = storedObj("showGrid") || DEFAULT_SHOW_GRID;
+
+  const storedTinctures = storedObj("tinctures");
+  const areTincturesValid = storedTinctures ? validateTinctures(storedTinctures) : false;
+  const tinctures: Tinctures = areTincturesValid ? storedTinctures : DEFAULT_TINCTURES;
 
   return {
     size,
