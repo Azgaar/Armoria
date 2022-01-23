@@ -179,6 +179,9 @@
   "error": {
     "copyToClipboard": "Não é possível copiar para a área de transferência!",
     "tinctureRemove": "Deve se ter pelo menos 2 cores de cada tipo!",
+    "mustBeNumber": "A probabilidade deve ser um número!",
+    "totalChanceMustNotBeZero": "A probabilidade total de cores no tipo não pode ser zero!",
+    "valueCannotBeThatLow": "O valor não pode ser tão baixo!",
     "nonUniqueTincture": "A cor deve ser única!",
     "notAnImage": "Arquivo não é uma imagem!",
     "notSvgOrText": "O arquivo deve ser de texto ou SVG!",
