@@ -135,7 +135,7 @@
     "locked": "Τιμές αποθηκεύονται και εφαρμόζονται αυτόματα. Κάντε κλικ για να καταργήσετε την αποθηκευμένη τιμή και να χρησιμοποιήσετε τις προεπιλεγμένες ρυθμίσεις κατά τη φόρτωση",
     "rollback": "Roll to the previous coat of arms gallery",
     "rollbackEdit": "Roll to the previous coat of arms",
-    "reroll": "Regenerate coat of arms gallery",
+    "reroll": "Αναδημιουργία Συλλογή Οικοσήμων",
     "rerollEdit": "Αναγέννηση Οικοσήμων",
     "downloadSVG": "Download vector image or set of images. Open in browser or load to Map Generator. Size can be set in options",
     "downloadPNG": "Download as raster image. Size can be set in options",
@@ -179,6 +179,9 @@
   "error": {
     "copyToClipboard": "Αντιγραφή δε Γίνεται!",
     "tinctureRemove": "Πρέπει να υπάρχουν τουλάχιστον 2 χρώματα κάθε τύπου!",
+    "mustBeNumber": "Chance must be a number!",
+    "totalChanceMustNotBeZero": "Total chance of colors in type must not be zero!",
+    "valueCannotBeThatLow": "Value cannot be that low!",
     "nonUniqueTincture": "Χρώμα πρέπει να είναι μοναδικό!",
     "notAnImage": "Το Αρχείο δεν είναι Εικόνα!",
     "notSvgOrText": "Αρχείο πρέπει να είναι έγγραφό ή svg!",
