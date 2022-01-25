@@ -179,9 +179,9 @@
   "error": {
     "copyToClipboard": "Kann nicht in die Zwischenablage kopiert werden!",
     "tinctureRemove": "Es sollte mindestens 2 Farben von jedem Typ geben!",
-    "mustBeNumber": "Chance must be a number!",
-    "totalChanceMustNotBeZero": "Total chance of colors in type must not be zero!",
-    "valueCannotBeThatLow": "Value cannot be that low!",
+    "mustBeNumber": "Chance muss eine Zahl sein!",
+    "totalChanceMustNotBeZero": "Die Wahrscheinlichkeit der Farben darf nicht Null sein!",
+    "valueCannotBeThatLow": "Wert darf nicht so niedrig sein!",
     "nonUniqueTincture": "Code muss eindeutig sein!",
     "notAnImage": "Die Datei ist kein gültiges Bild!",
     "notSvgOrText": "Datei muss eine Textdatei oder eine svg Datei sein!",
