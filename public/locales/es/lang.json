@@ -179,9 +179,9 @@
   "error": {
     "copyToClipboard": "¡No se pudo copiar al portapapeles!",
     "tinctureRemove": "¡Debería haber al menos 2 colores de cada tipo!",
-    "mustBeNumber": "Chance must be a number!",
-    "totalChanceMustNotBeZero": "Total chance of colors in type must not be zero!",
-    "valueCannotBeThatLow": "Value cannot be that low!",
+    "mustBeNumber": "¡La probabilidad debe ser un número!",
+    "totalChanceMustNotBeZero": "¡La probabilidad total de colores en el tipo no puede ser cero!",
+    "valueCannotBeThatLow": "¡El valor no puede ser tan bajo!",
     "nonUniqueTincture": "¡El color debe ser único!",
     "notAnImage": "¡El archivo no es una imagen!",
     "notSvgOrText": "¡El archivo debe ser texto o svg!",
