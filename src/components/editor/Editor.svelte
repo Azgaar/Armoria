@@ -20,38 +20,46 @@
   import EditorStroke from "./EditorStroke.svelte";
   import EditorTincture from "./EditorTincture.svelte";
   import EditorType from "./EditorType.svelte";
+  import {onMount} from "svelte";
 
   export let historyId;
   export let seed;
 
-  let menu = {};
-  let section = {field: 0, division: 0, ordinary: [], charge: []};
   const isLandscape = innerWidth > innerHeight;
 
   $state.transform = null;
   $state.positions = null;
 
-  let coa = $history[historyId] || generate(seed || undefined); // on load
+  let menu = {};
+  let section = {field: 0, division: 0, ordinary: [], charge: []};
+  let coa;
+  let isLoaded = false;
 
-  $: restore($changes); // on undo/redo
-  $: reroll(historyId); // on reroll
+  $: reroll(historyId); // on load and reroll
   $: update(menu); // on menu update
   $: edit(coa); // on edit
+  $: restore($changes); // on undo/redo
 
   $: localStorage.setItem("grid", $grid); // on grid change
   $: localStorage.setItem("showGrid", $showGrid); // on grid change
 
   function reroll(historyId) {
-    console.log("reroll", historyId);
+    console.log("reroll", {historyId});
     coa = $history[historyId] || generate(seed || undefined);
     if (!$history[historyId]) $history.push(coa);
     changes.reset();
     defineMenuState();
+
+    setTimeout(() => {
+      isLoaded = true;
+    }, 0);
   }
 
   function edit(coa) {
+    if (!isLoaded) return;
+    console.log("edit", coa);
+
     if (!coa.shield) coa.shield = $shield;
-    console.log("edit", JSON.stringify(coa));
     changes.add(JSON.stringify(coa));
   }
 
@@ -65,7 +73,8 @@
 
   // get coa from menu on menu change
   function update() {
-    console.log("update", JSON.stringify(coa));
+    if (!isLoaded) return;
+    console.log("update", coa);
 
     // remove see reference as it would be confusing
     delete coa.seed;
@@ -131,6 +140,8 @@
   }
 
   function restore() {
+    if (!isLoaded) return;
+    console.log("restore");
     if (!changes.length()) return;
     coa = JSON.parse($changes[0]);
     defineMenuState();
@@ -138,7 +149,7 @@
 
   // define initial menu state
   function defineMenuState() {
-    console.log("defineMenuState", JSON.stringify(coa));
+    console.log("defineMenuState", coa);
 
     // Shield
     if (coa.shield) $shield = coa.shield;
@@ -301,10 +312,6 @@
     menu.charges = [...menu.charges, с];
   }
 
-  if (!("ontouchstart" in window) && (coa.ordinaries || coa.charges)) {
-    if (!$message) message.info($t("info.tipEditControls"));
-  }
-
   function isRaster(charge) {
     const el = document.getElementById(charge);
     return el ? el.tagName === "image" : false;
@@ -314,6 +321,12 @@
     const isInDictionary = $dictionary?.[$locale]?.[group]?.[key];
     return isInDictionary ? $t(`${group}.${key}`) : key;
   };
+
+  onMount(() => {
+    if (!("ontouchstart" in window) && (coa.charges || coa.ordinaries)) {
+      if (!$message) message.info($t("info.tipEditControls"));
+    }
+  });
 </script>
 
 <main out:fade>

@@ -13,6 +13,8 @@
 
   const isEdit = i === "Edit";
 
+  console.log("COA render", coa);
+
   $: viewBox = shieldBox[$shield] || "0 0 200 200";
 </script>
 

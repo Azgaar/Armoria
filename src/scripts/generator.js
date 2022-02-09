@@ -26,7 +26,7 @@ export const generate = function (providedSeed) {
         p: "e",
         divided: "counter",
         elements: [
-          {charge: "delf", t: "argent", p: "e", size: 0.5, x: 0, y: 0},
+          {charge: "delf", t: "argent", p: "e", size: 1, x: 0, y: 0},
           {charge: "arrow", t: "argent", p: "e", size: 1.5, x: 0, y: -15, angle: 90},
           {charge: "arrow", t: "or", p: "e", size: 1.5, reversed: 1, x: 0, y: 15, angle: 90}
         ],

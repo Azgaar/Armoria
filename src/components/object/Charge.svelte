@@ -14,8 +14,6 @@
   export let counterTincture: string = "";
   export let type: string;
 
-  console.log(coa);
-
   let validPositions: string[];
 
   $: {
