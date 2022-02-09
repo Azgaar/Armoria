@@ -7,7 +7,7 @@
   import {getSize} from "scripts/generator";
   import {tooltip} from "scripts/tooltip";
 
-  interface ICharge {
+  interface IElement {
     angle: number;
     size: number;
     p: string;
@@ -15,11 +15,11 @@
     reversed: boolean;
   }
 
-  export let charge: ICharge;
+  export let element: IElement;
 
   function showPositions() {
-    $state.transform = `rotate(${charge.angle || 0}) translate(${charge.x || 0}, ${charge.y || 0})`;
-    $state.positions = charge.p;
+    $state.transform = `rotate(${element.angle || 0}) translate(${element.x || 0}, ${element.y || 0})`;
+    $state.positions = element.p;
   }
 
   function hidePositions() {
@@ -28,14 +28,14 @@
 
   function changePosition() {
     showPositions();
-    charge.size = getSize(charge.p);
+    element.size = getSize(element.p);
   }
 </script>
 
 <span data-tooltip={$t("tooltip.positions")} use:tooltip>
   {$t("editor.positions")}:
-  <input bind:value={charge.p} on:input={showPositions} on:focus={showPositions} on:blur={hidePositions} />
-  <select bind:value={charge.p} on:change={changePosition} on:focus={showPositions} on:blur={hidePositions}>
+  <input bind:value={element.p} on:input={showPositions} on:focus={showPositions} on:blur={hidePositions} />
+  <select bind:value={element.p} on:change={changePosition} on:focus={showPositions} on:blur={hidePositions}>
     {#each positionsSelect as position}
       <option value={position}>{position}</option>
     {/each}
@@ -44,12 +44,12 @@
 
 <span data-tooltip={$t("tooltip.sinister")} use:tooltip>
   <span style="margin-left: 1em">{$t("editor.sinister")}:</span>
-  <Switch bind:checked={charge.sinister} />
+  <Switch bind:checked={element.sinister} />
 </span>
 
 <span data-tooltip={$t("tooltip.reversed")} use:tooltip>
   <span style="margin-left: 1em">{$t("editor.reversed")}:</span>
-  <Switch bind:checked={charge.reversed} />
+  <Switch bind:checked={element.reversed} />
 </span>
 
 <style>

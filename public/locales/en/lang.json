@@ -252,6 +252,9 @@
     "remove": "Remove"
   },
   "editor": {
+    "chargeGroup": "Charge group",
+    "element": "Element",
+    "overall": "Overall",
     "ordinary": "Ordinary",
     "addOrdinary": "Add ordinary",
     "addCharge": "Add charge",

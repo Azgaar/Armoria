@@ -1,7 +1,8 @@
 <script>
+  import {onMount} from "svelte";
   import {t, dictionary, locale} from "svelte-i18n";
   import {fade, fly, slide} from "svelte/transition";
-  import {changes, grid, history, message, shield, showGrid, state, tinctures, iconedNav} from "data/stores";
+  import {changes, grid, history, message, shield, showGrid, state, tinctures} from "data/stores";
   import {charges, divisions, ordinaries} from "data/dataModel";
   import {generate} from "scripts/generator";
   import {ra, rw} from "scripts/utils";
@@ -20,7 +21,6 @@
   import EditorStroke from "./EditorStroke.svelte";
   import EditorTincture from "./EditorTincture.svelte";
   import EditorType from "./EditorType.svelte";
-  import {onMount} from "svelte";
 
   export let historyId;
   export let seed;
@@ -31,14 +31,14 @@
   $state.positions = null;
 
   let menu = {};
-  let section = {field: 0, division: 0, ordinary: [], charge: []};
+  let sections = {};
   let coa;
   let isLoaded = false;
 
   $: reroll(historyId); // on load and reroll
-  $: update(menu); // on menu update
-  $: edit(coa); // on edit
-  $: restore($changes); // on undo/redo
+  // $: update(menu); // on menu update
+  // $: edit(coa); // on edit
+  // $: restore($changes); // on undo/redo
 
   $: localStorage.setItem("grid", $grid); // on grid change
   $: localStorage.setItem("showGrid", $showGrid); // on grid change
@@ -63,12 +63,8 @@
     changes.add(JSON.stringify(coa));
   }
 
-  const toggleSection = (name, index) => () => {
-    if (index !== undefined) {
-      section[name][index] = !section[name][index];
-    } else {
-      section[name] = !section[name];
-    }
+  const toggleSection = name => () => {
+    sections[name] = !sections[name];
   };
 
   // get coa from menu on menu change
@@ -260,7 +256,19 @@
         const y = c.y || 0;
         const angle = c.angle || 0;
         if (angle) $state.transform = `rotate(${angle})`;
-        return {charge, type, showStroke, stroke, divided, t, p, size, sinister, reversed, x, y, angle};
+        const elements = (c.elements || []).map(element => {
+          const {charge, t, p, size} = element;
+          const type = getChargeCategory(charge);
+          const sinister = element.sinister || false;
+          const reversed = element.reversed || false;
+          const angle = element.angle || 0;
+          const showStroke = element.stroke !== "none";
+          const stroke = element.stroke || "#000000";
+          const x = element.x || 0;
+          const y = element.y || 0;
+          return {charge, type, t, p, size, showStroke, stroke, sinister, reversed, x, y, angle};
+        });
+        return {charge, type, showStroke, stroke, divided, t, p, size, sinister, reversed, x, y, angle, elements};
       });
 
       return charges;
@@ -337,8 +345,8 @@
   </div>
   <div id="menu" in:fly={{x: isLandscape ? 1000 : 0, y: isLandscape ? 0 : 1000, duration: 1000}}>
     <!-- Field -->
-    <div class="section" class:expanded={section.field} on:click={toggleSection("field")}>{$t("tinctures.field")}</div>
-    {#if section.field}
+    <div class="section" class:expanded={sections.field} on:click={toggleSection("field")}>{$t("tinctures.field")}</div>
+    {#if sections.field}
       <div class="panel" transition:slide>
         <div class="subsection">
           <EditorType bind:type={menu.field.type} />
@@ -379,10 +387,10 @@
     {/if}
 
     <!-- Division -->
-    <div class="section" class:expanded={section.division} on:click={toggleSection("division")}>
+    <div class="section" class:expanded={sections.division} on:click={toggleSection("division")}>
       {$t("tinctures.division")}: {translateSafely("divisions", menu.division.division)}
     </div>
-    {#if section.division}
+    {#if sections.division}
       <div class="panel" transition:slide>
         <div class="subsection">
           <EditorDivision bind:division={menu.division.division} t1={coa.t1} t2={coa.division ? coa.division.t : menu.division.t1} line={menu.division.line} />
@@ -436,14 +444,14 @@
 
     <!-- Ordinaries -->
     {#each menu.ordinaries as o, i}
-      <div class="section" transition:slide class:expanded={section.ordinary[i]} on:click={toggleSection("ordinary", i)}>
+      <div class="section" transition:slide class:expanded={sections["ordinary" + i]} on:click={toggleSection("ordinary" + i)}>
         {$t("editor.ordinary")}{menu.ordinaries.length > 1 ? ` ${i + 1}` : ""}: {translateSafely("ordinaries", o.ordinary)}
         {#if o.above}
           <i>[{$t("editor.aboveCharges")}]</i>
         {/if}
         <EditorControls bind:els={menu.ordinaries} el={o} {i} />
       </div>
-      {#if section.ordinary[i]}
+      {#if sections["ordinary" + i]}
         <div class="panel" transition:slide>
           {#if coa.division}
             <div class="subsection">
@@ -483,45 +491,120 @@
 
     <!-- Charges -->
     {#each menu.charges as charge, i}
-      <div class="section" transition:slide class:expanded={section.charge[i]} on:click={toggleSection("charge", i)}>
-        {$t("tinctures.charge")}{menu.charges.length > 1 ? ` ${i + 1}` : ""}: {translateSafely("charges", charge.charge)}
+      <div class="section" transition:slide class:expanded={sections["charge" + i]} on:click={toggleSection("charge" + i)}>
+        {$t(charge.elements.length ? "editor.chargeGroup" : "tinctures.charge")}
+        {menu.charges.length > 1 ? ` ${i + 1}` : ""}:{" "}
+        {translateSafely("charges", charge.charge)}
         <EditorControls bind:els={menu.charges} el={charge} {i} />
       </div>
-      {#if section.charge[i]}
+      {#if sections["charge" + i]}
         <div class="panel" transition:slide>
-          <div class="subsection">
-            {#if coa.division}
-              <EditorDivided bind:divided={charge.divided} raster={isRaster(charge.charge)} />
-            {/if}
-            <EditorCharge
-              type="charge"
-              bind:charge={charge.charge}
-              bind:category={charge.type}
-              t1={coa.t1}
-              t2={charge.t}
-              sinister={charge.sinister}
-              reversed={charge.reversed}
-              division={coa.division}
-            />
-          </div>
-
-          {#if !isRaster(charge.charge) && charge.divided !== "counter"}
+          <!-- Non-grouped charge -->
+          {#if !charge.elements.length}
             <div class="subsection">
-              <EditorTincture bind:t1={charge.t} />
+              {#if coa.division}
+                <EditorDivided bind:divided={charge.divided} raster={isRaster(charge.charge)} />
+              {/if}
+              <EditorCharge
+                type="charge"
+                bind:charge={charge.charge}
+                bind:category={charge.type}
+                t1={coa.t1}
+                t2={charge.t}
+                sinister={charge.sinister}
+                reversed={charge.reversed}
+                division={coa.division}
+              />
+            </div>
+
+            {#if !isRaster(charge.charge) && charge.divided !== "counter"}
+              <div class="subsection">
+                <EditorTincture bind:t1={charge.t} />
+              </div>
+            {/if}
+
+            <div class="subsection">
+              <EditorStroke bind:element={charge} />
+            </div>
+
+            <div class="subsection">
+              <EditorPosition bind:element={charge} />
+            </div>
+
+            <div class="subsection">
+              <EditorShift bind:element={charge} />
             </div>
           {/if}
 
-          <div class="subsection">
-            <EditorStroke bind:element={charge} />
-          </div>
+          <!-- Charge group elements -->
+          {#if charge.elements.length}
+            {#each charge.elements as element, e}
+              <div
+                class="section element"
+                transition:slide
+                class:expanded={sections[`charge${i}-element${e}`]}
+                on:click={toggleSection(`charge${i}-element${e}`)}
+              >
+                {$t("editor.element")}
+                {e + 1}: {translateSafely("charges", element.charge)}
+                <EditorControls bind:els={menu.charges[i].elements[e]} el={element} {e} />
+              </div>
+              {#if sections[`charge${i}-element${e}`]}
+                <div class="panel" transition:slide>
+                  <div class="subsection">
+                    <EditorCharge
+                      type="charge"
+                      bind:charge={element.charge}
+                      bind:category={element.type}
+                      t1={coa.t1}
+                      t2={element.t}
+                      sinister={element.sinister}
+                      reversed={element.reversed}
+                      division={coa.division}
+                    />
+                  </div>
 
-          <div class="subsection">
-            <EditorPosition bind:charge />
-          </div>
+                  {#if !isRaster(element.charge) && charge.divided !== "counter"}
+                    <div class="subsection">
+                      <EditorTincture bind:t1={charge.t} />
+                    </div>
+                  {/if}
 
-          <div class="subsection">
-            <EditorShift bind:element={charge} />
-          </div>
+                  <div class="subsection">
+                    <EditorStroke bind:element />
+                  </div>
+
+                  <div class="subsection">
+                    <EditorPosition bind:element />
+                  </div>
+
+                  <div class="subsection">
+                    <EditorShift bind:element />
+                  </div>
+                </div>
+              {/if}
+            {/each}
+
+            <div class="section element" transition:slide class:expanded={sections[`charge${i}-overall`]} on:click={toggleSection(`charge${i}-overall`)}>
+              {$t("editor.overall")}
+            </div>
+            {#if sections[`charge${i}-overall`]}
+              <div class="panel" transition:slide>
+                <div class="subsection">
+                  <EditorDivided bind:divided={charge.divided} raster={isRaster(charge.charge)} />
+                  <EditorStroke bind:element={charge} />
+                </div>
+
+                <div class="subsection">
+                  <EditorPosition bind:element={charge} />
+                </div>
+
+                <div class="subsection">
+                  <EditorShift bind:element={charge} />
+                </div>
+              </div>
+            {/if}
+          {/if}
         </div>
       {/if}
     {/each}
@@ -576,7 +659,8 @@
     overflow-x: hidden;
   }
 
-  .section:hover {
+  .section:hover,
+  .section.element:hover {
     background-color: #00000080;
   }
 
@@ -599,6 +683,11 @@
 
   :global(.section:hover > span) {
     opacity: 1;
+  }
+
+  .section.element {
+    padding-left: 3em;
+    background-color: #00000045;
   }
 
   .section > i {
