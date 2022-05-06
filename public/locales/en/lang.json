@@ -295,7 +295,8 @@
     "clone": "Clone element",
     "backward": "Send backward",
     "forward": "Bring forward",
-    "remove": "Remove element"
+    "remove": "Remove element",
+    "groupName": "Group name"
   },
   "patterns": {
     "barry": "Barry",

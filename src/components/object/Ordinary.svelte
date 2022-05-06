@@ -1,9 +1,10 @@
 <script lang="ts">
   // @ts-check
-  import {drag, transform} from "scripts/drag";
   import {ordinaries as ordinariesData} from "data/dataModel";
   import {colors} from "data/stores";
   import {addPattern, getTemplate} from "scripts/getters";
+  import {transformGroup} from "scripts/transform";
+  import {drag} from "scripts/drag";
   import type {Coa, Ordinary} from "types.ts/coa";
 
   export let coa: Coa;
@@ -43,18 +44,18 @@
 </script>
 
 {#if ordinary.ordinary === "bordure"}
-  <g class="ordinary" data-i={i} transform={transform(ordinary)} on:mousedown={addDrag}>
+  <g class="ordinary" data-i={i} transform={transformGroup(ordinary)} on:mousedown={addDrag}>
     <path d={shieldPath} fill="none" stroke={getFill("bordure", ordinary.t)} stroke-width="16.7%" />
   </g>
 {:else if ordinary.ordinary === "orle"}
-  <g class="ordinary" data-i={i} transform={transform(ordinary)} on:mousedown={addDrag}>
+  <g class="ordinary" data-i={i} transform={transformGroup(ordinary)} on:mousedown={addDrag}>
     <path d={shieldPath} fill="none" stroke={getFill("orle", ordinary.t)} stroke-width="5%" transform="translate(15 15) scale(.85)" />
   </g>
 {:else}
   <g
     class="ordinary"
     data-i={i}
-    transform={transform(ordinary)}
+    transform={transformGroup(ordinary)}
     fill={getFill(ordinary.ordinary, ordinary.t)}
     {stroke}
     stroke-width={width}

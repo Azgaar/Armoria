@@ -8,7 +8,9 @@
   import {charges, divisions, ordinaries} from "data/dataModel";
   import {generate} from "scripts/generator";
   import {ra, rw} from "scripts/utils";
-  import type {Charge} from "types.ts/coa";
+  import type {Coa, Ordinary, Charge} from "types.ts/coa";
+  import type {Menu, Divided, FieldType, FieldSize} from "types.ts/menu";
+  import {isRaster} from "./utils";
 
   import COA from "./../object/COA.svelte";
   import EditorAbove from "./EditorAbove.svelte";
@@ -25,30 +27,30 @@
   import EditorStroke from "./EditorStroke.svelte";
   import EditorTincture from "./EditorTincture.svelte";
   import EditorType from "./EditorType.svelte";
-  import {isRaster} from "./utils";
+  import EditorGroupName from "./EditorGroupName.svelte";
 
-  export let historyId;
-  export let seed;
+  export let historyId: number;
+  export let seed: string;
 
   const isLandscape = innerWidth > innerHeight;
 
   $state.transform = null;
   $state.positions = null;
 
-  let menu = {};
+  let menu = {} as Menu;
   let sections = {};
-  let coa;
+  let coa: Coa;
   let isLoaded = false;
 
-  $: reroll(historyId); // on load and reroll
-  // $: update(menu); // on menu update
-  // $: edit(coa); // on edit
-  // $: restore($changes); // on undo/redo
+  $: handleReroll(historyId); // on load and reroll
+  $: handleMenuChange(menu); // on menu update
+  $: handleCoaChange(coa); // on edit
+  $: handleRestore($changes); // on undo/redo
 
   $: localStorage.setItem("grid", String($grid)); // on grid change
   $: localStorage.setItem("showGrid", $showGrid); // on grid change
 
-  function reroll(historyId) {
+  function handleReroll(historyId: number) {
     console.log("reroll", {historyId});
     coa = $history[historyId] || generate(seed || undefined);
     if (!$history[historyId]) $history.push(coa);
@@ -60,7 +62,7 @@
     }, 0);
   }
 
-  function edit(coa) {
+  function handleCoaChange(coa: Coa) {
     if (!isLoaded) return;
     console.log("edit", coa);
 
@@ -73,14 +75,14 @@
   };
 
   // get coa from menu on menu change
-  function update() {
+  function handleMenuChange(menu: Menu) {
     if (!isLoaded) return;
-    console.log("update", coa);
+    console.log("update", coa, menu);
 
-    // remove see reference as it would be confusing
+    // remove seed reference
     delete coa.seed;
 
-    // field attributes changed
+    // field attributes
     if (menu.field.type === "tincture") coa.t1 = menu.field.t1;
     else {
       const type = menu.field.type === "semy" ? "semy_of_" + menu.field.charge : menu.field.pattern;
@@ -89,23 +91,23 @@
       coa.t1 = attibutes.join("-");
     }
 
-    // division attributes changed
-    if (menu.division.division && menu.division.division !== "no") {
-      coa.division = {division: menu.division.division};
-      if (divisions[menu.division.division]) coa.division.line = menu.division.line;
-      if (menu.division.type === "tincture") coa.division.t = menu.division.t1;
+    // division attributes
+    if (menu.division.division && divisions[menu.division.division]) {
+      let t: string;
+      if (menu.division.type === "tincture") t = menu.division.t1;
       else {
         const attr0 = menu.division.type === "semy" ? "semy_of_" + menu.division.charge : menu.division.pattern;
         const attibutes = [attr0, menu.division.t1, menu.division.t2];
         if (menu.division.size !== "standard") attibutes.push(menu.division.size);
-        coa.division.t = attibutes.join("-");
+        t = attibutes.join("-");
       }
+      coa.division = {division: menu.division.division, line: menu.division.line, t};
     } else delete coa.division;
 
-    // ordinary attributes changed
+    // ordinary attributes
     if (menu.ordinaries.length) {
       coa.ordinaries = menu.ordinaries.map(o => {
-        const item = {ordinary: o.ordinary, t: o.t};
+        const item: Ordinary = {ordinary: o.ordinary, t: o.t};
         if (ordinaries.lined[o.ordinary]) item.line = o.line;
         if (coa.division && o.divided) item.divided = o.divided;
         if (o.showStroke) item.stroke = o.stroke;
@@ -121,30 +123,44 @@
       });
     } else delete coa.ordinaries;
 
-    // charges attributes changed
+    // charges attributes
     if (menu.charges.length) {
       coa.charges = menu.charges.map(c => {
-        const item = {charge: c.charge, t: c.t, p: c.p, size: c.size};
+        const item: Charge = {charge: c.charge, t: c.t, p: c.p, size: c.size};
         if (!c.showStroke) item.stroke = "none";
         if (c.stroke !== "#000000") item.stroke = c.stroke;
         if (c.divided) item.divided = c.divided;
-        if (c.sinister) item.sinister = 1;
-        if (c.reversed) item.reversed = 1;
+        if (c.sinister) item.sinister = true;
+        if (c.reversed) item.reversed = true;
         if (c.x || c.y) {
           item.x = c.x;
           item.y = c.y;
         }
         if (c.angle) item.angle = c.angle;
+
+        item.elements = c.elements.map(e => {
+          const element: Charge = {charge: e.charge, t: e.t, p: e.p, size: e.size};
+          if (!e.showStroke) element.stroke = "none";
+          if (e.stroke !== "#000000") element.stroke = e.stroke;
+          if (e.sinister) element.sinister = true;
+          if (e.reversed) element.reversed = true;
+          if (e.x || e.y) {
+            element.x = e.x;
+            element.y = e.y;
+          }
+          if (e.angle) element.angle = e.angle;
+          return element;
+        });
         return item;
       });
     } else delete coa.charges;
   }
 
-  function restore() {
+  function handleRestore([latest]: [string, number]) {
     if (!isLoaded) return;
     console.log("restore");
     if (!changes.length()) return;
-    coa = JSON.parse($changes[0]);
+    coa = JSON.parse(latest);
     defineMenuState();
   }
 
@@ -158,13 +174,13 @@
     // Field
     menu.field = getField();
     function getField() {
-      const type = isSemy(coa.t1) ? "semy" : isPattern(coa.t1) ? "pattern" : "tincture";
-      let t1,
-        t2,
+      const type: FieldType = isSemy(coa.t1) ? "semy" : isPattern(coa.t1) ? "pattern" : "tincture";
+      let t1: string,
+        t2: string,
         pattern = "vair",
         charge = "lozenge",
         semy = "conventional",
-        size = "standard";
+        size: FieldSize = "standard";
 
       const field = coa.t1.split("-"); // parsed field tincture
 
@@ -189,15 +205,15 @@
     // Division
     menu.division = getDivision();
     function getDivision() {
-      let type = "tincture",
+      let type: FieldType = "tincture",
         division = "no",
         line = "straight",
-        t1,
-        t2,
+        t1: string,
+        t2: string,
         pattern = "vair",
         charge = "lozenge",
         semy = "conventional",
-        size = "standard";
+        size: FieldSize = "standard";
 
       if (coa.division) {
         const tSplit = coa.division.t.split("-"); // parsed division tincture
@@ -212,7 +228,7 @@
           charge = getSemyCharge(tSplit);
           semy = getSemyType(tSplit);
         }
-        size = tSplit[3] || "standard";
+        size = (tSplit[3] as FieldSize) || "standard";
       } else {
         t1 = selectSecondTincture(menu.field.t1);
         t2 = selectSecondTincture(t1);
@@ -236,7 +252,7 @@
         const x = o.x || 0;
         const y = o.y || 0;
         const angle = o.angle || 0;
-        const divided = o.divided || "";
+        const divided: Divided = o.divided || "";
         const above = o.above || false;
         if (angle) $state.transform = `rotate(${angle})`;
         return {ordinary, t, line, showStroke, stroke, strokeWidth, size, x, y, angle, divided, above};
@@ -254,7 +270,7 @@
         const type = getChargeCategory(charge);
         const showStroke = c.stroke !== "none";
         const stroke = c.stroke || "#000000";
-        const divided = c.divided || "";
+        const divided: Divided = c.divided || "";
         const sinister = c.sinister || false;
         const reversed = c.reversed || false;
         const x = c.x || 0;
@@ -518,7 +534,7 @@
                 t2={charge.t}
                 sinister={charge.sinister}
                 reversed={charge.reversed}
-                division={coa.division}
+                division={Boolean(coa.division)}
               />
             </div>
 
@@ -542,6 +558,26 @@
           {/if}
 
           <!-- Charge group elements -->
+          <div class="section element" transition:slide class:expanded={sections[`charge${i}-overall`]} on:click={toggleSection(`charge${i}-overall`)}>
+            {$t("editor.overall")}
+          </div>
+          {#if sections[`charge${i}-overall`]}
+            <div class="panel indented" transition:slide>
+              <div class="subsection">
+                <EditorGroupName bind:name={charge.charge} />
+                <EditorDivided bind:divided={charge.divided} raster={isRaster(charge.charge)} />
+              </div>
+
+              <div class="subsection">
+                <EditorPosition bind:element={charge} />
+              </div>
+
+              <div class="subsection">
+                <EditorShift bind:element={charge} />
+              </div>
+            </div>
+          {/if}
+
           {#if charge.elements.length}
             {#each charge.elements as element, e}
               <div
@@ -565,13 +601,13 @@
                       t2={element.t}
                       sinister={element.sinister}
                       reversed={element.reversed}
-                      division={coa.division}
+                      division={Boolean(coa.division)}
                     />
                   </div>
 
                   {#if !isRaster(element.charge) && charge.divided !== "counter"}
                     <div class="subsection">
-                      <EditorTincture bind:t1={charge.t} />
+                      <EditorTincture bind:t1={element.t} />
                     </div>
                   {/if}
 
@@ -589,26 +625,6 @@
                 </div>
               {/if}
             {/each}
-
-            <div class="section element" transition:slide class:expanded={sections[`charge${i}-overall`]} on:click={toggleSection(`charge${i}-overall`)}>
-              {$t("editor.overall")}
-            </div>
-            {#if sections[`charge${i}-overall`]}
-              <div class="panel" transition:slide>
-                <div class="subsection">
-                  <EditorDivided bind:divided={charge.divided} raster={isRaster(charge.charge)} />
-                  <EditorStroke bind:element={charge} />
-                </div>
-
-                <div class="subsection">
-                  <EditorPosition bind:element={charge} />
-                </div>
-
-                <div class="subsection">
-                  <EditorShift bind:element={charge} />
-                </div>
-              </div>
-            {/if}
           {/if}
         </div>
       {/if}
@@ -704,6 +720,10 @@
     max-width: max-content;
     background-color: #13131320;
     overflow: hidden;
+  }
+
+  .panel.indented {
+    padding-left: 2em;
   }
 
   .buttonLine {

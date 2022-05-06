@@ -1,6 +1,7 @@
 import {get} from "svelte/store";
 import {changes, grid, shield} from "data/stores";
-import {shieldPositions, shieldSize} from "data/shields";
+import {shieldPositions} from "data/shields";
+import {transformGroup, transformElement} from "./transform";
 
 export function drag(event, charge, coa) {
   const el = event.currentTarget;
@@ -37,7 +38,7 @@ export function drag(event, charge, coa) {
 
   function resize(event) {
     const dy = y + (event.y - y0) / sizeAdj;
-    charge.size = round(size + dy / -100);
+    charge.size = Math.round((size + dy / -100) * 100) / 100;
 
     if (charge.p) {
       setElementTransform(charge);
@@ -62,7 +63,7 @@ export function drag(event, charge, coa) {
   }
 
   function setGroupTransform(el, charge) {
-    const tr = transform(charge);
+    const tr = transformGroup(charge);
 
     if (tr) el.setAttribute("transform", tr);
     else el.removeAttribute("transform");
@@ -73,7 +74,7 @@ export function drag(event, charge, coa) {
     validPositions.forEach((p, i) => {
       const element = positionElements[i];
       if (element) {
-        const transform = getElTransform(charge, p, get(shield));
+        const transform = transformElement(charge, p, get(shield));
         if (transform) element.setAttribute("transform", transform);
         else element.removeAttribute("transform");
       }
@@ -87,41 +88,4 @@ export function drag(event, charge, coa) {
     document.body.style.cursor = "auto";
     changes.add(JSON.stringify(coa));
   }
-}
-
-function round(n) {
-  return Math.round(n * 100) / 100;
-}
-
-export function transform(charge) {
-  let {x = 0, y = 0, angle = 0, size = 1, p} = charge;
-  if (p) size = 1; // size is defined on use element level
-
-  if (size !== 1) {
-    x = round(x + 100 - size * 100);
-    y = round(y + 100 - size * 100);
-  }
-
-  let transform = "";
-  if (x || y) transform += `translate(${x} ${y})`;
-  if (angle) transform += ` rotate(${angle} ${size * 100} ${size * 100})`;
-  if (size !== 1) transform += ` scale(${size})`;
-
-  return transform ? transform.trim() : null;
-}
-
-export function getElTransform(charge, p, shield) {
-  const positions = shieldPositions[shield] || shieldPositions.spanish;
-  const sizeModifier = shieldSize[shield] || 1;
-
-  const size = round((charge.size || 1) * sizeModifier);
-  const sx = charge.sinister ? -size : size;
-  const sy = charge.reversed ? -size : size;
-  let [x, y] = positions[p];
-  x = round(x - 100 * (sx - 1));
-  y = round(y - 100 * (sy - 1));
-
-  const translate = x || y ? `translate(${x} ${y})` : null;
-  const scale = sx !== 1 || sy !== 1 ? (sx === sy ? `scale(${sx})` : `scale(${sx} ${sy})`) : null;
-  return translate && scale ? `${translate} ${scale}` : translate ? translate : scale ? scale : null;
 }

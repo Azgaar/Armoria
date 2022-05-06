@@ -21,16 +21,16 @@ export const generate = function (providedSeed) {
     division: {division: "perPale", line: "straight", t: "vair-argent-azure"},
     charges: [
       {
-        charge: "arrow",
+        charge: "arrows",
         t: "argent",
         p: "e",
         divided: "counter",
         elements: [
           {charge: "delf", t: "argent", p: "e", size: 1, x: 0, y: 0},
-          {charge: "arrow", t: "argent", p: "e", size: 1.5, x: 0, y: -15, angle: 90},
+          {charge: "arrow", t: "gules", p: "e", size: 1.5, x: 0, y: -15, angle: 90},
           {charge: "arrow", t: "or", p: "e", size: 1.5, reversed: 1, x: 0, y: 15, angle: 90}
         ],
-        size: 1.5,
+        size: 1,
         x: 0,
         y: 0
       }
@@ -190,8 +190,8 @@ function defineChargeAttributes(config, division, c) {
   c.p = [...new Set(c.p)].join("");
 
   // define orientation
-  if (P(0.02) && charges.sinister.includes(c.charge)) c.sinister = 1;
-  if (P(0.02) && charges.reversed.includes(c.charge)) c.reversed = 1;
+  if (P(0.02) && charges.sinister.includes(c.charge)) c.sinister = true;
+  if (P(0.02) && charges.reversed.includes(c.charge)) c.reversed = true;
 }
 
 function selectCharge(config, set) {

@@ -4,7 +4,8 @@
   import {colors} from "data/stores";
   import {charges as chargesData} from "data/dataModel";
   import {addCharge, addPattern} from "scripts/getters";
-  import {drag, transform, getElTransform} from "scripts/drag";
+  import {transformGroup, transformElement} from "scripts/transform";
+  import {drag} from "scripts/drag";
   import type {Coa, Charge} from "types.ts/coa";
 
   export let coa: Coa;
@@ -14,25 +15,21 @@
   export let counterTincture: string = "";
   export let type: string;
 
-  let validPositions: string[];
-
-  $: {
-    const positions = shieldPositions[shield] || shieldPositions.spanish;
-    validPositions = [...new Set(charge.p)].filter(p => positions[p]);
-  }
+  const isGroup = Boolean(charge?.elements?.length);
+  const positions = shieldPositions[shield] || shieldPositions.spanish;
 
   $: currentColors = $colors;
-  const counterChanged = charge.divided === "counter";
 
   // get color or link to pattern
-  const getFill = (charge: string, selfTincture: string) => {
-    const tincture = counterChanged && counterTincture ? counterTincture : selfTincture;
+  const getFill = (element: Charge) => {
+    const counterChanged = element.divided === "counter";
+    const tincture = counterChanged && counterTincture ? counterTincture : element.t;
 
     // if clean color, not a pattern, return it
     if (currentColors[tincture]) return currentColors[tincture];
 
     // if pattern, check if can be applied to charge and load, or return clean color
-    if (chargesData.patternable.includes(charge)) {
+    if (chargesData.patternable.includes(element.charge)) {
       addPattern(tincture);
       return "url(#" + tincture + ")";
     }
@@ -48,32 +45,40 @@
     return charge;
   };
 
+  const getPositions = (p: string) => [...new Set(p)].filter(p => positions[p]);
+
   function addDrag(event: Event) {
     if (type !== "Edit") return;
     drag(event, charge, coa);
   }
 </script>
 
-<g
-  class="charge"
-  data-i={i}
-  data-charge={getCharge(charge.charge)}
-  fill={getFill(charge.charge, charge.t)}
-  transform={transform(charge)}
-  stroke={charge.stroke || "#000"}
-  on:mousedown={addDrag}
->
-  {#if charge?.elements?.length}
-    {#each charge.elements as element}
-      <g fill={getFill(element.charge, element.t)} transform={transform(element)} stroke={element.stroke || "#000"}>
-        {#each validPositions as position}
-          <use xlink:href="#{getCharge(element.charge)}" transform={getElTransform(element, position, shield)} />
+{#if isGroup}
+  <g class="charge" data-i={i} data-charge={charge.charge} transform={transformGroup(charge)} stroke={charge.stroke || "#000"} on:mousedown={addDrag}>
+    {#each getPositions(charge.p) as position}
+      <g transform={transformElement(charge, position, shield)}>
+        {#each charge.elements as element}
+          <g fill={getFill(element)} data-charge={getCharge(element.charge)} transform={transformGroup(element)} stroke={element.stroke || "#000"}>
+            {#each getPositions(element.p) as position}
+              <use xlink:href="#{getCharge(element.charge)}" transform={transformElement(element, position, shield)} />
+            {/each}
+          </g>
         {/each}
       </g>
     {/each}
-  {:else}
-    {#each validPositions as position}
-      <use xlink:href="#{getCharge(charge.charge)}" transform={getElTransform(charge, position, shield)} />
+  </g>
+{:else}
+  <g
+    class="charge"
+    data-i={i}
+    data-charge={getCharge(charge.charge)}
+    fill={getFill(charge)}
+    transform={transformGroup(charge)}
+    stroke={charge.stroke || "#000"}
+    on:mousedown={addDrag}
+  >
+    {#each getPositions(charge.p) as position}
+      <use xlink:href="#{getCharge(charge.charge)}" transform={transformElement(charge, position, shield)} />
     {/each}
-  {/if}
-</g>
+  </g>
+{/if}

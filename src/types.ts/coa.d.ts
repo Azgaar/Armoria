@@ -14,7 +14,21 @@ interface Division {
   line: string;
 }
 
-interface Charge {
+export interface Ordinary {
+  ordinary: string;
+  t: string;
+  line?: string;
+  divided?: Divided;
+  size?: number;
+  x?: number;
+  y?: number;
+  angle?: number;
+  above?: true;
+  stroke?: string;
+  strokeWidth?: number;
+}
+
+export interface Charge {
   charge: string;
   t: string;
   p: string;
@@ -29,31 +43,6 @@ interface Charge {
   sinister?: true;
 }
 
-interface ChargeElement {
-  charge: string;
-  t: string;
-  p: string;
-  size?: number;
-  x?: number;
-  y?: number;
-  angle?: number;
-  stroke?: string;
-  reversed?: true;
-  sinister?: true;
-}
-
-interface Ordinary {
-  ordinary: string;
-  t: string;
-  line?: string;
-  divided?: Divided;
-  size?: number;
-  x?: number;
-  y?: number;
-  angle?: number;
-  above?: true;
-  stroke?: string;
-  strokeWidth?: number;
-}
+type ChargeElement = Omit<Charge, "elements", "divided">;
 
 type Divided = "field" | "division" | "counter";
