@@ -1,11 +1,15 @@
-<script>
+<script lang="ts">
+  // @ts-check
   import {onMount} from "svelte";
   import {t, dictionary, locale} from "svelte-i18n";
   import {fade, fly, slide} from "svelte/transition";
+
   import {changes, grid, history, message, shield, showGrid, state, tinctures} from "data/stores";
   import {charges, divisions, ordinaries} from "data/dataModel";
   import {generate} from "scripts/generator";
   import {ra, rw} from "scripts/utils";
+  import type {Charge} from "types.ts/coa";
+
   import COA from "./../object/COA.svelte";
   import EditorAbove from "./EditorAbove.svelte";
   import EditorCharge from "./EditorCharge.svelte";
@@ -21,6 +25,7 @@
   import EditorStroke from "./EditorStroke.svelte";
   import EditorTincture from "./EditorTincture.svelte";
   import EditorType from "./EditorType.svelte";
+  import {isRaster} from "./utils";
 
   export let historyId;
   export let seed;
@@ -40,7 +45,7 @@
   // $: edit(coa); // on edit
   // $: restore($changes); // on undo/redo
 
-  $: localStorage.setItem("grid", $grid); // on grid change
+  $: localStorage.setItem("grid", String($grid)); // on grid change
   $: localStorage.setItem("showGrid", $showGrid); // on grid change
 
   function reroll(historyId) {
@@ -320,9 +325,11 @@
     menu.charges = [...menu.charges, с];
   }
 
-  function isRaster(charge) {
-    const el = document.getElementById(charge);
-    return el ? el.tagName === "image" : false;
+  function getChargeTitle(charge: Charge, i: number) {
+    const type = charge.elements.length ? $t("editor.chargeGroup") : $t("tinctures.charge");
+    const order = menu.charges.length > 1 ? ` ${i + 1}` : "";
+    const name = translateSafely("charges", charge.charge);
+    return `${type}${order}: ${name}`;
   }
 
   const translateSafely = (group, key) => {
@@ -492,9 +499,7 @@
     <!-- Charges -->
     {#each menu.charges as charge, i}
       <div class="section" transition:slide class:expanded={sections["charge" + i]} on:click={toggleSection("charge" + i)}>
-        {$t(charge.elements.length ? "editor.chargeGroup" : "tinctures.charge")}
-        {menu.charges.length > 1 ? ` ${i + 1}` : ""}:{" "}
-        {translateSafely("charges", charge.charge)}
+        {getChargeTitle(charge, i)}
         <EditorControls bind:els={menu.charges} el={charge} {i} />
       </div>
       {#if sections["charge" + i]}
