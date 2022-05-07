@@ -1,8 +1,9 @@
 <script lang="ts">
   // @ts-check
   import {t} from "svelte-i18n";
+  import type {Divided} from "types.ts/menu";
 
-  export let divided: "" | "field" | "division" | "counter";
+  export let divided: Divided;
   export let raster = false;
 </script>
 

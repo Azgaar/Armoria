@@ -9,7 +9,7 @@
   import {generate} from "scripts/generator";
   import {ra, rw} from "scripts/utils";
   import type {Coa, Ordinary, Charge} from "types.ts/coa";
-  import type {Menu, Divided, FieldType, FieldSize} from "types.ts/menu";
+  import type {Menu, Divided, FieldType, FieldSize, MenuOrdinary, MenuCharge} from "types.ts/menu";
   import {isRaster} from "./utils";
 
   import COA from "./../object/COA.svelte";
@@ -37,9 +37,9 @@
   $state.transform = null;
   $state.positions = null;
 
-  let menu = {} as Menu;
-  let sections = {};
   let coa: Coa;
+  let menu = {} as Menu;
+  let sections = {} as {[key: string]: boolean};
   let isLoaded = false;
 
   $: handleReroll(historyId); // on load and reroll
@@ -70,7 +70,7 @@
     changes.add(JSON.stringify(coa));
   }
 
-  const toggleSection = name => () => {
+  const toggleSection = (name: string) => () => {
     sections[name] = !sections[name];
   };
 
@@ -327,28 +327,54 @@
 
   function addOrdinary() {
     const ordinariesList = Object.keys(ordinaries.lined).concat(Object.keys(ordinaries.straight));
-    const ordinary = ra(ordinariesList);
-    const t = rw($tinctures[rw($tinctures.charge)]);
-    const o = {ordinary, t, showStroke: false, stroke: "#000000", strokeWidth: 1, line: "straight", size: 1, x: 0, y: 0, angle: 0, divided: ""};
-    menu.ordinaries = [...menu.ordinaries, o];
+    const newOrdinary: MenuOrdinary = {
+      ordinary: ra(ordinariesList),
+      t: rw($tinctures[rw($tinctures.charge)]),
+      showStroke: false,
+      stroke: "#000000",
+      strokeWidth: 1,
+      line: "straight",
+      size: 1,
+      x: 0,
+      y: 0,
+      angle: 0,
+      above: false,
+      divided: ""
+    };
+    menu.ordinaries = [...menu.ordinaries, newOrdinary];
   }
 
   function addCharge() {
     const type = rw(charges.single);
     const charge = rw(charges[type]);
     const t = rw($tinctures[rw($tinctures.charge)]);
-    const с = {charge, t, p: "e", showStroke: true, stroke: "#000000", type, size: 1.5, sinister: false, reversed: false, x: 0, y: 0, angle: 0, divided: ""};
-    menu.charges = [...menu.charges, с];
+    const newCharge: MenuCharge = {
+      type,
+      charge,
+      t,
+      p: "e",
+      showStroke: true,
+      stroke: "#000000",
+      size: 1.5,
+      sinister: false,
+      reversed: false,
+      x: 0,
+      y: 0,
+      angle: 0,
+      divided: "",
+      elements: []
+    };
+    menu.charges = [...menu.charges, newCharge];
   }
 
-  function getChargeTitle(charge: Charge, i: number) {
+  function getChargeTitle(charge: MenuCharge, i: number) {
     const type = charge.elements.length ? $t("editor.chargeGroup") : $t("tinctures.charge");
     const order = menu.charges.length > 1 ? ` ${i + 1}` : "";
     const name = translateSafely("charges", charge.charge);
     return `${type}${order}: ${name}`;
   }
 
-  const translateSafely = (group, key) => {
+  const translateSafely = (group: string, key: string) => {
     const isInDictionary = $dictionary?.[$locale]?.[group]?.[key];
     return isInDictionary ? $t(`${group}.${key}`) : key;
   };
@@ -588,7 +614,7 @@
               >
                 {$t("editor.element")}
                 {e + 1}: {translateSafely("charges", element.charge)}
-                <EditorControls bind:els={menu.charges[i].elements[e]} el={element} {e} />
+                <EditorControls bind:els={menu.charges[i].elements[e]} el={element} i={e} />
               </div>
               {#if sections[`charge${i}-element${e}`]}
                 <div class="panel" transition:slide>

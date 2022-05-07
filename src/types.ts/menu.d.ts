@@ -1,8 +1,8 @@
 export interface Menu {
   field: Field;
   division: Division;
-  ordinaries: Ordinary[];
-  charges: Charge[];
+  ordinaries: MenuOrdinary[];
+  charges: MenuCharge[];
 }
 
 interface Field {
@@ -31,7 +31,7 @@ interface Division {
   semy: string;
 }
 
-interface Ordinary {
+interface MenuOrdinary {
   ordinary: string;
   t: string;
   line: string;
@@ -46,12 +46,12 @@ interface Ordinary {
   showStroke: boolean;
 }
 
-interface Charge {
+export interface MenuCharge {
   charge: string;
   type: string;
   t: string;
   p: string;
-  elements: ChargeElement[];
+  elements: MenuChargeElement[];
   divided: Divided;
   size: number;
   x: number;
@@ -63,6 +63,6 @@ interface Charge {
   showStroke: boolean;
 }
 
-type ChargeElement = Omit<Charge, "elements", "divided">;
+type MenuChargeElement = Omit<MenuCharge, "elements", "divided">;
 
 export type Divided = "field" | "division" | "counter" | "";

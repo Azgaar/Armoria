@@ -17,12 +17,12 @@
 
   const isGroup = Boolean(charge?.elements?.length);
   const positions = shieldPositions[shield] || shieldPositions.spanish;
+  const counterChanged = charge.divided === "counter";
 
   $: currentColors = $colors;
 
   // get color or link to pattern
   const getFill = (element: Charge) => {
-    const counterChanged = element.divided === "counter";
     const tincture = counterChanged && counterTincture ? counterTincture : element.t;
 
     // if clean color, not a pattern, return it
