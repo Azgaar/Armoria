@@ -21,7 +21,7 @@
     "border": "Cornice",
     "background": "Sfondo",
     "scale": "Scala",
-    "width": "Width",
+    "width": "Larghezza",
     "color": "Colori",
     "downloadSVG": "Scarica SVG",
     "downloadPNG": "Scarica PNG",
@@ -44,45 +44,45 @@
       "middleEarth": "Terra di mezzo"
     },
     "basic": {
-      "heater": "Heater",
+      "heater": "Scudo Francese Antico",
       "spanish": "Spagnolo",
       "french": "Francese"
     },
     "regional": {
-      "horsehead": "Horsehead",
-      "horsehead2": "Horsehead 2",
+      "horsehead": "Scudo a Testa di Cavallo",
+      "horsehead2": "Scudo a Testa di Cavallo 2",
       "polish": "Polacco",
-      "hessen": "Hessen",
+      "hessen": "Scudo Inglese",
       "swiss": "Svizzero"
     },
     "historical": {
       "boeotian": "Boeotiano",
       "roman": "Romano",
-      "kite": "Kite",
+      "kite": "Scudo a Mandorla",
       "oldFrench": "Francese Antico",
       "renaissance": "Rinascimento",
       "baroque": "Barocco"
     },
     "specific": {
-      "targe": "Targe",
-      "targe2": "Targe 2",
+      "targe": "Scudo a Tacca",
+      "targe2": "Scudo a Tacca 2",
       "pavise": "Pavise",
-      "wedged": "Wedged"
+      "wedged": "Scudo Sannitico"
     },
     "banner": {
       "flag": "Bandiera",
       "pennon": "Pennon",
-      "guidon": "Guidon",
-      "banner": "Banner",
+      "guidon": "Guidone",
+      "banner": "Stendardo",
       "dovetail": "A coda di rondine",
-      "gonfalon": "Gonfalon",
-      "pennant": "Pennant"
+      "gonfalon": "Gonfaloniere",
+      "pennant": "Gagliardetto"
     },
     "simple": {
       "round": "Rotondo",
       "oval": "Ovale",
-      "vesicaPiscis": "Vesica Piscis",
-      "square": "Square",
+      "vesicaPiscis": "Scudo Fusato",
+      "square": "Quadrato",
       "diamond": "Diamante",
       "no": "No"
     },
@@ -98,7 +98,7 @@
       "gondor": "Gondor",
       "easterling": "Easterling",
       "erebor": "Erebor",
-      "ironHills": "Iron Hills",
+      "ironHills": "Colline di Ferro",
       "urukHai": "Uruk Hai",
       "moriaOrc": "Orchi di Moria"
     }
