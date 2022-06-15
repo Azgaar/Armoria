@@ -618,8 +618,8 @@
     "arched": "Arched",
     "archedReversed": "Arched reversed",
     "nowy": "Nowy",
-    "nowyReversed": "Nowy reversed",
-    "embattledGhibellin": "Embattled chibellin",
+    "nowyReversed": "Semicercle invertit",
+    "embattledGhibellin": "Emmerletada esdentegada",
     "embattledNotched": "Embattled notched",
     "embattledGrady": "Embattled grady",
     "dovetailedIndented": "Dovetailed indented",
@@ -633,8 +633,8 @@
     "firTrees": "Fir trees"
   },
   "ordinaries": {
-    "pale": "Pale",
-    "fess": "Fess",
+    "pale": "Pal",
+    "fess": "Faixa",
     "bend": "Banda",
     "bendSinister": "Barra",
     "chief": "Cap",
