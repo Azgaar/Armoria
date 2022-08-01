@@ -179,6 +179,9 @@
   "error": {
     "copyToClipboard": "无法复制到剪贴板！",
     "tinctureRemove": "每个类型至少应该有两种颜色！",
+    "mustBeNumber": "概率必须是一个数字！",
+    "totalChanceMustNotBeZero": "类型中颜色的总概率不得为零！",
+    "valueCannotBeThatLow": "值不能那么低！",
     "nonUniqueTincture": "颜色必须是独一无二的！",
     "notAnImage": "文件不是图像！",
     "notSvgOrText": "文件必须是“文本”或 “svg”！",
