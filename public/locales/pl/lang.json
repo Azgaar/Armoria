@@ -179,6 +179,9 @@
   "error": {
     "copyToClipboard": "Nie można skopiować do schowka!",
     "tinctureRemove": "Powinien być przynajmniej 2 kolory każdego typu!",
+    "mustBeNumber": "Wpisana wartość musi być liczbą!",
+    "totalChanceMustNotBeZero": "Całkowita szansa na kolory w typie nie może być zero!",
+    "valueCannotBeThatLow": "Wartość nie może być tak niska!",
     "nonUniqueTincture": "Kolor nie może się powtarzać!",
     "notAnImage": "Plik nie jest obrazem!",
     "notSvgOrText": "Plik musi być tekstem lub svg!",
