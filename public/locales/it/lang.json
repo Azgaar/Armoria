@@ -16,7 +16,7 @@
     "shield": "Scudi",
     "colors": "Colori",
     "gradient": "Sfumatura",
-    "damasking": "Damasking",
+    "damasking": "Decorazioni",
     "gallery": "Galleria",
     "border": "Cornice",
     "background": "Sfondo",
@@ -71,7 +71,7 @@
     },
     "banner": {
       "flag": "Bandiera",
-      "pennon": "Pennon",
+      "pennon": "Guidone",
       "guidon": "Guidone",
       "banner": "Stendardo",
       "dovetail": "A coda di rondine",
@@ -113,20 +113,20 @@
   },
   "gradient": {
     "no": "No",
-    "luster": "Luster",
-    "spotlight": "Spotlight",
-    "backlight": "Backlight",
-    "brink": "Brink"
+    "luster": "Lucente",
+    "spotlight": "Riflettore",
+    "backlight": "Retroilluminazione",
+    "brink": "Luce laterale"
   },
   "diaper": {
     "no": "No",
     "nourse": "Nourse",
-    "tessellation": "Tessellation",
-    "sennwald": "Sennwald",
+    "tessellation": "Tessellato",
+    "sennwald": "Senwald",
     "sulzbach": "Sulzbach"
   },
   "tooltip": {
-    "gesture": "Gesture",
+    "gesture": "Gesto",
     "hotkey": "Tasti Di Scelta Rapida",
     "swipeUp": "Scorri in su",
     "swipeDown": "Scorri in giù",
@@ -142,9 +142,9 @@
     "downloadJPEG": "Scarica come immagine raster compressa. La dimensione può essere impostata nelle opzioni",
     "copyEditLink": "Copia il link per lo stemma nella modalità Modifica nella clipboard",
     "copyApiLink": "Copia il link allo stemma per l'incorporazione. L'API di Armoria non supporta le spese personalizzate",
-    "copyCoaString": "Copy coa object as encoded string to use in Armoria API or in Watabou's Medieval Fantasy City Generator",
-    "rasterCharge": "Upload raster charge (one color, quality loss on scale) from jpg, png or svg image",
-    "vectorCharge": "Upload vector charge (multicolor and lossless scalable) from prepared svg",
+    "copyCoaString": "Copia lo stemma come una stringa codificata per l'API di Armoria o in Watabou's Medieval Fantasy City Generator",
+    "rasterCharge": "Carica un raster (un colore solo, perdita di qualitá in scala) da un immagine jpg, png o svg",
+    "vectorCharge": "Con un vettoriale (multicolore e scalabile senza perdita di dati) da un svg preparato",
     "install": "Aggiungi l'applicazione Armoria alla schermata desktop o home",
     "undo": "Ripristina l'ultima modifica",
     "redo": "Ripristina l'ultima operazione annullata",
