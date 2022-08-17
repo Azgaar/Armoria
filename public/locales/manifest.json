@@ -1,7 +1,1 @@
-{
-  "files": ["\\/lang.json"],
-  "languages": ["fr", "val", "ru", "pt-BR", "en", "de", "pl", "hu", "es", "zh-CN"],
-  "language_mapping": [],
-  "custom_languages": [],
-  "timestamp": 1659380479
-}
+{"files": ["\\/lang.json"], "languages": ["uk", "hu", "es", "ca", "it", "ru", "pt-BR", "zh-CN", "pl", "fr", "en", "el", "de", "nl", "val", "sk"], "language_mapping": [], "custom_languages": [], "timestamp": 1660767091}
