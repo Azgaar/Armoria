@@ -75,8 +75,8 @@
       "guidon": "Gagliardetto",
       "banner": "Stendardo",
       "dovetail": "A coda di rondine",
-      "gonfalon": "Gonfaloniere",
-      "pennant": "Gagliardetto"
+      "gonfalon": "Gonfalone",
+      "pennant": "Guidone Verticale"
     },
     "simple": {
       "round": "Rotondo",
@@ -658,8 +658,8 @@
     "gyron": "Gherone",
     "quarter": "Quartier Franco",
     "canton": "Cantone",
-    "pall": "Y",
-    "pallReversed": "Y invertita",
+    "pall": "Pergola",
+    "pallReversed": "Pergola invertita",
     "chevron": "Scaglione",
     "chevronReversed": "Scaglione invertito",
     "pile": "Pila",
