@@ -193,8 +193,8 @@
     "copyApiLink": "API link is copied to your clipboard",
     "copyCoaString": "Encoded COA string is copied to your clipboard",
     "install": "Armoria application is installed",
-    "tinctureAdded": "Color is added",
-    "chargeAdded": "Charge is added"
+    "tinctureAdded": "Χρώμα Προστέθηκε",
+    "chargeAdded": "Έμβλημα Προστέθηκε"
   },
   "info": {
     "tipFromFmg": "Configure emblem, save it in SVG format and then load back to the Fantasy Map Generator",
@@ -256,8 +256,8 @@
   },
   "editor": {
     "ordinary": "Ordinary",
-    "addOrdinary": "Add ordinary",
-    "addCharge": "Add charge",
+    "addOrdinary": "Προσθήκη χρώματος",
+    "addCharge": "Προσθήκη Εμβλήματος",
     "type": "Τύπος",
     "tincture": "Βάμματα",
     "pattern": "Μοτίβο",
@@ -282,10 +282,10 @@
     "cropByField": "Crop by main field",
     "cropByDivision": "Crop by division",
     "counterchanged": "Counterchanged",
-    "stroke": "Stroke",
-    "color": "Color",
-    "width": "Width",
-    "aboveCharges": "Above charges",
+    "stroke": "Περίγραμμα",
+    "color": "Χρώμα",
+    "width": "Πλάτος",
+    "aboveCharges": "Άνω Εμβλημάτων",
     "rotation": "Περιστροφή",
     "shift": "Shift",
     "step": "Βήμα",
