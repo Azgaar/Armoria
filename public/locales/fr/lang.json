@@ -179,9 +179,9 @@
   "error": {
     "copyToClipboard": "Ne peux pas copier dans le presse papiers !",
     "tinctureRemove": "Il devrait y avoir au moins 2 couleurs de chaque type!",
-    "mustBeNumber": "Chance must be a number!",
-    "totalChanceMustNotBeZero": "Total chance of colors in type must not be zero!",
-    "valueCannotBeThatLow": "Value cannot be that low!",
+    "mustBeNumber": "La donnée doit être un nombre!",
+    "totalChanceMustNotBeZero": "La probabilité totale des couleurs dans le type ne doit pas être zéro!",
+    "valueCannotBeThatLow": "La valeur ne peux pas être aussi basse!",
     "nonUniqueTincture": "La couleur doit être unique !",
     "notAnImage": "Le fichier n'est pas une image !",
     "notSvgOrText": "Le fichier doit être du texte ou svg!",
