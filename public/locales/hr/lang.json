@@ -1,14 +1,14 @@
 {
   "menu": {
-    "options": "Options",
-    "rollback": "Rollback",
+    "options": "Mogućnosti",
+    "rollback": "Povrat na staro",
     "reroll": "Reroll",
-    "save": "Save",
-    "upload": "Upload",
-    "install": "Install",
-    "undo": "Undo",
-    "redo": "Redo",
-    "license": "License",
+    "save": "Spremi",
+    "upload": "Prenesi",
+    "install": "Instaliraj",
+    "undo": "Poništi",
+    "redo": "Ponovi",
+    "license": "Dozvola",
     "about": "About",
     "support": "Support",
     "language": "Language",
@@ -70,7 +70,7 @@
       "wedged": "Wedged"
     },
     "banner": {
-      "flag": "Flag",
+      "flag": "Zastava",
       "pennon": "Pennon",
       "guidon": "Guidon",
       "banner": "Banner",
