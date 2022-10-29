@@ -114,8 +114,8 @@
   "gradient": {
     "no": "Ne",
     "luster": "Luster",
-    "spotlight": "Spotlight",
-    "backlight": "Backlight",
+    "spotlight": "Reflektor",
+    "backlight": "Pozadinsko svjetlo",
     "brink": "Brink"
   },
   "diaper": {
