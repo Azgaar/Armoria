@@ -279,7 +279,19 @@
     const ordinariesList = Object.keys(ordinaries.lined).concat(Object.keys(ordinaries.straight));
     const ordinary = ra(ordinariesList);
     const t = rw($tinctures[rw($tinctures.charge)]);
-    const o = {ordinary, t, showStroke: false, stroke: "#000000", strokeWidth: 1, line: "straight", size: 1, x: 0, y: 0, angle: 0, divided: ""};
+    const o = {
+      ordinary,
+      t,
+      showStroke: false,
+      stroke: "#000000",
+      strokeWidth: 1,
+      line: "straight",
+      size: 1,
+      x: 0,
+      y: 0,
+      angle: 0,
+      divided: ""
+    };
     menu.ordinaries = [...menu.ordinaries, o];
   }
 
@@ -287,7 +299,21 @@
     const type = rw(charges.single);
     const charge = rw(charges[type]);
     const t = rw($tinctures[rw($tinctures.charge)]);
-    const с = {charge, t, p: "e", showStroke: true, stroke: "#000000", type, size: 1.5, sinister: false, reversed: false, x: 0, y: 0, angle: 0, divided: ""};
+    const с = {
+      charge,
+      t,
+      p: "e",
+      showStroke: true,
+      stroke: "#000000",
+      type,
+      size: 1.5,
+      sinister: false,
+      reversed: false,
+      x: 0,
+      y: 0,
+      angle: 0,
+      divided: ""
+    };
     menu.charges = [...menu.charges, с];
   }
 
@@ -307,11 +333,12 @@
 </script>
 
 <main out:fade>
-  <div in:fly={{x: isLandscape ? 0 : 1000, y: isLandscape ? 1000 : 0, duration: 800}}>
+  <div class="coaContainer" in:fly={{x: isLandscape ? 0 : 1000, y: isLandscape ? 1000 : 0, duration: 800}}>
     {#key coa}
       <COA {coa} i="Edit" />
     {/key}
   </div>
+
   <div id="menu" in:fly={{x: isLandscape ? 1000 : 0, y: isLandscape ? 0 : 1000, duration: 1000}}>
     <!-- Field -->
     <div class="section" class:expanded={section.field} on:click={toggleSection("field")}>{$t("tinctures.field")}</div>
@@ -336,7 +363,12 @@
 
         {#if menu.field.type === "pattern"}
           <div class="subsection">
-            <EditorPattern bind:pattern={menu.field.pattern} t1={menu.field.t1} t2={menu.field.t2} size={menu.field.size} />
+            <EditorPattern
+              bind:pattern={menu.field.pattern}
+              t1={menu.field.t1}
+              t2={menu.field.t2}
+              size={menu.field.size}
+            />
           </div>
         {/if}
 
@@ -362,12 +394,22 @@
     {#if section.division}
       <div class="panel" transition:slide>
         <div class="subsection">
-          <EditorDivision bind:division={menu.division.division} t1={coa.t1} t2={coa.division ? coa.division.t : menu.division.t1} line={menu.division.line} />
+          <EditorDivision
+            bind:division={menu.division.division}
+            t1={coa.t1}
+            t2={coa.division ? coa.division.t : menu.division.t1}
+            line={menu.division.line}
+          />
         </div>
 
         {#if divisions[coa.division?.division]}
           <div class="subsection">
-            <EditorLine bind:line={menu.division.line} division={menu.division.division} t1={coa.t1} t2={coa.division ? coa.division.t : menu.division.t1} />
+            <EditorLine
+              bind:line={menu.division.line}
+              division={menu.division.division}
+              t1={coa.t1}
+              t2={coa.division ? coa.division.t : menu.division.t1}
+            />
           </div>
         {/if}
 
@@ -391,7 +433,12 @@
 
           {#if menu.division.type === "pattern"}
             <div class="subsection">
-              <EditorPattern bind:pattern={menu.division.pattern} t1={menu.division.t1} t2={menu.division.t2} size={menu.division.size} />
+              <EditorPattern
+                bind:pattern={menu.division.pattern}
+                t1={menu.division.t1}
+                t2={menu.division.t2}
+                size={menu.division.size}
+              />
             </div>
           {/if}
 
@@ -413,8 +460,16 @@
 
     <!-- Ordinaries -->
     {#each menu.ordinaries as o, i}
-      <div class="section" transition:slide class:expanded={section.ordinary[i]} on:click={toggleSection("ordinary", i)}>
-        {$t("editor.ordinary")}{menu.ordinaries.length > 1 ? ` ${i + 1}` : ""}: {translateSafely("ordinaries", o.ordinary)}
+      <div
+        class="section"
+        transition:slide
+        class:expanded={section.ordinary[i]}
+        on:click={toggleSection("ordinary", i)}
+      >
+        {$t("editor.ordinary")}{menu.ordinaries.length > 1 ? ` ${i + 1}` : ""}: {translateSafely(
+          "ordinaries",
+          o.ordinary
+        )}
         {#if o.above}
           <i>[{$t("editor.aboveCharges")}]</i>
         {/if}
@@ -461,7 +516,10 @@
     <!-- Charges -->
     {#each menu.charges as charge, i}
       <div class="section" transition:slide class:expanded={section.charge[i]} on:click={toggleSection("charge", i)}>
-        {$t("tinctures.charge")}{menu.charges.length > 1 ? ` ${i + 1}` : ""}: {translateSafely("charges", charge.charge)}
+        {$t("tinctures.charge")}{menu.charges.length > 1 ? ` ${i + 1}` : ""}: {translateSafely(
+          "charges",
+          charge.charge
+        )}
         <EditorControls bind:els={menu.charges} el={charge} {i} />
       </div>
       {#if section.charge[i]}
@@ -523,6 +581,10 @@
       grid-template-columns: none;
       grid-template-rows: minmax(25%, 1fr) auto;
     }
+  }
+
+  div.coaContainer {
+    width: 100%;
   }
 
   #menu {
