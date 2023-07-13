@@ -9,6 +9,8 @@
   export let i: number;
   export let shield: string;
   export let t: string;
+  export let t2: string;
+  export let t3: string;
   export let type: string;
 
   let chargeId: string;
@@ -31,7 +33,17 @@
   }
 </script>
 
-<g class="charge" {i} charge={chargeId} fill={t} transform={transform(charge)} stroke={charge.stroke || "#000"} on:mousedown={addDrag}>
+<g class="charge" {i} charge={chargeId} fill={t} transform={transform(charge)} stroke={charge.stroke || "#000"} on:mousedown={addDrag} style="--secondary: {t2 || t}; --tertiary: {t3 || t}">
+  {#if charge.divided !== "counter"}
+  <style>
+    g.secondary, path.secondary {
+      fill: var(--secondary);
+    }
+    g.tertiary, path.tertiary {
+      fill: var(--tertiary);
+    }
+  </style>
+  {/if}
   {#each validPositions as position}
     <use xlink:href="#{chargeId}" transform={getElTransform(charge, position, shield)} />
   {/each}

@@ -82,7 +82,10 @@ export const generate = function (providedSeed) {
     }
 
     if (charges.natural[charge]) t = charges.natural[charge]; // natural tincture
-    coa.charges = [{charge, t, p}];
+    const item = {charge, t, p};
+    if (charges.multicolor[charge] > 1) item.t2 = getTincture(config, "charge", config.usedTinctures, coa.t1);
+    if (charges.multicolor[charge] > 2) item.t3 = getTincture(config, "charge", config.usedTinctures, coa.t1);
+    coa.charges = [item];
 
     if (p === "ABCDEFGHIKL" && P(0.95)) {
       // add central charge if charge is in bordure

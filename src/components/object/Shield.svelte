@@ -26,6 +26,7 @@
 
   // get color or link to pattern
   $: clr = (tincture: string) => {
+    if (!tincture) return null;
     if ($colors[tincture]) return $colors[tincture];
     addPattern(tincture);
     return "url(#" + tincture + ")";
@@ -81,7 +82,7 @@
 
     {#each charges as charge, i}
       {#if charge.divided === "field"}
-        <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} {type} />
+        <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
       {:else if charge.divided === "counter"}
         <Charge {coa} {charge} {i} shield={$shield} t={counterChange(division.t, charge.charge)} {type} />
       {/if}
@@ -113,7 +114,7 @@
 
       {#each charges as charge, i}
         {#if charge.divided === "division"}
-          <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} {type} />
+          <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
         {:else if charge.divided === "counter"}
           <Charge {coa} {charge} {i} shield={$shield} t={counterChange(coa.t1, charge.charge)} {type} />
         {/if}
@@ -142,7 +143,7 @@
 
   {#each charges as charge, i}
     {#if !charge.divided || !division}
-      <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} {type} />
+      <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
     {/if}
   {/each}
 

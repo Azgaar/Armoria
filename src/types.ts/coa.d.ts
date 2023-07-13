@@ -17,6 +17,8 @@ interface Division {
 interface Charge {
   charge: string;
   t: string;
+  t2?: string;
+  t3?: string;
   p: string;
   divided?: Divided;
   size?: number;

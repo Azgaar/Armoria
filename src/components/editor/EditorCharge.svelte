@@ -9,6 +9,8 @@
   export let category: string;
   export let t1: string;
   export let t2: string;
+  export let t3: string;
+  export let t4: string;
   export let size = null;
   export let sinister = null;
   export let reversed = null;
@@ -22,7 +24,7 @@
   const allCharges = categories.map(category => Object.keys(charges[category])).flat();
   const allChargesTranslated = allCharges.map(charge => $t(`charges.${charge}`));
 
-  $: update(category, t1, t2, size, sinister, reversed);
+  $: update(category, t1, t2, t3, t4, size, sinister, reversed);
   $: filterCharges(query);
 
   function update() {
@@ -52,7 +54,7 @@
 
   function getCharge(charge: string) {
     if (type === "semy") return [];
-    return [{charge, t: t2, p: "e", size: 1.5, sinister, reversed}];
+    return [{charge, t: t2, t2: t3, t3: t4, p: "e", size: 1.5, sinister, reversed}];
   }
 
   const translateSafely = (group: string, key: string) => {
@@ -68,6 +70,8 @@
 
   const handleChange = (newCharge: string) => () => {
     charge = newCharge;
+    if (charges.multicolor[charge] > 1 && !t3) t3 = t2;
+    if (charges.multicolor[charge] > 2 && !t4) t4 = t2;
   };
 </script>
 

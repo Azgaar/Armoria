@@ -107,6 +107,8 @@
     if (menu.charges.length) {
       coa.charges = menu.charges.map(c => {
         const item = {charge: c.charge, t: c.t, p: c.p, size: c.size};
+        if (charges.multicolor[c.charge] > 1) item.t2 = c.t2;
+        if (charges.multicolor[c.charge] > 2) item.t3 = c.t3;
         if (!c.showStroke) item.stroke = "none";
         if (c.stroke !== "#000000") item.stroke = c.stroke;
         if (c.divided) item.divided = c.divided;
@@ -228,7 +230,7 @@
     function getCharges() {
       if (!coa.charges) return [];
       const charges = coa.charges.map(c => {
-        const {charge, t, p, size} = c;
+        const {charge, t, t2, t3, p, size} = c;
         const type = getChargeCategory(charge);
         const showStroke = c.stroke !== "none";
         const stroke = c.stroke || "#000000";
@@ -239,7 +241,7 @@
         const y = c.y || 0;
         const angle = c.angle || 0;
         if (angle) $state.transform = `rotate(${angle})`;
-        return {charge, type, showStroke, stroke, divided, t, p, size, sinister, reversed, x, y, angle};
+        return {charge, type, showStroke, stroke, divided, t, t2, t3, p, size, sinister, reversed, x, y, angle};
       });
 
       return charges;
@@ -299,7 +301,7 @@
     const type = rw(charges.single);
     const charge = rw(charges[type]);
     const t = rw($tinctures[rw($tinctures.charge)]);
-    const с = {
+    const c = {
       charge,
       t,
       p: "e",
@@ -314,7 +316,9 @@
       angle: 0,
       divided: ""
     };
-    menu.charges = [...menu.charges, с];
+    if (charges.multicolor[charge] > 1) c.t2 = rw($tinctures[rw($tinctures.charge)]);
+    if (charges.multicolor[charge] > 2) c.t3 = rw($tinctures[rw($tinctures.charge)]);
+    menu.charges = [...menu.charges, c];
   }
 
   if (!("ontouchstart" in window) && (coa.ordinaries || coa.charges)) {
@@ -534,6 +538,8 @@
               bind:category={charge.type}
               t1={coa.t1}
               t2={charge.t}
+              bind:t3={charge.t2}
+              bind:t4={charge.t3}
               sinister={charge.sinister}
               reversed={charge.reversed}
               division={coa.division}
@@ -543,6 +549,12 @@
           {#if !isRaster(charge.charge) && charge.divided !== "counter"}
             <div class="subsection">
               <EditorTincture bind:t1={charge.t} />
+              {#if charges.multicolor[charge.charge] > 1}
+                <EditorTincture bind:t1={charge.t2} />
+                {#if charges.multicolor[charge.charge] > 2}
+                  <EditorTincture bind:t1={charge.t3} />
+                {/if}
+              {/if}
             </div>
           {/if}
 
