@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" fill="#d7374a" stroke="#000" viewBox="50 50 200 200">
 <metadata source="http://wappenwiki.org/images/0/0d/Smolensk_1857.svg" license="https://creativecommons.org/licenses/by-nc-sa/3.0"/>
   <g id="cannon" stroke-width="3">
-		<path stroke-width=".4" d="M98.15 99.13l10.87 20.33 3.8 3.44-.94-26.38-13.73 2.61z"/>
-		<g transform="matrix(.13 0 0 .13 56.46 96.74)">
+    <path stroke-width=".4" d="M98.15 99.13l10.87 20.33 3.8 3.44-.94-26.38-13.73 2.61z"/>
+    <g transform="matrix(.13 0 0 .13 56.46 96.74)">
       <g transform="translate(263 154)">
         <path d="M-11.4-23.6c3.5 3.5 5.2 15 5.2 21.9v20.2h17.4V-1.7c0-6.8 1.6-18.4 5.2-21.9"/>
         <path d="M16.1-25.5c-3.5-3.5-5.2-15-5.2-21.9v-20.2H-6.5v20.2c0 6.8-1.6 18.4-5.2 21.9"/>
