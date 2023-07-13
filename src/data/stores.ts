@@ -117,7 +117,7 @@ function defineInitialOptions() {
   const diaper = stored("diaper") || DEFAULT_DIAPER;
   const grad = stored("grad") || ra(DEFAULT_GRADIENTS);
   const shield = getShieldFromURL() || stored("shield") || rw(shields[rw(shields.types)]);
-  const colors = storedObj("colors") || DEFAULT_COLORS);
+  const colors = storedObj("colors") || DEFAULT_COLORS;
   const border = stored("border") || DEFAULT_BORDER;
   const borderWidth = +stored("borderWidth") || DEFAULT_BORDER_WIDTH;
   const background = stored("background") || DEFAULT_BACKGROUND;

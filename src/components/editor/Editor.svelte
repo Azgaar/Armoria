@@ -59,7 +59,7 @@
 
   // get coa from menu on menu change
   function update() {
-    // remove see reference as it would be confusing
+    // remove seed reference as it would be confusing
     delete coa.seed;
 
     // field attributes changed
