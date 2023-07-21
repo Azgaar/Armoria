@@ -587,7 +587,7 @@ export const charges = {
     lionPassantGuardant: 3,
     lionRampant: 3,
     lochaberAxe: 2,
-    lymphad: 2,
+    lymphad: 3,
     mallet: 2,
     mastiffStatant: 3,
     oak: 3,
