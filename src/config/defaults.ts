@@ -63,3 +63,29 @@ export const DEFAULT_TINCTURES = {
     honeycombed: 1
   }
 };
+
+export const DEFAULT_FONTS = {
+  "Almendra SC": {
+    url: "https://fonts.gstatic.com/s/almendrasc/v13/Iure6Yx284eebowr7hbyTaZOrLQ.woff2"
+  },
+  "Arial": {},
+  "Brush Script MT": {},
+  "Cinzel": {
+    url: "https://fonts.gstatic.com/s/cinzel/v7/zOdksD_UUTk1LJF9z4tURA.woff2"
+  },
+  "Courier New": {},
+  "Garamond": {},
+  "Georgia": {},
+  "Great Vibes": {
+    url: "https://fonts.gstatic.com/s/greatvibes/v5/6q1c0ofG6NKsEhAc2eh-3Y4P5ICox8Kq3LLUNMylGO4.woff2"
+  },
+  "IM Fell English": {
+    url: "https://fonts.gstatic.com/s/imfellenglish/v7/xwIisCqGFi8pff-oa9uSVAkYLEKE0CJQa8tfZYc_plY.woff2"
+  },
+  "Impact": {},
+  "Times New Roman": {},
+  "UnifrakturMaguntia": {
+    url: "https://fonts.gstatic.com/s/unifrakturmaguntia/v16/WWXPlieVYwiGNomYU-ciRLRvEmK7oaVemGZM.woff2"
+  },
+  "Verdana": {}
+}

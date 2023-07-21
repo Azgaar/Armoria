@@ -5,6 +5,7 @@ export interface Coa {
   division?: Division;
   ordinaries?: Ordinary[];
   charges?: Charge[];
+  inscriptions?: Inscription[];
   diaper?: string;
 }
 
@@ -41,6 +42,25 @@ interface Ordinary {
   angle?: number;
   above?: true;
   stroke?: string;
+}
+
+interface Inscription {
+  text: string;
+  font: string;
+  bold?: true;
+  italic?: true;
+  size: number;
+  spacing?: number;
+  color: string;
+  path: string;
+  shadow?: Shadow;
+}
+
+interface Shadow {
+  x: number;
+  y: number;
+  blur: number;
+  color: string;
 }
 
 type Divided = "field" | "division" | "counter";

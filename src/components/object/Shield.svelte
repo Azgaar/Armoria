@@ -2,6 +2,7 @@
   // @ts-check
   import Ordinary from "./Ordinary.svelte";
   import Charge from "./Charge.svelte";
+  import Inscription from "./Inscription.svelte";
   import {shield, colors, grad, diaper} from "data/stores";
   import {shieldPaths} from "data/shields";
   import {getTemplate, addPattern, addCharge} from "scripts/getters";
@@ -13,7 +14,7 @@
   export let type: "menuItem" | undefined;
 
   const id = coa.seed || Math.floor(Math.random() * 1e9);
-  const {division, ordinaries = [], charges = []} = coa;
+  const {division, ordinaries = [], charges = [], inscriptions=[]} = coa;
   const ordinariesRegular = ordinaries.filter(o => !o.above);
   const ordinariesAboveCharges = ordinaries.filter(o => o.above);
   charges.forEach(({charge}) => addCharge(charge));
@@ -181,3 +182,7 @@
   stroke-width={borderWidth}
   style="pointer-events: none"
 />
+
+{#each inscriptions as inscription, i}
+  <Inscription {coa} {inscription} {i} pathId="inscription_{id}_{i}" {type} />
+{/each}

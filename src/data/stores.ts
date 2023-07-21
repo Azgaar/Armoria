@@ -7,6 +7,7 @@ import {
   DEFAULT_GRADIENTS,
   DEFAULT_COLORS,
   DEFAULT_TINCTURES,
+  DEFAULT_FONTS,
   DEFAULT_BORDER,
   DEFAULT_BORDER_WIDTH,
   DEFAULT_BACKGROUND,
@@ -26,6 +27,7 @@ export const diaper = writable(options.diaper);
 export const shield = writable(options.shield);
 export const colors = writable(options.colors);
 export const tinctures = writable(options.tinctures);
+export const fonts = writable(options.fonts);
 export const background = writable(options.background);
 export const scale = writable(options.scale);
 export const border = writable(options.border);
@@ -118,6 +120,7 @@ function defineInitialOptions() {
   const grad = stored("grad") || ra(DEFAULT_GRADIENTS);
   const shield = getShieldFromURL() || stored("shield") || rw(shields[rw(shields.types)]);
   const colors = storedObj("colors") || JSON.parse(JSON.stringify(DEFAULT_COLORS));
+  const fonts = storedObj("fonts") || JSON.parse(JSON.stringify(DEFAULT_FONTS));
   const border = stored("border") || DEFAULT_BORDER;
   const borderWidth = +stored("borderWidth") || DEFAULT_BORDER_WIDTH;
   const background = stored("background") || DEFAULT_BACKGROUND;
@@ -137,6 +140,7 @@ function defineInitialOptions() {
     shield,
     colors,
     tinctures,
+    fonts,
     border,
     borderWidth,
     background,

@@ -11,8 +11,9 @@
   import UploadRaster from "./navigation/UploadRaster.svelte";
   import UploadVector from "./navigation/UploadVector.svelte";
   import Tinctures from "./navigation/Tinctures.svelte";
+  import Fonts from "./navigation/Fonts.svelte";
   import Message from "./Message.svelte";
-  import {background, size, history, isTextReady, matrices, matrix, state, message, shield} from "data/stores";
+  import {background, size, fonts, history, isTextReady, matrices, matrix, state, message, shield} from "data/stores";
   import {shields} from "data/shields";
   import {rw} from "scripts/utils";
   import "scripts/i18n";
@@ -25,6 +26,8 @@
   let coaSize = 200;
 
   $locale = "en"; // fallback locale
+
+  loadFonts();
 
   checkLoadParameters(); // on load
   $: [quantity, width, height] = defineGallerySize($size);
@@ -60,6 +63,15 @@
 
     // on coa edit or view mode
     if ($state.edit || $state.view) $state.c = $matrices[$matrix][$state.i];
+  }
+
+  function loadFonts() {
+    Object.entries($fonts).forEach(([name, {url}]) => {
+      if (url) {
+        const font = new FontFace(name, `url(${url})`);
+        document.fonts.add(font);
+      }
+    });
   }
 
   function checkLoadParameters() {
@@ -137,6 +149,7 @@
     {#if $state.raster}<UploadRaster />{/if}
     {#if $state.vector}<UploadVector />{/if}
     {#if $state.tinctures}<Tinctures />{/if}
+    {#if $state.fonts}<Fonts />{/if}
 
     {#if $message && $isTextReady}<Message />{/if}
   </div>

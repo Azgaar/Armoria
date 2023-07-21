@@ -1,5 +1,5 @@
 import {get} from "svelte/store";
-import {scale, grad, diaper} from "data/stores";
+import {scale, grad, diaper, fonts} from "data/stores";
 
 const isFirefox = navigator.userAgent.includes("Firefox");
 
@@ -94,6 +94,23 @@ async function getURL(svg, width, height) {
     addedElements[pattern] = true;
   }
 
+  // load needed web fonts
+  const usedFonts = getUsedWebFonts(clone);
+  if (usedFonts) {
+    const dataURLfonts = await loadFontsAsDataURI(usedFonts);
+
+    const fontFaces = dataURLfonts
+      .map(({family, src}) => {
+        return `@font-face {font-family: "${family}"; src: ${src};}`;
+      })
+      .join("\n");
+
+    const style = document.createElement("style");
+    style.setAttribute("type", "text/css");
+    style.innerHTML = fontFaces;
+    clone.querySelector("defs").appendChild(style);
+  }
+
   const serialized = new XMLSerializer().serializeToString(clone);
   const pretty = isFirefox ? serialized : prettify(serialized); // don't prettify in Firefox
   const blob = new Blob([pretty], {type: "image/svg+xml;charset=utf-8"});
@@ -151,4 +168,37 @@ function prettify(source) {
   const resultDoc = xsltProcessor.transformToDocument(xmlDoc);
   const resultXml = new XMLSerializer().serializeToString(resultDoc);
   return resultXml;
+}
+
+function getUsedWebFonts(svg) {
+  const usedFonts = new Set();
+  const allFonts = get(fonts);
+
+  for (const text of svg.querySelectorAll("text")) {
+    const family = text.getAttribute("font-family");
+    if (family && allFonts[family]?.url)
+      usedFonts.add({family, url: allFonts[family].url});
+  }
+  return Array.from(usedFonts);
+}
+
+function readBlobAsDataURL(blob) {
+  return new Promise(function (resolve, reject) {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+async function loadFontsAsDataURI(fonts) {
+  const promises = fonts.map(async font => {
+    const resp = await fetch(font.url);
+    const blob = await resp.blob();
+    const dataURL = await readBlobAsDataURL(blob);
+
+    return {family: font.family, src: `url('${dataURL}')`};
+  });
+
+  return await Promise.all(promises);
 }

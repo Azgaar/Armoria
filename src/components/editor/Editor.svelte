@@ -11,10 +11,13 @@
   import EditorControls from "./EditorControls.svelte";
   import EditorDivided from "./EditorDivided.svelte";
   import EditorDivision from "./EditorDivision.svelte";
+  import EditorInscription from "./EditorInscription.svelte";
   import EditorLine from "./EditorLine.svelte";
   import EditorOrdinary from "./EditorOrdinary.svelte";
+  import EditorPath from "./EditorPath.svelte";
   import EditorPattern from "./EditorPattern.svelte";
   import EditorPosition from "./EditorPosition.svelte";
+  import EditorShadow from "./EditorShadow.svelte";
   import EditorShift from "./EditorShift.svelte";
   import EditorSize from "./EditorSize.svelte";
   import EditorStroke from "./EditorStroke.svelte";
@@ -23,7 +26,7 @@
   export let historyId, seed;
 
   let menu = {};
-  let section = {field: 0, division: 0, ordinary: [], charge: []};
+  let section = {field: 0, division: 0, ordinary: [], charge: [], inscription: []};
   const isLandscape = innerWidth > innerHeight;
 
   $state.transform = null;
@@ -122,6 +125,19 @@
         return item;
       });
     } else delete coa.charges;
+
+    // inscriptions attributes changed
+    if (menu.inscriptions.length) {
+      coa.inscriptions = menu.inscriptions.map(i => {
+        const item = {text: i.text, font: i.font, size: i.size, path: i.path};
+        if (i.bold) item.bold = 1;
+        if (i.italic) item.italic = 1;
+        if (i.color !== "#000000") item.color = i.color;
+        if (i.spacing !== 0) item.spacing = i.spacing;
+        if (i.shadow) item.shadow = i.shadow;
+        return item;
+      });
+    } else delete coa.inscriptions;
   }
 
   function restore() {
@@ -247,6 +263,23 @@
       return charges;
     }
 
+    // Inscriptions
+    menu.inscriptions = getInscriptions();
+    function getInscriptions() {
+      if (!coa.inscriptions) return [];
+      const inscriptions = coa.inscriptions.map(i => {
+        const {text, font, size, shadow} = i;
+        const bold = i.bold || false;
+        const italic = i.italic || false;
+        const color = i.color || "#000000";
+        const spacing = i.spacing || 0;
+        const path = i.path || "M-50 0 L50 0";
+        return {text, font, size, bold, italic, spacing, color, path, shadow};
+      });
+
+      return inscriptions;
+    }
+
     function isPattern(string) {
       return string?.includes("-");
     }
@@ -319,6 +352,20 @@
     if (charges.data[charge]?.colors > 1) c.t2 = rw($tinctures[rw($tinctures.charge)]);
     if (charges.data[charge]?.colors > 2) c.t3 = rw($tinctures[rw($tinctures.charge)]);
     menu.charges = [...menu.charges, c];
+  }
+
+  function addInscription() {
+    const i = {
+      text: "Armoria",
+      font: "UnifrakturMaguntia",
+      size: 20,
+      bold: false,
+      italic: false,
+      spacing: 0,
+      color: "#000000",
+      path: "M-50 0 L50 0"
+    };
+    menu.inscriptions = [...menu.inscriptions, i];
   }
 
   if (!("ontouchstart" in window) && (coa.ordinaries || coa.charges)) {
@@ -585,9 +632,35 @@
       {/if}
     {/each}
 
+    <!-- Inscriptions -->
+    {#each menu.inscriptions as inscription, i}
+      <div class="section" transition:slide class:expanded={section.inscription[i]} on:click={toggleSection("inscription", i)}>
+        {#if $isTextReady}
+          {$t("editor.inscription")}{menu.inscriptions.length > 1 ? ` ${i + 1}` : ""}: {inscription.text}
+          <EditorControls bind:els={menu.inscriptions} el={inscription} {i} />
+        {/if}
+      </div>
+      {#if section.inscription[i]}
+        <div class="panel" transition:slide>
+          <div class="subsection">
+            <EditorInscription bind:inscription />
+          </div>
+
+          <div class="subsection">
+            <EditorShadow bind:shadow={inscription.shadow} />
+          </div>
+
+          <div class="subsection">
+            <EditorPath bind:path={inscription.path} />
+          </div>
+        </div>
+      {/if}
+    {/each}
+
     {#if $isTextReady}
       <div class="buttonLine" on:click={addOrdinary}>{$t("editor.addOrdinary")}</div>
       <div class="buttonLine" on:click={addCharge}>{$t("editor.addCharge")}</div>
+      <div class="buttonLine" on:click={addInscription}>{$t("editor.addInscription")}</div>
     {/if}
   </div>
 </main>

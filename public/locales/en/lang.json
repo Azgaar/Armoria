@@ -175,7 +175,19 @@
     "showGrid": "Show grid",
     "positions": "Points on shield to place a charge",
     "sinister": "Turn charge to the left",
-    "reversed": "Show charge upside down"
+    "reversed": "Show charge upside down",
+    "inscriptions": {
+      "text": "Text to be displayed (use '|' as line separator)",
+      "font": "Font name",
+      "addFont": "Add font",
+      "size": "Font size",
+      "spacing": "Spacing between letters (can be negative)",
+      "color": "Font color",
+      "path": "Shape along which the text will be rendered (SVG path)",
+      "shadow": "Add a shadow to the text",
+      "shadowBlur": "Blur radius in pixels",
+      "shadowColor": "Shadow color"
+    }
   },
   "error": {
     "copyToClipboard": "Cannot copy to the clipboard!",
@@ -186,7 +198,10 @@
     "notAnImage": "File is not an image!",
     "notSvgOrText": "File must be text or svg!",
     "notUniqueName": "Name must be unique id!",
-    "incorrectSvg": "File must be prepared svg. Download template for guidance!"
+    "emptyName": "Name is empty!",
+    "incorrectSvg": "File must be prepared svg. Download template for guidance!",
+    "emptyFontURL": "URL is empty!",
+    "loadingFont": "Font cannot be loaded!"
   },
   "success": {
     "copyEditLink": "Coat of arms link is copied to your clipboard",
@@ -194,6 +209,7 @@
     "copyCoaString": "Encoded COA string is copied to your clipboard",
     "install": "Armoria application is installed",
     "tinctureAdded": "Color is added",
+    "fontAdded": "Font is added",
     "chargeAdded": "Charge is added"
   },
   "info": {
@@ -254,10 +270,20 @@
     "chance": "Chance",
     "remove": "Remove"
   },
+  "fonts": {
+    "local": "Local",
+    "web": "Web",
+    "name": "Name",
+    "url": "URL",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
   "editor": {
     "ordinary": "Ordinary",
+    "inscription": "Inscription",
     "addOrdinary": "Add ordinary",
     "addCharge": "Add charge",
+    "addInscription": "Add inscription",
     "type": "Type",
     "tincture": "Tincture",
     "pattern": "Pattern",
@@ -295,7 +321,26 @@
     "clone": "Clone element",
     "backward": "Send backward",
     "forward": "Bring forward",
-    "remove": "Remove element"
+    "remove": "Remove element",
+    "inscriptions": {
+      "text": "Text",
+      "font": "Font",
+      "size": "Size",
+      "bold": "Bold",
+      "italic": "Italic",
+      "spacing": "Spacing",
+      "color": "Color",
+      "path": "Path",
+      "line": "Line",
+      "curve": "Curve",
+      "custom": "Custom",
+      "all": "All",
+      "start": "Start",
+      "end": "End",
+      "control": "Control",
+      "shadow": "Shadow",
+      "blur": "Blur"
+    }
   },
   "patterns": {
     "barry": "Barry",
