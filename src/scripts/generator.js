@@ -105,9 +105,9 @@ export const generate = function (providedSeed) {
     if (charges.natural[charge]) t = charges.natural[charge]; // natural tincture
     const item = {charge, t, p};
 
-    const multicolor = charges.multicolor[charge];
-    if (multicolor > 1) item.t2 = P(0.25) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
-    if (multicolor > 2) item.t3 = P(0.5) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
+    const colors = charges.data[charge]?.colors;
+    if (colors > 1) item.t2 = P(0.25) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
+    if (colors > 2) item.t3 = P(0.5) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
     coa.charges = [item];
 
     if (p === "ABCDEFGHIKL" && P(0.95)) {
@@ -195,8 +195,8 @@ function defineChargeAttributes(config, division, c) {
   c.p = [...new Set(c.p)].join("");
 
   // define orientation
-  if (P(0.02) && charges.sinister.includes(c.charge)) c.sinister = 1;
-  if (P(0.02) && charges.reversed.includes(c.charge)) c.reversed = 1;
+  if (P(0.02) && charges.data[c.charge]?.sinister) c.sinister = 1;
+  if (P(0.02) && charges.data[c.charge]?.reversed) c.reversed = 1;
 }
 
 function selectCharge(config, set) {

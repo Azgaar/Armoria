@@ -45,7 +45,7 @@
   // if charge doesn't support pattern, return basic tincture
   function counterChange(t: string, charge: string) {
     if (!/-/.test(t)) return clr(t); // not a pattern
-    if (chargesData.patternable.includes(charge)) return clr(t); // patternable
+    if (chargesData.data[charge]?.patternable) return clr(t); // patternable
     if (ordinariesData.patternable.includes(charge)) return clr(t); // patternable
     return clr(t.split("-")[1]); // not patternable, return basic color
   }
