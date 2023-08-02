@@ -538,8 +538,8 @@
               bind:category={charge.type}
               t1={coa.t1}
               t2={charge.t}
-              bind:t3={charge.t2}
-              bind:t4={charge.t3}
+              t3={charge.t2}
+              t4={charge.t3}
               sinister={charge.sinister}
               reversed={charge.reversed}
               division={coa.division}
