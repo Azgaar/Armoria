@@ -124,7 +124,22 @@ export const positions = {
   },
   // charges
   inescutcheon: {e: 4, jln: 1},
-  mascle: {e: 15, abcdefgzi: 3, beh: 3, bdefh: 4, acegi: 1, kn: 3, joe: 2, abc: 3, jlh: 8, jleh: 1, df: 3, abcpqh: 4, pqe: 3, eknpq: 3},
+  mascle: {
+    e: 15,
+    abcdefgzi: 3,
+    beh: 3,
+    bdefh: 4,
+    acegi: 1,
+    kn: 3,
+    joe: 2,
+    abc: 3,
+    jlh: 8,
+    jleh: 1,
+    df: 3,
+    abcpqh: 4,
+    pqe: 3,
+    eknpq: 3
+  },
   lionRampant: {e: 10, def: 2, abc: 2, bdefh: 1, kn: 1, jlh: 2, abcpqh: 1},
   lionPassant: {e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1},
   wolfPassant: {e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1},
@@ -531,7 +546,11 @@ export const charges = {
     anvil: 1
   },
   uploaded: {},
-  natural: {fountain: "azure", garb: "or", raven: "sable"}, // charges to mainly use predefined colours
+  natural: {
+    fountain: "azure",
+    garb: "or",
+    raven: "sable"
+  }, // charges to mainly use predefined colours
   multicolor: {
     // charges that can have several tinctures
     agnusDei: 2,
