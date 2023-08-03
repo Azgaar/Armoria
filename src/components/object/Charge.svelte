@@ -9,6 +9,8 @@
   export let i: number;
   export let shield: string;
   export let t: string;
+  export let t2: string | undefined = undefined;
+  export let t3: string | undefined = undefined;
   export let type: string;
 
   let chargeId: string;
@@ -31,7 +33,16 @@
   }
 </script>
 
-<g class="charge" {i} charge={chargeId} fill={t} transform={transform(charge)} stroke={charge.stroke || "#000"} on:mousedown={addDrag}>
+<g
+  class="charge"
+  {i}
+  charge={chargeId}
+  fill={t}
+  transform={transform(charge)}
+  stroke={charge.stroke || "#000"}
+  on:mousedown={addDrag}
+  style="--secondary: {t2 || t}; --tertiary: {t3 || t}"
+>
   {#each validPositions as position}
     <use xlink:href="#{chargeId}" transform={getElTransform(charge, position, shield)} />
   {/each}

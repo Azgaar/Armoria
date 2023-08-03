@@ -26,6 +26,7 @@
 
   // get color or link to pattern
   $: clr = (tincture: string) => {
+    if (!tincture) return null;
     if ($colors[tincture]) return $colors[tincture];
     addPattern(tincture);
     return "url(#" + tincture + ")";
@@ -59,6 +60,17 @@
       {@html getTemplate(division.division, division.line)}
     </clipPath>
   {/if}
+
+  <style>
+    g.secondary,
+    path.secondary {
+      fill: var(--secondary);
+    }
+    g.tertiary,
+    path.tertiary {
+      fill: var(--tertiary);
+    }
+  </style>
 </defs>
 
 <g clip-path="url(#shield_{id})">
@@ -81,7 +93,7 @@
 
     {#each charges as charge, i}
       {#if charge.divided === "field"}
-        <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} {type} />
+        <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
       {:else if charge.divided === "counter"}
         <Charge {coa} {charge} {i} shield={$shield} t={counterChange(division.t, charge.charge)} {type} />
       {/if}
@@ -108,12 +120,29 @@
       {/each}
 
       {#if diaperType === "division"}
-        <rect class="diaper" x="0" y="0" width="200" height="200" fill="url(#{coaDiaper})" style="pointer-events: none" />
+        <rect
+          class="diaper"
+          x="0"
+          y="0"
+          width="200"
+          height="200"
+          fill="url(#{coaDiaper})"
+          style="pointer-events: none"
+        />
       {/if}
 
       {#each charges as charge, i}
         {#if charge.divided === "division"}
-          <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} {type} />
+          <Charge
+            {coa}
+            {charge}
+            {i}
+            shield={$shield}
+            t={clr(charge.t)}
+            t2={clr(charge.t2)}
+            t3={clr(charge.t3)}
+            {type}
+          />
         {:else if charge.divided === "counter"}
           <Charge {coa} {charge} {i} shield={$shield} t={counterChange(coa.t1, charge.charge)} {type} />
         {/if}
@@ -142,7 +171,7 @@
 
   {#each charges as charge, i}
     {#if !charge.divided || !division}
-      <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} {type} />
+      <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
     {/if}
   {/each}
 
@@ -153,4 +182,11 @@
   {/each}
 </g>
 
-<path class="grad" d={shieldPath} fill={overFill} stroke={border} stroke-width={borderWidth} style="pointer-events: none" />
+<path
+  class="grad"
+  d={shieldPath}
+  fill={overFill}
+  stroke={border}
+  stroke-width={borderWidth}
+  style="pointer-events: none"
+/>

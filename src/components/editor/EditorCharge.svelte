@@ -9,6 +9,8 @@
   export let category: string;
   export let t1: string;
   export let t2: string;
+  export let t3: string | undefined;
+  export let t4: string | undefined;
   export let size = null;
   export let sinister = null;
   export let reversed = null;
@@ -22,12 +24,13 @@
   const allCharges = categories.map(category => Object.keys(charges[category])).flat();
   const allChargesTranslated = allCharges.map(charge => $t(`charges.${charge}`));
 
-  $: update(category, t1, t2, size, sinister, reversed);
+  // @ts-ignore
+  $: update(category, t1, t2, t3, t4, size, sinister, reversed);
   $: filterCharges(query);
 
   function update() {
     const chargeList = Object.keys(charges[category]);
-    chargesData = chargeList.map(charge => new Object({charge, t1: getTincture(charge), charges: getCharge(charge)}));
+    chargesData = chargeList.map(charge => ({charge, t1: getTincture(charge), charges: getCharge(charge)}));
   }
 
   function filterCharges(query: string) {
@@ -37,8 +40,8 @@
     if (!query) return;
 
     const regEx = new RegExp(query.replaceAll(" ", ""), "i");
-    const results = allCharges.filter((charge, index) => regEx.test(allChargesTranslated[index]));
-    chargesData = results.map(charge => new Object({charge, t1: getTincture(charge), charges: getCharge(charge)}));
+    const results = allCharges.filter((_charge, index) => regEx.test(allChargesTranslated[index]));
+    chargesData = results.map(charge => ({charge, t1: getTincture(charge), charges: getCharge(charge)}));
   }
 
   function resetQuery() {
@@ -52,7 +55,7 @@
 
   function getCharge(charge: string) {
     if (type === "semy") return [];
-    return [{charge, t: t2, p: "e", size: 1.5, sinister, reversed}];
+    return [{charge, t: t2, t2: t3, t3: t4, p: "e", size: 1.5, sinister, reversed}];
   }
 
   const translateSafely = (group: string, key: string) => {
@@ -65,10 +68,6 @@
     if (type === "semy") return `${$t("editor.semyOf")} ${chargeName}`;
     return `${$t("tinctures.charge")}: ${chargeName}`;
   }
-
-  const handleChange = (newCharge: string) => () => {
-    charge = newCharge;
-  };
 </script>
 
 <span class:indented={division}>{$t("editor.category")}:</span>
@@ -83,7 +82,7 @@
 
 <div class="items">
   {#each chargesData as coa (coa)}
-    <div class="item" class:selected={charge === coa.charge} on:click={handleChange(coa.charge)}>
+    <div class="item" class:selected={charge === coa.charge} on:click={() => (charge = coa.charge)}>
       <EditorItem {coa} tip={getTip(coa.charge)} />
     </div>
   {/each}
