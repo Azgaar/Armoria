@@ -25,20 +25,36 @@ export const generate = function (providedSeed) {
   config.ordinary = (!charge && P(0.65)) || P(0.3) ? (linedOrdinary ? linedOrdinary : rw(ordinaries.straight)) : null; // 36% for ordinary
 
   const rareDivided = ["chief", "terrace", "chevron", "quarter", "flaunches"].includes(config.ordinary);
-  config.divisioned = rareDivided ? P(0.03) : charge && config.ordinary ? P(0.03) : charge ? P(0.3) : config.ordinary ? P(0.7) : P(0.995); // 33% for division
+  config.divisioned = rareDivided
+    ? P(0.03)
+    : charge && config.ordinary
+    ? P(0.03)
+    : charge
+    ? P(0.3)
+    : config.ordinary
+    ? P(0.7)
+    : P(0.995); // 33% for division
   const division = config.divisioned ? rw(divisions.variants) : null;
 
   if (division) {
     const t = getTincture(config, "division", config.usedTinctures, P(0.98) ? coa.t1 : null);
     coa.division = {division, t};
-    if (divisions[division]) coa.division.line = config.usedPattern || (config.ordinary && P(0.7)) ? "straight" : rw(divisions[division]);
+    if (divisions[division])
+      coa.division.line = config.usedPattern || (config.ordinary && P(0.7)) ? "straight" : rw(divisions[division]);
   }
 
   if (config.ordinary) {
     const t = getTincture(config, "charge", config.usedTinctures, coa.t1);
     coa.ordinaries = [{ordinary: config.ordinary, t}];
     if (linedOrdinary) coa.ordinaries[0].line = config.usedPattern || (division && P(0.7)) ? "straight" : rw(lines);
-    if (division && !charge && !config.usedPattern && P(0.5) && config.ordinary !== "bordure" && config.ordinary !== "orle") {
+    if (
+      division &&
+      !charge &&
+      !config.usedPattern &&
+      P(0.5) &&
+      config.ordinary !== "bordure" &&
+      config.ordinary !== "orle"
+    ) {
       if (P(0.8)) coa.ordinaries[0].divided = "counter";
       // 40%
       else if (P(0.6)) coa.ordinaries[0].divided = "field";
@@ -68,7 +84,12 @@ export const generate = function (providedSeed) {
       // place charge in fields made by division
       p = rw(positions.divisions[division]);
       while (charges.natural[charge] === coa.t1) charge = selectCharge(config);
-      t = getTincture(config, "charge", ordinaryT ? config.usedTinctures.concat(ordinaryT) : config.usedTinctures, coa.t1);
+      t = getTincture(
+        config,
+        "charge",
+        ordinaryT ? config.usedTinctures.concat(ordinaryT) : config.usedTinctures,
+        coa.t1
+      );
     } else if (positions[charge]) {
       // place charge-suitable position
       p = rw(positions[charge]);
@@ -83,8 +104,10 @@ export const generate = function (providedSeed) {
 
     if (charges.natural[charge]) t = charges.natural[charge]; // natural tincture
     const item = {charge, t, p};
-    if (charges.multicolor[charge] > 1) item.t2 = getTincture(config, "charge", config.usedTinctures, coa.t1);
-    if (charges.multicolor[charge] > 2) item.t3 = getTincture(config, "charge", config.usedTinctures, coa.t1);
+
+    const multicolor = charges.multicolor[charge];
+    if (multicolor > 1) item.t2 = P(0.25) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
+    if (multicolor > 2) item.t3 = P(0.5) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
     coa.charges = [item];
 
     if (p === "ABCDEFGHIKL" && P(0.95)) {
@@ -114,7 +137,14 @@ export const generate = function (providedSeed) {
       // counterchanged, 40%
       else if (["perPale", "perFess", "perBend", "perBendSinister"].includes(division) && P(0.8)) {
         // place 2 charges in division standard positions
-        const [p1, p2] = division === "perPale" ? ["p", "q"] : division === "perFess" ? ["k", "n"] : division === "perBend" ? ["l", "m"] : ["j", "o"]; // perBendSinister
+        const [p1, p2] =
+          division === "perPale"
+            ? ["p", "q"]
+            : division === "perFess"
+            ? ["k", "n"]
+            : division === "perBend"
+            ? ["l", "m"]
+            : ["j", "o"]; // perBendSinister
         coa.charges[0].p = p1;
 
         const charge = selectCharge(charges.single);

@@ -9,8 +9,8 @@
   export let category: string;
   export let t1: string;
   export let t2: string;
-  export let t3: string;
-  export let t4: string;
+  export let t3: string | undefined;
+  export let t4: string | undefined;
   export let size = null;
   export let sinister = null;
   export let reversed = null;
@@ -24,12 +24,13 @@
   const allCharges = categories.map(category => Object.keys(charges[category])).flat();
   const allChargesTranslated = allCharges.map(charge => $t(`charges.${charge}`));
 
+  // @ts-ignore
   $: update(category, t1, t2, t3, t4, size, sinister, reversed);
   $: filterCharges(query);
 
   function update() {
     const chargeList = Object.keys(charges[category]);
-    chargesData = chargeList.map(charge => new Object({charge, t1: getTincture(charge), charges: getCharge(charge)}));
+    chargesData = chargeList.map(charge => ({charge, t1: getTincture(charge), charges: getCharge(charge)}));
   }
 
   function filterCharges(query: string) {
@@ -39,8 +40,8 @@
     if (!query) return;
 
     const regEx = new RegExp(query.replaceAll(" ", ""), "i");
-    const results = allCharges.filter((charge, index) => regEx.test(allChargesTranslated[index]));
-    chargesData = results.map(charge => new Object({charge, t1: getTincture(charge), charges: getCharge(charge)}));
+    const results = allCharges.filter((_charge, index) => regEx.test(allChargesTranslated[index]));
+    chargesData = results.map(charge => ({charge, t1: getTincture(charge), charges: getCharge(charge)}));
   }
 
   function resetQuery() {
@@ -67,12 +68,6 @@
     if (type === "semy") return `${$t("editor.semyOf")} ${chargeName}`;
     return `${$t("tinctures.charge")}: ${chargeName}`;
   }
-
-  const handleChange = (newCharge: string) => () => {
-    charge = newCharge;
-    if (charges.multicolor[charge] > 1 && !t3) t3 = t2;
-    if (charges.multicolor[charge] > 2 && !t4) t4 = t2;
-  };
 </script>
 
 <span class:indented={division}>{$t("editor.category")}:</span>
@@ -87,7 +82,7 @@
 
 <div class="items">
   {#each chargesData as coa (coa)}
-    <div class="item" class:selected={charge === coa.charge} on:click={handleChange(coa.charge)}>
+    <div class="item" class:selected={charge === coa.charge} on:click={() => (charge = coa.charge)}>
       <EditorItem {coa} tip={getTip(coa.charge)} />
     </div>
   {/each}
