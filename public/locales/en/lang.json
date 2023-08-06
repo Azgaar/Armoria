@@ -85,6 +85,7 @@
       "vesicaPiscis": "Vesica Piscis",
       "square": "Square",
       "diamond": "Diamond",
+      "hexagon": "Hexagon",
       "no": "No"
     },
     "fantasy": {
@@ -757,6 +758,7 @@
     "inescutcheonVesicaPiscis": "Inescutcheon Vesica Piscis",
     "inescutcheonSquare": "Inescutcheon Square",
     "inescutcheonDiamond": "Inescutcheon Diamond",
+    "inescutcheonHexagon": "Inescutcheon Hexagon",
     "inescutcheonNo": "Inescutcheon No",
     "inescutcheonFantasy1": "Inescutcheon Fantasy1",
     "inescutcheonFantasy2": "Inescutcheon Fantasy2",

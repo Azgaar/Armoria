@@ -1622,6 +1622,7 @@ export const charges = {
     inescutcheonVesicaPiscis: 1,
     inescutcheonSquare: 1,
     inescutcheonDiamond: 1,
+    inescutcheonHexagon: 1,
     inescutcheonNo: 1,
     inescutcheonFantasy1: 1,
     inescutcheonFantasy2: 1,
