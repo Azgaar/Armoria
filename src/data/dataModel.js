@@ -29,7 +29,6 @@ export const positionsSelect = [
   "lem",
   "bhdf",
   "jleh",
-  "behdf",
   "acegi",
   "bdefh",
   "kenpq",
