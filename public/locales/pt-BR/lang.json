@@ -161,6 +161,7 @@
     "changeColor": "Mudar a cor",
     "undoColorChange": "Restaurar a cor padrão",
     "undoBorderWidthChange": "Restaurar a largura padrão da borda",
+    "defaultColor": "Cannot remove a default color",
     "border": "Estilo de borda do Brasão",
     "randomColor": "Usar cor aleatória",
     "background": "Cor de fundo da janela",
@@ -178,7 +179,6 @@
   },
   "error": {
     "copyToClipboard": "Não é possível copiar para a área de transferência!",
-    "tinctureRemove": "Deve se ter pelo menos 2 cores de cada tipo!",
     "mustBeNumber": "A probabilidade deve ser um número!",
     "totalChanceMustNotBeZero": "A probabilidade total de cores no tipo não pode ser zero!",
     "valueCannotBeThatLow": "O valor não pode ser tão baixo!",
