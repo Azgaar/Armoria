@@ -161,6 +161,7 @@
     "changeColor": "Αλλαγή Χρώματος",
     "undoColorChange": "Επαναφορά Προεπιλεγμένων Χρωμάτων",
     "undoBorderWidthChange": "Επαναφορά Προεπιλεγμένων Πλάτος Συνόρων",
+    "defaultColor": "Cannot remove a default color",
     "border": "Στυλ Συνόρων Οικόσημου",
     "randomColor": "Χρήση Τυχαίου Χρώματός",
     "background": "Χρώμα φόντου",
@@ -178,7 +179,6 @@
   },
   "error": {
     "copyToClipboard": "Αντιγραφή δε Γίνεται!",
-    "tinctureRemove": "Πρέπει να υπάρχουν τουλάχιστον 2 χρώματα κάθε τύπου!",
     "mustBeNumber": "Η τιμή πρέπει να είναι αριθμός!",
     "totalChanceMustNotBeZero": "Συνολική πιθανότητα των χρωμάτων του τύπου δεν πρέπει να είναι μηδέν!",
     "valueCannotBeThatLow": "Η Τιμή δεν μπορεί να είναι τόσο χαμηλοί!",

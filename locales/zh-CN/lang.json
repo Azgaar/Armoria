@@ -161,6 +161,7 @@
     "changeColor": "改变颜色",
     "undoColorChange": "恢复默认颜色",
     "undoBorderWidthChange": "恢复默认边框宽度",
+    "defaultColor": "Cannot remove a default color",
     "border": "盾徽边框样式",
     "randomColor": "使用随机颜色",
     "background": "窗口背景颜色",
@@ -178,7 +179,6 @@
   },
   "error": {
     "copyToClipboard": "无法复制到剪贴板！",
-    "tinctureRemove": "每个类型至少应该有两种颜色！",
     "mustBeNumber": "概率必须是一个数字！",
     "totalChanceMustNotBeZero": "类型中颜色的总概率不得为零！",
     "valueCannotBeThatLow": "值不能那么低！",

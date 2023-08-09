@@ -161,6 +161,7 @@
     "changeColor": "Szín megváltoztatása",
     "undoColorChange": "Alapértelmezett szín visszaállítása",
     "undoBorderWidthChange": "Alapértelmezett rámavastagság visszaállítása",
+    "defaultColor": "Cannot remove a default color",
     "border": "Címerrámastílus",
     "randomColor": "Véletlenszerű szín használata",
     "background": "Ablak háttérszíne",
@@ -178,7 +179,6 @@
   },
   "error": {
     "copyToClipboard": "Nem lehet vágólapra másolni!",
-    "tinctureRemove": "Legalább 2 színnek kell lennie minden fajtából!",
     "mustBeNumber": "Az esélynek számnak kell lennie!",
     "totalChanceMustNotBeZero": "A színfajtákban lévő színek teljes esélye nem lehet nulla!",
     "valueCannotBeThatLow": "Az érték nem lehet olyan alacsony!",

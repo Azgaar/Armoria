@@ -161,6 +161,7 @@
     "changeColor": "Kleur veranderen",
     "undoColorChange": "Standaardkleur herstellen",
     "undoBorderWidthChange": "Herstel standaard randbreedte",
+    "defaultColor": "Cannot remove a default color",
     "border": "Wapenschild randstijl",
     "randomColor": "Willekeurige kleur gebruiken",
     "background": "Achtergrondkleur van venster",
@@ -178,7 +179,6 @@
   },
   "error": {
     "copyToClipboard": "Kan niet naar het klembord kopiëren!",
-    "tinctureRemove": "Er moeten minstens 2 kleuren van elk type zijn!",
     "mustBeNumber": "Kans moet een nummer zijn!",
     "totalChanceMustNotBeZero": "Totale kans van kleuren in type mogen niet nul zijn!",
     "valueCannotBeThatLow": "Waarde kan niet zo laag zijn!",

@@ -161,6 +161,7 @@
     "changeColor": "Farbe ändern",
     "undoColorChange": "Standardfarbe wiederherstellen",
     "undoBorderWidthChange": "Auf Standardrahmenbreite zurücksetzen",
+    "defaultColor": "Cannot remove a default color",
     "border": "Wappenrahmen-Stil",
     "randomColor": "Zufällige Farbe verwenden",
     "background": "Fensterhintergrundfarbe",
@@ -178,7 +179,6 @@
   },
   "error": {
     "copyToClipboard": "Kann nicht in die Zwischenablage kopiert werden!",
-    "tinctureRemove": "Es sollte mindestens 2 Farben von jedem Typ geben!",
     "mustBeNumber": "Chance muss eine Zahl sein!",
     "totalChanceMustNotBeZero": "Die Wahrscheinlichkeit der Farben darf nicht Null sein!",
     "valueCannotBeThatLow": "Wert darf nicht so niedrig sein!",

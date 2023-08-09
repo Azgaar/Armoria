@@ -161,6 +161,7 @@
     "changeColor": "Canviar de color",
     "undoColorChange": "Restablir els colors per defecte",
     "undoBorderWidthChange": "Restablir amplària de vora per defecte",
+    "defaultColor": "Cannot remove a default color",
     "border": "Estil de la vora d'escut d'armes",
     "randomColor": "Usar color aleatori",
     "background": "Color del fons",
@@ -178,7 +179,6 @@
   },
   "error": {
     "copyToClipboard": "No es va poder copiar al portapapers!",
-    "tinctureRemove": "Hauria d'haver-hi almenys 2 colors de cada tipus!",
     "mustBeNumber": "La probabilitat ha de ser un nombre!",
     "totalChanceMustNotBeZero": "La probabilitat total de colors en el tipus no pot ser zero!",
     "valueCannotBeThatLow": "El valor no pot ser tan baix!",

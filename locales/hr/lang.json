@@ -161,6 +161,7 @@
     "changeColor": "Promijeni boju",
     "undoColorChange": "Vrati zadanu boju",
     "undoBorderWidthChange": "Vrati zadanu širinu ruba",
+    "defaultColor": "Cannot remove a default color",
     "border": "Stil ruba grba",
     "randomColor": "Koristi nasumičnu boju",
     "background": "Boja pozadine prozora",
@@ -178,7 +179,6 @@
   },
   "error": {
     "copyToClipboard": "Nije moguće kopirati u međuspremnik!",
-    "tinctureRemove": "Trebale bi biti barem dvije boje od svake vrste!",
     "mustBeNumber": "Vjerojatnost mora biti broj!",
     "totalChanceMustNotBeZero": "Ukupna vjerojatnost boja u vrsti ne smije biti nula!",
     "valueCannotBeThatLow": "Vrijednost ne može biti tako niska!",
