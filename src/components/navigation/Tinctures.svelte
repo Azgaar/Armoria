@@ -78,17 +78,10 @@
   }
 
   function removeTincture(tinctureName: string, type: string) {
-    if (type === "metals" || type === "colours") {
-      const typeItems = Object.keys($tinctures[type]);
-
-      if (typeItems.length < 3) {
-        message.error($t("error.tinctureRemove"));
-        return;
-      }
-    }
-
     delete $tinctures[type][tinctureName];
     $tinctures = $tinctures;
+    delete $colors[tinctureName];
+    $colors = $colors;
   }
 
   function addTincture() {
@@ -248,7 +241,11 @@
               <span class="totalChance">/ {getTotalChance(type)}</span>
             </td>
             <td>
-              <span class="actionButton" on:click={() => removeTincture(tinctureName, type)}>&times;</span>
+              {#if DEFAULT_COLORS[tinctureName]}
+                <span class="disabledButton" data-tooltip={$t("tooltip.defaultColor")} use:tooltip>&times;</span>
+              {:else}
+                <span class="actionButton" on:click={() => removeTincture(tinctureName, type)}>&times;</span>
+              {/if}
             </td>
           </tr>
         {/each}
@@ -368,6 +365,12 @@
   .actionButton {
     font-size: 2em;
     cursor: pointer;
+  }
+
+  .disabledButton {
+    font-size: 2em;
+    cursor: not-allowed;
+    color: #444;
   }
 
   select {
