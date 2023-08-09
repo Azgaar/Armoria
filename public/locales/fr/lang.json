@@ -161,6 +161,7 @@
     "changeColor": "Changer de couleur",
     "undoColorChange": "Restaurer la couleur par défaut",
     "undoBorderWidthChange": "Restaurer la largeur de bordure par défaut",
+    "defaultColor": "Impossible de supprimer une couleur par défaut",
     "border": "Style de bordure des armoiries",
     "randomColor": "Utiliser une couleur aléatoire",
     "background": "Couleur de fond de la fenêtre",
@@ -178,7 +179,6 @@
   },
   "error": {
     "copyToClipboard": "Ne peux pas copier dans le presse papiers !",
-    "tinctureRemove": "Il devrait y avoir au moins 2 couleurs de chaque type!",
     "mustBeNumber": "La donnée doit être un nombre!",
     "totalChanceMustNotBeZero": "La probabilité totale des couleurs dans le type ne doit pas être zéro!",
     "valueCannotBeThatLow": "La valeur ne peux pas être aussi basse!",
