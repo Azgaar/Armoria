@@ -161,6 +161,7 @@
     "changeColor": "Change color",
     "undoColorChange": "Restore default color",
     "undoBorderWidthChange": "Restore default border width",
+    "defaultColor": "Cannot remove a default color",
     "border": "Coat of arms border style",
     "randomColor": "Use random color",
     "background": "Window background color",
@@ -178,7 +179,6 @@
   },
   "error": {
     "copyToClipboard": "Cannot copy to the clipboard!",
-    "tinctureRemove": "There should be at least 2 colors of each type!",
     "mustBeNumber": "Chance must be a number!",
     "totalChanceMustNotBeZero": "Total chance of colors in type must not be zero!",
     "valueCannotBeThatLow": "Value cannot be that low!",
