@@ -161,6 +161,7 @@
     "changeColor": "Modifica colore",
     "undoColorChange": "Ripristina colore predefinito",
     "undoBorderWidthChange": "Ripristina la larghezza del bordo",
+    "defaultColor": "Cannot remove a default color",
     "border": "Stile del bordo dello stemma",
     "randomColor": "Usa un colore casuale",
     "background": "Colore di sfondo della pagina",
@@ -178,7 +179,6 @@
   },
   "error": {
     "copyToClipboard": "Impossibile copiare negli appunti!",
-    "tinctureRemove": "Devono esserci almeno 2 colori di ogni tipo!",
     "mustBeNumber": "La probabilità deve essere un numero!",
     "totalChanceMustNotBeZero": "La probabilità totale dei colori nel tipo non deve essere zero!",
     "valueCannotBeThatLow": "Il valore non può essere così basso!",
