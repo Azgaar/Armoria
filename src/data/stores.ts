@@ -117,7 +117,7 @@ function defineInitialOptions() {
   const diaper = stored("diaper") || DEFAULT_DIAPER;
   const grad = stored("grad") || ra(DEFAULT_GRADIENTS);
   const shield = getShieldFromURL() || stored("shield") || rw(shields[rw(shields.types)]);
-  const colors = storedObj("colors") || DEFAULT_COLORS;
+  const colors = storedObj("colors") || JSON.parse(JSON.stringify(DEFAULT_COLORS));
   const border = stored("border") || DEFAULT_BORDER;
   const borderWidth = +stored("borderWidth") || DEFAULT_BORDER_WIDTH;
   const background = stored("background") || DEFAULT_BACKGROUND;
@@ -128,7 +128,7 @@ function defineInitialOptions() {
 
   const storedTinctures = storedObj("tinctures");
   const areTincturesValid = storedTinctures ? validateTinctures(storedTinctures) : false;
-  const tinctures: Tinctures = areTincturesValid ? storedTinctures : DEFAULT_TINCTURES;
+  const tinctures: Tinctures = areTincturesValid ? storedTinctures : JSON.parse(JSON.stringify(DEFAULT_TINCTURES));
 
   return {
     size,
