@@ -328,6 +328,10 @@ const chargeData = {
     colors: 3,
     reversed: true
   },
+  archer: {
+    colors: 3,
+    sinister: true
+  },
   armillarySphere: {
     positions: {e: 1}
   },
@@ -505,12 +509,23 @@ const chargeData = {
     natural: "argent",
     sinister: true
   },
+  dragonfly: {
+    colors: 2,
+    reversed: true
+  },
   dragonPassant: {
     colors: 3,
     sinister: true
   },
   dragonRampant: {
     colors: 3,
+    sinister: true
+  },
+  drakkar: {
+    colors: 3,
+    sinister: true
+  },
+  drawingCompass: {
     sinister: true
   },
   drum: {
@@ -544,8 +559,15 @@ const chargeData = {
     colors: 3,
     sinister: true
   },
+  fan: {
+    colors: 2,
+    reversed: true
+  },
   fasces: {
     colors: 3,
+    sinister: true
+  },
+  feather: {
     sinister: true
   },
   fly: {
@@ -635,6 +657,13 @@ const chargeData = {
   helmet: {
     sinister: true
   },
+  helmetCorinthian: {
+    colors: 3,
+    sinister: true
+  },
+  helmetGreat: {
+    sinister: true
+  },
   heron: {
     colors: 2,
     sinister: true
@@ -661,6 +690,13 @@ const chargeData = {
   horseshoe: {
     reversed: true
   },
+  hourglass: {
+    colors: 3
+  },
+  ladybird: {
+    colors: 3,
+    reversed: true
+  },
   lamb: {
     colors: 2,
     sinister: true
@@ -671,6 +707,9 @@ const chargeData = {
   },
   laurelWreath: {
     colors: 2
+  },
+  lighthouse: {
+    colors: 3
   },
   lionHeadCaboshed: {
     colors: 2
@@ -806,6 +845,11 @@ const chargeData = {
   rake: {
     reversed: true
   },
+  rapier: {
+    colors: 2,
+    sinister: true,
+    reversed: true
+  },
   ramHeadErased: {
     colors: 3,
     sinister: true
@@ -852,11 +896,22 @@ const chargeData = {
     colors: 2,
     sinister: true
   },
+  scale: {
+    colors: 2
+  },
+  scaleImbalanced: {
+    colors: 2,
+    sinister: true
+  },
   scissors: {
     reversed: true
   },
   scorpion: {
     reversed: true
+  },
+  scrollClosed: {
+    colors: 2,
+    sinister: true
   },
   scythe: {
     colors: 2,
@@ -876,12 +931,20 @@ const chargeData = {
     sinister: true,
     reversed: true
   },
+  snail: {
+    colors: 2,
+    sinister: true
+  },
   snake: {
     colors: 2,
     sinister: true
   },
   spear: {
     colors: 2,
+    reversed: true
+  },
+  spiral: {
+    sinister: true,
     reversed: true
   },
   squirrel: {
@@ -927,12 +990,25 @@ const chargeData = {
   trefoil: {
     reversed: true
   },
+  trowel: {
+    colors: 2,
+    sinister: true,
+    reversed: true
+  },
   unicornRampant: {
     colors: 3,
     sinister: true
   },
+  wasp: {
+    colors: 3,
+    reversed: true
+  },
   wheatStalk: {
     colors: 2
+  },
+  windmill: {
+    colors: 3,
+    sinister: true
   },
   wing: {
     sinister: true
@@ -1183,9 +1259,13 @@ export const charges = {
     crocodile: 1,
     lizard: 1,
     scorpion: 1,
+    snail: 1,
     butterfly: 1,
     bee: 1,
-    fly: 1
+    wasp: 1,
+    fly: 1,
+    dragonfly: 1,
+    ladybird: 1
   },
   animalHeads: {
     wolfHeadErased: 2,
@@ -1262,7 +1342,9 @@ export const charges = {
     boat2: 1,
     lymphad: 2,
     caravel: 1,
-    armillarySphere: 1
+    drakkar: 1,
+    armillarySphere: 1,
+    shipWheel: 1
   },
   agriculture: {
     garb: 2,
@@ -1274,6 +1356,7 @@ export const charges = {
   arms: {
     sword: 4,
     falchion: 1,
+    rapier: 1,
     sabre: 1,
     sabresCrossed: 1,
     sabre2: 1,
@@ -1288,6 +1371,8 @@ export const charges = {
     arrowsSheaf: 1,
     arbalest: 1,
     helmet: 2,
+    helmetCorinthian: 1,
+    helmetGreat: 2,
     gauntlet: 1,
     shield: 1,
     cannon: 1
@@ -1301,6 +1386,7 @@ export const charges = {
   },
   people: {
     cavalier: 3,
+    archer: 1,
     monk: 1,
     angel: 2
   },
@@ -1308,7 +1394,9 @@ export const charges = {
     tower: 1,
     castle: 1,
     bridge: 1,
-    column: 1
+    column: 1,
+    lighthouse: 1,
+    windmill: 1
   },
   miscellaneous: {
     crown: 2,
@@ -1334,6 +1422,7 @@ export const charges = {
     wingSword: 1,
     lute: 1,
     harp: 1,
+    lyre: 1,
     drum: 1,
     wheel: 2,
     crosier: 1,
@@ -1343,10 +1432,20 @@ export const charges = {
     chain: 1,
     anvil: 1,
     ladder: 1,
+    trowel: 1,
     banner: 1,
     bookClosed: 1,
     bookOpen: 1,
-    scissors: 1
+    scrollClosed: 1,
+    feather: 1,
+    drawingCompass: 1,
+    scissors: 1,
+    hourglass: 1,
+    scale: 1,
+    scaleImbalanced: 1,
+    fan: 1,
+    snowflake: 1,
+    spiral: 1
   },
   uploaded: {},
   data: chargeData
