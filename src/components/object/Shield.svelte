@@ -65,6 +65,12 @@
   </style>
 </defs>
 
+{#each charges as charge, i}
+  {#if charge.outside === "below"}
+    <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
+  {/if}
+{/each}
+
 <g clip-path="url(#shield_{id})">
   <!-- Field -->
   <rect class="field" x="0" y="0" width="200" height="200" fill={clr(coa.t1)} />
@@ -162,7 +168,7 @@
   {/if}
 
   {#each charges as charge, i}
-    {#if !charge.divided || !division}
+    {#if !charge.outside && (!charge.divided || !division)}
       <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
     {/if}
   {/each}
@@ -182,6 +188,12 @@
   stroke-width={borderWidth}
   style="pointer-events: none"
 />
+
+{#each charges as charge, i}
+  {#if charge.outside === "above"}
+    <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
+  {/if}
+{/each}
 
 {#each inscriptions as inscription, i}
   <Inscription {coa} {inscription} {i} pathId="inscription_{id}_{i}" {type} />

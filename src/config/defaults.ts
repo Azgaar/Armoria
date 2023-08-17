@@ -5,6 +5,7 @@ export const DEFAULT_BORDER = "#333333";
 export const DEFAULT_BORDER_WIDTH = 1;
 export const DEFAULT_BACKGROUND = "#333333";
 export const DEFAULT_SCALE = 2;
+export const DEFAULT_ZOOM = 5;
 
 export const DEFAULT_GRID = 1;
 export const DEFAULT_SHOW_GRID = false;

@@ -29,6 +29,7 @@ interface Charge {
   stroke?: string;
   reversed?: true;
   sinister?: true;
+  outside?: Outside;
 }
 
 interface Ordinary {
@@ -64,3 +65,4 @@ interface Shadow {
 }
 
 type Divided = "field" | "division" | "counter";
+type Outside = "above" | "below";

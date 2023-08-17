@@ -14,6 +14,7 @@
   import EditorInscription from "./EditorInscription.svelte";
   import EditorLine from "./EditorLine.svelte";
   import EditorOrdinary from "./EditorOrdinary.svelte";
+  import EditorOutside from "./EditorOutside.svelte";
   import EditorPath from "./EditorPath.svelte";
   import EditorPattern from "./EditorPattern.svelte";
   import EditorPosition from "./EditorPosition.svelte";
@@ -117,6 +118,7 @@
         if (c.divided) item.divided = c.divided;
         if (c.sinister) item.sinister = 1;
         if (c.reversed) item.reversed = 1;
+        if (c.outside && !c.divided) item.outside = c.outside;
         if (c.x || c.y) {
           item.x = c.x;
           item.y = c.y;
@@ -253,11 +255,12 @@
         const divided = c.divided || "";
         const sinister = c.sinister || false;
         const reversed = c.reversed || false;
+        const outside = c.outside || "";
         const x = c.x || 0;
         const y = c.y || 0;
         const angle = c.angle || 0;
         if (angle) $state.transform = `rotate(${angle})`;
-        return {charge, type, showStroke, stroke, divided, t, t2, t3, p, size, sinister, reversed, x, y, angle};
+        return {charge, type, showStroke, stroke, divided, t, t2, t3, p, size, sinister, reversed, outside, x, y, angle};
       });
 
       return charges;
@@ -582,13 +585,18 @@
             "charges",
             charge.charge
           )}
+          {#if charge.outside === "above"}
+            <i>[{$t("editor.aboveShield")}]</i>
+          {:else if charge.outside === "below"}
+            <i>[{$t("editor.belowShield")}]</i>
+          {/if}
           <EditorControls bind:els={menu.charges} el={charge} {i} />
         {/if}
       </div>
       {#if section.charge[i]}
         <div class="panel" transition:slide>
           <div class="subsection">
-            {#if coa.division}
+            {#if coa.division && !charge.outside}
               <EditorDivided bind:divided={charge.divided} raster={isRaster(charge.charge)} />
             {/if}
             <EditorCharge
@@ -623,6 +631,9 @@
 
           <div class="subsection">
             <EditorPosition bind:charge />
+            {#if !charge.divided}
+              <EditorOutside bind:outside={charge.outside}/>
+            {/if}
           </div>
 
           <div class="subsection">

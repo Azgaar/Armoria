@@ -12,6 +12,7 @@ import {
   DEFAULT_BORDER_WIDTH,
   DEFAULT_BACKGROUND,
   DEFAULT_SCALE,
+  DEFAULT_ZOOM,
   DEFAULT_GRID,
   DEFAULT_SHOW_GRID
 } from "config/defaults";
@@ -30,6 +31,7 @@ export const tinctures = writable(options.tinctures);
 export const fonts = writable(options.fonts);
 export const background = writable(options.background);
 export const scale = writable(options.scale);
+export const zoom = writable(options.zoom);
 export const border = writable(options.border);
 export const borderWidth = writable(options.borderWidth);
 
@@ -125,6 +127,7 @@ function defineInitialOptions() {
   const borderWidth = +stored("borderWidth") || DEFAULT_BORDER_WIDTH;
   const background = stored("background") || DEFAULT_BACKGROUND;
   const scale = +stored("scale") || DEFAULT_SCALE;
+  const zoom = +stored("zoom") || DEFAULT_ZOOM;
 
   const grid = +stored("grid") || DEFAULT_GRID;
   const showGrid = storedObj("showGrid") || DEFAULT_SHOW_GRID;
@@ -145,6 +148,7 @@ function defineInitialOptions() {
     borderWidth,
     background,
     scale,
+    zoom,
     grid,
     showGrid
   };
