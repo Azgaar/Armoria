@@ -7,7 +7,8 @@
   let coa = $history[c] || generate(seed || undefined); // on load
 
   function edit() {
-    if (/noedit/i.test(window.location.search)) return;
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.has("noedit")) return;
     const URL = window.location.href.replace("view=1", "view=0");
     const win = window.open(URL, "_blank");
     win.focus();
