@@ -110,7 +110,7 @@
         if (charges.multicolor[c.charge] > 1) item.t2 = c.t2;
         if (charges.multicolor[c.charge] > 2) item.t3 = c.t3;
         if (!c.showStroke) item.stroke = "none";
-        if (c.stroke !== "#000000") item.stroke = c.stroke;
+        else if (c.stroke !== "#000000") item.stroke = c.stroke;
         if (c.divided) item.divided = c.divided;
         if (c.sinister) item.sinister = 1;
         if (c.reversed) item.reversed = 1;
@@ -233,7 +233,7 @@
         const {charge, t, t2, t3, p, size} = c;
         const type = getChargeCategory(charge);
         const showStroke = c.stroke !== "none";
-        const stroke = c.stroke || "#000000";
+        const stroke = (showStroke && c.stroke)? c.stroke : "#000000";
         const divided = c.divided || "";
         const sinister = c.sinister || false;
         const reversed = c.reversed || false;
