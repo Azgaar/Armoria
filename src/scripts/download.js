@@ -64,10 +64,16 @@ async function getURL(svg, width, height) {
   if (gr && gr !== "no") d.insertAdjacentHTML("beforeend", defs.getElementById(gr).outerHTML);
   if (di && di !== "no") d.insertAdjacentHTML("beforeend", defs.getElementById(di).outerHTML);
   clone.querySelectorAll(".charge[charge]").forEach(el => {
+    const chargePattern = el.getAttribute("fill").split("(#")[1]?.split(")")[0];
+    if (chargePattern) addPattern(chargePattern, d);
     const charge = el.getAttribute("charge");
     if (addedElements[charge]) return;
     d.insertAdjacentHTML("beforeend", defs.getElementById(charge).outerHTML);
     addedElements[charge] = true;
+  });
+  clone.querySelectorAll(".ordinary").forEach(el => {
+    const ordinaryPattern = el.getAttribute("fill").split("(#")[1]?.split(")")[0];
+    if (ordinaryPattern) addPattern(ordinaryPattern, d);
   });
   const fieldPattern = clone.getElementsByClassName("field")[0].getAttribute("fill").split("(#")[1]?.split(")")[0];
   if (fieldPattern) addPattern(fieldPattern, d);

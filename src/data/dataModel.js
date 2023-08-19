@@ -283,8 +283,7 @@ export const ordinaries = {
     piles: 1,
     pilesInPoint: 2,
     label: 1
-  },
-  patternable: ["flaunches", "gyron", "quarter", "canton", "pall", "pallReversed", "pileInBend", "pileInBendSinister"]
+  }
 };
 
 const chargeData = {
@@ -294,9 +293,6 @@ const chargeData = {
   },
   angel: {
     colors: 2
-  },
-  annulet: {
-    patternable: true
   },
   anvil: {
     sinister: true
@@ -436,94 +432,17 @@ const chargeData = {
   crosier: {
     sinister: true
   },
-  crossArrowed: {
-    patternable: true
-  },
-  crossAvellane: {
-    patternable: true
-  },
-  crossBiparted: {
-    patternable: true
-  },
-  crossBottony: {
-    patternable: true
-  },
-  crossCeltic: {
-    patternable: true
-  },
-  crossCeltic2: {
-    patternable: true
-  },
-  crossCercelee: {
-    patternable: true
-  },
-  crossClechy: {
-    patternable: true
-  },
-  crossErminee: {
-    patternable: true
-  },
-  crossFitchy: {
-    patternable: true
-  },
-  crossFleury: {
-    patternable: true
-  },
-  crossFormee: {
-    patternable: true
-  },
-  crossFormee2: {
-    patternable: true
-  },
   crossGamma: {
-    sinister: true,
-    patternable: true
-  },
-  crossHummetty: {
-    patternable: true
-  },
-  crossJerusalem: {
-    patternable: true
+    sinister: true
   },
   crossLatin: {
     reversed: true
   },
-  crosslet: {
-    patternable: true
-  },
-  crossMaltese: {
-    patternable: true
-  },
-  crossMoline: {
-    patternable: true
-  },
-  crossPatonce: {
-    patternable: true
-  },
-  crossPattee: {
-    patternable: true
-  },
-  crossPatteeAlisee: {
-    patternable: true
-  },
-  crossPommy: {
-    patternable: true
-  },
-  crossPotent: {
-    patternable: true
-  },
   crossTau: {
-    reversed: true,
-    patternable: true
-  },
-  crossTemplar: {
-    patternable: true
+    reversed: true
   },
   crossTriquetra: {
     reversed: true
-  },
-  crossVoided: {
-    patternable: true
   },
   crown: {
     colors: 2
@@ -533,9 +452,6 @@ const chargeData = {
   },
   deerHeadCaboshed: {
     colors: 2
-  },
-  delf: {
-    patternable: true
   },
   dolphin: {
     colors: 2,
@@ -600,9 +516,6 @@ const chargeData = {
   },
   foot: {
     sinister: true
-  },
-  fountain: {
-    patternable: true
   },
   frog: {
     reversed: true
@@ -697,15 +610,6 @@ const chargeData = {
   horseshoe: {
     reversed: true
   },
-  inescutcheonNo: {
-    patternable: true
-  },
-  inescutcheonRound: {
-    patternable: true
-  },
-  inescutcheonSquare: {
-    patternable: true
-  },
   knight: {
     sinister: true
   },
@@ -753,9 +657,6 @@ const chargeData = {
   log: {
     sinister: true
   },
-  lozengePloye: {
-    patternable: true
-  },
   lute: {
     colors: 2,
     sinister: true
@@ -787,14 +688,8 @@ const chargeData = {
   mullet: {
     reversed: true
   },
-  mullet4: {
-    patternable: true
-  },
   mullet7: {
     reversed: true
-  },
-  mullet8: {
-    patternable: true
   },
   oak: {
     colors: 3
@@ -880,9 +775,6 @@ const chargeData = {
   rose: {
     colors: 3
   },
-  roundel: {
-    patternable: true
-  },
   sabre: {
     colors: 2,
     sinister: true
@@ -947,9 +839,6 @@ const chargeData = {
   stirrup: {
     colors: 2
   },
-  sun: {
-    patternable: true
-  },
   swallow: {
     colors: 2,
     sinister: true
@@ -979,12 +868,6 @@ const chargeData = {
   },
   trefoil: {
     reversed: true
-  },
-  triangle: {
-    patternable: true
-  },
-  trianglePierced: {
-    patternable: true
   },
   unicornRampant: {
     colors: 3,
