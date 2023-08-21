@@ -68,99 +68,7 @@ export const positions = {
     perSaltire: {bhdf: 8, e: 3, abcdefgzi: 1, bh: 1, df: 1, ABCDEFGHIJKL: 1},
     perPile: {ee: 3, be: 2, abceh: 1, abcabc: 1, jleh: 1}
   },
-  ordinariesOn: {
-    pale: {ee: 12, beh: 10, kn: 3, bb: 1},
-    fess: {ee: 1, def: 3},
-    bar: {defdefdef: 1},
-    fessCotissed: {ee: 1, def: 3},
-    fessDoubleCotissed: {ee: 1, defdef: 3},
-    bend: {ee: 2, jo: 1, joe: 1},
-    bendSinister: {ee: 1, lm: 1, lem: 4},
-    bendlet: {joejoejoe: 1},
-    bendletSinister: {lemlemlem: 1},
-    bordure: {ABCDEFGHIJKL: 1},
-    chief: {abc: 5, bbb: 1},
-    quarter: {jjj: 1},
-    canton: {yyyy: 1},
-    cross: {eeee: 1, behdfbehdf: 3, behbehbeh: 2},
-    crossParted: {e: 5, ee: 1},
-    saltire: {ee: 5, jlemo: 1},
-    saltireParted: {e: 5, ee: 1},
-    pall: {ee: 1, jleh: 5, jlhh: 3},
-    pallReversed: {ee: 1, bemo: 5},
-    pile: {bbb: 1},
-    pileInBend: {eeee: 1, eeoo: 1},
-    pileInBendSinister: {eeee: 1, eemm: 1}
-  },
-  ordinariesOff: {
-    pale: {yyy: 1},
-    fess: {abc: 3, abcz: 1},
-    bar: {abc: 2, abcgzi: 1, jlh: 5, bgi: 2, ach: 1},
-    gemelle: {abc: 1},
-    bend: {ccg: 2, ccc: 1},
-    bendSinister: {aai: 2, aaa: 1},
-    bendlet: {ccg: 2, ccc: 1},
-    bendletSinister: {aai: 2, aaa: 1},
-    bordure: {e: 4, jleh: 2, kenken: 1, peqpeq: 1},
-    orle: {e: 4, jleh: 1, kenken: 1, peqpeq: 1},
-    chief: {emo: 2, emoz: 1, ez: 2},
-    terrace: {e: 5, def: 1, bdf: 3},
-    mount: {e: 5, def: 1, bdf: 3},
-    point: {e: 2, def: 1, bdf: 3, acbdef: 1},
-    flaunches: {e: 3, kn: 1, beh: 3},
-    gyron: {bh: 1},
-    quarter: {e: 1},
-    canton: {e: 5, beh: 1, def: 1, bdefh: 1, kn: 1},
-    cross: {acgi: 1},
-    pall: {BCKFEILGJbdmfo: 1},
-    pallReversed: {aczac: 1},
-    chevron: {ach: 3, hhh: 1},
-    chevronReversed: {bbb: 1},
-    pile: {acdfgi: 1, acac: 1},
-    pileInBend: {cg: 1},
-    pileInBendSinister: {ai: 1},
-    label: {defgzi: 2, eh: 3, defdefhmo: 1, egiegi: 1, pqn: 5}
-  },
-  // charges
-  inescutcheon: {e: 4, jln: 1},
-  mascle: {
-    e: 15,
-    abcdefgzi: 3,
-    beh: 3,
-    bdefh: 4,
-    acegi: 1,
-    kn: 3,
-    joe: 2,
-    abc: 3,
-    jlh: 8,
-    jleh: 1,
-    df: 3,
-    abcpqh: 4,
-    pqe: 3,
-    eknpq: 3
-  },
-  lionRampant: {e: 10, def: 2, abc: 2, bdefh: 1, kn: 1, jlh: 2, abcpqh: 1},
-  lionPassant: {e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1},
-  wolfPassant: {e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1},
-  greyhoundCourant: {e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1},
-  greyhoundSejant: {e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1},
-  griffinRampant: {e: 10, def: 2, abc: 2, bdefh: 1, kn: 1, jlh: 2, abcpqh: 1},
-  griffinPassant: {e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1},
-  boarRampant: {e: 12, beh: 1, kn: 1, jln: 2},
-  eagle: {e: 15, beh: 1, kn: 1, abc: 1, jlh: 2, def: 2, pq: 1},
-  raven: {e: 15, beh: 1, kn: 1, jeo: 1, abc: 3, jln: 3, def: 1},
-  wyvern: {e: 10, jln: 1},
-  garb: {e: 1, def: 3, abc: 2, beh: 1, kn: 1, jln: 3, jleh: 1, abcpqh: 1, joe: 1, lme: 1},
-  crown: {e: 10, abcdefgzi: 1, beh: 3, behdf: 2, acegi: 1, kn: 1, pq: 2, abc: 1, jln: 4, jleh: 1, def: 2, abcpqh: 3},
-  crown2: {e: 10, abcdefgzi: 1, beh: 3, behdf: 2, acegi: 1, kn: 1, pq: 2, abc: 1, jln: 4, jleh: 1, def: 2, abcpqh: 3},
-  hand: {e: 10, jln: 2, kn: 1, jeo: 1, abc: 2, pqe: 1},
-  armillarySphere: {e: 1},
-  tree: {e: 1},
-  lymphad: {e: 1},
-  head: {e: 1},
-  headWreathed: {e: 1},
-  cavalier: {e: 1},
-  angel: {e: 1}
+  inescutcheon: {e: 4, jln: 1}
 };
 
 export const lines = {
@@ -283,6 +191,121 @@ export const ordinaries = {
     piles: 1,
     pilesInPoint: 2,
     label: 1
+  },
+  data: {
+    bar: {
+      positionsOn: {defdefdef: 1},
+      positionsOff: {abc: 2, abcgzi: 1, jlh: 5, bgi: 2, ach: 1}
+    },
+    bend: {
+      positionsOn: {ee: 2, jo: 1, joe: 1},
+      positionsOff: {ccg: 2, ccc: 1}
+    },
+    bendSinister: {
+      positionsOn: {ee: 1, lm: 1, lem: 4},
+      positionsOff: {aai: 2, aaa: 1}
+    },
+    bendlet: {
+      positionsOn: {joejoejoe: 1},
+      positionsOff: {ccg: 2, ccc: 1}
+    },
+    bendletSinister: {
+      positionsOn: {lemlemlem: 1},
+      positionsOff: {aai: 2, aaa: 1}
+    },
+    bordure: {
+      positionsOn: {ABCDEFGHIJKL: 1},
+      positionsOff: {e: 4, jleh: 2, kenken: 1, peqpeq: 1}
+    },
+    canton: {
+      positionsOn: {yyyy: 1},
+      positionsOff: {e: 5, beh: 1, def: 1, bdefh: 1, kn: 1}
+    },
+    chevron: {
+      positionsOn: {ach: 3, hhh: 1}
+    },
+    chevronReversed: {
+      positionsOff: {bbb: 1}
+    },
+    chief: {
+      positionsOn: {abc: 5, bbb: 1},
+      positionsOff: {emo: 2, emoz: 1, ez: 2}
+    },
+    cross: {
+      positionsOn: {eeee: 1, behdfbehdf: 3, behbehbeh: 2},
+      positionsOff: {acgi: 1}
+    },
+    crossParted: {
+      positionsOn: {e: 5, ee: 1}
+    },
+    fess: {
+      positionsOn: {ee: 1, def: 3},
+      positionsOff: {abc: 3, abcz: 1}
+    },
+    fessCotissed: {
+      positionsOn: {ee: 1, def: 3}
+    },
+    fessDoubleCotissed: {
+      positionsOn: {ee: 1, defdef: 3}
+    },
+    flaunches: {
+      positionsOff: {e: 3, kn: 1, beh: 3}
+    },
+    gemelle: {
+      positionsOff: {abc: 1}
+    },
+    gyron: {
+      positionsOff: {bh: 1}
+    },
+    label: {
+      positionsOff: {defgzi: 2, eh: 3, defdefhmo: 1, egiegi: 1, pqn: 5}
+    },
+    mount: {
+      positionsOff: {e: 5, def: 1, bdf: 3}
+    },
+    orle: {
+      positionsOff: {e: 4, jleh: 1, kenken: 1, peqpeq: 1}
+    },
+    pale: {
+      positionsOn: {ee: 12, beh: 10, kn: 3, bb: 1},
+      positionsOff: {yyy: 1}
+    },
+    pall: {
+      positionsOn: {ee: 1, jleh: 5, jlhh: 3},
+      positionsOff: {BCKFEILGJbdmfo: 1}
+    },
+    pallReversed: {
+      positionsOn: {ee: 1, bemo: 5},
+      positionsOff: {aczac: 1}
+    },
+    pile: {
+      positionsOn: {bbb: 1},
+      positionsOff: {acdfgi: 1, acac: 1}
+    },
+    pileInBend: {
+      positionsOn: {eeee: 1, eeoo: 1},
+      positionsOff: {cg: 1}
+    },
+    pileInBendSinister: {
+      positionsOn: {eeee: 1, eemm: 1},
+      positionsOff: {ai: 1}
+    },
+    point: {
+      positionsOff: {e: 2, def: 1, bdf: 3, acbdef: 1}
+    },
+    quarter: {
+      positionsOn: {jjj: 1},
+      positionsOff: {e: 1}
+    },
+    saltire: {
+      positionsOn: {ee: 5, jlemo: 1}
+    },
+    saltireParted: {
+      positionsOn: {e: 5, ee: 1}
+    },
+    terrace: {
+      positionsOff: {e: 5, def: 1, bdf: 3}
+    }
   }
 };
 
@@ -292,7 +315,8 @@ const chargeData = {
     sinister: true
   },
   angel: {
-    colors: 2
+    colors: 2,
+    positions: {e: 1}
   },
   anvil: {
     sinister: true
@@ -303,6 +327,9 @@ const chargeData = {
   arbalest: {
     colors: 3,
     reversed: true
+  },
+  armillarySphere: {
+    positions: {e: 1}
   },
   arrow: {
     colors: 3,
@@ -348,7 +375,8 @@ const chargeData = {
   },
   boarRampant: {
     colors: 3,
-    sinister: true
+    sinister: true,
+    positions: {e: 12, beh: 1, kn: 1, jln: 2}
   },
   boat: {
     colors: 2
@@ -408,6 +436,9 @@ const chargeData = {
     colors: 2,
     sinister: true
   },
+  cavalier: {
+    positions: {e: 1}
+  },
   chalice: {
     colors: 2
   },
@@ -445,10 +476,12 @@ const chargeData = {
     reversed: true
   },
   crown: {
-    colors: 2
+    colors: 2,
+    positions: {e: 10, abcdefgzi: 1, beh: 3, behdf: 2, acegi: 1, kn: 1, pq: 2, abc: 1, jln: 4, jleh: 1, def: 2, abcpqh: 3}
   },
   crown2: {
-    colors: 3
+    colors: 3,
+    positions: {e: 10, abcdefgzi: 1, beh: 3, behdf: 2, acegi: 1, kn: 1, pq: 2, abc: 1, jln: 4, jleh: 1, def: 2, abcpqh: 3}
   },
   deerHeadCaboshed: {
     colors: 2
@@ -462,10 +495,12 @@ const chargeData = {
   },
   dove: {
     colors: 2,
+    natural: "argent",
     sinister: true
   },
   doveDisplayed: {
     colors: 2,
+    natural: "argent",
     sinister: true
   },
   dragonPassant: {
@@ -485,7 +520,8 @@ const chargeData = {
   },
   eagle: {
     colors: 3,
-    sinister: true
+    sinister: true,
+    positions: {e: 15, beh: 1, kn: 1, abc: 1, jlh: 2, def: 2, pq: 1}
   },
   eagleTwoHeads: {
     colors: 3
@@ -512,16 +548,22 @@ const chargeData = {
   },
   fly: {
     colors: 3,
+    natural: "sable",
     reversed: true
   },
   foot: {
     sinister: true
   },
+  fountain: {
+    natural: "azure"
+  },
   frog: {
     reversed: true
   },
   garb: {
-    colors: 2
+    colors: 2,
+    natural: "or",
+    positions: {e: 1, def: 3, abc: 2, beh: 1, kn: 1, jln: 3, jleh: 1, abcpqh: 1, joe: 1, lme: 1}
   },
   gauntlet: {
     sinister: true,
@@ -539,11 +581,13 @@ const chargeData = {
   },
   greyhoundCourant: {
     colors: 3,
-    sinister: true
+    sinister: true,
+    positions: {e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1}
   },
   greyhoundRampant: {
     colors: 2,
-    sinister: true
+    sinister: true,
+    positions: {e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1}
   },
   greyhoundSejant: {
     colors: 3,
@@ -551,15 +595,18 @@ const chargeData = {
   },
   griffinPassant: {
     colors: 3,
-    sinister: true
+    sinister: true,
+    positions: {e: 10, def: 2, abc: 2, bdefh: 1, kn: 1, jlh: 2, abcpqh: 1}
   },
   griffinRampant: {
     colors: 3,
-    sinister: true
+    sinister: true,
+    positions: {e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1}
   },
   hand: {
     sinister: true,
-    reversed: true
+    reversed: true,
+    positions: {e: 10, jln: 2, kn: 1, jeo: 1, abc: 2, pqe: 1}
   },
   harp: {
     colors: 2,
@@ -571,11 +618,13 @@ const chargeData = {
   },
   head: {
     colors: 2,
-    sinister: true
+    sinister: true,
+    positions: {e: 1}
   },
   headWreathed: {
     colors: 3,
-    sinister: true
+    sinister: true,
+    positions: {e: 1}
   },
   hedgehog: {
     colors: 3,
@@ -633,7 +682,8 @@ const chargeData = {
   },
   lionPassant: {
     colors: 3,
-    sinister: true
+    sinister: true,
+    positions: {e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1}
   },
   lionPassantGuardant: {
     colors: 3,
@@ -641,7 +691,8 @@ const chargeData = {
   },
   lionRampant: {
     colors: 3,
-    sinister: true
+    sinister: true,
+    positions: {e: 10, def: 2, abc: 2, bdefh: 1, kn: 1, jlh: 2, abcpqh: 1}
   },
   lionSejant: {
     colors: 3,
@@ -663,7 +714,8 @@ const chargeData = {
   },
   lymphad: {
     colors: 3,
-    sinister: true
+    sinister: true,
+    positions: {e: 1}
   },
   mallet: {
     colors: 2
@@ -671,6 +723,9 @@ const chargeData = {
   martenCourant: {
     colors: 3,
     sinister: true
+  },
+  mascle: {
+    positions: {e: 15, abcdefgzi: 3, beh: 3, bdefh: 4, acegi: 1, kn: 3, joe: 2, abc: 3, jlh: 8, jleh: 1, df: 3, abcpqh: 4, pqe: 3, eknpq: 3}
   },
   mastiffStatant: {
     colors: 3,
@@ -766,7 +821,9 @@ const chargeData = {
   },
   raven: {
     colors: 2,
-    sinister: true
+    natural: "sable",
+    sinister: true,
+    positions: {e: 15, beh: 1, kn: 1, jeo: 1, abc: 3, jln: 3, def: 1}
   },
   rhinoceros: {
     colors: 2,
@@ -866,6 +923,9 @@ const chargeData = {
   tower: {
     colors: 2
   },
+  tree: {
+    positions: {e: 1}
+  },
   trefoil: {
     reversed: true
   },
@@ -889,7 +949,8 @@ const chargeData = {
   },
   wolfPassant: {
     colors: 3,
-    sinister: true
+    sinister: true,
+    positions: {e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1}
   },
   wolfRampant: {
     colors: 3,
@@ -901,7 +962,8 @@ const chargeData = {
   },
   wyvern: {
     colors: 3,
-    sinister: true
+    sinister: true,
+    positions: {e: 10, jln: 1}
   },
   wyvernWithWingsDisplayed: {
     colors: 3,
@@ -1289,14 +1351,6 @@ export const charges = {
     scissors: 1
   },
   uploaded: {},
-  natural: {
-    fountain: "azure",
-    garb: "or",
-    raven: "sable",
-    dove: "argent",
-    doveDisplayed: "argent",
-    fly: "sable",
-  }, // charges to mainly use predefined colours
   data: chargeData
 };
 
