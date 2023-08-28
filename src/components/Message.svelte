@@ -2,6 +2,7 @@
   // @ts-check
   import {onMount} from "svelte";
   import {fly, fade} from "svelte/transition";
+  import {t} from "svelte-i18n";
   import {message} from "data/stores";
 
   const {text, type, timeout} = $message;
@@ -16,7 +17,7 @@
 </script>
 
 <div class={type} in:fly={{y: 200, duration: 500}} out:fade={{duration: 300}} on:click={() => message.clear()}>
-  {text}
+  {$t(text)}
 </div>
 
 <style>

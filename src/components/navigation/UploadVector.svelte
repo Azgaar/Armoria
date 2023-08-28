@@ -43,7 +43,7 @@
     const file = files.length ? files[0] : [];
 
     if (!file.type.match(/text.*|svg.*/)) {
-      message.error($t("error.notSvgOrText"));
+      message.error("error.notSvgOrText");
       return;
     }
 
@@ -79,7 +79,7 @@
 
       const g = el.querySelector("g");
       if (!g) {
-        message.error($t("error.incorrectSvg"));
+        message.error("error.incorrectSvg");
         selected = false;
         return;
       }
@@ -103,7 +103,7 @@
     name = camelize(name);
 
     if (!name || document.getElementById(name) || allCharges.includes(name)) {
-      message.error($t("error.notUniqueName"));
+      message.error("error.notUniqueName");
       return;
     }
 
@@ -124,7 +124,7 @@
 
     selected = false;
     $state.vector = 0;
-    message.success($t("success.chargeAdded"));
+    message.success("success.chargeAdded");
   }
 
   function downloadTemplate() {

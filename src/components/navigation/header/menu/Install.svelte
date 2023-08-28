@@ -21,7 +21,7 @@
   });
 
   window.addEventListener("appinstalled", () => {
-    message.success($t("success.install"));
+    message.success("success.install");
   });
 </script>
 

@@ -12,7 +12,7 @@
   import UploadVector from "./navigation/UploadVector.svelte";
   import Tinctures from "./navigation/Tinctures.svelte";
   import Message from "./Message.svelte";
-  import {background, size, history, matrices, matrix, state, message, shield} from "data/stores";
+  import {background, size, history, isTextReady, matrices, matrix, state, message, shield} from "data/stores";
   import {shields} from "data/shields";
   import {rw} from "scripts/utils";
   import "scripts/i18n";
@@ -82,7 +82,7 @@
 
     if (coaParam || seedParam) {
       if (from === "FMG") {
-        message.info($t("info.tipFromFmg"), 10000);
+        message.info("info.tipFromFmg", 10000);
       }
 
       $matrices[0] = [0];
@@ -138,7 +138,7 @@
     {#if $state.vector}<UploadVector />{/if}
     {#if $state.tinctures}<Tinctures />{/if}
 
-    {#if $message}<Message />{/if}
+    {#if $message && $isTextReady}<Message />{/if}
   </div>
 {/if}
 <WindowEvents />
