@@ -330,7 +330,7 @@
     return el ? el.tagName === "image" : false;
   }
 
-  const translateSafely = (group, key) => {
+  $: translateSafely = (group, key) => {
     const isInDictionary = $dictionary?.[$locale]?.[group]?.[key];
     return isInDictionary ? $t(`${group}.${key}`) : key;
   };
