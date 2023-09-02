@@ -20,16 +20,17 @@ export const generate = function (providedSeed) {
   const config = createConfig();
   const coa = {seed, t1: getTincture(config, "field")};
 
-  let charge = P(config.usedPattern ? 0.5 : 0.93) ? true : false; // 80% for charge
-  const linedOrdinary = (charge && P(0.3)) || P(0.5) ? rw(ordinaries.lined) : null;
-  config.ordinary = (!charge && P(0.65)) || P(0.3) ? (linedOrdinary ? linedOrdinary : rw(ordinaries.straight)) : null; // 36% for ordinary
+  const addCharge = P(config.usedPattern ? 0.5 : 0.93); // 80% for charge
+  const linedOrdinary = (addCharge && P(0.3)) || P(0.5) ? rw(ordinaries.lined) : null;
+  config.ordinary =
+    (!addCharge && P(0.65)) || P(0.3) ? (linedOrdinary ? linedOrdinary : rw(ordinaries.straight)) : null; // 36% for ordinary
 
   const rareDivided = ["chief", "terrace", "chevron", "quarter", "flaunches"].includes(config.ordinary);
   config.divisioned = rareDivided
     ? P(0.03)
-    : charge && config.ordinary
+    : addCharge && config.ordinary
     ? P(0.03)
-    : charge
+    : addCharge
     ? P(0.3)
     : config.ordinary
     ? P(0.7)
@@ -49,7 +50,7 @@ export const generate = function (providedSeed) {
     if (linedOrdinary) coa.ordinaries[0].line = config.usedPattern || (division && P(0.7)) ? "straight" : rw(lines);
     if (
       division &&
-      !charge &&
+      !addCharge &&
       !config.usedPattern &&
       P(0.5) &&
       config.ordinary !== "bordure" &&
@@ -63,111 +64,114 @@ export const generate = function (providedSeed) {
     }
   }
 
-  if (charge) {
-    charge = selectCharge(config);
+  if (addCharge) {
+    let charge = selectCharge(config);
+    const chargeData = charges.data[charge];
+    if (!chargeData) debugger;
 
-    let p = "e";
-    let t = "gules";
+    if (chargeData) {
+      let p = "e";
+      let t = "gules";
 
-    const ordinaryT = coa.ordinaries ? coa.ordinaries[0].t : null;
-    if (ordinaries.data[config.ordinary]?.positionsOn && P(0.8)) {
-      // place charge over config.ordinary (use tincture of field type)
-      p = rw(ordinaries.data[config.ordinary].positionsOn);
-      while (charges.data[charge]?.natural === ordinaryT) charge = selectCharge(config);
-      t = !config.usedPattern && P(0.3) ? coa.t1 : getTincture(config, "charge", [], ordinaryT);
-    } else if (ordinaries.data[config.ordinary]?.positionsOff && P(0.95)) {
-      // place charge out of config.ordinary (use tincture of ordinary type)
-      p = rw(ordinaries.data[config.ordinary].positionsOff);
-      while (charges.data[charge]?.natural === coa.t1) charge = selectCharge(config);
-      t = !config.usedPattern && P(0.3) ? ordinaryT : getTincture(config, "charge", config.usedTinctures, coa.t1);
-    } else if (positions.divisions[division]) {
-      // place charge in fields made by division
-      p = rw(positions.divisions[division]);
-      while (charges.data[charge]?.natural === coa.t1) charge = selectCharge(config);
-      t = getTincture(
-        config,
-        "charge",
-        ordinaryT ? config.usedTinctures.concat(ordinaryT) : config.usedTinctures,
-        coa.t1
-      );
-    } else if (charges.data[charge]?.positions) {
-      // place charge-suitable position
-      p = rw(charges.data[charge].positions);
-      while (charges.data[charge]?.natural === coa.t1) charge = selectCharge(config);
-      t = getTincture(config, "charge", config.usedTinctures, coa.t1);
-    } else {
-      // place in standard position (use new tincture)
-      p = config.usedPattern ? "e" : charges.conventional[charge] ? rw(positions.conventional) : rw(positions.complex);
-      while (charges.data[charge]?.natural === coa.t1) charge = selectCharge(config);
-      t = getTincture(config, "charge", config.usedTinctures.concat(ordinaryT), coa.t1);
-    }
+      const ordinaryData = ordinaries.data[config.ordinary];
+      const tOrdinary = coa.ordinaries ? coa.ordinaries[0].t : null;
 
-    if (charges.data[charge]?.natural) t = charges.data[charge].natural; // natural tincture
-    const item = {charge, t, p};
+      if (ordinaryData && P(0.8)) {
+        // place charge over ordinary (use tincture of field type)
+        p = rw(ordinaryData.positionsOn);
+        t = !config.usedPattern && P(0.3) ? coa.t1 : getTincture(config, "charge", [], tOrdinary);
+      } else if (ordinaryData?.positionsOff && P(0.95)) {
+        // place charge out of ordinary (use tincture of ordinary type)
+        p = rw(ordinaryData.positionsOff);
+        t = !config.usedPattern && P(0.3) ? tOrdinary : getTincture(config, "charge", config.usedTinctures, coa.t1);
+      } else if (positions.divisions[division]) {
+        // place charge in fields made by division
+        p = rw(positions.divisions[division]);
+        t = getTincture(
+          config,
+          "charge",
+          tOrdinary ? config.usedTinctures.concat(tOrdinary) : config.usedTinctures,
+          coa.t1
+        );
+      } else if (chargeData.positions) {
+        // place charge-suitable position
+        p = rw(chargeData.positions);
+        t = getTincture(config, "charge", config.usedTinctures, coa.t1);
+      } else {
+        // place in standard position (use new tincture)
+        p = config.usedPattern
+          ? "e"
+          : charges.conventional[charge]
+          ? rw(positions.conventional)
+          : rw(positions.complex);
+        t = getTincture(config, "charge", config.usedTinctures.concat(tOrdinary), coa.t1);
+      }
+      if (chargeData.natural && chargeData.natural !== t && chargeData.natural !== tOrdinary) t = chargeData.natural;
 
-    const colors = charges.data[charge]?.colors;
-    if (colors > 1) item.t2 = P(0.25) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
-    if (colors > 2) item.t3 = P(0.5) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
-    coa.charges = [item];
+      const item = {charge: charge, t, p};
+      if (chargeData.colors > 1) item.t2 = P(0.25) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
+      if (chargeData.colors > 2) item.t3 = P(0.5) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
+      coa.charges = [item];
 
-    if (p === "ABCDEFGHIKL" && P(0.95)) {
-      // add central charge if charge is in bordure
-      coa.charges[0].charge = rw(charges.conventional);
-      const charge = selectCharge(charges.single);
-      const t = getTincture(config, "charge", config.usedTinctures, coa.t1);
-      coa.charges.push({charge, t, p: "e"});
-    } else if (P(0.8) && charge === "inescutcheon") {
-      // add charge to inescutcheon
-      const charge = selectCharge(charges.types);
-      const t2 = getTincture(config, "charge", [], t);
-      coa.charges.push({charge, t: t2, p, size: 0.5});
-    } else if (division && !config.ordinary) {
-      const allowCounter = !config.usedPattern && (!coa.line || coa.line === "straight");
+      if (p === "ABCDEFGHIKL" && P(0.95)) {
+        // add central charge if charge is in bordure
+        coa.charges[0].charge = rw(charges.conventional);
+        const charge = selectCharge(charges.single);
+        const t = getTincture(config, "charge", config.usedTinctures, coa.t1);
+        coa.charges.push({charge, t, p: "e"});
+      } else if (P(0.8) && charge === "inescutcheon") {
+        // add charge to inescutcheon
+        const charge = selectCharge(charges.types);
+        const t2 = getTincture(config, "charge", [], t);
+        coa.charges.push({charge, t: t2, p, size: 0.5});
+      } else if (division && !config.ordinary) {
+        const allowCounter = !config.usedPattern && (!coa.line || coa.line === "straight");
 
-      // dimidiation: second charge at division basic positons
-      if (P(0.3) && ["perPale", "perFess"].includes(division) && coa.line === "straight") {
-        coa.charges[0].divided = "field";
-        if (P(0.95)) {
-          const p2 = p === "e" || P(0.5) ? "e" : rw(positions.divisions[division]);
+        // dimidiation: second charge at division basic positons
+        if (P(0.3) && ["perPale", "perFess"].includes(division) && coa.line === "straight") {
+          coa.charges[0].divided = "field";
+          if (P(0.95)) {
+            const p2 = p === "e" || P(0.5) ? "e" : rw(positions.divisions[division]);
+            const charge = selectCharge(charges.single);
+            const t = getTincture(config, "charge", config.usedTinctures, coa.division.t);
+            coa.charges.push({charge, t, p: p2, divided: "division"});
+          }
+        } else if (allowCounter && P(0.4)) coa.charges[0].divided = "counter";
+        // counterchanged, 40%
+        else if (["perPale", "perFess", "perBend", "perBendSinister"].includes(division) && P(0.8)) {
+          // place 2 charges in division standard positions
+          const [p1, p2] =
+            division === "perPale"
+              ? ["p", "q"]
+              : division === "perFess"
+              ? ["k", "n"]
+              : division === "perBend"
+              ? ["l", "m"]
+              : ["j", "o"]; // perBendSinister
+          coa.charges[0].p = p1;
+
           const charge = selectCharge(charges.single);
           const t = getTincture(config, "charge", config.usedTinctures, coa.division.t);
-          coa.charges.push({charge, t, p: p2, divided: "division"});
-        }
-      } else if (allowCounter && P(0.4)) coa.charges[0].divided = "counter";
-      // counterchanged, 40%
-      else if (["perPale", "perFess", "perBend", "perBendSinister"].includes(division) && P(0.8)) {
-        // place 2 charges in division standard positions
-        const [p1, p2] =
-          division === "perPale"
-            ? ["p", "q"]
-            : division === "perFess"
-            ? ["k", "n"]
-            : division === "perBend"
-            ? ["l", "m"]
-            : ["j", "o"]; // perBendSinister
-        coa.charges[0].p = p1;
+          coa.charges.push({charge, t, p: p2});
+        } else if (["perCross", "perSaltire"].includes(division) && P(0.5)) {
+          // place 4 charges in division standard positions
+          const [p1, p2, p3, p4] = division === "perCross" ? ["j", "l", "m", "o"] : ["b", "d", "f", "h"];
+          coa.charges[0].p = p1;
 
-        const charge = selectCharge(charges.single);
-        const t = getTincture(config, "charge", config.usedTinctures, coa.division.t);
-        coa.charges.push({charge, t, p: p2});
-      } else if (["perCross", "perSaltire"].includes(division) && P(0.5)) {
-        // place 4 charges in division standard positions
-        const [p1, p2, p3, p4] = division === "perCross" ? ["j", "l", "m", "o"] : ["b", "d", "f", "h"];
-        coa.charges[0].p = p1;
+          const c2 = selectCharge(charges.single);
+          const t2 = getTincture(config, "charge", [], coa.division.t);
 
-        const c2 = selectCharge(charges.single);
-        const t2 = getTincture(config, "charge", [], coa.division.t);
+          const c3 = selectCharge(charges.single);
+          const t3 = getTincture(config, "charge", [], coa.division.t);
 
-        const c3 = selectCharge(charges.single);
-        const t3 = getTincture(config, "charge", [], coa.division.t);
+          const c4 = selectCharge(charges.single);
+          const t4 = getTincture(config, "charge", [], coa.t1);
+          coa.charges.push({charge: c2, t: t2, p: p2}, {charge: c3, t: t3, p: p3}, {charge: c4, t: t4, p: p4});
+        } else if (allowCounter && p.length > 1) coa.charges[0].divided = "counter"; // counterchanged, 40%
+      }
 
-        const c4 = selectCharge(charges.single);
-        const t4 = getTincture(config, "charge", [], coa.t1);
-        coa.charges.push({charge: c2, t: t2, p: p2}, {charge: c3, t: t3, p: p3}, {charge: c4, t: t4, p: p4});
-      } else if (allowCounter && p.length > 1) coa.charges[0].divided = "counter"; // counterchanged, 40%
+      coa.charges.forEach(c => defineChargeAttributes(config, division, c));
     }
-
-    coa.charges.forEach(c => defineChargeAttributes(config, division, c));
   }
 
   return coa;
