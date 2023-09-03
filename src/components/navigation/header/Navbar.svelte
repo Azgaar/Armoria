@@ -25,17 +25,34 @@
     <Rollback />
     <Reroll />
     <Save />
-    <Upload />
-    <Install />
 
-    {#if $iconedNav && $state.edit}
-      <Other />
+    {#if $iconedNav}
+      {#if $state.edit}
+        <Other>
+          <Upload />
+          <Language />
+          <License />
+          <Support />
+          <About />
+        </Other>
+      {:else}
+        <Upload />
+        <Language />
+        <Support />
+        <Other>
+          <License />
+          <About />
+        </Other>
+      {/if}
     {:else}
+      <Upload />
       <Language />
       <License />
       <Support />
       <About />
     {/if}
+
+    <Install />
 
     {#if $state.edit}
       <Undo />
