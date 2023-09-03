@@ -16,7 +16,7 @@
         }, 500);
       },
       err => {
-        message.error($t("error.copyToClipboard"));
+        message.error("error.copyToClipboard");
         console.error(err);
       }
     );
@@ -25,19 +25,19 @@
   function copyEditLink() {
     const coa = ($changes[0] as string).replaceAll("#", "%23");
     const url = location.origin + location.pathname + "?coa=" + coa;
-    copyToClipboard(url, $t("success.copyEditLink"));
+    copyToClipboard(url, "success.copyEditLink");
   }
 
   function copyApiLink() {
     const encoded = encodeURI($changes[0] as string);
     const API = "https://armoria.herokuapp.com/";
     const url = `${API}?size=500&format=png&coa=${encoded}`;
-    copyToClipboard(url, $t("success.copyApiLink"));
+    copyToClipboard(url, "success.copyApiLink");
   }
 
   function copyCoaString() {
     const encoded = encodeURI($changes[0] as string);
-    copyToClipboard(encoded, $t("success.copyCoaString"));
+    copyToClipboard(encoded, "success.copyCoaString");
   }
 </script>
 

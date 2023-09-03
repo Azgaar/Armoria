@@ -41,12 +41,12 @@
     const min = +target.min;
 
     if (isNaN(newValue)) {
-      message.error($t("error.mustBeNumber"));
+      message.error("error.mustBeNumber");
       return;
     }
 
     if (newValue < min) {
-      message.error($t("error.valueCannotBeThatLow"));
+      message.error("error.valueCannotBeThatLow");
       target.value = String(min);
       return;
     }
@@ -59,7 +59,7 @@
     const newValue = +target.value;
 
     if (isNaN(newValue)) {
-      message.error($t("error.mustBeNumber"));
+      message.error("error.mustBeNumber");
       return;
     }
 
@@ -68,7 +68,7 @@
       typeTinctures[tinctureName] = 0;
       const totalChance = Object.values(typeTinctures).reduce((a, b) => a + b, 0);
       if (totalChance < 1) {
-        message.error($t("error.totalChanceMustNotBeZero"));
+        message.error("error.totalChanceMustNotBeZero");
         target.value = String(1);
         return;
       }
@@ -86,7 +86,7 @@
 
   function addTincture() {
     addLine.show = true;
-    message.info($t("info.tipAddTincture"), 8000);
+    message.info("info.tipAddTincture", 8000);
   }
 
   function cancelAddTincture() {
@@ -101,7 +101,7 @@
     const name = camelize(addLine.name);
 
     if (!name || $colors[name]) {
-      message.error($t("error.nonUniqueTincture"));
+      message.error("error.nonUniqueTincture");
       return;
     }
 
@@ -109,7 +109,7 @@
     $colors[name] = addLine.color;
     addLine.show = false;
     addLine.name = "";
-    message.info($t("success.tinctureAdded"));
+    message.info("success.tinctureAdded");
   }
 
   function restoreDefault() {
@@ -118,7 +118,7 @@
     localStorage.removeItem("tinctures");
     localStorage.removeItem("colors");
     loaded = [];
-    message.info($t("info.restoredDefaults"));
+    message.info("info.restoredDefaults");
   }
 
   function getTinctureName(tinctureName: string) {

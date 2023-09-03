@@ -1,6 +1,6 @@
 <script lang="ts">
   // @ts-check
-  import {iconedNav, state} from "data/stores";
+  import {iconedNav, isTextReady, state} from "data/stores";
   import Logo from "./menu/Logo.svelte";
   import Options from "./menu/options/Options.svelte";
   import Rollback from "./menu/Rollback.svelte";
@@ -20,26 +20,28 @@
 
 <nav>
   <Logo />
-  <Options />
-  <Rollback />
-  <Reroll />
-  <Save />
-  <Upload />
-  <Install />
+  {#if $isTextReady}
+    <Options />
+    <Rollback />
+    <Reroll />
+    <Save />
+    <Upload />
+    <Install />
 
-  {#if $iconedNav && $state.edit}
-    <Other />
-  {:else}
-    <Language />
-    <License />
-    <Support />
-    <About />
-  {/if}
+    {#if $iconedNav && $state.edit}
+      <Other />
+    {:else}
+      <Language />
+      <License />
+      <Support />
+      <About />
+    {/if}
 
-  {#if $state.edit}
-    <Undo />
-    <Redo />
-    <Back />
+    {#if $state.edit}
+      <Undo />
+      <Redo />
+      <Back />
+    {/if}
   {/if}
 </nav>
 

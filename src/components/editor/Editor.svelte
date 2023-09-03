@@ -1,7 +1,7 @@
 <script>
   import {t, dictionary, locale} from "svelte-i18n";
   import {fade, fly, slide} from "svelte/transition";
-  import {changes, grid, history, message, shield, showGrid, state, tinctures, iconedNav} from "data/stores";
+  import {changes, grid, history, isTextReady, message, shield, showGrid, state, tinctures} from "data/stores";
   import {charges, divisions, ordinaries} from "data/dataModel";
   import {generate} from "scripts/generator";
   import {ra, rw} from "scripts/utils";
@@ -322,7 +322,7 @@
   }
 
   if (!("ontouchstart" in window) && (coa.ordinaries || coa.charges)) {
-    if (!$message) message.info($t("info.tipEditControls"));
+    if (!$message) message.info("info.tipEditControls");
   }
 
   function isRaster(charge) {
@@ -330,7 +330,7 @@
     return el ? el.tagName === "image" : false;
   }
 
-  const translateSafely = (group, key) => {
+  $: translateSafely = (group, key) => {
     const isInDictionary = $dictionary?.[$locale]?.[group]?.[key];
     return isInDictionary ? $t(`${group}.${key}`) : key;
   };
@@ -345,7 +345,11 @@
 
   <div id="menu" in:fly={{x: isLandscape ? 1000 : 0, y: isLandscape ? 0 : 1000, duration: 1000}}>
     <!-- Field -->
-    <div class="section" class:expanded={section.field} on:click={toggleSection("field")}>{$t("tinctures.field")}</div>
+    <div class="section" class:expanded={section.field} on:click={toggleSection("field")}>
+      {#if $isTextReady}
+        {$t("tinctures.field")}
+      {/if}
+    </div>
     {#if section.field}
       <div class="panel" transition:slide>
         <div class="subsection">
@@ -394,7 +398,9 @@
 
     <!-- Division -->
     <div class="section" class:expanded={section.division} on:click={toggleSection("division")}>
-      {$t("tinctures.division")}: {translateSafely("divisions", menu.division.division)}
+      {#if $isTextReady}
+        {$t("tinctures.division")}: {translateSafely("divisions", menu.division.division)}
+      {/if}
     </div>
     {#if section.division}
       <div class="panel" transition:slide>
@@ -472,14 +478,16 @@
         class:expanded={section.ordinary[i]}
         on:click={toggleSection("ordinary", i)}
       >
-        {$t("editor.ordinary")}{menu.ordinaries.length > 1 ? ` ${i + 1}` : ""}: {translateSafely(
-          "ordinaries",
-          o.ordinary
-        )}
-        {#if o.above}
-          <i>[{$t("editor.aboveCharges")}]</i>
+        {#if $isTextReady}
+          {$t("editor.ordinary")}{menu.ordinaries.length > 1 ? ` ${i + 1}` : ""}: {translateSafely(
+            "ordinaries",
+            o.ordinary
+          )}
+          {#if o.above}
+            <i>[{$t("editor.aboveCharges")}]</i>
+          {/if}
+          <EditorControls bind:els={menu.ordinaries} el={o} {i} />
         {/if}
-        <EditorControls bind:els={menu.ordinaries} el={o} {i} />
       </div>
       {#if section.ordinary[i]}
         <div class="panel" transition:slide>
@@ -522,11 +530,13 @@
     <!-- Charges -->
     {#each menu.charges as charge, i}
       <div class="section" transition:slide class:expanded={section.charge[i]} on:click={toggleSection("charge", i)}>
-        {$t("tinctures.charge")}{menu.charges.length > 1 ? ` ${i + 1}` : ""}: {translateSafely(
-          "charges",
-          charge.charge
-        )}
-        <EditorControls bind:els={menu.charges} el={charge} {i} />
+        {#if $isTextReady}
+          {$t("tinctures.charge")}{menu.charges.length > 1 ? ` ${i + 1}` : ""}: {translateSafely(
+            "charges",
+            charge.charge
+          )}
+          <EditorControls bind:els={menu.charges} el={charge} {i} />
+        {/if}
       </div>
       {#if section.charge[i]}
         <div class="panel" transition:slide>
@@ -575,8 +585,10 @@
       {/if}
     {/each}
 
-    <div class="buttonLine" on:click={addOrdinary}>{$t("editor.addOrdinary")}</div>
-    <div class="buttonLine" on:click={addCharge}>{$t("editor.addCharge")}</div>
+    {#if $isTextReady}
+      <div class="buttonLine" on:click={addOrdinary}>{$t("editor.addOrdinary")}</div>
+      <div class="buttonLine" on:click={addCharge}>{$t("editor.addCharge")}</div>
+    {/if}
   </div>
 </main>
 

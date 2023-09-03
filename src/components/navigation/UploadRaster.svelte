@@ -28,12 +28,12 @@
     const file = files.length ? files[0] : [];
 
     if (!file.type.match(/image.*/)) {
-      message.error($t("error.notAnImage"));
+      message.error("error.notAnImage");
       return;
     }
 
     selected = true;
-    message.info($t("info.tipUploadImageSize"));
+    message.info("info.tipUploadImageSize");
     name = camelize(file.name);
     loadImage(file);
   };
@@ -65,7 +65,7 @@
     name = camelize(name);
 
     if (!name || document.getElementById(name) || allCharges.includes(name)) {
-      message.error($t("error.notUniqueName"));
+      message.error("error.notUniqueName");
       return;
     }
 
@@ -88,7 +88,7 @@
 
     selected = false;
     $state.raster = 0;
-    message.success($t("success.chargeAdded"));
+    message.success("success.chargeAdded");
   }
 </script>
 
