@@ -372,6 +372,7 @@
               t1={menu.field.t1}
               t2={menu.field.t2}
               size={menu.field.size}
+              {coa}
             />
           </div>
         {/if}
@@ -442,6 +443,7 @@
                 t1={menu.division.t1}
                 t2={menu.division.t2}
                 size={menu.division.size}
+                {coa}
               />
             </div>
           {/if}
