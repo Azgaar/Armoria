@@ -2,7 +2,7 @@
   "name": "armoria",
   "description": "Heraldry generator and editor",
   "version": "1.0.0",
-  "author": "Azgaar <maxganiev@yandex.com>",
+  "author": "Azgaar <azgaar.fmg@yandex.com>",
   "scripts": {
     "dev": "rollup -c -w",
     "start": "sirv public",
