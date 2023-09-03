@@ -107,8 +107,8 @@
     if (menu.charges.length) {
       coa.charges = menu.charges.map(c => {
         const item = {charge: c.charge, t: c.t, p: c.p, size: c.size};
-        if (charges.multicolor[c.charge] > 1) item.t2 = c.t2;
-        if (charges.multicolor[c.charge] > 2) item.t3 = c.t3;
+        if (charges.data[c.charge]?.colors > 1) item.t2 = c.t2;
+        if (charges.data[c.charge]?.colors > 2) item.t3 = c.t3;
         if (!c.showStroke) item.stroke = "none";
         else if (c.stroke !== "#000000") item.stroke = c.stroke;
         if (c.divided) item.divided = c.divided;
@@ -316,8 +316,8 @@
       angle: 0,
       divided: ""
     };
-    if (charges.multicolor[charge] > 1) c.t2 = rw($tinctures[rw($tinctures.charge)]);
-    if (charges.multicolor[charge] > 2) c.t3 = rw($tinctures[rw($tinctures.charge)]);
+    if (charges.data[charge]?.colors > 1) c.t2 = rw($tinctures[rw($tinctures.charge)]);
+    if (charges.data[charge]?.colors > 2) c.t3 = rw($tinctures[rw($tinctures.charge)]);
     menu.charges = [...menu.charges, c];
   }
 
@@ -551,9 +551,9 @@
           {#if !isRaster(charge.charge) && charge.divided !== "counter"}
             <div class="subsection">
               <EditorTincture bind:t1={charge.t} />
-              {#if charges.multicolor[charge.charge] > 1}
+              {#if charges.data[charge.charge]?.colors > 1}
                 <EditorTincture bind:t1={charge.t2} />
-                {#if charges.multicolor[charge.charge] > 2}
+                {#if charges.data[charge.charge]?.colors > 2}
                   <EditorTincture bind:t1={charge.t3} />
                 {/if}
               {/if}

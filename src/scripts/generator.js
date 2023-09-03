@@ -70,44 +70,44 @@ export const generate = function (providedSeed) {
     let t = "gules";
 
     const ordinaryT = coa.ordinaries ? coa.ordinaries[0].t : null;
-    if (positions.ordinariesOn[config.ordinary] && P(0.8)) {
+    if (ordinaries.data[config.ordinary]?.positionsOn && P(0.8)) {
       // place charge over config.ordinary (use tincture of field type)
-      p = rw(positions.ordinariesOn[config.ordinary]);
-      while (charges.natural[charge] === ordinaryT) charge = selectCharge(config);
+      p = rw(ordinaries.data[config.ordinary].positionsOn);
+      while (charges.data[charge]?.natural === ordinaryT) charge = selectCharge(config);
       t = !config.usedPattern && P(0.3) ? coa.t1 : getTincture(config, "charge", [], ordinaryT);
-    } else if (positions.ordinariesOff[config.ordinary] && P(0.95)) {
+    } else if (ordinaries.data[config.ordinary]?.positionsOff && P(0.95)) {
       // place charge out of config.ordinary (use tincture of ordinary type)
-      p = rw(positions.ordinariesOff[config.ordinary]);
-      while (charges.natural[charge] === coa.t1) charge = selectCharge(config);
+      p = rw(ordinaries.data[config.ordinary].positionsOff);
+      while (charges.data[charge]?.natural === coa.t1) charge = selectCharge(config);
       t = !config.usedPattern && P(0.3) ? ordinaryT : getTincture(config, "charge", config.usedTinctures, coa.t1);
     } else if (positions.divisions[division]) {
       // place charge in fields made by division
       p = rw(positions.divisions[division]);
-      while (charges.natural[charge] === coa.t1) charge = selectCharge(config);
+      while (charges.data[charge]?.natural === coa.t1) charge = selectCharge(config);
       t = getTincture(
         config,
         "charge",
         ordinaryT ? config.usedTinctures.concat(ordinaryT) : config.usedTinctures,
         coa.t1
       );
-    } else if (positions[charge]) {
+    } else if (charges.data[charge]?.positions) {
       // place charge-suitable position
-      p = rw(positions[charge]);
-      while (charges.natural[charge] === coa.t1) charge = selectCharge(config);
+      p = rw(charges.data[charge].positions);
+      while (charges.data[charge]?.natural === coa.t1) charge = selectCharge(config);
       t = getTincture(config, "charge", config.usedTinctures, coa.t1);
     } else {
       // place in standard position (use new tincture)
       p = config.usedPattern ? "e" : charges.conventional[charge] ? rw(positions.conventional) : rw(positions.complex);
-      while (charges.natural[charge] === coa.t1) charge = selectCharge(config);
+      while (charges.data[charge]?.natural === coa.t1) charge = selectCharge(config);
       t = getTincture(config, "charge", config.usedTinctures.concat(ordinaryT), coa.t1);
     }
 
-    if (charges.natural[charge]) t = charges.natural[charge]; // natural tincture
+    if (charges.data[charge]?.natural) t = charges.data[charge].natural; // natural tincture
     const item = {charge, t, p};
 
-    const multicolor = charges.multicolor[charge];
-    if (multicolor > 1) item.t2 = P(0.25) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
-    if (multicolor > 2) item.t3 = P(0.5) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
+    const colors = charges.data[charge]?.colors;
+    if (colors > 1) item.t2 = P(0.25) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
+    if (colors > 2) item.t3 = P(0.5) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
     coa.charges = [item];
 
     if (p === "ABCDEFGHIKL" && P(0.95)) {
@@ -195,8 +195,8 @@ function defineChargeAttributes(config, division, c) {
   c.p = [...new Set(c.p)].join("");
 
   // define orientation
-  if (P(0.02) && charges.sinister.includes(c.charge)) c.sinister = 1;
-  if (P(0.02) && charges.reversed.includes(c.charge)) c.reversed = 1;
+  if (P(0.02) && charges.data[c.charge]?.sinister) c.sinister = 1;
+  if (P(0.02) && charges.data[c.charge]?.reversed) c.reversed = 1;
 }
 
 function selectCharge(config, set) {
