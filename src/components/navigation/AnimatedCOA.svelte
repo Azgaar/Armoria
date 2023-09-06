@@ -63,6 +63,11 @@
     </g>
   </g>
 
+  <path id="textPathAbout" fill="none" stroke="none" d="M50 100 L150 100"></path>
+  <text font-family="UnifrakturMaguntia" font-size="20px" dominant-baseline="middle" in:fade={{delay, duration}}>
+    <textPath href="#textPathAbout" text-anchor="middle" startOffset="50%">Armoria</textPath>
+  </text>
+
   <g stroke="#000" fill="url(#backlight)">
     <path d={shieldPaths.heater} in:draw={{delay, duration}} />
   </g>
