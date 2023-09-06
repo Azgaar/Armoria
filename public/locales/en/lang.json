@@ -420,6 +420,11 @@
     "moonInCrescent": "Moon In Crescent",
     "crescent": "Crescent",
     "fountain": "Fountain",
+    "mantle": "Mantle",
+    "ribbon1": "Ribbon1",
+    "ribbon2": "Ribbon2",
+    "ribbon3": "Ribbon3",
+    "ribbon4": "Ribbon4",
     "crossHummetty": "Cross Hummetty",
     "crossVoided": "Cross Voided",
     "crossPattee": "Cross Pattee",
@@ -705,6 +710,7 @@
     "architecture": "Architecture",
     "miscellaneous": "Miscellaneous",
     "inescutcheon": "Inescutcheon",
+    "ornaments": "Ornaments",
     "uploaded": "Uploaded"
   },
   "divisions": {

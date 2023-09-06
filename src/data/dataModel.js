@@ -720,6 +720,9 @@ const chargeData = {
   mallet: {
     colors: 2
   },
+  mantle: {
+    colors: 3
+  },
   martenCourant: {
     colors: 3,
     sinister: true
@@ -989,6 +992,7 @@ export const charges = {
     architecture: 1,
     miscellaneous: 3,
     inescutcheon: 3,
+    ornaments: 0,
     uploaded: 0
   },
   single: {
@@ -1008,6 +1012,7 @@ export const charges = {
     architecture: 1,
     miscellaneous: 10,
     inescutcheon: 5,
+    ornaments: 0,
     uploaded: 0
   },
   semy: {
@@ -1097,6 +1102,13 @@ export const charges = {
     inescutcheonIronHills: 1,
     inescutcheonUrukHai: 1,
     inescutcheonMoriaOrc: 1
+  },
+  ornaments: {
+    mantle: 1,
+    ribbon1: 1,
+    ribbon2: 1,
+    ribbon3: 1,
+    ribbon4: 1,
   },
   crosses: {
     crossHummetty: 15,
