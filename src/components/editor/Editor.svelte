@@ -118,7 +118,7 @@
         if (c.divided) item.divided = c.divided;
         if (c.sinister) item.sinister = 1;
         if (c.reversed) item.reversed = 1;
-        if (c.outside && !c.divided) item.outside = c.outside;
+        if (c.outside) item.outside = c.outside;
         if (c.x || c.y) {
           item.x = c.x;
           item.y = c.y;
@@ -350,7 +350,8 @@
       x: 0,
       y: 0,
       angle: 0,
-      divided: ""
+      divided: "",
+      outside: ""
     };
     if (charges.data[charge]?.colors > 1) c.t2 = rw($tinctures[rw($tinctures.charge)]);
     if (charges.data[charge]?.colors > 2) c.t3 = rw($tinctures[rw($tinctures.charge)]);
