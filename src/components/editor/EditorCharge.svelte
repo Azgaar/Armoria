@@ -22,7 +22,7 @@
 
   const categories = Object.keys(charges.types);
   const allCharges = categories.map(category => Object.keys(charges[category])).flat();
-  const allChargesTranslated = allCharges.map(charge => $t(`charges.${charge}`));
+  $: allChargesTranslated = allCharges.map(charge => $t(`charges.${charge}`));
 
   // @ts-ignore
   $: update(category, t1, t2, t3, t4, size, sinister, reversed);
