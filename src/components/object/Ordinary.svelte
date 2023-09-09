@@ -15,16 +15,21 @@
   }
 </script>
 
-{#if ordinary.ordinary === "bordure"}
-  <g class="ordinary" {i} transform={transform(ordinary)} on:mousedown={addDrag}>
+<g
+  class="ordinary"
+  {i}
+  transform={transform(ordinary)}
+  fill={t}
+  {stroke}
+  stroke-width={width}
+  on:mousedown={addDrag}
+>
+  {#if ordinary.ordinary === "bordure"}
     <path d={shieldPath} fill="none" stroke={t} stroke-width="16.7%" />
-  </g>
-{:else if ordinary.ordinary === "orle"}
-  <g class="ordinary" {i} transform={transform(ordinary)} on:mousedown={addDrag}>
+  {:else if ordinary.ordinary === "orle"}
     <path d={shieldPath} fill="none" stroke={t} stroke-width="5%" transform="translate(15 15) scale(.85)" />
-  </g>
-{:else}
-  <g class="ordinary" {i} transform={transform(ordinary)} fill={t} {stroke} stroke-width={width} on:mousedown={addDrag}>
-    {@html getTemplate(ordinary.ordinary, ordinary.line)}
-  </g>
-{/if}
+  {:else}
+    <!-- Remove superfluous <g> for Svelte >= 3.48 (see https://github.com/sveltejs/svelte/issues/7450) -->
+    <g>{@html getTemplate(ordinary.ordinary, ordinary.line)}</g>
+  {/if}
+</g>
