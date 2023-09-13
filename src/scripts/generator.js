@@ -4,7 +4,7 @@ import {rw, P} from "./utils";
 import {charges, divisions, lines, ordinaries, positions, patternSize} from "data/dataModel";
 import {tinctures} from "data/stores";
 
-const createConfig = () => ({
+export const createConfig = () => ({
   usedPattern: null,
   usedTinctures: [],
   tData: get(tinctures),
@@ -65,7 +65,7 @@ export const generate = function (providedSeed) {
   }
 
   if (addCharge) {
-    const charge = selectCharge(config);
+    const charge = selectCharge(config.ordinary || config.divisioned ? charges.types : charges.single);
     const chargeData = charges.data[charge] || {};
 
     let p = "e";
@@ -197,8 +197,8 @@ function defineChargeAttributes(config, division, c) {
   if (P(0.02) && charges.data[c.charge]?.reversed) c.reversed = 1;
 }
 
-function selectCharge(config, set) {
-  const type = set ? rw(set) : config.ordinary || config.divisioned ? rw(charges.types) : rw(charges.single);
+function selectCharge(set) {
+  const type = rw(set);
   return type === "inescutcheon" ? "inescutcheon" : rw(charges[type]);
 }
 
@@ -334,7 +334,7 @@ function excludeTinctures(typeTinctures, usedTinctures) {
 }
 
 // select tincture: element type (field, division, charge), used field tinctures, field type to follow RoT
-function getTincture(config, element, fields = [], RoT) {
+export function getTincture(config, element, fields = [], RoT) {
   let type = rw(config.tData[element]); // random type
 
   if (type === "patterns") {
