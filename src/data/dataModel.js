@@ -437,6 +437,8 @@ const chargeData = {
     sinister: true
   },
   cavalier: {
+    colors: 3,
+    sinister: true,
     positions: {e: 1}
   },
   chalice: {
@@ -658,9 +660,6 @@ const chargeData = {
   },
   horseshoe: {
     reversed: true
-  },
-  knight: {
-    sinister: true
   },
   lamb: {
     colors: 2,
@@ -886,7 +885,6 @@ const chargeData = {
     reversed: true
   },
   squirrel: {
-    colors: 2,
     sinister: true
   },
   stagPassant: {
