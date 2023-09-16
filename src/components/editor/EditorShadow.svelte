@@ -10,9 +10,8 @@
 
   $: {
     if (showShadow && !shadow) {
-      shadow = {x: 5, y: 5, blur: 0, color: "#333333"};
-    }
-    else if (!showShadow) {
+      shadow = {x: 1, y: 1, blur: 0, color: "#333333"};
+    } else if (!showShadow) {
       shadow = null;
     }
   }

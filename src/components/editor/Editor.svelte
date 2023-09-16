@@ -382,7 +382,7 @@
   function addInscription() {
     const i = {
       text: "Armoria",
-      font: "UnifrakturMaguntia",
+      font: "Cinzel",
       size: 20,
       bold: false,
       italic: false,
