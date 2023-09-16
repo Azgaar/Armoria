@@ -1,14 +1,13 @@
 <script lang="ts">
   // @ts-check
   import {colors} from "data//stores";
-  import {shieldPaths} from "data//shields";
+  import {DEFAULT_SHIELD_BOX, shieldPaths} from "data//shields";
   import {fade, draw} from "svelte/transition";
   import {rw} from "scripts/utils";
 
   export let duration: number;
 
   const delay = duration * 2.6;
-
   const tinctures = {metals: {argent: 3, or: 2}, colors: {gules: 5, sable: 3, azure: 4, vert: 2, purpure: 3}};
   const metal = Math.random() > 0.5;
   const t1 = metal ? rw(tinctures.metals) : rw(tinctures.colors);
@@ -39,18 +38,26 @@
     perChevronReversed: ["M0,200 l100,-100 l100,100", "M0,200 l100,-100 l100,100 Z"],
     perPile: ["M15,0 l85,200 l85,-200", "M15,0 l85,200 l85,-200 Z"],
     perSaltire: ["M0,0 L200,200 M200,0 l-200,200", "M0,0 L200,200 v-200 l-200,200 Z"],
-    gyronny: ["M0,0 l200,200 M200,100 h-200 M100,0 v200 M0,200 l200,-200", "M0,0 l200,200 v-100 h-200 h-100 M100,0 v200, h-100 l200,-200 h-100"],
-    chevronny: ["", "M0,80 100,-15 200,80 200,120 100,25 0,120z M0,160 100,65 200,160 200,200 100,105 0,200z M0,240 100,145 200,240 0,240z"]
+    gyronny: [
+      "M0,0 l200,200 M200,100 h-200 M100,0 v200 M0,200 l200,-200",
+      "M0,0 l200,200 v-100 h-200 h-100 M100,0 v200, h-100 l200,-200 h-100"
+    ],
+    chevronny: [
+      "",
+      "M0,80 100,-15 200,80 200,120 100,25 0,120z M0,160 100,65 200,160 200,200 100,105 0,200z M0,240 100,145 200,240 0,240z"
+    ]
   };
 
   let size = window.innerWidth < 600 ? window.innerWidth * 0.9 : 500;
   if (window.innerHeight < 600) size *= 0.5;
 </script>
 
-<svg width={size} height={size} viewBox="0 0 200 200">
-  <clipPath id="shieldAbout">
-    <path d={shieldPaths.heater} />
-  </clipPath>
+<svg width={size} height={size} viewBox={DEFAULT_SHIELD_BOX}>
+  <defs>
+    <clipPath id="shieldAbout">
+      <path d={shieldPaths.heater} />
+    </clipPath>
+  </defs>
 
   <g clip-path="url(#shieldAbout)" stroke="#fff" stroke-width=".5">
     <path stroke-width="1" d="M25,25 h150 v50 a150,150,0,0,1,-75,125 a150,150,0,0,1,-75,-125 z" in:draw={{duration}} />
@@ -62,11 +69,6 @@
       <rect x="0" y="0" width="200" height="200" fill="url(#nourse)" />
     </g>
   </g>
-
-  <path id="textPathAbout" fill="none" stroke="none" d="M50 100 L150 100"></path>
-  <text font-family="UnifrakturMaguntia" font-size="20px" dominant-baseline="middle" in:fade={{delay, duration}}>
-    <textPath href="#textPathAbout" text-anchor="middle" startOffset="50%">Armoria</textPath>
-  </text>
 
   <g stroke="#000" fill="url(#backlight)">
     <path d={shieldPaths.heater} in:draw={{delay, duration}} />

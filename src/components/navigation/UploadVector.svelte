@@ -4,7 +4,7 @@
   import LicenseList from "./LicenseList.svelte";
   import {state, colors, tinctures, message, shield} from "data/stores";
   import {charges} from "data/dataModel";
-  import {shieldPaths} from "data/shields";
+  import {DEFAULT_SHIELD_BOX, shieldPaths} from "data/shields";
   import {camelize} from "scripts/utils";
   import {tooltip} from "scripts/tooltip";
   import {query} from "scripts/aliases";
@@ -154,7 +154,7 @@
         fill={color}
         stroke="#000"
         stroke-width="1"
-        viewBox="0 0 200 200"
+        viewBox={DEFAULT_SHIELD_BOX}
         data-tooltip="Fit image into the rectangle for best result"
         use:tooltip
       >

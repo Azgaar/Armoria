@@ -11,10 +11,10 @@
   export let coa: Coa;
   export let border: string;
   export let borderWidth: number;
-  export let type: "menuItem" | undefined;
+  export let type: string | number;
 
   const id = coa.seed || Math.floor(Math.random() * 1e9);
-  const {division, ordinaries = [], charges = [], inscriptions=[]} = coa;
+  const {division, ordinaries = [], charges = [], inscriptions = []} = coa;
   const ordinariesRegular = ordinaries.filter(o => !o.above);
   const ordinariesAboveCharges = ordinaries.filter(o => o.above);
   charges.forEach(({charge}) => addCharge(charge));

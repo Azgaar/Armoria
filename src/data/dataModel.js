@@ -483,11 +483,37 @@ const chargeData = {
   },
   crown: {
     colors: 2,
-    positions: {e: 10, abcdefgzi: 1, beh: 3, behdf: 2, acegi: 1, kn: 1, pq: 2, abc: 1, jln: 4, jleh: 1, def: 2, abcpqh: 3}
+    positions: {
+      e: 10,
+      abcdefgzi: 1,
+      beh: 3,
+      behdf: 2,
+      acegi: 1,
+      kn: 1,
+      pq: 2,
+      abc: 1,
+      jln: 4,
+      jleh: 1,
+      def: 2,
+      abcpqh: 3
+    }
   },
   crown2: {
     colors: 3,
-    positions: {e: 10, abcdefgzi: 1, beh: 3, behdf: 2, acegi: 1, kn: 1, pq: 2, abc: 1, jln: 4, jleh: 1, def: 2, abcpqh: 3}
+    positions: {
+      e: 10,
+      abcdefgzi: 1,
+      beh: 3,
+      behdf: 2,
+      acegi: 1,
+      kn: 1,
+      pq: 2,
+      abc: 1,
+      jln: 4,
+      jleh: 1,
+      def: 2,
+      abcpqh: 3
+    }
   },
   deerHeadCaboshed: {
     colors: 2
@@ -766,7 +792,22 @@ const chargeData = {
     sinister: true
   },
   mascle: {
-    positions: {e: 15, abcdefgzi: 3, beh: 3, bdefh: 4, acegi: 1, kn: 3, joe: 2, abc: 3, jlh: 8, jleh: 1, df: 3, abcpqh: 4, pqe: 3, eknpq: 3}
+    positions: {
+      e: 15,
+      abcdefgzi: 3,
+      beh: 3,
+      bdefh: 4,
+      acegi: 1,
+      kn: 3,
+      joe: 2,
+      abc: 3,
+      jlh: 8,
+      jleh: 1,
+      df: 3,
+      abcpqh: 4,
+      pqe: 3,
+      eknpq: 3
+    }
   },
   mastiffStatant: {
     colors: 3,
@@ -1046,7 +1087,7 @@ const chargeData = {
     colors: 3,
     sinister: true
   }
-}
+};
 
 export const charges = {
   types: {
@@ -1178,11 +1219,11 @@ export const charges = {
     inescutcheonMoriaOrc: 1
   },
   ornaments: {
-    mantle: 1,
-    ribbon1: 1,
-    ribbon2: 1,
+    mantle: 0,
+    ribbon1: 3,
+    ribbon2: 2,
     ribbon3: 1,
-    ribbon4: 1,
+    ribbon4: 1
   },
   crosses: {
     crossHummetty: 15,
