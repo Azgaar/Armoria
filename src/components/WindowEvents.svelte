@@ -41,17 +41,16 @@
 
   // keyboard shortcuts
   function handleKeydown(event) {
-    const code = event.code;
-    const ctrl = event.ctrlKey;
-    const reserved = ["Backspace", "Enter", "KeyZ", "KeyX", "KeyS", "KeyP", "KeyJ", "F1", "Escape"];
-    if (!ctrl && !reserved.includes(code)) return;
+    const action = /^[a-z]$/i.test(event.key) ?
+      keybinding["Key" + event.key.toUpperCase()] : // for latin keyboards (including non-QWERTY)
+      keybinding[event.code]; // for non-latin keyboards
+    if (!action) return;
 
     const active = document.activeElement.tagName;
     if (active === "INPUT" || active === "SELECT" || active === "TEXTAREA") return;
 
     event.preventDefault();
-    const action = keybinding[code];
-    if (action) action(ctrl);
+    action(event.ctrlKey);
   }
 
   function handleTouchStart(event) {

@@ -3,8 +3,8 @@
   import {fade, fly, slide} from "svelte/transition";
   import {changes, grid, history, isTextReady, message, shield, showGrid, state, tinctures} from "data/stores";
   import {charges, divisions, ordinaries} from "data/dataModel";
-  import {generate} from "scripts/generator";
-  import {ra, rw} from "scripts/utils";
+  import {createConfig, generate, getTincture} from "scripts/generator";
+  import {P, ra, rw} from "scripts/utils";
   import COA from "./../object/COA.svelte";
   import EditorAbove from "./EditorAbove.svelte";
   import EditorCharge from "./EditorCharge.svelte";
@@ -313,10 +313,14 @@
     return menu;
   }
 
+  function selectChargeTincture() {
+    return getTincture(createConfig(), "charge", [], coa.t1);
+  }
+
   function addOrdinary() {
     const ordinariesList = Object.keys(ordinaries.lined).concat(Object.keys(ordinaries.straight));
     const ordinary = ra(ordinariesList);
-    const t = rw($tinctures[rw($tinctures.charge)]);
+    const t = selectChargeTincture();
     const o = {
       ordinary,
       t,
@@ -336,7 +340,7 @@
   function addCharge() {
     const type = rw(charges.single);
     const charge = rw(charges[type]);
-    const t = rw($tinctures[rw($tinctures.charge)]);
+    const t = selectChargeTincture();
     const c = {
       charge,
       t,
@@ -353,8 +357,8 @@
       divided: "",
       outside: ""
     };
-    if (charges.data[charge]?.colors > 1) c.t2 = rw($tinctures[rw($tinctures.charge)]);
-    if (charges.data[charge]?.colors > 2) c.t3 = rw($tinctures[rw($tinctures.charge)]);
+    if (charges.data[charge]?.colors > 1) c.t2 = P(0.25) ? selectChargeTincture() : t;
+    if (charges.data[charge]?.colors > 2) c.t3 = P(0.5) ? selectChargeTincture() : t;
     menu.charges = [...menu.charges, c];
   }
 
