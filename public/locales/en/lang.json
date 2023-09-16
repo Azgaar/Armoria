@@ -223,6 +223,7 @@
     "tipUploadImageSize": "Fit image into the rectangle for best result"
   },
   "about": {
+    "title": "Armoria: heraldry generator and editor by Azgaar",
     "tutorial": "Tutorial",
     "discord": "Discord",
     "gitHub": "GitHub",
