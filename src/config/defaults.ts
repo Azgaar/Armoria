@@ -5,6 +5,7 @@ export const DEFAULT_BORDER = "#333333";
 export const DEFAULT_BORDER_WIDTH = 1;
 export const DEFAULT_BACKGROUND = "#333333";
 export const DEFAULT_SCALE = 2;
+export const DEFAULT_ZOOM = 1;
 
 export const DEFAULT_GRID = 1;
 export const DEFAULT_SHOW_GRID = false;
@@ -62,4 +63,23 @@ export const DEFAULT_TINCTURES = {
     maily: 2,
     honeycombed: 1
   }
+};
+
+// prettier-ignore
+export const DEFAULT_FONTS: Fonts = {
+  // google fonts
+  "Almendra SC": {url: "https://fonts.gstatic.com/s/almendrasc/v13/Iure6Yx284eebowr7hbyTaZOrLQ.woff2"},
+  Cinzel: {url: "https://fonts.gstatic.com/s/cinzel/v7/zOdksD_UUTk1LJF9z4tURA.woff2"},
+  "Great Vibes": {url: "https://fonts.gstatic.com/s/greatvibes/v5/6q1c0ofG6NKsEhAc2eh-3Y4P5ICox8Kq3LLUNMylGO4.woff2"},
+  "IM Fell English": {url: "https://fonts.gstatic.com/s/imfellenglish/v7/xwIisCqGFi8pff-oa9uSVAkYLEKE0CJQa8tfZYc_plY.woff2" },
+  UnifrakturMaguntia: { url: "https://fonts.gstatic.com/s/unifrakturmaguntia/v16/WWXPlieVYwiGNomYU-ciRLRvEmK7oaVemGZM.woff2" },
+  // web-safe fonts
+  Arial: {},
+  "Brush Script MT": {},
+  "Courier New": {},
+  Garamond: {},
+  Georgia: {},
+  Impact: {},
+  "Times New Roman": {},
+  Verdana: {}
 };

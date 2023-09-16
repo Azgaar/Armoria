@@ -33,10 +33,10 @@ function checkPattern(string) {
 export function addShieldPatterns(coa) {
   checkPattern(coa.t1);
   checkPattern(coa.division?.t);
-  for (let o of (coa.ordinaries || [])) {
+  for (let o of coa.ordinaries || []) {
     checkPattern(o.t);
   }
-  for (let c of (coa.charges || [])) {
+  for (let c of coa.charges || []) {
     checkPattern(c.t);
     checkPattern(c.t2);
     checkPattern(c.t3);
@@ -108,4 +108,45 @@ function getSizeMod(size) {
   if (size === "big") return 1.6;
   if (size === "bigger") return 2;
   return 1;
+}
+
+export function analyzePath(string) {
+  // Line
+  let match = string.match(/^M(-?\d+) (-?\d+) L(-?\d+) (-?\d+)$/);
+  if (match) {
+    const values = match.splice(1).map(x => parseInt(x));
+    return {
+      type: "line",
+      points: [
+        {index: 0, x: Number(values[0]), y: Number(values[1])},
+        {index: 1, x: Number(values[2]), y: Number(values[3])}
+      ]
+    };
+  }
+
+  // Quadratic Bezier curve
+  match = string.match(/^M(-?\d+) (-?\d+) Q(-?\d+) (-?\d+) (-?\d+) (-?\d+)$/);
+  if (match) {
+    const values = match.splice(1).map(x => parseInt(x));
+    return {
+      type: "curve",
+      points: [
+        {index: 0, x: Number(values[0]), y: Number(values[1])},
+        {index: 1, x: Number(values[4]), y: Number(values[5])},
+        {index: 2, x: Number(values[2]), y: Number(values[3])}
+      ]
+    };
+  }
+
+  // Custom path
+  return {
+    type: "custom"
+  };
+}
+
+export function buildPath(type, points) {
+  if (type === "line") return `M${points[0].x} ${points[0].y} L${points[1].x} ${points[1].y}`;
+  if (type === "curve")
+    return `M${points[0].x} ${points[0].y} Q${points[2].x} ${points[2].y} ${points[1].x} ${points[1].y}`;
+  return null;
 }

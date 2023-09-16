@@ -1,4 +1,4 @@
-import type {ChancesObject, Tinctures} from "types.ts/tinctures";
+import type {ChancesObject, Tinctures} from "types/tinctures";
 
 export const validateTinctures = (tinctures: Tinctures) => {
   const mandatoryElements = ["field", "division", "charge"];

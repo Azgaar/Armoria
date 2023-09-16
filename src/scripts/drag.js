@@ -2,7 +2,12 @@ import {get} from "svelte/store";
 import {changes, grid, shield} from "data/stores";
 import {shieldPositions, shieldSize} from "data/shields";
 
-export function drag(event, charge, coa) {
+export function drag(
+  event,
+  charge,
+  coa,
+  options = {move: true, resize: true, rotate: true, onMove: undefined, onEnd: undefined}
+) {
   const el = event.currentTarget;
   const x0 = event.x;
   const y0 = event.y;
@@ -15,13 +20,13 @@ export function drag(event, charge, coa) {
   const positionElements = el.querySelectorAll("use");
   const positions = shieldPositions[get(shield)] || shieldPositions.spanish;
 
-  if (event.shiftKey) {
+  if (options.resize && event.shiftKey) {
     document.addEventListener("mousemove", resize);
     document.body.style.cursor = "ns-resize";
-  } else if (event.ctrlKey || event.metaKey) {
+  } else if (options.rotate && (event.ctrlKey || event.metaKey)) {
     document.addEventListener("mousemove", rotate);
     document.body.style.cursor = "ew-resize";
-  } else {
+  } else if (options.move) {
     document.addEventListener("mousemove", move);
     document.body.style.cursor = "move";
   }
@@ -33,6 +38,8 @@ export function drag(event, charge, coa) {
     charge.x = Math.round(dx / gridSize) * gridSize;
     charge.y = Math.round(dy / gridSize) * gridSize;
     setGroupTransform(el, charge);
+
+    if (options.onMove) options.onMove(event, charge);
   }
 
   function resize(event) {
@@ -85,6 +92,8 @@ export function drag(event, charge, coa) {
     document.removeEventListener("mousemove", resize);
     document.removeEventListener("mousemove", rotate);
     document.body.style.cursor = "auto";
+
+    if (options.onEnd) options.onEnd(charge);
     changes.add(JSON.stringify(coa));
   }
 }

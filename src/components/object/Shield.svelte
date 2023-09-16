@@ -2,18 +2,19 @@
   // @ts-check
   import Ordinary from "./Ordinary.svelte";
   import Charge from "./Charge.svelte";
+  import Inscription from "./Inscription.svelte";
   import {shield, colors, grad, diaper} from "data/stores";
   import {shieldPaths} from "data/shields";
   import {getTemplate, addPattern, addCharge} from "scripts/getters";
-  import type {Coa} from "types.ts/coa";
+  import type {Coa} from "types/coa";
 
   export let coa: Coa;
   export let border: string;
   export let borderWidth: number;
-  export let type: "menuItem" | undefined;
+  export let type: string;
 
   const id = coa.seed || Math.floor(Math.random() * 1e9);
-  const {division, ordinaries = [], charges = []} = coa;
+  const {division, ordinaries = [], charges = [], inscriptions = []} = coa;
   const ordinariesRegular = ordinaries.filter(o => !o.above);
   const ordinariesAboveCharges = ordinaries.filter(o => o.above);
   charges.forEach(({charge}) => addCharge(charge));
@@ -63,6 +64,12 @@
     }
   </style>
 </defs>
+
+{#each charges as charge, i}
+  {#if charge.outside === "below"}
+    <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
+  {/if}
+{/each}
 
 <g clip-path="url(#shield_{id})">
   <!-- Field -->
@@ -161,7 +168,7 @@
   {/if}
 
   {#each charges as charge, i}
-    {#if !charge.divided || !division}
+    {#if !charge.outside && (!charge.divided || !division)}
       <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
     {/if}
   {/each}
@@ -181,3 +188,13 @@
   stroke-width={borderWidth}
   style="pointer-events: none"
 />
+
+{#each charges as charge, i}
+  {#if charge.outside === "above"}
+    <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
+  {/if}
+{/each}
+
+{#each inscriptions as inscription, i}
+  <Inscription {coa} {inscription} {i} pathId="inscription_{id}_{i}" {type} />
+{/each}

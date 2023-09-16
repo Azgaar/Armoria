@@ -7,15 +7,17 @@ import {
   DEFAULT_GRADIENTS,
   DEFAULT_COLORS,
   DEFAULT_TINCTURES,
+  DEFAULT_FONTS,
   DEFAULT_BORDER,
   DEFAULT_BORDER_WIDTH,
   DEFAULT_BACKGROUND,
   DEFAULT_SCALE,
+  DEFAULT_ZOOM,
   DEFAULT_GRID,
   DEFAULT_SHOW_GRID
 } from "config/defaults";
-import type { Tinctures } from "types.ts/tinctures";
-import { validateTinctures } from "./validators";
+import type {Tinctures} from "types/tinctures";
+import {validateTinctures} from "./validators";
 
 export const isTextReady = writable(false);
 
@@ -26,8 +28,10 @@ export const diaper = writable(options.diaper);
 export const shield = writable(options.shield);
 export const colors = writable(options.colors);
 export const tinctures = writable(options.tinctures);
+export const fonts = writable(options.fonts);
 export const background = writable(options.background);
 export const scale = writable(options.scale);
+export const zoom = writable(options.zoom);
 export const border = writable(options.border);
 export const borderWidth = writable(options.borderWidth);
 
@@ -37,7 +41,20 @@ export const showGrid = writable(options.showGrid);
 export const history = writable([]);
 export const matrices = writable([]);
 export const matrix = writable(0);
-export const state = writable({edit: 0, about: 0, license: 0, tinctures: 0, raster: 0, vector: 0, i: 0, c: 0, view: 0});
+export const state = writable({
+  edit: 0,
+  about: 0,
+  license: 0,
+  tinctures: 0,
+  raster: 0,
+  vector: 0,
+  i: 0,
+  c: 0,
+  view: 0,
+  fonts: 0,
+  selectedPath: -1,
+  pathChangeMode: -1
+});
 
 export const iconedNav = writable(false);
 
@@ -118,10 +135,12 @@ function defineInitialOptions() {
   const grad = stored("grad") || ra(DEFAULT_GRADIENTS);
   const shield = getShieldFromURL() || stored("shield") || rw(shields[rw(shields.types)]);
   const colors = storedObj("colors") || JSON.parse(JSON.stringify(DEFAULT_COLORS));
+  const fonts = (storedObj("fonts") || JSON.parse(JSON.stringify(DEFAULT_FONTS))) as Fonts;
   const border = stored("border") || DEFAULT_BORDER;
   const borderWidth = +stored("borderWidth") || DEFAULT_BORDER_WIDTH;
   const background = stored("background") || DEFAULT_BACKGROUND;
   const scale = +stored("scale") || DEFAULT_SCALE;
+  const zoom = +stored("zoom") || DEFAULT_ZOOM;
 
   const grid = +stored("grid") || DEFAULT_GRID;
   const showGrid = storedObj("showGrid") || DEFAULT_SHOW_GRID;
@@ -137,10 +156,12 @@ function defineInitialOptions() {
     shield,
     colors,
     tinctures,
+    fonts,
     border,
     borderWidth,
     background,
     scale,
+    zoom,
     grid,
     showGrid
   };

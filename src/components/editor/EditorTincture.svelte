@@ -6,7 +6,7 @@
   import {tooltip} from "scripts/tooltip";
   import {DEFAULT_COLORS as defaults} from "config/defaults";
 
-  export let t1: string;
+  export let t1: string = undefined;
 
   $: localStorage.setItem("colors", JSON.stringify($colors));
   $: colorChanged = (tincture: string) => defaults[tincture] && $colors[tincture] !== defaults[tincture];

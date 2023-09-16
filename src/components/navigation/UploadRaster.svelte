@@ -4,7 +4,7 @@
   import LicenseList from "./LicenseList.svelte";
   import {state, message, shield} from "data/stores";
   import {charges} from "data/dataModel";
-  import {shieldPaths} from "data/shields";
+  import {DEFAULT_SHIELD_BOX, shieldPaths} from "data/shields";
   import {tooltip} from "scripts/tooltip";
   import {camelize} from "scripts/utils";
   import {query} from "scripts/aliases";
@@ -106,12 +106,18 @@
         height="100%"
         stroke="#000"
         stroke-width="1"
-        viewBox="0 0 200 200"
+        viewBox={DEFAULT_SHIELD_BOX}
         data-tooltip="Fit image into the rectangle for best result"
         use:tooltip
       >
         <g fill="#fff" fill-opacity=".05" stroke="#fff" stroke-width=".5">
-          <image id="imageLoaded" x="{(100 - size) / 2 + offsetX}%" y="{(100 - size) / 2 + offsetY}%" width="{size}%" height="{size}%" />
+          <image
+            id="imageLoaded"
+            x="{(100 - size) / 2 + offsetX}%"
+            y="{(100 - size) / 2 + offsetY}%"
+            width="{size}%"
+            height="{size}%"
+          />
           <path d={shieldPaths[$shield]} />
           <rect x="60" y="60" width="80" height="80" />
         </g>

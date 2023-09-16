@@ -11,10 +11,14 @@
   import EditorControls from "./EditorControls.svelte";
   import EditorDivided from "./EditorDivided.svelte";
   import EditorDivision from "./EditorDivision.svelte";
+  import EditorInscription from "./EditorInscription.svelte";
   import EditorLine from "./EditorLine.svelte";
   import EditorOrdinary from "./EditorOrdinary.svelte";
+  import EditorOutside from "./EditorOutside.svelte";
+  import EditorPath from "./EditorPath.svelte";
   import EditorPattern from "./EditorPattern.svelte";
   import EditorPosition from "./EditorPosition.svelte";
+  import EditorShadow from "./EditorShadow.svelte";
   import EditorShift from "./EditorShift.svelte";
   import EditorSize from "./EditorSize.svelte";
   import EditorStroke from "./EditorStroke.svelte";
@@ -23,7 +27,7 @@
   export let historyId, seed;
 
   let menu = {};
-  let section = {field: 0, division: 0, ordinary: [], charge: []};
+  let section = {field: 0, division: 0, ordinary: [], charge: [], inscription: []};
   const isLandscape = innerWidth > innerHeight;
 
   $state.transform = null;
@@ -114,6 +118,7 @@
         if (c.divided) item.divided = c.divided;
         if (c.sinister) item.sinister = 1;
         if (c.reversed) item.reversed = 1;
+        if (c.outside) item.outside = c.outside;
         if (c.x || c.y) {
           item.x = c.x;
           item.y = c.y;
@@ -122,6 +127,19 @@
         return item;
       });
     } else delete coa.charges;
+
+    // inscriptions attributes changed
+    if (menu.inscriptions.length) {
+      coa.inscriptions = menu.inscriptions.map(i => {
+        const item = {text: i.text, font: i.font, size: i.size, path: i.path};
+        if (i.bold) item.bold = 1;
+        if (i.italic) item.italic = 1;
+        if (i.color !== "#000000") item.color = i.color;
+        if (i.spacing !== 0) item.spacing = i.spacing;
+        if (i.shadow) item.shadow = i.shadow;
+        return item;
+      });
+    } else delete coa.inscriptions;
   }
 
   function restore() {
@@ -233,18 +251,53 @@
         const {charge, t, t2, t3, p, size} = c;
         const type = getChargeCategory(charge);
         const showStroke = c.stroke !== "none";
-        const stroke = (showStroke && c.stroke)? c.stroke : "#000000";
+        const stroke = showStroke && c.stroke ? c.stroke : "#000000";
         const divided = c.divided || "";
         const sinister = c.sinister || false;
         const reversed = c.reversed || false;
+        const outside = c.outside || "";
         const x = c.x || 0;
         const y = c.y || 0;
         const angle = c.angle || 0;
         if (angle) $state.transform = `rotate(${angle})`;
-        return {charge, type, showStroke, stroke, divided, t, t2, t3, p, size, sinister, reversed, x, y, angle};
+        return {
+          charge,
+          type,
+          showStroke,
+          stroke,
+          divided,
+          t,
+          t2,
+          t3,
+          p,
+          size,
+          sinister,
+          reversed,
+          outside,
+          x,
+          y,
+          angle
+        };
       });
 
       return charges;
+    }
+
+    // Inscriptions
+    menu.inscriptions = getInscriptions();
+    function getInscriptions() {
+      if (!coa.inscriptions) return [];
+      const inscriptions = coa.inscriptions.map(i => {
+        const {text, font, size, shadow} = i;
+        const bold = i.bold || false;
+        const italic = i.italic || false;
+        const color = i.color || "#000000";
+        const spacing = i.spacing || 0;
+        const path = i.path || "M-50 0 L50 0";
+        return {text, font, size, bold, italic, spacing, color, path, shadow};
+      });
+
+      return inscriptions;
     }
 
     function isPattern(string) {
@@ -318,11 +371,26 @@
       x: 0,
       y: 0,
       angle: 0,
-      divided: ""
+      divided: "",
+      outside: ""
     };
     if (charges.data[charge]?.colors > 1) c.t2 = P(0.25) ? selectChargeTincture() : t;
     if (charges.data[charge]?.colors > 2) c.t3 = P(0.5) ? selectChargeTincture() : t;
     menu.charges = [...menu.charges, c];
+  }
+
+  function addInscription() {
+    const i = {
+      text: "Armoria",
+      font: "Cinzel",
+      size: 20,
+      bold: false,
+      italic: false,
+      spacing: 0,
+      color: "#000000",
+      path: "M-50 0 L50 0"
+    };
+    menu.inscriptions = [...menu.inscriptions, i];
   }
 
   if (!("ontouchstart" in window) && (coa.ordinaries || coa.charges)) {
@@ -345,6 +413,12 @@
     {#key coa}
       <COA {coa} i="Edit" />
     {/key}
+
+    {#if $state.selectedPath !== -1}
+      <div class="bottom" transition:fly={{y: 1000, duration: 400}}>
+        <button on:click={() => ($state.selectedPath = -1)}>{$t("editor.unselect")}</button>
+      </div>
+    {/if}
   </div>
 
   <div id="menu" in:fly={{x: isLandscape ? 1000 : 0, y: isLandscape ? 0 : 1000, duration: 1000}}>
@@ -539,13 +613,18 @@
             "charges",
             charge.charge
           )}
+          {#if charge.outside === "above"}
+            <i>[{$t("editor.aboveShield")}]</i>
+          {:else if charge.outside === "below"}
+            <i>[{$t("editor.belowShield")}]</i>
+          {/if}
           <EditorControls bind:els={menu.charges} el={charge} {i} />
         {/if}
       </div>
       {#if section.charge[i]}
         <div class="panel" transition:slide>
           <div class="subsection">
-            {#if coa.division}
+            {#if coa.division && !charge.outside}
               <EditorDivided bind:divided={charge.divided} raster={isRaster(charge.charge)} />
             {/if}
             <EditorCharge
@@ -580,6 +659,9 @@
 
           <div class="subsection">
             <EditorPosition bind:charge />
+            {#if !charge.divided}
+              <EditorOutside bind:outside={charge.outside} />
+            {/if}
           </div>
 
           <div class="subsection">
@@ -589,9 +671,40 @@
       {/if}
     {/each}
 
+    <!-- Inscriptions -->
+    {#each menu.inscriptions as inscription, i}
+      <div
+        class="section"
+        transition:slide
+        class:expanded={section.inscription[i]}
+        on:click={toggleSection("inscription", i)}
+      >
+        {#if $isTextReady}
+          {$t("editor.inscription")}{menu.inscriptions.length > 1 ? ` ${i + 1}` : ""}: {inscription.text}
+          <EditorControls bind:els={menu.inscriptions} el={inscription} {i} />
+        {/if}
+      </div>
+      {#if section.inscription[i]}
+        <div class="panel" transition:slide>
+          <div class="subsection">
+            <EditorInscription bind:inscription />
+          </div>
+
+          <div class="subsection">
+            <EditorShadow bind:shadow={inscription.shadow} />
+          </div>
+
+          <div class="subsection">
+            <EditorPath bind:path={inscription.path} />
+          </div>
+        </div>
+      {/if}
+    {/each}
+
     {#if $isTextReady}
       <div class="buttonLine" on:click={addOrdinary}>{$t("editor.addOrdinary")}</div>
       <div class="buttonLine" on:click={addCharge}>{$t("editor.addCharge")}</div>
+      <div class="buttonLine" on:click={addInscription}>{$t("editor.addInscription")}</div>
     {/if}
   </div>
 </main>
@@ -615,6 +728,26 @@
 
   div.coaContainer {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  div.bottom {
+    position: absolute;
+    bottom: 1em;
+  }
+
+  div.bottom > button {
+    background-color: #11111180;
+    border: none;
+    color: #fff;
+    padding: 0.5em 1em;
+  }
+
+  div.bottom > button:hover {
+    transition: all 0.2s ease-out;
+    background-color: #111111;
   }
 
   #menu {

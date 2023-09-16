@@ -2,7 +2,7 @@
   // @ts-check
   import {shieldPositions} from "data/shields";
   import {drag, transform, getElTransform} from "scripts/drag";
-  import type {Coa, Charge} from "types.ts/coa";
+  import type {Coa, Charge} from "types/coa";
 
   export let coa: Coa;
   export let charge: Charge;
