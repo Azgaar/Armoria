@@ -6,12 +6,12 @@
   import {shield, colors, grad, diaper} from "data/stores";
   import {shieldPaths} from "data/shields";
   import {getTemplate, addPattern, addCharge} from "scripts/getters";
-  import type {Coa} from "types.ts/coa";
+  import type {Coa} from "types/coa";
 
   export let coa: Coa;
   export let border: string;
   export let borderWidth: number;
-  export let type: string | number;
+  export let type: string;
 
   const id = coa.seed || Math.floor(Math.random() * 1e9);
   const {division, ordinaries = [], charges = [], inscriptions = []} = coa;

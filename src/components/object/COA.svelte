@@ -6,10 +6,10 @@
   import Grid from "./../editor/Grid.svelte";
   import Positions from "./../editor/Positions.svelte";
   import Shield from "./Shield.svelte";
-  import type {Coa} from "types.ts/coa";
+  import type {Coa} from "types/coa";
 
   export let coa: Coa;
-  export let i: string | number;
+  export let i: string;
   export let width: string | number = "100%";
   export let height: string | number = "100%";
 

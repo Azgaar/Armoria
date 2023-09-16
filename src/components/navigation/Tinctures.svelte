@@ -7,7 +7,7 @@
   import {camelize} from "scripts/utils";
   import {tooltip} from "scripts/tooltip";
   import {DEFAULT_COLORS, DEFAULT_TINCTURES} from "config/defaults";
-  import type {ChancesObject} from "types.ts/tinctures";
+  import type {ChancesObject} from "types/tinctures";
 
   const addLine = {show: false, name: "", type: "colours", color: "#96C8FA", chance: 3};
   const mandatoryTypes = ["metals", "colours"];
@@ -216,7 +216,12 @@
             <td>{getTinctureName(tinctureName)}</td>
             <td>{$t(`tinctures.${type}`)}</td>
             <td>
-              <input type="color" bind:value={$colors[tinctureName]} data-tooltip={$t("tooltip.changeColor")} use:tooltip />
+              <input
+                type="color"
+                bind:value={$colors[tinctureName]}
+                data-tooltip={$t("tooltip.changeColor")}
+                use:tooltip
+              />
               {#if DEFAULT_COLORS[tinctureName] && $colors[tinctureName] !== DEFAULT_COLORS[tinctureName]}
                 <svg
                   on:click={() => ($colors[tinctureName] = DEFAULT_COLORS[tinctureName])}

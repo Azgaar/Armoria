@@ -66,3 +66,14 @@ interface Shadow {
 
 type Divided = "field" | "division" | "counter";
 type Outside = "above" | "below";
+
+interface Inscription {
+  text: string;
+  font: string;
+  size: number;
+  bold: true;
+  italic: true;
+  spacing: number;
+  color: string;
+  path: string;
+}

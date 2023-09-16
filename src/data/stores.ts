@@ -16,8 +16,8 @@ import {
   DEFAULT_GRID,
   DEFAULT_SHOW_GRID
 } from "config/defaults";
-import type { Tinctures } from "types.ts/tinctures";
-import { validateTinctures } from "./validators";
+import type {Tinctures} from "types/tinctures";
+import {validateTinctures} from "./validators";
 
 export const isTextReady = writable(false);
 
@@ -41,7 +41,20 @@ export const showGrid = writable(options.showGrid);
 export const history = writable([]);
 export const matrices = writable([]);
 export const matrix = writable(0);
-export const state = writable({edit: 0, about: 0, license: 0, tinctures: 0, raster: 0, vector: 0, i: 0, c: 0, view: 0});
+export const state = writable({
+  edit: 0,
+  about: 0,
+  license: 0,
+  tinctures: 0,
+  raster: 0,
+  vector: 0,
+  i: 0,
+  c: 0,
+  view: 0,
+  fonts: 0,
+  selectedPath: -1,
+  pathChangeMode: -1
+});
 
 export const iconedNav = writable(false);
 
@@ -122,7 +135,7 @@ function defineInitialOptions() {
   const grad = stored("grad") || ra(DEFAULT_GRADIENTS);
   const shield = getShieldFromURL() || stored("shield") || rw(shields[rw(shields.types)]);
   const colors = storedObj("colors") || JSON.parse(JSON.stringify(DEFAULT_COLORS));
-  const fonts = storedObj("fonts") || JSON.parse(JSON.stringify(DEFAULT_FONTS));
+  const fonts = (storedObj("fonts") || JSON.parse(JSON.stringify(DEFAULT_FONTS))) as Fonts;
   const border = stored("border") || DEFAULT_BORDER;
   const borderWidth = +stored("borderWidth") || DEFAULT_BORDER_WIDTH;
   const background = stored("background") || DEFAULT_BACKGROUND;

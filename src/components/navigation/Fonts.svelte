@@ -3,9 +3,12 @@
   import {t} from "svelte-i18n";
   import {fade} from "svelte/transition";
   import {fonts, state, message} from "data/stores";
-  import {tooltip} from "scripts/tooltip";
 
-  const newFont = {name: "", type: "local", url: ""};
+  const newFont: {
+    name: string;
+    type: "local" | "web";
+    url?: string;
+  } = {name: "", type: "local", url: ""};
 
   $: lock("fonts", $fonts);
 
@@ -23,44 +26,41 @@
       message.error($t("error.emptyName"));
       return;
     }
+
     if ($fonts[name]) {
       message.error($t("error.notUniqueName"));
       return;
     }
+
     if (type === "web") {
       if (!url) {
         message.error($t("error.emptyFontURL"));
         return;
       }
+
       const font = new FontFace(name, `url(${url})`);
       font.load().then(
         () => {
           document.fonts.add(font);
           $fonts[name] = {url};
-          updateFonts(name);
+          message.info($t("success.fontAdded"));
+          close();
         },
-        (err) => {
+        err => {
+          console.error(err);
           message.error($t("error.loadingFont"));
         }
       );
-    }
-    else {
+    } else {
+      // type === "local"
       $fonts[name] = {};
-      updateFonts(name);
+      message.info($t("success.fontAdded"));
+      close();
     }
   }
 
-  function updateFonts(name) {
-    $fonts = Object.fromEntries(Object.entries($fonts).sort());
+  function close() {
     $state.fonts = 0;
-    $state.currentInscription.font = name;
-    $state.currentInscription = null;
-    message.info($t("success.fontAdded"));
-  }
-
-  function cancel() {
-    $state.fonts = 0;
-    $state.currentInscription = null;
   }
 </script>
 
@@ -73,14 +73,16 @@
       </select>
       <input type="text" placeholder={$t("fonts.name")} bind:value={newFont.name} />
     </div>
+
     {#if newFont.type === "web"}
-    <div transition:fade|local>
-      <input type="text" class="url" placeholder={$t("fonts.url")} bind:value={newFont.url} />
-    </div>
+      <div transition:fade|local>
+        <input type="text" class="url" placeholder={$t("fonts.url")} bind:value={newFont.url} />
+      </div>
     {/if}
+
     <div>
       <button on:click={confirm}>{$t("fonts.confirm")}</button>
-      <button on:click={cancel}>{$t("fonts.cancel")}</button>
+      <button on:click={close}>{$t("fonts.cancel")}</button>
     </div>
   </div>
 </div>

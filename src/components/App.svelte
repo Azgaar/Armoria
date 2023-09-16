@@ -1,6 +1,6 @@
 <script lang="ts">
   // @ts-check
-  import {t, locale} from "svelte-i18n";
+  import {locale} from "svelte-i18n";
   import WindowEvents from "./WindowEvents.svelte";
   import Navbar from "./navigation/header/Navbar.svelte";
   import About from "./navigation/About.svelte";
@@ -33,19 +33,19 @@
   $: [quantity, width, height] = defineGallerySize($size);
   $: handleMatrixChange($matrix, $size);
 
-  function handleMatrixChange() {
+  function handleMatrixChange(matrix: number, size: number) {
     const l = $history.length;
 
     // reroll is clicked
-    if (!$matrices[$matrix]) {
+    if (!$matrices[matrix]) {
       if ($state.edit) {
         // generate new coa
-        $matrices[$matrix] = $matrices[$matrix - 1].slice();
-        $matrices[$matrix][$state.i] = l;
+        $matrices[matrix] = $matrices[matrix - 1].slice();
+        $matrices[matrix][$state.i] = l;
         seed = undefined; // use once
       } else {
         // reroll gallery
-        $matrices[$matrix] = Array.from({length: quantity}, (_, i) => l + i++);
+        $matrices[matrix] = Array.from({length: quantity}, (_, i) => l + i++);
       }
 
       // change shield if it's not locked (manually selected)
@@ -55,14 +55,14 @@
     }
 
     // add additional coas to matrix if size is smaller
-    if ($matrices[$matrix].length < quantity) {
-      const m = $matrices[$matrix];
-      $matrices[$matrix] = [...Array(quantity).keys()].map(i => (m[i] !== undefined ? m[i] : l + i));
+    if ($matrices[matrix].length < quantity) {
+      const m = $matrices[matrix];
+      $matrices[matrix] = [...Array(quantity).keys()].map(i => (m[i] !== undefined ? m[i] : l + i));
     }
-    gallery = $matrices[$matrix].slice(0, quantity); // trim gallery if size was bigger
+    gallery = $matrices[matrix].slice(0, quantity); // trim gallery if size was bigger
 
     // on coa edit or view mode
-    if ($state.edit || $state.view) $state.c = $matrices[$matrix][$state.i];
+    if ($state.edit || $state.view) $state.c = $matrices[matrix][$state.i];
   }
 
   function loadFonts() {

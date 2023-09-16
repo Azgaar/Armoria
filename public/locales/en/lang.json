@@ -348,7 +348,8 @@
       "control": "Control",
       "shadow": "Shadow",
       "blur": "Blur"
-    }
+    },
+    "unselect": "Unselect"
   },
   "patterns": {
     "barry": "Barry",

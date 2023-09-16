@@ -251,7 +251,7 @@
         const {charge, t, t2, t3, p, size} = c;
         const type = getChargeCategory(charge);
         const showStroke = c.stroke !== "none";
-        const stroke = (showStroke && c.stroke)? c.stroke : "#000000";
+        const stroke = showStroke && c.stroke ? c.stroke : "#000000";
         const divided = c.divided || "";
         const sinister = c.sinister || false;
         const reversed = c.reversed || false;
@@ -260,7 +260,24 @@
         const y = c.y || 0;
         const angle = c.angle || 0;
         if (angle) $state.transform = `rotate(${angle})`;
-        return {charge, type, showStroke, stroke, divided, t, t2, t3, p, size, sinister, reversed, outside, x, y, angle};
+        return {
+          charge,
+          type,
+          showStroke,
+          stroke,
+          divided,
+          t,
+          t2,
+          t3,
+          p,
+          size,
+          sinister,
+          reversed,
+          outside,
+          x,
+          y,
+          angle
+        };
       });
 
       return charges;
@@ -396,6 +413,12 @@
     {#key coa}
       <COA {coa} i="Edit" />
     {/key}
+
+    {#if $state.selectedPath !== -1}
+      <div class="bottom" transition:fly={{y: 1000, duration: 400}}>
+        <button on:click={() => ($state.selectedPath = -1)}>{$t("editor.unselect")}</button>
+      </div>
+    {/if}
   </div>
 
   <div id="menu" in:fly={{x: isLandscape ? 1000 : 0, y: isLandscape ? 0 : 1000, duration: 1000}}>
@@ -637,7 +660,7 @@
           <div class="subsection">
             <EditorPosition bind:charge />
             {#if !charge.divided}
-              <EditorOutside bind:outside={charge.outside}/>
+              <EditorOutside bind:outside={charge.outside} />
             {/if}
           </div>
 
@@ -650,7 +673,12 @@
 
     <!-- Inscriptions -->
     {#each menu.inscriptions as inscription, i}
-      <div class="section" transition:slide class:expanded={section.inscription[i]} on:click={toggleSection("inscription", i)}>
+      <div
+        class="section"
+        transition:slide
+        class:expanded={section.inscription[i]}
+        on:click={toggleSection("inscription", i)}
+      >
         {#if $isTextReady}
           {$t("editor.inscription")}{menu.inscriptions.length > 1 ? ` ${i + 1}` : ""}: {inscription.text}
           <EditorControls bind:els={menu.inscriptions} el={inscription} {i} />
@@ -700,6 +728,26 @@
 
   div.coaContainer {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  div.bottom {
+    position: absolute;
+    bottom: 1em;
+  }
+
+  div.bottom > button {
+    background-color: #11111180;
+    border: none;
+    color: #fff;
+    padding: 0.5em 1em;
+  }
+
+  div.bottom > button:hover {
+    transition: all 0.2s ease-out;
+    background-color: #111111;
   }
 
   #menu {

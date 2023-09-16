@@ -2,7 +2,12 @@ import {get} from "svelte/store";
 import {changes, grid, shield} from "data/stores";
 import {shieldPositions, shieldSize} from "data/shields";
 
-export function drag(event, charge, coa, options={move: true, resize: true, rotate: true, stop: null}) {
+export function drag(
+  event,
+  charge,
+  coa,
+  options = {move: true, resize: true, rotate: true, onMove: undefined, onEnd: undefined}
+) {
   const el = event.currentTarget;
   const x0 = event.x;
   const y0 = event.y;
@@ -34,7 +39,7 @@ export function drag(event, charge, coa, options={move: true, resize: true, rota
     charge.y = Math.round(dy / gridSize) * gridSize;
     setGroupTransform(el, charge);
 
-    if (typeof options.move === "function") options.move(event, charge);
+    if (options.onMove) options.onMove(event, charge);
   }
 
   function resize(event) {
@@ -88,7 +93,7 @@ export function drag(event, charge, coa, options={move: true, resize: true, rota
     document.removeEventListener("mousemove", rotate);
     document.body.style.cursor = "auto";
 
-    if (typeof options.stop === "function") options.stop(charge);
+    if (options.onEnd) options.onEnd(charge);
     changes.add(JSON.stringify(coa));
   }
 }

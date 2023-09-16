@@ -4,23 +4,9 @@
   import {fonts, state} from "data/stores";
   import {tooltip} from "scripts/tooltip";
   import Switch from "./Switch.svelte";
+  import type {Inscription} from "types/coa";
 
-  interface IInscription {
-    text: string;
-    font: string;
-    size: number;
-    bold: true;
-    italic: true;
-    spacing: number;
-    color: string;
-    path: string;
-  }
-  export let inscription: IInscription;
-
-  function addFont() {
-    $state.fonts = 1;
-    $state.currentInscription = inscription;
-  }
+  export let inscription: Inscription;
 </script>
 
 <span data-tooltip={$t("tooltip.inscriptions.text")} use:tooltip>
@@ -35,7 +21,8 @@
       <option value={font} style="font-family: {font};">{font}</option>
     {/each}
   </select>
-  <button on:click={addFont} data-tooltip={$t("tooltip.inscriptions.addFont")} use:tooltip>
+
+  <button on:click={() => ($state.fonts = 1)} data-tooltip={$t("tooltip.inscriptions.addFont")} use:tooltip>
     <svg class="icon">
       <use href="#plus-icon" />
     </svg>
