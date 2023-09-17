@@ -21,6 +21,7 @@
     "border": "Vora",
     "background": "Fons",
     "scale": "Escala",
+    "zoom": "Zoom",
     "width": "Amplària",
     "color": "Color",
     "downloadSVG": "Descarregar SVG",
@@ -166,6 +167,7 @@
     "randomColor": "Usar color aleatori",
     "background": "Color del fons",
     "scale": "La grandària de la imatge descarregada, 1 és la grandària per defecte, 2 és el doble de grandària, etc.",
+    "zoom": "Zoom level",
     "stroke": "Traç de l'element. Marcar per a renderitzar i seleccionar un color",
     "aboveCharges": "Clicar per a mostrar damunt de les figures",
     "size": "Grandària de l'element en percentatges",
@@ -175,7 +177,20 @@
     "showGrid": "Mostra la reixeta",
     "positions": "Punts en els quals es pot col·locar una figura",
     "sinister": "Gira la figura a l'esquerra",
-    "reversed": "Torna la figura boca avall"
+    "reversed": "Torna la figura boca avall",
+    "outsideShield": "Put charge outside of the shield",
+    "inscriptions": {
+      "text": "Text to be displayed (use '|' as line separator)",
+      "font": "Font name",
+      "addFont": "Add font",
+      "size": "Font size",
+      "spacing": "Spacing between letters (can be negative)",
+      "color": "Font color",
+      "path": "Shape along which the text will be rendered (SVG path)",
+      "shadow": "Add a shadow to the text",
+      "shadowBlur": "Blur radius in pixels",
+      "shadowColor": "Shadow color"
+    }
   },
   "error": {
     "copyToClipboard": "No es va poder copiar al portapapers!",
@@ -186,7 +201,10 @@
     "notAnImage": "L'arxiu no és una imatge!",
     "notSvgOrText": "L'arxiu ha de ser text o svg!",
     "notUniqueName": "El nom ha de ser id únic!",
-    "incorrectSvg": "L'arxiu ha de ser un svg preparat. Descàrrega la plantilla per a orientació!"
+    "emptyName": "Name is empty!",
+    "incorrectSvg": "L'arxiu ha de ser un svg preparat. Descàrrega la plantilla per a orientació!",
+    "emptyFontURL": "URL is empty!",
+    "loadingFont": "Font cannot be loaded!"
   },
   "success": {
     "copyEditLink": "L'enllaç de l'escut d'armes s'ha copiat al teu portapapers",
@@ -194,6 +212,7 @@
     "copyCoaString": "La cadena codificada de l'escut d'armes s'ha copiat al teu portapapers",
     "install": "L'aplicació Armoria està instal·lada",
     "tinctureAdded": "Color afegit",
+    "fontAdded": "Font is added",
     "chargeAdded": "La figura s'ha afegit"
   },
   "info": {
@@ -204,6 +223,7 @@
     "tipUploadImageSize": "Ajusta la imatge al rectangle per al millor resultat"
   },
   "about": {
+    "title": "Armoria: heraldry generator and editor by Azgaar",
     "tutorial": "Tutorial",
     "discord": "Discord",
     "gitHub": "GitHub",
@@ -254,10 +274,20 @@
     "chance": "Probabilitat",
     "remove": "Eliminar"
   },
+  "fonts": {
+    "local": "Local",
+    "web": "Web",
+    "name": "Name",
+    "url": "URL",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
   "editor": {
     "ordinary": "Peces",
+    "inscription": "Inscription",
     "addOrdinary": "Afegir peça",
     "addCharge": "Afegir figura",
+    "addInscription": "Add inscription",
     "type": "Tipus",
     "tincture": "Tintura",
     "pattern": "Patró",
@@ -292,10 +322,34 @@
     "positions": "Posicions",
     "sinister": "Sinistrat",
     "reversed": "Invertit",
+    "outsideShield": "Outside",
+    "notOutside": "No (standard)",
+    "aboveShield": "above the shield",
+    "belowShield": "below the shield",
     "clone": "Clonar element",
     "backward": "Manar cap endarrere",
     "forward": "Portar cap avant",
-    "remove": "Remoure element"
+    "remove": "Remoure element",
+    "inscriptions": {
+      "text": "Text",
+      "font": "Font",
+      "size": "Size",
+      "bold": "Bold",
+      "italic": "Italic",
+      "spacing": "Spacing",
+      "color": "Color",
+      "path": "Path",
+      "line": "Line",
+      "curve": "Curve",
+      "custom": "Custom",
+      "all": "All",
+      "start": "Start",
+      "end": "End",
+      "control": "Control",
+      "shadow": "Shadow",
+      "blur": "Blur"
+    },
+    "unselect": "Unselect"
   },
   "patterns": {
     "barry": "Faixes",
@@ -368,6 +422,11 @@
     "moonInCrescent": "Moon In Crescent",
     "crescent": "Creixent",
     "fountain": "Font",
+    "mantle": "Mantle",
+    "ribbon1": "Ribbon1",
+    "ribbon2": "Ribbon2",
+    "ribbon3": "Ribbon3",
+    "ribbon4": "Ribbon4",
     "crossHummetty": "Creu grega",
     "crossVoided": "Creu buida",
     "crossPattee": "Creu puntada",
@@ -662,20 +721,25 @@
   "categories": {
     "conventional": "Convencional",
     "crosses": "Creus",
-    "animals": "Animals",
-    "animalHeads": "Caps d'animals",
+    "beasts": "Beasts",
+    "beastHeads": "Beast heads",
     "birds": "Ocells",
-    "aquatic": "Aquàtic",
-    "seafaring": "Navegació",
-    "fantastic": "Fantàstic",
+    "reptiles": "Reptiles",
+    "bugs": "Bugs",
+    "fishes": "Fishes",
+    "molluscs": "Molluscs",
     "plants": "Plantes",
+    "fantastic": "Fantàstic",
     "agriculture": "Agricultura",
     "arms": "Armes",
     "bodyparts": "Parts del cos",
     "people": "Persones",
+    "seafaring": "Navegació",
     "architecture": "Arquitectura",
+    "tools": "Tools",
     "miscellaneous": "Variat",
     "inescutcheon": "Escusó",
+    "ornaments": "Ornaments",
     "uploaded": "Pujades"
   },
   "divisions": {
