@@ -21,6 +21,7 @@
     "border": "Rub",
     "background": "Pozadina",
     "scale": "Skaliranje",
+    "zoom": "Zoom",
     "width": "Širina",
     "color": "Boja",
     "downloadSVG": "Preuzmi SVG",
@@ -166,6 +167,7 @@
     "randomColor": "Koristi nasumičnu boju",
     "background": "Boja pozadine prozora",
     "scale": "Veličina preuzete slike, 1 je zadana veličina, 2 - 2x veličina itd.",
+    "zoom": "Zoom level",
     "stroke": "Obrub elementa. Označite za prikaz i odaberite boju",
     "aboveCharges": "Check to render ordinary above charges",
     "size": "Veličina elementa u postocima",
@@ -175,7 +177,20 @@
     "showGrid": "Prikaži mrežu",
     "positions": "Points on shield to place a charge",
     "sinister": "Turn charge to the left",
-    "reversed": "Show charge upside down"
+    "reversed": "Show charge upside down",
+    "outsideShield": "Put charge outside of the shield",
+    "inscriptions": {
+      "text": "Text to be displayed (use '|' as line separator)",
+      "font": "Font name",
+      "addFont": "Add font",
+      "size": "Font size",
+      "spacing": "Spacing between letters (can be negative)",
+      "color": "Font color",
+      "path": "Shape along which the text will be rendered (SVG path)",
+      "shadow": "Add a shadow to the text",
+      "shadowBlur": "Blur radius in pixels",
+      "shadowColor": "Shadow color"
+    }
   },
   "error": {
     "copyToClipboard": "Nije moguće kopirati u međuspremnik!",
@@ -186,7 +201,10 @@
     "notAnImage": "Datoteka nije slika!",
     "notSvgOrText": "Datoteka mora biti formata text ili svg!",
     "notUniqueName": "Ime mora biti jedinstveni ID!",
-    "incorrectSvg": "File must be prepared svg. Download template for guidance!"
+    "emptyName": "Name is empty!",
+    "incorrectSvg": "File must be prepared svg. Download template for guidance!",
+    "emptyFontURL": "URL is empty!",
+    "loadingFont": "Font cannot be loaded!"
   },
   "success": {
     "copyEditLink": "Poveznica grba je kopirana u vaš međuspremnik",
@@ -194,6 +212,7 @@
     "copyCoaString": "Grb kao tekstualni niz je kopiran u vaš međuspremnik",
     "install": "Aplikacija Armoria je instalirana",
     "tinctureAdded": "Dodana je boja",
+    "fontAdded": "Font is added",
     "chargeAdded": "Charge is added"
   },
   "info": {
@@ -204,6 +223,7 @@
     "tipUploadImageSize": "Za najbolji rezultat postavite sliku u pravokutnik"
   },
   "about": {
+    "title": "Armoria: heraldry generator and editor by Azgaar",
     "tutorial": "Tutorial",
     "discord": "Discord",
     "gitHub": "GitHub",
@@ -254,10 +274,20 @@
     "chance": "Vjerojatnost",
     "remove": "Ukloni"
   },
+  "fonts": {
+    "local": "Local",
+    "web": "Web",
+    "name": "Name",
+    "url": "URL",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
   "editor": {
     "ordinary": "Ordinary",
+    "inscription": "Inscription",
     "addOrdinary": "Add ordinary",
     "addCharge": "Add charge",
+    "addInscription": "Add inscription",
     "type": "Vrsta",
     "tincture": "Tinktura",
     "pattern": "Krzno",
@@ -292,10 +322,34 @@
     "positions": "Pozicije",
     "sinister": "Sinister",
     "reversed": "Obrnuto",
+    "outsideShield": "Outside",
+    "notOutside": "No (standard)",
+    "aboveShield": "above the shield",
+    "belowShield": "below the shield",
     "clone": "Kloniraj element",
     "backward": "Send backward",
     "forward": "Bring forward",
-    "remove": "Ukloni element"
+    "remove": "Ukloni element",
+    "inscriptions": {
+      "text": "Text",
+      "font": "Font",
+      "size": "Size",
+      "bold": "Bold",
+      "italic": "Italic",
+      "spacing": "Spacing",
+      "color": "Color",
+      "path": "Path",
+      "line": "Line",
+      "curve": "Curve",
+      "custom": "Custom",
+      "all": "All",
+      "start": "Start",
+      "end": "End",
+      "control": "Control",
+      "shadow": "Shadow",
+      "blur": "Blur"
+    },
+    "unselect": "Unselect"
   },
   "patterns": {
     "barry": "Barry",
@@ -368,6 +422,11 @@
     "moonInCrescent": "Moon In Crescent",
     "crescent": "Polumjesec",
     "fountain": "Fontana",
+    "mantle": "Mantle",
+    "ribbon1": "Ribbon1",
+    "ribbon2": "Ribbon2",
+    "ribbon3": "Ribbon3",
+    "ribbon4": "Ribbon4",
     "crossHummetty": "Grčki križ",
     "crossVoided": "Šuplji križ",
     "crossPattee": "Plosnati križ",
@@ -662,20 +721,25 @@
   "categories": {
     "conventional": "Conventional",
     "crosses": "Križevi",
-    "animals": "Životinje",
-    "animalHeads": "Životinjske glave",
+    "beasts": "Beasts",
+    "beastHeads": "Beast heads",
     "birds": "Ptice",
-    "aquatic": "Vodeno",
-    "seafaring": "Pomorstvo",
-    "fantastic": "Fantastično",
+    "reptiles": "Reptiles",
+    "bugs": "Bugs",
+    "fishes": "Fishes",
+    "molluscs": "Molluscs",
     "plants": "Biljke",
+    "fantastic": "Fantastično",
     "agriculture": "Poljoprivreda",
     "arms": "Oružje",
     "bodyparts": "Dijelovi tijela",
     "people": "Ljudi",
+    "seafaring": "Pomorstvo",
     "architecture": "Arhitektura",
+    "tools": "Tools",
     "miscellaneous": "Razno",
     "inescutcheon": "Štit",
+    "ornaments": "Ornaments",
     "uploaded": "Učitano"
   },
   "divisions": {

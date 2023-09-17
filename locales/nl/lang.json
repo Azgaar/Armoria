@@ -21,6 +21,7 @@
     "border": "Rand",
     "background": "Achtergrond",
     "scale": "Schaal",
+    "zoom": "Zoom",
     "width": "Breedte",
     "color": "Kleur",
     "downloadSVG": "SVG downloaden",
@@ -166,6 +167,7 @@
     "randomColor": "Willekeurige kleur gebruiken",
     "background": "Achtergrondkleur van venster",
     "scale": "Grootte van gedownloade afbeelding, 1 is standaard grootte, 2 - dubbele grootte, enz.",
+    "zoom": "Zoom level",
     "stroke": "Element lijn. Selecteer om te renderen en een kleur te selecteren",
     "aboveCharges": "Selecteer om het herautstuk boven wapenfiguren",
     "size": "Element grootte in procenten",
@@ -175,7 +177,20 @@
     "showGrid": "Toon raster",
     "positions": "Punten op het schild om herautstuk te plaatsen",
     "sinister": "Draai herautstuk linksom",
-    "reversed": "Geef herautstuk ondersteboven weer"
+    "reversed": "Geef herautstuk ondersteboven weer",
+    "outsideShield": "Put charge outside of the shield",
+    "inscriptions": {
+      "text": "Text to be displayed (use '|' as line separator)",
+      "font": "Font name",
+      "addFont": "Add font",
+      "size": "Font size",
+      "spacing": "Spacing between letters (can be negative)",
+      "color": "Font color",
+      "path": "Shape along which the text will be rendered (SVG path)",
+      "shadow": "Add a shadow to the text",
+      "shadowBlur": "Blur radius in pixels",
+      "shadowColor": "Shadow color"
+    }
   },
   "error": {
     "copyToClipboard": "Kan niet naar het klembord kopiëren!",
@@ -186,7 +201,10 @@
     "notAnImage": "Bestand is geen afbeelding!",
     "notSvgOrText": "Bestand moet tekst of svg zijn!",
     "notUniqueName": "Naam moet een uniek ID zijn!",
-    "incorrectSvg": "Bestand moet voorbereid SVG-bestand zijn. Download sjabloon voor instructie!"
+    "emptyName": "Name is empty!",
+    "incorrectSvg": "Bestand moet voorbereid SVG-bestand zijn. Download sjabloon voor instructie!",
+    "emptyFontURL": "URL is empty!",
+    "loadingFont": "Font cannot be loaded!"
   },
   "success": {
     "copyEditLink": "Koppeling naar wapenschild is gekopieerd naar uw klembord",
@@ -194,6 +212,7 @@
     "copyCoaString": "Gecodeerde wapen string is gekopieerd naar uw klembord",
     "install": "Armoria applicatie is geïnstalleerd",
     "tinctureAdded": "Kleur is toegevoegd",
+    "fontAdded": "Font is added",
     "chargeAdded": "Herautstuk is toegevoegd"
   },
   "info": {
@@ -204,6 +223,7 @@
     "tipUploadImageSize": "Plaats de afbeelding in de rechthoek voor het beste resultaat"
   },
   "about": {
+    "title": "Armoria: heraldry generator and editor by Azgaar",
     "tutorial": "Tutorial",
     "discord": "Discord",
     "gitHub": "GitHub",
@@ -254,10 +274,20 @@
     "chance": "Kans",
     "remove": "Verwijder"
   },
+  "fonts": {
+    "local": "Local",
+    "web": "Web",
+    "name": "Name",
+    "url": "URL",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
   "editor": {
     "ordinary": "Wapenfiguur",
+    "inscription": "Inscription",
     "addOrdinary": "Voeg wapenfiguur toe",
     "addCharge": "Voeg herautstuk toe",
+    "addInscription": "Add inscription",
     "type": "Type",
     "tincture": "Tinctuur",
     "pattern": "Patroon",
@@ -292,10 +322,34 @@
     "positions": "Posities",
     "sinister": "Links",
     "reversed": "Omgekeerd",
+    "outsideShield": "Outside",
+    "notOutside": "No (standard)",
+    "aboveShield": "above the shield",
+    "belowShield": "below the shield",
     "clone": "Dupliceer element",
     "backward": "Naar achteren sturen",
     "forward": "Naar voren brengen",
-    "remove": "Element verwijderen"
+    "remove": "Element verwijderen",
+    "inscriptions": {
+      "text": "Text",
+      "font": "Font",
+      "size": "Size",
+      "bold": "Bold",
+      "italic": "Italic",
+      "spacing": "Spacing",
+      "color": "Color",
+      "path": "Path",
+      "line": "Line",
+      "curve": "Curve",
+      "custom": "Custom",
+      "all": "All",
+      "start": "Start",
+      "end": "End",
+      "control": "Control",
+      "shadow": "Shadow",
+      "blur": "Blur"
+    },
+    "unselect": "Unselect"
   },
   "patterns": {
     "barry": "Gebalkt",
@@ -368,6 +422,11 @@
     "moonInCrescent": "Moon In Crescent",
     "crescent": "Halve Maan",
     "fountain": "Bron",
+    "mantle": "Mantle",
+    "ribbon1": "Ribbon1",
+    "ribbon2": "Ribbon2",
+    "ribbon3": "Ribbon3",
+    "ribbon4": "Ribbon4",
     "crossHummetty": "Grieks Kruis",
     "crossVoided": "Doorboord Kruis",
     "crossPattee": "Croix Pattée",
@@ -662,20 +721,25 @@
   "categories": {
     "conventional": "Conventioneel",
     "crosses": "Kruisen",
-    "animals": "Dieren",
-    "animalHeads": "Dierenkoppen",
+    "beasts": "Beasts",
+    "beastHeads": "Beast heads",
     "birds": "Vogels",
-    "aquatic": "Aquatisch",
-    "seafaring": "Zeevarend",
-    "fantastic": "Fantastisch",
+    "reptiles": "Reptiles",
+    "bugs": "Bugs",
+    "fishes": "Fishes",
+    "molluscs": "Molluscs",
     "plants": "Planten",
+    "fantastic": "Fantastisch",
     "agriculture": "Agrarisch",
     "arms": "Wapens",
     "bodyparts": "Lichaamsdelen",
     "people": "Personen",
+    "seafaring": "Zeevarend",
     "architecture": "Architectuur",
+    "tools": "Tools",
     "miscellaneous": "Diversen",
     "inescutcheon": "Wapenschild",
+    "ornaments": "Ornaments",
     "uploaded": "Geüpload"
   },
   "divisions": {

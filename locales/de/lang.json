@@ -21,6 +21,7 @@
     "border": "Rahmen",
     "background": "Hintergrund",
     "scale": "Skalierung",
+    "zoom": "Zoom",
     "width": "Breite",
     "color": "Farbe",
     "downloadSVG": "SVG-Download",
@@ -166,6 +167,7 @@
     "randomColor": "Zufällige Farbe verwenden",
     "background": "Fensterhintergrundfarbe",
     "scale": "Heruntergeladene Bildgröße, 1 ist die Standardgröße, 2 - 2x Größe, etc.",
+    "zoom": "Zoom level",
     "stroke": "Element-Kontur. Auswählen, um eine Anzeigefarbearbe zu wählen",
     "aboveCharges": "Auswählen, um Heroldsbild vor der Wappenfigur zu rendern",
     "size": "Elementgröße in Prozent",
@@ -175,7 +177,20 @@
     "showGrid": "Raster einblenden",
     "positions": "Ankerpunkte um Wappenfigur zu platzieren",
     "sinister": "Wappenfigur nach links drehen",
-    "reversed": "Wappenfigur horizontal drehen"
+    "reversed": "Wappenfigur horizontal drehen",
+    "outsideShield": "Put charge outside of the shield",
+    "inscriptions": {
+      "text": "Text to be displayed (use '|' as line separator)",
+      "font": "Font name",
+      "addFont": "Add font",
+      "size": "Font size",
+      "spacing": "Spacing between letters (can be negative)",
+      "color": "Font color",
+      "path": "Shape along which the text will be rendered (SVG path)",
+      "shadow": "Add a shadow to the text",
+      "shadowBlur": "Blur radius in pixels",
+      "shadowColor": "Shadow color"
+    }
   },
   "error": {
     "copyToClipboard": "Kann nicht in die Zwischenablage kopiert werden!",
@@ -186,7 +201,10 @@
     "notAnImage": "Die Datei ist kein gültiges Bild!",
     "notSvgOrText": "Datei muss eine Textdatei oder eine svg Datei sein!",
     "notUniqueName": "Der Name muss eindeutig sein. Er darf nicht mehrfach verwendet werden!",
-    "incorrectSvg": "Die Datei muss eine vorbereitetes Svg-Datei sein. Für mehr Informationen das Template herunterladen!"
+    "emptyName": "Name is empty!",
+    "incorrectSvg": "Die Datei muss eine vorbereitetes Svg-Datei sein. Für mehr Informationen das Template herunterladen!",
+    "emptyFontURL": "URL is empty!",
+    "loadingFont": "Font cannot be loaded!"
   },
   "success": {
     "copyEditLink": "Wappen Link wurde in die Zwischenablage kopiert",
@@ -194,6 +212,7 @@
     "copyCoaString": "Codierter COA-String wurde in die Zwischenablage kopiert",
     "install": "Armoria Anwendung wurde installiert",
     "tinctureAdded": "Farbe wurde hinzugefügt",
+    "fontAdded": "Font is added",
     "chargeAdded": "Wappenfigur wurde hinzugefügt"
   },
   "info": {
@@ -204,6 +223,7 @@
     "tipUploadImageSize": "Bild an das Rechteck anpassen für ein optimales Ergebnis"
   },
   "about": {
+    "title": "Armoria: heraldry generator and editor by Azgaar",
     "tutorial": "Anleitungen",
     "discord": "Discord",
     "gitHub": "GitHub",
@@ -254,10 +274,20 @@
     "chance": "Chance",
     "remove": "Löschen"
   },
+  "fonts": {
+    "local": "Local",
+    "web": "Web",
+    "name": "Name",
+    "url": "URL",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
   "editor": {
     "ordinary": "Heroldsbild",
+    "inscription": "Inscription",
     "addOrdinary": "Heroldsbild hinzufügen",
     "addCharge": "Wappenfigur hinzufügen",
+    "addInscription": "Add inscription",
     "type": "Typ",
     "tincture": "Tingierung",
     "pattern": "Muster",
@@ -292,10 +322,34 @@
     "positions": "Positionen",
     "sinister": "Spiegelung",
     "reversed": "Horizontale Spiegelung",
+    "outsideShield": "Outside",
+    "notOutside": "No (standard)",
+    "aboveShield": "above the shield",
+    "belowShield": "below the shield",
     "clone": "Element duplizieren",
     "backward": "Eine Ebene nach hinten",
     "forward": "Eine Ebene nach vorne",
-    "remove": "Element entfernen"
+    "remove": "Element entfernen",
+    "inscriptions": {
+      "text": "Text",
+      "font": "Font",
+      "size": "Size",
+      "bold": "Bold",
+      "italic": "Italic",
+      "spacing": "Spacing",
+      "color": "Color",
+      "path": "Path",
+      "line": "Line",
+      "curve": "Curve",
+      "custom": "Custom",
+      "all": "All",
+      "start": "Start",
+      "end": "End",
+      "control": "Control",
+      "shadow": "Shadow",
+      "blur": "Blur"
+    },
+    "unselect": "Unselect"
   },
   "patterns": {
     "barry": "Balken",
@@ -368,6 +422,11 @@
     "moonInCrescent": "Moon In Crescent",
     "crescent": "Halbmond",
     "fountain": "Brunnen",
+    "mantle": "Mantle",
+    "ribbon1": "Ribbon1",
+    "ribbon2": "Ribbon2",
+    "ribbon3": "Ribbon3",
+    "ribbon4": "Ribbon4",
     "crossHummetty": "Gemeines Kreuz",
     "crossVoided": "Balkenkreuz",
     "crossPattee": "Tatzenkreuz",
@@ -662,20 +721,25 @@
   "categories": {
     "conventional": "Traditionelle",
     "crosses": "Kreuze",
-    "animals": "Tiere",
-    "animalHeads": "Tierköpfe",
+    "beasts": "Beasts",
+    "beastHeads": "Beast heads",
     "birds": "Vögel",
-    "aquatic": "Meerestiere",
-    "seafaring": "Seefahrt",
-    "fantastic": "Fantastische Tierwesen",
+    "reptiles": "Reptiles",
+    "bugs": "Bugs",
+    "fishes": "Fishes",
+    "molluscs": "Molluscs",
     "plants": "Pflanzen",
+    "fantastic": "Fantastische Tierwesen",
     "agriculture": "Landwirtschaft",
     "arms": "Waffen",
     "bodyparts": "Körperteil",
     "people": "Menschen",
+    "seafaring": "Seefahrt",
     "architecture": "Bauwerke",
+    "tools": "Tools",
     "miscellaneous": "Verschiedenes",
     "inescutcheon": "Wappenschild",
+    "ornaments": "Ornaments",
     "uploaded": "Hochgeladen"
   },
   "divisions": {
