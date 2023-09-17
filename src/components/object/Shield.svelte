@@ -54,12 +54,10 @@
   {/if}
 
   <style>
-    g.secondary,
-    path.secondary {
+    .secondary {
       fill: var(--secondary);
     }
-    g.tertiary,
-    path.tertiary {
+    .tertiary {
       fill: var(--tertiary);
     }
   </style>

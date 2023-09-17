@@ -104,8 +104,9 @@ export const generate = function (providedSeed) {
     if (chargeData.natural && chargeData.natural !== t && chargeData.natural !== tOrdinary) t = chargeData.natural;
 
     const item = {charge: charge, t, p};
-    if (chargeData.colors > 1) item.t2 = P(0.25) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
-    if (chargeData.colors > 2) item.t3 = P(0.5) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
+    const colors = chargeData.colors || 1;
+    if (colors > 1) item.t2 = P(0.25) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
+    if (colors > 2 && item.t2) item.t3 = P(0.5) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
     coa.charges = [item];
 
     if (p === "ABCDEFGHIKL" && P(0.95)) {
