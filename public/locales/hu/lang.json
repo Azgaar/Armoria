@@ -21,6 +21,7 @@
     "border": "Ráma",
     "background": "Háttér",
     "scale": "Méretezés",
+    "zoom": "Zoom",
     "width": "Vastagság",
     "color": "Szín",
     "downloadSVG": "Letöltés SVG-ként",
@@ -166,6 +167,7 @@
     "randomColor": "Véletlenszerű szín használata",
     "background": "Ablak háttérszíne",
     "scale": "Letöltött képméret, 1 az alapértelmezett méret, 2 - 2x méret, stb.",
+    "zoom": "Zoom level",
     "stroke": "Elemvonás. Aktiválja a renderelést és válasszon ki egy színt",
     "aboveCharges": "Kattintson, hogy a mesteralak a címerábrák felett legyen renderelve",
     "size": "Az elem mérete százalékban",
@@ -175,7 +177,20 @@
     "showGrid": "Rács megjelenítése",
     "positions": "A pajzson lévő pontok címerábra elhelyezéséhez",
     "sinister": "Címerábra megfordítása függőlegesen",
-    "reversed": "Címerábra megfordítása vízszintesen"
+    "reversed": "Címerábra megfordítása vízszintesen",
+    "outsideShield": "Put charge outside of the shield",
+    "inscriptions": {
+      "text": "Text to be displayed (use '|' as line separator)",
+      "font": "Font name",
+      "addFont": "Add font",
+      "size": "Font size",
+      "spacing": "Spacing between letters (can be negative)",
+      "color": "Font color",
+      "path": "Shape along which the text will be rendered (SVG path)",
+      "shadow": "Add a shadow to the text",
+      "shadowBlur": "Blur radius in pixels",
+      "shadowColor": "Shadow color"
+    }
   },
   "error": {
     "copyToClipboard": "Nem lehet vágólapra másolni!",
@@ -186,7 +201,10 @@
     "notAnImage": "A fájl nem kép!",
     "notSvgOrText": "A fájlnak szövegnek vagy svg-nek kell lennie!",
     "notUniqueName": "A névnek egyedi azonosítónak kell lennie!",
-    "incorrectSvg": "A fájlnak előkészített svg-nek kell lennie. Töltse le a sablont útmutatásért!"
+    "emptyName": "Name is empty!",
+    "incorrectSvg": "A fájlnak előkészített svg-nek kell lennie. Töltse le a sablont útmutatásért!",
+    "emptyFontURL": "URL is empty!",
+    "loadingFont": "Font cannot be loaded!"
   },
   "success": {
     "copyEditLink": "A címer linkje a vágólapra másolva",
@@ -194,6 +212,7 @@
     "copyCoaString": "Kódolt címer stringje a vágólapra másolva",
     "install": "Az Armoria applikáció telepítve",
     "tinctureAdded": "Szín hozzáadva",
+    "fontAdded": "Font is added",
     "chargeAdded": "Címerábra hozzáadva"
   },
   "info": {
@@ -204,6 +223,7 @@
     "tipUploadImageSize": "A legjobb eredmény érdekében illessze a képet a téglalapba"
   },
   "about": {
+    "title": "Armoria: heraldry generator and editor by Azgaar",
     "tutorial": "Bemutató",
     "discord": "Discord",
     "gitHub": "GitHub",
@@ -254,10 +274,20 @@
     "chance": "Esély",
     "remove": "Eltávolítás"
   },
+  "fonts": {
+    "local": "Local",
+    "web": "Web",
+    "name": "Name",
+    "url": "URL",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
   "editor": {
     "ordinary": "Mesteralak",
+    "inscription": "Inscription",
     "addOrdinary": "Mesteralak hozzáadása",
     "addCharge": "Címerábra hozzáadása",
+    "addInscription": "Add inscription",
     "type": "Típus",
     "tincture": "Borítás",
     "pattern": "Mintázat",
@@ -292,10 +322,34 @@
     "positions": "Helyzetek",
     "sinister": "Balra néz",
     "reversed": "Fordított",
+    "outsideShield": "Outside",
+    "notOutside": "No (standard)",
+    "aboveShield": "above the shield",
+    "belowShield": "below the shield",
     "clone": "Elem klónozása",
     "backward": "Hátrébb küldés",
     "forward": "Előbbre hozás",
-    "remove": "Elem törlése"
+    "remove": "Elem törlése",
+    "inscriptions": {
+      "text": "Text",
+      "font": "Font",
+      "size": "Size",
+      "bold": "Bold",
+      "italic": "Italic",
+      "spacing": "Spacing",
+      "color": "Color",
+      "path": "Path",
+      "line": "Line",
+      "curve": "Curve",
+      "custom": "Custom",
+      "all": "All",
+      "start": "Start",
+      "end": "End",
+      "control": "Control",
+      "shadow": "Shadow",
+      "blur": "Blur"
+    },
+    "unselect": "Unselect"
   },
   "patterns": {
     "barry": "Pólyázott",
@@ -368,6 +422,11 @@
     "moonInCrescent": "Moon In Crescent",
     "crescent": "Félhold",
     "fountain": "Szökőkút",
+    "mantle": "Mantle",
+    "ribbon1": "Ribbon1",
+    "ribbon2": "Ribbon2",
+    "ribbon3": "Ribbon3",
+    "ribbon4": "Ribbon4",
     "crossHummetty": "Görög kereszt",
     "crossVoided": "Árnyékkereszt",
     "crossPattee": "Talpas kereszt",
@@ -662,20 +721,25 @@
   "categories": {
     "conventional": "Konvencionális",
     "crosses": "Keresztek",
-    "animals": "Állatok",
-    "animalHeads": "Állatfejek",
+    "beasts": "Beasts",
+    "beastHeads": "Beast heads",
     "birds": "Madarak",
-    "aquatic": "Vízi",
-    "seafaring": "Tengerészet",
-    "fantastic": "Fiktív",
+    "reptiles": "Reptiles",
+    "bugs": "Bugs",
+    "fishes": "Fishes",
+    "molluscs": "Molluscs",
     "plants": "Növények",
+    "fantastic": "Fiktív",
     "agriculture": "Mezőgazdaság",
     "arms": "Fegyverzet",
     "bodyparts": "Testrészek",
     "people": "Emberek",
+    "seafaring": "Tengerészet",
     "architecture": "Építészet",
+    "tools": "Tools",
     "miscellaneous": "Egyebek",
     "inescutcheon": "Kispajzs",
+    "ornaments": "Ornaments",
     "uploaded": "Feltöltött"
   },
   "divisions": {

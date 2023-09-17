@@ -21,6 +21,7 @@
     "border": "Borde",
     "background": "Fondo",
     "scale": "Escala",
+    "zoom": "Zoom",
     "width": "Anchura",
     "color": "Color",
     "downloadSVG": "Descargar SVG",
@@ -166,6 +167,7 @@
     "randomColor": "Usar color aleatorio",
     "background": "Color del fondo",
     "scale": "El tamaño de la imagen descargada, 1 es el tamaño por defecto, 2 es el doble de tamaño, etc.",
+    "zoom": "Zoom level",
     "stroke": "Trazo del elemento. Marcar para renderizar y seleccionar un color",
     "aboveCharges": "Clicar para mostrar encima de las figuras",
     "size": "Tamaño del elemento en porcentajes",
@@ -175,7 +177,20 @@
     "showGrid": "Muestra la rejilla",
     "positions": "Puntos en los que se puede colocar una figura",
     "sinister": "Gira la figura a la izquierda",
-    "reversed": "Vuelve la figura bocabajo"
+    "reversed": "Vuelve la figura bocabajo",
+    "outsideShield": "Put charge outside of the shield",
+    "inscriptions": {
+      "text": "Text to be displayed (use '|' as line separator)",
+      "font": "Font name",
+      "addFont": "Add font",
+      "size": "Font size",
+      "spacing": "Spacing between letters (can be negative)",
+      "color": "Font color",
+      "path": "Shape along which the text will be rendered (SVG path)",
+      "shadow": "Add a shadow to the text",
+      "shadowBlur": "Blur radius in pixels",
+      "shadowColor": "Shadow color"
+    }
   },
   "error": {
     "copyToClipboard": "¡No se pudo copiar al portapapeles!",
@@ -186,7 +201,10 @@
     "notAnImage": "¡El archivo no es una imagen!",
     "notSvgOrText": "¡El archivo debe ser texto o svg!",
     "notUniqueName": "¡El nombre debe ser Id único!",
-    "incorrectSvg": "El archivo debe ser un svg preparado. ¡Descarga la plantilla para orientación!"
+    "emptyName": "Name is empty!",
+    "incorrectSvg": "El archivo debe ser un svg preparado. ¡Descarga la plantilla para orientación!",
+    "emptyFontURL": "URL is empty!",
+    "loadingFont": "Font cannot be loaded!"
   },
   "success": {
     "copyEditLink": "El enlace del escudo de armas se ha copiado a tu portapapeles",
@@ -194,6 +212,7 @@
     "copyCoaString": "La cadena codificada del escudo de armas se ha copiado a tu portapapeles",
     "install": "La aplicación Armoria está instalada",
     "tinctureAdded": "El color se ha añadido",
+    "fontAdded": "Font is added",
     "chargeAdded": "La figura se ha añadido"
   },
   "info": {
@@ -204,6 +223,7 @@
     "tipUploadImageSize": "Ajusta la imagen al rectángulo para el mejor resultado"
   },
   "about": {
+    "title": "Armoria: heraldry generator and editor by Azgaar",
     "tutorial": "Tutorial",
     "discord": "Discord",
     "gitHub": "GitHub",
@@ -254,10 +274,20 @@
     "chance": "Probabilidad",
     "remove": "Eliminar"
   },
+  "fonts": {
+    "local": "Local",
+    "web": "Web",
+    "name": "Name",
+    "url": "URL",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
   "editor": {
     "ordinary": "Piezas",
+    "inscription": "Inscription",
     "addOrdinary": "Añadir piezas",
     "addCharge": "Añadir figura",
+    "addInscription": "Add inscription",
     "type": "Tipo",
     "tincture": "Tintura",
     "pattern": "Patrón",
@@ -292,10 +322,34 @@
     "positions": "Posición",
     "sinister": "Siniestrado",
     "reversed": "Invertido",
+    "outsideShield": "Outside",
+    "notOutside": "No (standard)",
+    "aboveShield": "above the shield",
+    "belowShield": "below the shield",
     "clone": "Clonar elemento",
     "backward": "Mandar hacia atrás",
     "forward": "Traer hacia delante",
-    "remove": "Eliminar elemento"
+    "remove": "Eliminar elemento",
+    "inscriptions": {
+      "text": "Text",
+      "font": "Font",
+      "size": "Size",
+      "bold": "Bold",
+      "italic": "Italic",
+      "spacing": "Spacing",
+      "color": "Color",
+      "path": "Path",
+      "line": "Line",
+      "curve": "Curve",
+      "custom": "Custom",
+      "all": "All",
+      "start": "Start",
+      "end": "End",
+      "control": "Control",
+      "shadow": "Shadow",
+      "blur": "Blur"
+    },
+    "unselect": "Unselect"
   },
   "patterns": {
     "barry": "Fajas",
@@ -368,6 +422,11 @@
     "moonInCrescent": "Luna",
     "crescent": "Creciente",
     "fountain": "Fuente",
+    "mantle": "Mantle",
+    "ribbon1": "Ribbon1",
+    "ribbon2": "Ribbon2",
+    "ribbon3": "Ribbon3",
+    "ribbon4": "Ribbon4",
     "crossHummetty": "Cruz Griega",
     "crossVoided": "Cruz Vacía",
     "crossPattee": "Cruz Patée",
@@ -662,20 +721,25 @@
   "categories": {
     "conventional": "Convencional",
     "crosses": "Cruces",
-    "animals": "Animales",
-    "animalHeads": "Cabezas de animales",
+    "beasts": "Beasts",
+    "beastHeads": "Beast heads",
     "birds": "Aves",
-    "aquatic": "Acuático",
-    "seafaring": "Navegación",
-    "fantastic": "Fantástico",
+    "reptiles": "Reptiles",
+    "bugs": "Bugs",
+    "fishes": "Fishes",
+    "molluscs": "Molluscs",
     "plants": "Plantas",
+    "fantastic": "Fantástico",
     "agriculture": "Agricultura",
     "arms": "Armas",
     "bodyparts": "Partes del cuerpo",
     "people": "Personas",
+    "seafaring": "Navegación",
     "architecture": "Arquitectura",
+    "tools": "Tools",
     "miscellaneous": "Variado",
     "inescutcheon": "Escusón",
+    "ornaments": "Ornaments",
     "uploaded": "Subidas"
   },
   "divisions": {

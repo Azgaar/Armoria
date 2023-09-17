@@ -21,6 +21,7 @@
     "border": "Bordure",
     "background": "Arrière plan",
     "scale": "Échelle",
+    "zoom": "Zoom",
     "width": "Largeur",
     "color": "Couleur",
     "downloadSVG": "Télécharger SVG",
@@ -166,6 +167,7 @@
     "randomColor": "Utiliser une couleur aléatoire",
     "background": "Couleur de fond de la fenêtre",
     "scale": "La taille de l'image téléchargée, 1 est la taille par défaut, 2 = 2x, etc.",
+    "zoom": "Niveau de zoom",
     "stroke": "Trait de l'élément. Cocher pour afficher et sélectionner une couleur",
     "aboveCharges": "Cocher pour rendre les pièces au-dessus des charges",
     "size": "Taille de l'élément en pourcentages",
@@ -175,7 +177,20 @@
     "showGrid": "Afficher la grille",
     "positions": "Les points sur le bouclier pour placer une charge",
     "sinister": "Tourner la charge vers la gauche",
-    "reversed": "Afficher la charge à l'envers"
+    "reversed": "Afficher la charge à l'envers",
+    "outsideShield": "Placer la charge en dehors du bouclier",
+    "inscriptions": {
+      "text": "Texte à afficher (utiliser '|' comme séparateur de ligne)",
+      "font": "Nom de la police",
+      "addFont": "Ajouter une police",
+      "size": "Taille de la police",
+      "spacing": "Espacement entre les lettres (peut être négatif)",
+      "color": "Couleur de la police",
+      "path": "Forme le long de laquelle le texte sera affiché (chemin SVG)",
+      "shadow": "Ajouter une ombre au texte",
+      "shadowBlur": "Rayon du flou en pixels",
+      "shadowColor": "Couleur de l'ombre"
+    }
   },
   "error": {
     "copyToClipboard": "Ne peux pas copier dans le presse papiers !",
@@ -186,7 +201,10 @@
     "notAnImage": "Le fichier n'est pas une image !",
     "notSvgOrText": "Le fichier doit être du texte ou svg!",
     "notUniqueName": "Le nom doit être un id unique !",
-    "incorrectSvg": "Le fichier doit être un SVG préparé. Télécharger le modèle pour être guidé !"
+    "emptyName": "Le nom est vide !",
+    "incorrectSvg": "Le fichier doit être un SVG préparé. Télécharger le modèle pour être guidé !",
+    "emptyFontURL": "L'URL est vide !",
+    "loadingFont": "Impossible de charger la police !"
   },
   "success": {
     "copyEditLink": "Le lien de l'armoirie est copié dans votre presse-papiers",
@@ -194,6 +212,7 @@
     "copyCoaString": "La chaîne COA encodée est copiée dans votre presse-papiers",
     "install": "L'application Armoria est installée",
     "tinctureAdded": "Couleur ajoutée",
+    "fontAdded": "Police ajoutée",
     "chargeAdded": "Charge ajoutée"
   },
   "info": {
@@ -204,6 +223,7 @@
     "tipUploadImageSize": "Ajuster l'image dans le rectangle pour un meilleur résultat"
   },
   "about": {
+    "title": "Armoria : générateur et éditeur de blasons par Azgaar",
     "tutorial": "Tutoriel",
     "discord": "Discord",
     "gitHub": "GitHub",
@@ -254,10 +274,20 @@
     "chance": "Probabilité",
     "remove": "Retirer"
   },
+  "fonts": {
+    "local": "Locale",
+    "web": "Web",
+    "name": "Nom",
+    "url": "URL",
+    "confirm": "Confirmer",
+    "cancel": "Annuler"
+  },
   "editor": {
     "ordinary": "Pièce",
+    "inscription": "Inscription",
     "addOrdinary": "Ajoutée une pièce",
     "addCharge": "Ajouter une charge",
+    "addInscription": "Ajouter une inscription",
     "type": "Type",
     "tincture": "Tincture",
     "pattern": "Motif",
@@ -292,10 +322,34 @@
     "positions": "Positions",
     "sinister": "Sinistre",
     "reversed": "Inversé",
+    "outsideShield": "Extérieur",
+    "notOutside": "Non (standard)",
+    "aboveShield": "au-dessus du bouclier",
+    "belowShield": "au-dessous du bouclier",
     "clone": "Dupliquer l'élément",
     "backward": "Envoyer vers l'arrière",
     "forward": "Mettre au premier plan",
-    "remove": "Supprimer l'élément"
+    "remove": "Supprimer l'élément",
+    "inscriptions": {
+      "text": "Texte",
+      "font": "Police",
+      "size": "Taille",
+      "bold": "Gras",
+      "italic": "Italique",
+      "spacing": "Espacement",
+      "color": "Couleur",
+      "path": "Chemin",
+      "line": "Ligne",
+      "curve": "Courbe",
+      "custom": "Personnalisé",
+      "all": "Tout",
+      "start": "Début",
+      "end": "Fin",
+      "control": "Contrôle",
+      "shadow": "Ombre",
+      "blur": "Flou"
+    },
+    "unselect": "Désélectionner"
   },
   "patterns": {
     "barry": "Barrés",
@@ -368,6 +422,11 @@
     "moonInCrescent": "Lune en croissant",
     "crescent": "Croissant",
     "fountain": "Fontaine",
+    "mantle": "Manteau",
+    "ribbon1": "Listel 1",
+    "ribbon2": "Listel 2",
+    "ribbon3": "Listel 3",
+    "ribbon4": "Listel 4",
     "crossHummetty": "Croix Suisse",
     "crossVoided": "Croix Vidé",
     "crossPattee": "Croix Pattée",
@@ -662,20 +721,25 @@
   "categories": {
     "conventional": "Conventionnel",
     "crosses": "Croix",
-    "animals": "Animaux",
-    "animalHeads": "Têtes d'animaux",
+    "beasts": "Beasts",
+    "beastHeads": "Beast heads",
     "birds": "Oiseaux",
-    "aquatic": "Aquatique",
-    "seafaring": "Marin",
-    "fantastic": "Fantastique",
+    "reptiles": "Reptiles",
+    "bugs": "Bugs",
+    "fishes": "Fishes",
+    "molluscs": "Molluscs",
     "plants": "Plantes",
+    "fantastic": "Fantastique",
     "agriculture": "Agriculture",
     "arms": "Armes",
     "bodyparts": "Membre du corps",
     "people": "Personnes",
+    "seafaring": "Marin",
     "architecture": "Architecture",
+    "tools": "Tools",
     "miscellaneous": "Divers",
     "inescutcheon": "Écusson",
+    "ornaments": "Ornements",
     "uploaded": "Téléchargé"
   },
   "divisions": {
