@@ -21,6 +21,7 @@
     "border": "边框",
     "background": "背景",
     "scale": "缩放",
+    "zoom": "Zoom",
     "width": "宽度",
     "color": "颜色",
     "downloadSVG": "下载 SVG",
@@ -166,6 +167,7 @@
     "randomColor": "使用随机颜色",
     "background": "窗口背景颜色",
     "scale": "下载的图像尺寸，1为默认尺寸，2-2x尺寸等。",
+    "zoom": "Zoom level",
     "stroke": "像素画笔。勾选以渲染并选择颜色",
     "aboveCharges": "选中以便呈现填充上面的普通图像",
     "size": "元素大小（百分比）",
@@ -175,7 +177,20 @@
     "showGrid": "显示网格",
     "positions": "在盾牌上放置填充的点",
     "sinister": "将填充向左转",
-    "reversed": "将填充上下颠倒"
+    "reversed": "将填充上下颠倒",
+    "outsideShield": "Put charge outside of the shield",
+    "inscriptions": {
+      "text": "Text to be displayed (use '|' as line separator)",
+      "font": "Font name",
+      "addFont": "Add font",
+      "size": "Font size",
+      "spacing": "Spacing between letters (can be negative)",
+      "color": "Font color",
+      "path": "Shape along which the text will be rendered (SVG path)",
+      "shadow": "Add a shadow to the text",
+      "shadowBlur": "Blur radius in pixels",
+      "shadowColor": "Shadow color"
+    }
   },
   "error": {
     "copyToClipboard": "无法复制到剪贴板！",
@@ -186,7 +201,10 @@
     "notAnImage": "文件不是图像！",
     "notSvgOrText": "文件必须是“文本”或 “svg”！",
     "notUniqueName": "名称必须是唯一的！",
-    "incorrectSvg": "文件必须为svg形式。下载指导模板！"
+    "emptyName": "Name is empty!",
+    "incorrectSvg": "文件必须为svg形式。下载指导模板！",
+    "emptyFontURL": "URL is empty!",
+    "loadingFont": "Font cannot be loaded!"
   },
   "success": {
     "copyEditLink": "盾徽链接已复制到剪贴板",
@@ -194,6 +212,7 @@
     "copyCoaString": "编码的盾徽字符串已复制到剪贴板",
     "install": "Armoria 应用程序已安装",
     "tinctureAdded": "颜色已添加",
+    "fontAdded": "Font is added",
     "chargeAdded": "填充已添加"
   },
   "info": {
@@ -204,6 +223,7 @@
     "tipUploadImageSize": "将图像适配到矩形中以获得最佳效果"
   },
   "about": {
+    "title": "Armoria: heraldry generator and editor by Azgaar",
     "tutorial": "教程",
     "discord": "Discord",
     "gitHub": "GitHub",
@@ -254,10 +274,20 @@
     "chance": "冒险",
     "remove": "移除"
   },
+  "fonts": {
+    "local": "Local",
+    "web": "Web",
+    "name": "Name",
+    "url": "URL",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
   "editor": {
     "ordinary": "普通图层",
+    "inscription": "Inscription",
     "addOrdinary": "添加普通图层",
     "addCharge": "添加填充",
+    "addInscription": "Add inscription",
     "type": "类型",
     "tincture": "色彩",
     "pattern": "纹路",
@@ -292,10 +322,34 @@
     "positions": "位置",
     "sinister": "左右翻转",
     "reversed": "上下翻转",
+    "outsideShield": "Outside",
+    "notOutside": "No (standard)",
+    "aboveShield": "above the shield",
+    "belowShield": "below the shield",
     "clone": "复制元素",
     "backward": "下移一层",
     "forward": "上移一层",
-    "remove": "移除元素"
+    "remove": "移除元素",
+    "inscriptions": {
+      "text": "Text",
+      "font": "Font",
+      "size": "Size",
+      "bold": "Bold",
+      "italic": "Italic",
+      "spacing": "Spacing",
+      "color": "Color",
+      "path": "Path",
+      "line": "Line",
+      "curve": "Curve",
+      "custom": "Custom",
+      "all": "All",
+      "start": "Start",
+      "end": "End",
+      "control": "Control",
+      "shadow": "Shadow",
+      "blur": "Blur"
+    },
+    "unselect": "Unselect"
   },
   "patterns": {
     "barry": "横纹",
@@ -368,6 +422,11 @@
     "moonInCrescent": "Moon In Crescent",
     "crescent": "新月",
     "fountain": "波浪",
+    "mantle": "Mantle",
+    "ribbon1": "Ribbon1",
+    "ribbon2": "Ribbon2",
+    "ribbon3": "Ribbon3",
+    "ribbon4": "Ribbon4",
     "crossHummetty": "十字架",
     "crossVoided": "中空十字",
     "crossPattee": "扁形十字",
@@ -662,20 +721,25 @@
   "categories": {
     "conventional": "常用",
     "crosses": "十字",
-    "animals": "动物",
-    "animalHeads": "动物头部",
+    "beasts": "Beasts",
+    "beastHeads": "Beast heads",
     "birds": "鸟类",
-    "aquatic": "水生物",
-    "seafaring": "航海",
-    "fantastic": "奇幻",
+    "reptiles": "Reptiles",
+    "bugs": "Bugs",
+    "fishes": "Fishes",
+    "molluscs": "Molluscs",
     "plants": "植物",
+    "fantastic": "奇幻",
     "agriculture": "农业",
     "arms": "武器",
     "bodyparts": "身体部位",
     "people": "全身",
+    "seafaring": "航海",
     "architecture": "建筑",
+    "tools": "Tools",
     "miscellaneous": "其它",
     "inescutcheon": "盾形纹饰",
+    "ornaments": "Ornaments",
     "uploaded": "已上传的"
   },
   "divisions": {
