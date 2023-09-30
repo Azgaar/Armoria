@@ -201,9 +201,9 @@
     "notAnImage": "¡El archivo no es una imagen!",
     "notSvgOrText": "¡El archivo debe ser texto o svg!",
     "notUniqueName": "¡El nombre debe ser Id único!",
-    "emptyName": "Name is empty!",
+    "emptyName": "¡El nombre está vacío!",
     "incorrectSvg": "El archivo debe ser un svg preparado. ¡Descarga la plantilla para orientación!",
-    "emptyFontURL": "URL is empty!",
+    "emptyFontURL": "¡El LRU está vacío!",
     "loadingFont": "Font cannot be loaded!"
   },
   "success": {
@@ -278,7 +278,7 @@
     "local": "Local",
     "web": "Web",
     "name": "Name",
-    "url": "URL",
+    "url": "LRU",
     "confirm": "Confirm",
     "cancel": "Cancel"
   },
