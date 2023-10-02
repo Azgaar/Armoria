@@ -187,9 +187,9 @@
       "spacing": "Espaciado entre letras (puede ser negativo)",
       "color": "Color de la fuente",
       "path": "Shape along which the text will be rendered (SVG path)",
-      "shadow": "Add a shadow to the text",
-      "shadowBlur": "Blur radius in pixels",
-      "shadowColor": "Shadow color"
+      "shadow": "Añade una sombra al texto",
+      "shadowBlur": "Radio del difuminado en pixeles",
+      "shadowColor": "Color de la sombra"
     }
   },
   "error": {
@@ -277,10 +277,10 @@
   "fonts": {
     "local": "Local",
     "web": "Web",
-    "name": "Name",
+    "name": "Nombre",
     "url": "LRU",
-    "confirm": "Confirm",
-    "cancel": "Cancel"
+    "confirm": "Confirmar",
+    "cancel": "Cancelar"
   },
   "editor": {
     "ordinary": "Piezas",
@@ -608,7 +608,7 @@
     "arbalest": "Ballesta",
     "helmet": "Casco",
     "helmetCorinthian": "Casco corintio",
-    "helmetGreat": "Great Helm",
+    "helmetGreat": "Gran Yelmo",
     "gauntlet": "Guantelete",
     "shield": "Escudo",
     "cannon": "Cañón",
