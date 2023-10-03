@@ -186,7 +186,7 @@
       "size": "Tamaño de fuente",
       "spacing": "Espaciado entre letras (puede ser negativo)",
       "color": "Color de la fuente",
-      "path": "Shape along which the text will be rendered (SVG path)",
+      "path": "Forma en la que el texto será renderizado (SVG path)",
       "shadow": "Añade una sombra al texto",
       "shadowBlur": "Radio del difuminado en pixeles",
       "shadowColor": "Color de la sombra"
@@ -204,7 +204,7 @@
     "emptyName": "¡El nombre está vacío!",
     "incorrectSvg": "El archivo debe ser un svg preparado. ¡Descarga la plantilla para orientación!",
     "emptyFontURL": "¡El LRU está vacío!",
-    "loadingFont": "Font cannot be loaded!"
+    "loadingFont": "¡La fuente no pudo ser cargada!"
   },
   "success": {
     "copyEditLink": "El enlace del escudo de armas se ha copiado a tu portapapeles",
@@ -212,7 +212,7 @@
     "copyCoaString": "La cadena codificada del escudo de armas se ha copiado a tu portapapeles",
     "install": "La aplicación Armoria está instalada",
     "tinctureAdded": "El color se ha añadido",
-    "fontAdded": "Font is added",
+    "fontAdded": "La fuente se añadió",
     "chargeAdded": "La figura se ha añadido"
   },
   "info": {
@@ -223,7 +223,7 @@
     "tipUploadImageSize": "Ajusta la imagen al rectángulo para el mejor resultado"
   },
   "about": {
-    "title": "Armoria: heraldry generator and editor by Azgaar",
+    "title": "Armoria: generador y editor de heráldica por Azgaar",
     "tutorial": "Tutorial",
     "discord": "Discord",
     "gitHub": "GitHub",
@@ -284,10 +284,10 @@
   },
   "editor": {
     "ordinary": "Piezas",
-    "inscription": "Inscription",
+    "inscription": "Divisa",
     "addOrdinary": "Añadir piezas",
     "addCharge": "Añadir figura",
-    "addInscription": "Add inscription",
+    "addInscription": "Añadir divisa",
     "type": "Tipo",
     "tincture": "Tintura",
     "pattern": "Patrón",
@@ -322,7 +322,7 @@
     "positions": "Posición",
     "sinister": "Siniestrado",
     "reversed": "Invertido",
-    "outsideShield": "Outside",
+    "outsideShield": "Por fuera",
     "notOutside": "No (estándar)",
     "aboveShield": "Sobre el escudo",
     "belowShield": "Bajo el escudo",
@@ -338,18 +338,18 @@
       "italic": "Cursiva",
       "spacing": "Espaciado",
       "color": "Color",
-      "path": "Path",
-      "line": "Line",
-      "curve": "Curve",
-      "custom": "Personalizado",
-      "all": "All",
-      "start": "Start",
-      "end": "End",
-      "control": "Control",
+      "path": "Forma",
+      "line": "Línea",
+      "curve": "Curva",
+      "custom": "Personalizada",
+      "all": "Todo",
+      "start": "Inicio",
+      "end": "Final",
+      "control": "Centro",
       "shadow": "Sombreado",
       "blur": "Difuminado"
     },
-    "unselect": "Unselect"
+    "unselect": "Deseleccionar"
   },
   "patterns": {
     "barry": "Fajas",
@@ -423,10 +423,10 @@
     "crescent": "Creciente",
     "fountain": "Fuente",
     "mantle": "Manto",
-    "ribbon1": "Ribbon1",
-    "ribbon2": "Ribbon2",
-    "ribbon3": "Ribbon3",
-    "ribbon4": "Ribbon4",
+    "ribbon1": "Cinta 1",
+    "ribbon2": "Cinta 2",
+    "ribbon3": "Cinta 3",
+    "ribbon4": "Cinta 4",
     "crossHummetty": "Cruz Griega",
     "crossVoided": "Cruz Vacía",
     "crossPattee": "Cruz Patée",
