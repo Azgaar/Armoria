@@ -1353,34 +1353,34 @@ export const charges = {
     wolfStatant: 1
   },
   beastHeads: {
-    wolfHeadErased: 2,
+    boarHeadErased: 1,
     bullHeadCaboshed: 1,
     deerHeadCaboshed: 1,
     donkeyHeadCaboshed: 1,
+    elephantHeadErased: 1,
+    horseHeadCouped: 1,
     lionHeadCaboshed: 2,
     lionHeadErased: 2,
-    boarHeadErased: 1,
-    horseHeadCouped: 1,
     ramHeadErased: 1,
-    elephantHeadErased: 1
+    wolfHeadErased: 2
   },
   birds: {
-    eagle: 9,
-    falcon: 2,
-    raven: 2,
     cock: 3,
-    parrot: 1,
-    swan: 2,
-    swanErased: 1,
-    heron: 1,
-    owl: 1,
-    owlDisplayed: 1,
     dove: 2,
     doveDisplayed: 1,
     duck: 1,
+    eagle: 9,
+    falcon: 2,
+    heron: 1,
+    owl: 1,
+    owlDisplayed: 1,
+    parrot: 1,
     peacock: 1,
     peacockInPride: 1,
-    swallow: 1
+    raven: 2,
+    swallow: 1,
+    swan: 2,
+    swanErased: 1
   },
   reptiles: {
     crocodile: 1,
@@ -1503,9 +1503,9 @@ export const charges = {
     skull2: 1
   },
   people: {
+    archer: 1,
     cavalier: 3,
     cossack: 1,
-    archer: 1,
     monk: 1
   },
   architecture: {
@@ -1642,10 +1642,10 @@ export const charges = {
     ribbon2: 2,
     ribbon3: 1,
     ribbon4: 1,
-    ribbon8: 1,
-    ribbon7: 1,
+    ribbon5: 1,
     ribbon6: 1,
-    ribbon5: 1
+    ribbon7: 1,
+    ribbon8: 1
   },
   uploaded: {},
   data: chargeData
