@@ -275,12 +275,17 @@
     "remove": "Διαγραφή"
   },
   "fonts": {
-    "local": "Αποθηκευμένο",
-    "web": "Μέσο Διαδικτύου",
-    "name": "Όνομα",
-    "url": "URL",
+    "type": "Font type",
+    "local": "Local font",
+    "web": "Web-hosted font",
+    "name_local": "Name of the font installed on your device",
+    "name_web": "Name of the font",
+    "url": "Link to the font file (.woff2, .ttf, .otf)",
     "confirm": "Επιβεβαίωση",
-    "cancel": "Ακύρωση"
+    "restoreDefault": "Restore default fonts",
+    "close": "Close",
+    "tip_local": "**Local font**. If you have a font [installed on your computer](https://faqs.skillcrush.com/article/275-downloading-installing-a-font-on-your-computer), just provide the font name. Make sure the browser is reloaded after the installation. The font won't work on machines not having it installed. Good source of fonts are [Fontdesk](https://fontesk.com) and [DaFont](https://www.dafont.com).",
+    "tip_web": "**Web-hosted font**. Provide font name and link to the font file hosted online. The best free font hostings are [Google Fonts](https://fonts.google.com) and [CDN Fonts](https://www.cdnfonts.com). To get font file open the link to css provided by these services and manually copy the link to .woff2 of desired variant. To add another variant (e.g. Cyrillic), add the font under a different name."
   },
   "editor": {
     "ordinary": "Σχήμα",
