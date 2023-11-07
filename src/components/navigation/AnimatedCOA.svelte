@@ -1,9 +1,9 @@
 <script lang="ts">
   // @ts-check
   import {colors} from "data//stores";
-  import {DEFAULT_SHIELD_BOX, shieldPaths} from "data//shields";
-  import {fade, draw} from "svelte/transition";
+  import {DEFAULT_SHIELD_BOX, shieldPaths} from "data/shields";
   import {rw} from "scripts/utils";
+  import {draw, fade} from "svelte/transition";
 
   export let duration: number;
 

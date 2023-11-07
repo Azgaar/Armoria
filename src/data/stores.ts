@@ -1,22 +1,23 @@
-import {ra, rw} from "scripts/utils";
-import {writable} from "svelte/store";
-import {shields} from "./shields";
 import {
-  DEFAULT_SIZE,
-  DEFAULT_DIAPER,
-  DEFAULT_GRADIENTS,
-  DEFAULT_COLORS,
-  DEFAULT_TINCTURES,
-  DEFAULT_FONTS,
+  DEFAULT_BACKGROUND,
   DEFAULT_BORDER,
   DEFAULT_BORDER_WIDTH,
-  DEFAULT_BACKGROUND,
-  DEFAULT_SCALE,
-  DEFAULT_ZOOM,
+  DEFAULT_COLORS,
+  DEFAULT_DIAPER,
+  DEFAULT_FONTS,
+  DEFAULT_GRADIENTS,
   DEFAULT_GRID,
-  DEFAULT_SHOW_GRID
+  DEFAULT_SCALE,
+  DEFAULT_SHOW_GRID,
+  DEFAULT_SIZE,
+  DEFAULT_TINCTURES,
+  DEFAULT_ZOOM,
+  type Fonts
 } from "config/defaults";
+import {ra, rw} from "scripts/utils";
+import {writable} from "svelte/store";
 import type {Tinctures} from "types/tinctures";
+import {shields} from "./shields";
 import {validateTinctures} from "./validators";
 
 export const isTextReady = writable(false);
@@ -51,7 +52,7 @@ export const state = writable({
   i: 0,
   c: 0,
   view: 0,
-  fonts: 0,
+  fonts: 1,
   selectedPath: -1,
   pathChangeMode: -1
 });
@@ -135,7 +136,7 @@ function defineInitialOptions() {
   const grad = stored("grad") || ra(DEFAULT_GRADIENTS);
   const shield = getShieldFromURL() || stored("shield") || rw(shields[rw(shields.types)]);
   const colors = storedObj("colors") || JSON.parse(JSON.stringify(DEFAULT_COLORS));
-  const fonts = (storedObj("fonts") || JSON.parse(JSON.stringify(DEFAULT_FONTS))) as Fonts;
+  const fonts: Fonts = storedObj("fonts") || JSON.parse(JSON.stringify(DEFAULT_FONTS));
   const border = stored("border") || DEFAULT_BORDER;
   const borderWidth = +stored("borderWidth") || DEFAULT_BORDER_WIDTH;
   const background = stored("background") || DEFAULT_BACKGROUND;

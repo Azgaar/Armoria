@@ -1,8 +1,8 @@
+import {charges, divisions, lines, ordinaries, patternSize, positions} from "data/dataModel";
+import {tinctures} from "data/stores";
 import {get} from "svelte/store";
 import {aleaPRNG} from "./alea";
-import {rw, P} from "./utils";
-import {charges, divisions, lines, ordinaries, positions, patternSize} from "data/dataModel";
-import {tinctures} from "data/stores";
+import {P, rw} from "./utils";
 
 export const createConfig = () => ({
   usedPattern: null,
@@ -35,6 +35,7 @@ export const generate = function (providedSeed) {
     : config.ordinary
     ? P(0.7)
     : P(0.995); // 33% for division
+
   const division = config.divisioned ? rw(divisions.variants) : null;
 
   if (division) {

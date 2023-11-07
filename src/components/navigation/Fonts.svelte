@@ -1,42 +1,21 @@
 <script lang="ts">
   // @ts-check
+  import {DEFAULT_FONTS} from "config/defaults";
+  import {fonts, message, state} from "data/stores";
+  import {markdown} from "scripts/i18n";
   import {t} from "svelte-i18n";
-  import {fade} from "svelte/transition";
-  import {fonts, state, message} from "data/stores";
+  import {fade, fly} from "svelte/transition";
 
-  const newFont: {
-    name: string;
-    type: "local" | "web";
-    url?: string;
-  } = {name: "", type: "local", url: ""};
-
-  $: lock("fonts", $fonts);
-
-  // don't lock options on load
-  let loaded = [];
-  function lock(key: string, value: unknown) {
-    if (loaded.includes(key)) localStorage.setItem(key, JSON.stringify(value));
-    else loaded.push(key);
-  }
+  let name = "";
+  let type: "local" | "web" = "local";
+  let url = "";
 
   function confirm() {
-    const {name, type, url} = newFont;
-
-    if (!name) {
-      message.error($t("error.emptyName"));
-      return;
-    }
-
-    if ($fonts[name]) {
-      message.error($t("error.notUniqueName"));
-      return;
-    }
+    if (!name) return message.error($t("error.emptyName"));
+    if ($fonts[name]) return message.error($t("error.notUniqueName"));
 
     if (type === "web") {
-      if (!url) {
-        message.error($t("error.emptyFontURL"));
-        return;
-      }
+      if (!url) return message.error($t("error.emptyFontURL"));
 
       const font = new FontFace(name, `url(${url})`);
       font.load().then(
@@ -57,6 +36,13 @@
       message.info($t("success.fontAdded"));
       close();
     }
+
+    localStorage.setItem("fonts", JSON.stringify($fonts));
+  }
+
+  function restoreDefaultFonts() {
+    $fonts = DEFAULT_FONTS;
+    localStorage.removeItem("fonts");
   }
 
   function close() {
@@ -64,27 +50,40 @@
   }
 </script>
 
-<div id="fonts" transition:fade|local>
-  <div>
-    <div>
-      <select bind:value={newFont.type}>
+<div id="fonts">
+  <form name="add font" transition:fade|local on:submit|preventDefault={confirm}>
+    <div class="input">
+      <label for="fontType">{$t("fonts.type")}:</label>
+      <select id="fontType" bind:value={type}>
         <option value="local">{$t("fonts.local")}</option>
         <option value="web">{$t("fonts.web")}</option>
       </select>
-      <input type="text" placeholder={$t("fonts.name")} bind:value={newFont.name} />
     </div>
 
-    {#if newFont.type === "web"}
-      <div transition:fade|local>
-        <input type="text" class="url" placeholder={$t("fonts.url")} bind:value={newFont.url} />
+    <div class="input">
+      <label for="fontName">{$t(`fonts.name_${type}`)}:</label>
+      <input id="fontName" bind:value={name} />
+    </div>
+
+    {#if type === "web"}
+      <div class="input" in:fly|local>
+        <label for="fontUrl">{$t("fonts.url")}:</label>
+        <input id="fontUrl" bind:value={url} />
       </div>
     {/if}
 
-    <div>
-      <button on:click={confirm}>{$t("fonts.confirm")}</button>
-      <button on:click={close}>{$t("fonts.cancel")}</button>
+    <div>{@html markdown($t("fonts.tip_local"))}</div>
+    <div>{@html markdown($t("fonts.tip_web"))}</div>
+
+    <div class="controls">
+      <button type="submit">{$t("fonts.confirm")}</button>
+      <button type="button" on:click={close}>{$t("fonts.close")}</button>
     </div>
-  </div>
+
+    {#if Object.keys($fonts).length !== Object.keys(DEFAULT_FONTS).length}
+      <button type="button" class="linkButton" on:click={restoreDefaultFonts}>{$t("fonts.restoreDefault")}</button>
+    {/if}
+  </form>
 </div>
 
 <style>
@@ -92,15 +91,48 @@
     position: fixed;
     inset: 0;
     background-color: rgba(0, 0, 0, 0.9);
+    color: white;
     transition: 0.5s;
-    text-align: center;
-    user-select: none;
+
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  .url {
-    width: 100%;
+  form {
+    width: 300px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  form > div.input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  form > div.controls {
+    align-self: flex-end;
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  form > button.linkButton {
+    padding: 0;
+    align-self: flex-start;
+
+    background-color: transparent;
+    border: none;
+    color: #e6e6e6;
+    text-decoration: underline;
+
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  form > button.linkButton:hover {
+    color: white;
   }
 </style>

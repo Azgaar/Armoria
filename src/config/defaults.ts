@@ -65,6 +65,12 @@ export const DEFAULT_TINCTURES = {
   }
 };
 
+export type Fonts = {
+  [key: string]: {
+    url?: string;
+  };
+};
+
 // prettier-ignore
 export const DEFAULT_FONTS: Fonts = {
   // google fonts

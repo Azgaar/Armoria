@@ -1,22 +1,22 @@
 <script lang="ts">
   // @ts-check
+  import {shields} from "data/shields";
+  import {background, fonts, history, isTextReady, matrices, matrix, message, shield, size, state} from "data/stores";
+  import "scripts/i18n";
+  import {rw} from "scripts/utils";
   import {locale} from "svelte-i18n";
+  import Message from "./Message.svelte";
   import WindowEvents from "./WindowEvents.svelte";
-  import Navbar from "./navigation/header/Navbar.svelte";
-  import About from "./navigation/About.svelte";
-  import License from "./navigation/License.svelte";
-  import Viewer from "./navigation/Viewer.svelte";
   import Editor from "./editor/Editor.svelte";
+  import About from "./navigation/About.svelte";
+  import Fonts from "./navigation/Fonts.svelte";
   import Gallery from "./navigation/Gallery.svelte";
+  import License from "./navigation/License.svelte";
+  import Tinctures from "./navigation/Tinctures.svelte";
   import UploadRaster from "./navigation/UploadRaster.svelte";
   import UploadVector from "./navigation/UploadVector.svelte";
-  import Tinctures from "./navigation/Tinctures.svelte";
-  import Fonts from "./navigation/Fonts.svelte";
-  import Message from "./Message.svelte";
-  import {background, size, fonts, history, isTextReady, matrices, matrix, state, message, shield} from "data/stores";
-  import {shields} from "data/shields";
-  import {rw} from "scripts/utils";
-  import "scripts/i18n";
+  import Viewer from "./navigation/Viewer.svelte";
+  import Navbar from "./navigation/header/Navbar.svelte";
 
   let quantity: number;
   let width: number;
@@ -28,8 +28,8 @@
   $locale = "en"; // fallback locale
 
   loadFonts();
+  checkLoadParameters();
 
-  checkLoadParameters(); // on load
   $: [quantity, width, height] = defineGallerySize($size);
   $: handleMatrixChange($matrix, $size);
 
