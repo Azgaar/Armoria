@@ -52,7 +52,7 @@ export const state = writable({
   i: 0,
   c: 0,
   view: 0,
-  fonts: 1,
+  fonts: 0,
   selectedPath: -1,
   pathChangeMode: -1
 });
