@@ -275,17 +275,17 @@
     "remove": "Διαγραφή"
   },
   "fonts": {
-    "type": "Font type",
-    "local": "Local font",
-    "web": "Web-hosted font",
-    "name_local": "Name of the font installed on your device",
-    "name_web": "Name of the font",
-    "url": "Link to the font file (.woff2, .ttf, .otf)",
+    "type": "Στυλ γραμματοσειράς",
+    "local": "Αποθηκευμένη γραμ/σειρά",
+    "web": "Γραμ/σειρά διαδικτύου",
+    "name_local": "Όνομα υποθηκευμένης γραμματοσειράς συσκευής",
+    "name_web": "Όνομα γραμματοσειράς",
+    "url": "Σύνδεση στο αρχείο γραμματοσειράς (.woff2, .ttf, .otf)",
     "confirm": "Επιβεβαίωση",
-    "restoreDefault": "Restore default fonts",
-    "close": "Close",
-    "tip_local": "**Local font**. If you have a font [installed on your computer](https://faqs.skillcrush.com/article/275-downloading-installing-a-font-on-your-computer), just provide the font name. Make sure the browser is reloaded after the installation. The font won't work on machines not having it installed. Good source of fonts are [Fontdesk](https://fontesk.com) and [DaFont](https://www.dafont.com).",
-    "tip_web": "**Web-hosted font**. Provide font name and link to the font file hosted online. The best free font hostings are [Google Fonts](https://fonts.google.com) and [CDN Fonts](https://www.cdnfonts.com). To get font file open the link to css provided by these services and manually copy the link to .woff2 of desired variant. To add another variant (e.g. Cyrillic), add the font under a different name."
+    "restoreDefault": "Επαναφορά Προεπιλεγμένων Γραμματοσειρών",
+    "close": "Κλείσιμο",
+    "tip_local": "**Τοπική γραμματοσειρά**. Εάν έχετε μια γραμματοσειρά [υποθηκευμένη στον υπολογιστή σας](https://faqs.skillcrush.com/article/275-downloading-installing-a-font-on-your-computer), απλά δώστε το όνομα της γραμματοσειράς. Βεβαιωθείτε ότι το πρόγραμμα περιήγησης επαναφορτώθηκε μετά την υποθήκευση. Η γραμματοσειρά δεν θα λειτουργήσει σε συσκευές που δεν το έχουν υποθηκεύση. Καλές Πηγές γραμματοσειρών είναι: [Fontdesk](https://fontesk.com) και [DaFont](https://www.dafont.com).",
+    "tip_web": "**Γραμ/σειρά διαδικτύου**. Δώστε το όνομα γραμματοσειράς και τον σύνδεσμο στο αρχείο γραμματοσειράς που είναι υποθηκευμένο μέσο διαδικτύου. Τα καλύτερα δωρεάν μέρη για γραμματοσειρές είναι τα: [Google Fonts] (https://fonts.google.com) και [CDN Fonts] (https://www.cdnfonts.com). Για να αποκτήσετε αρχείο γραμματοσειράς, ανοίξτε το λινκ στο css που δίνεται από αυτές της σελίδες, και αντιγράψτε το σύνδεσμος στο .woff2. Για να προσθέσετε άλλες παραλλαγές (π.χ. Κυριλλικό), προσθέσετε την γραμματοσειρά με διαφορετικό όνομα."
   },
   "editor": {
     "ordinary": "Σχήμα",
