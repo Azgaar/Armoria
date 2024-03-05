@@ -4,6 +4,7 @@
   import Switch from "./Switch.svelte";
   import {grid, showGrid, state} from "data/stores";
   import {tooltip} from "scripts/tooltip";
+	import DragLabel from "../DragLabel.svelte";
 
   interface IElement {
     size: number;
@@ -25,7 +26,9 @@
 </script>
 
 <span data-tooltip={$t("tooltip.size")} use:tooltip>
-  {$t("editor.size")}:
+  <DragLabel bind:value={element.size}>
+		{$t("editor.size")}:
+  </DragLabel>
   <input type="number" min="1" max="500" step="1" value={(element.size * 100) | 0} on:input={hadleSizeChange} />
 </span>
 
