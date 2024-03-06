@@ -1,28 +1,18 @@
 <script lang="ts">
+    import { drag } from "scripts/drag";
+
+   export let coaEl
+   export let coa
    export let value 
    let startVal = 0
    let startPos = 0
 
-   const startDragging = (event: MouseEvent) => {
-    startVal = value 
-    startPos = event.clientX
+   const startDragging = (event: Event) => {
+    // no need to check for edit?
+    drag(event, coaEl, coa,  {move: false, resize: true, rotate: false}, coaEl.element);
 
-    document.addEventListener("mousemove", dragging)
-    document.addEventListener("mouseup", endDragging)
    }
 
-   const dragging = (event:MouseEvent) => {
-    if(startVal){
-        value = startVal + (event.clientX - startPos) /100
-    }
-   }
-
-   const endDragging = () => {
-    startVal = 0
-
-    document.removeEventListener("mousemove", dragging)
-    document.removeEventListener("mouseup", endDragging)
-   }
 </script>
 
 <span class="DragLabel" on:mousedown={startDragging}>
@@ -31,6 +21,6 @@
 
 <style>
     .DragLabel {
-        cursor:ew-resize
+        cursor:ns-resize
     }
 </style>

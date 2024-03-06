@@ -6,9 +6,10 @@ export function drag(
   event,
   charge,
   coa,
-  options = {move: true, resize: true, rotate: true, onMove: undefined, onEnd: undefined}
+  options = {move: true, resize: true, rotate: true, onMove: undefined, onEnd: undefined},
+  element,
 ) {
-  const el = event.currentTarget;
+  const el = element ?? event.currentTarget
   const x0 = event.x;
   const y0 = event.y;
 
@@ -20,7 +21,7 @@ export function drag(
   const positionElements = el.querySelectorAll("use");
   const positions = shieldPositions[get(shield)] || shieldPositions.spanish;
 
-  if (options.resize && event.shiftKey) {
+  if (options.resize && (event.shiftKey || element)) {
     document.addEventListener("mousemove", resize);
     document.body.style.cursor = "ns-resize";
   } else if (options.rotate && (event.ctrlKey || event.metaKey)) {

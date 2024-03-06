@@ -665,7 +665,7 @@
           </div>
 
           <div class="subsection">
-            <EditorShift bind:element={charge} />
+            <EditorShift bind:element={charge} bind:coaElement={coa.charges[i]} coa={coa}/>
           </div>
         </div>
       {/if}

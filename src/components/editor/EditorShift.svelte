@@ -14,6 +14,8 @@
   }
 
   export let element: IElement;
+  export let coaElement = null;
+  export let coa
 
   const hadleSizeChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
@@ -26,7 +28,7 @@
 </script>
 
 <span data-tooltip={$t("tooltip.size")} use:tooltip>
-  <DragLabel bind:value={element.size}>
+  <DragLabel bind:value={element.size} coa={coa} coaEl={coaElement}>
 		{$t("editor.size")}:
   </DragLabel>
   <input type="number" min="1" max="500" step="1" value={(element.size * 100) | 0} on:input={hadleSizeChange} />

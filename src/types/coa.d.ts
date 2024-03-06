@@ -30,6 +30,7 @@ interface Charge {
   reversed?: true;
   sinister?: true;
   outside?: Outside;
+  element?: SVGElement;
 }
 
 interface Ordinary {

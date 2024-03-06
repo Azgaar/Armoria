@@ -34,6 +34,7 @@
 </script>
 
 <g
+  bind:this={charge.element}
   class="charge"
   {i}
   charge={chargeId}
