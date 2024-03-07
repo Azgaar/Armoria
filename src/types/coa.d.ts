@@ -44,6 +44,7 @@ interface Ordinary {
   angle?: number;
   above?: true;
   stroke?: string;
+  element: SVGElement;
 }
 
 interface Inscription {

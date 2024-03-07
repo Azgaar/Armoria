@@ -16,7 +16,7 @@ export function drag(
   const sizeAdj = el.closest("svg").clientWidth / 200;
   document.addEventListener("mouseup", stopDragging, {once: true});
 
-  const {x = 0, y = 0, size = 1} = charge;
+  const {x = 0, y = 0, size = 1, angle = 0} = charge;
   const gridSize = get(grid);
   const positionElements = el.querySelectorAll("use");
   const positions = shieldPositions[get(shield)] || shieldPositions.spanish;
@@ -24,9 +24,16 @@ export function drag(
   if (options.resize && (event.shiftKey || element)) {
     document.addEventListener("mousemove", resize);
     document.body.style.cursor = "ns-resize";
-  } else if (options.rotate && ((event.ctrlKey || event.metaKey)) || element) {
-    document.addEventListener("mousemove", rotate);
+  } else if (options.rotate){
+    if(element){
+      document.addEventListener("mousemove", fieldRotate)
+    }
+    else if ((event.ctrlKey || event.metaKey)) {
+      document.addEventListener("mousemove", rotate);
+    }
+
     document.body.style.cursor = "ew-resize";
+    
   } else if (options.move) {
     document.addEventListener("mousemove", move);
     document.body.style.cursor = "move";
@@ -52,6 +59,18 @@ export function drag(
     } else {
       setGroupTransform(el, charge);
     }
+  }
+
+  function fieldRotate(event){
+    const dx = x + (event.x -x0) / sizeAdj;
+
+    let a = Math.round(angle + dx)
+    if (a > 180) a = (a % 180) - 180;
+    if (a < -179) a = (a % 180) + 180;
+
+    charge.angle = a
+  
+    setGroupTransform(el, charge)
   }
 
   function rotate(event) {

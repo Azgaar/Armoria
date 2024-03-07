@@ -4,7 +4,6 @@
   import Switch from "./Switch.svelte";
   import {grid, showGrid, state} from "data/stores";
   import {tooltip} from "scripts/tooltip";
-	import DragLabel from "../DragLabel.svelte";
   import { drag } from "scripts/drag";
 
   interface IElement {
@@ -40,7 +39,7 @@
 </span>
 
 <span data-tooltip={$t("tooltip.rotation")} use:tooltip>
-	<span style="cursor: ns-resize;" on:pointerdown={(e) => startDragging(e, {move:false, resize:false, rotate:true})}>
+	<span style="cursor: ew-resize;" on:pointerdown={(e) => startDragging(e, {move:false, resize:false, rotate:true})}>
     <span>{$t("editor.rotation")}:</span>
   </span>
   <input type="number" min="-180" max="180" bind:value={element.angle} on:change={updateGrid} />
