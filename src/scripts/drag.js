@@ -24,7 +24,7 @@ export function drag(
   if (options.resize && (event.shiftKey || element)) {
     document.addEventListener("mousemove", resize);
     document.body.style.cursor = "ns-resize";
-  } else if (options.rotate && (event.ctrlKey || event.metaKey)) {
+  } else if (options.rotate && ((event.ctrlKey || event.metaKey)) || element) {
     document.addEventListener("mousemove", rotate);
     document.body.style.cursor = "ew-resize";
   } else if (options.move) {

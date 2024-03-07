@@ -5,6 +5,7 @@
   import {grid, showGrid, state} from "data/stores";
   import {tooltip} from "scripts/tooltip";
 	import DragLabel from "../DragLabel.svelte";
+  import { drag } from "scripts/drag";
 
   interface IElement {
     size: number;
@@ -25,17 +26,23 @@
   const updateGrid = () => {
     $state.transform = `rotate(${element.angle || 0})`;
   };
+
+   const startDragging = (event: Event, action:{move:boolean, resize: boolean, rotate:boolean}) => {
+    drag(event, coaElement, coa,  action, coaElement.element);
+   }
 </script>
 
 <span data-tooltip={$t("tooltip.size")} use:tooltip>
-  <DragLabel bind:value={element.size} coa={coa} coaEl={coaElement}>
-		{$t("editor.size")}:
-  </DragLabel>
+		<span style="cursor: ns-resize;" on:pointerdown={(e) => startDragging(e, {move:false, resize:true, rotate:false})}>
+      {$t("editor.size")}:
+    </span>
   <input type="number" min="1" max="500" step="1" value={(element.size * 100) | 0} on:input={hadleSizeChange} />
 </span>
 
 <span data-tooltip={$t("tooltip.rotation")} use:tooltip>
-  <span>{$t("editor.rotation")}:</span>
+	<span style="cursor: ns-resize;" on:pointerdown={(e) => startDragging(e, {move:false, resize:false, rotate:true})}>
+    <span>{$t("editor.rotation")}:</span>
+  </span>
   <input type="number" min="-180" max="180" bind:value={element.angle} on:change={updateGrid} />
 </span>
 
