@@ -1610,6 +1610,7 @@ export const charges = {
     inescutcheonTarge2: 1,
     inescutcheonPavise: 1,
     inescutcheonWedged: 1,
+    inescutcheonEmbowed: 1,
     inescutcheonFlag: 1,
     inescutcheonPennon: 1,
     inescutcheonGuidon: 1,

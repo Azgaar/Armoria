@@ -68,7 +68,8 @@
       "targe": "Targe",
       "targe2": "Targe 2",
       "pavise": "Pavise",
-      "wedged": "Wedged"
+      "wedged": "Wedged",
+      "embowed": "Embowed"
     },
     "banner": {
       "flag": "Flag",
@@ -746,6 +747,7 @@
     "inescutcheonTarge2": "Inescutcheon Targe2",
     "inescutcheonPavise": "Inescutcheon Pavise",
     "inescutcheonWedged": "Inescutcheon Wedged",
+    "inescutcheonEmbowed": "Inescutcheon Embowed",
     "inescutcheonFlag": "Inescutcheon Flag",
     "inescutcheonPennon": "Inescutcheon Pennon",
     "inescutcheonGuidon": "Inescutcheon Guidon",
