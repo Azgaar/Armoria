@@ -68,7 +68,8 @@
       "targe": "Тарч",
       "targe2": "Тарч 2",
       "pavise": "Павиза",
-      "wedged": "С выемками"
+      "wedged": "С выемками",
+      "embowed": "Embowed"
     },
     "banner": {
       "flag": "Флаг",
@@ -85,6 +86,7 @@
       "vesicaPiscis": "Рыбий пузырь",
       "square": "Квадратный",
       "diamond": "Ромбовидный",
+      "hexagon": "Hexagon",
       "no": "Нет"
     },
     "fantasy": {
@@ -284,7 +286,7 @@
     "confirm": "Подтвердить",
     "restoreDefault": "Востановить шрифты по умолчанию",
     "close": "Закрыть",
-    "tip_local": "**Локальный шрифт**. Если у вас есть шрифт, [установленный на компьютере](https://faqs.skillcrush.com/article/275-downloading-installing-a-font-on-your-computer), просто введите название шрифта. Браузер должен быть перезагружен после установки шрифта. Неустановленные шрифты работать не будут. Хорошими источниками шрифтов являются [Fontdesk](https://fontesk.com) и [DaFont](https://www.dafont.com).",
+    "tip_local": "**Local font**. If you have a font [installed on your computer](https://faqs.skillcrush.com/article/275-downloading-installing-a-font-on-your-computer), just provide the font name. Make sure the browser is reloaded after the installation. The font won't work on machines not having it installed. Good sources of fonts are [Fontesk](https://fontesk.com) and [DaFont](https://www.dafont.com).",
     "tip_web": "**Шрифт с веб-хостинга**. Введите имя шрифта и ссылку на файл шрифта, размещаемый в сети. Лучшие бесплатные шрифты — это [Google Fonts](https://fonts.google.com) и [CDN Fonts](https://www.cdnfonts.com). Для получения файла шрифта откройте ссылку на css, которую можно найти на этих ресурсах, и вручную скопируйте ссылку на . woff2 желаемого варианта. Чтобы добавить другой вариант шрифта (например, кирилличный), добавьте шрифт под другим именем."
   },
   "editor": {
@@ -752,6 +754,7 @@
     "inescutcheonTarge2": "щит тарч 2",
     "inescutcheonPavise": "щит пивиза",
     "inescutcheonWedged": "щит с выемками",
+    "inescutcheonEmbowed": "Inescutcheon Embowed",
     "inescutcheonFlag": "флаг",
     "inescutcheonPennon": "флажок",
     "inescutcheonGuidon": "вымпел",
@@ -764,6 +767,7 @@
     "inescutcheonVesicaPiscis": "щит рыбий пузырь",
     "inescutcheonSquare": "квадратный щит",
     "inescutcheonDiamond": "ромбовидный щит",
+    "inescutcheonHexagon": "Inescutcheon Hexagon",
     "inescutcheonNo": "нет формы",
     "inescutcheonFantasy1": "фантастический щит 1",
     "inescutcheonFantasy2": "фантастический щит 2",
