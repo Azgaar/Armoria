@@ -68,7 +68,8 @@
       "targe": "塔里式",
       "targe2": "塔里式 2",
       "pavise": "巨盾式",
-      "wedged": "楔形式"
+      "wedged": "楔形式",
+      "embowed": "Embowed"
     },
     "banner": {
       "flag": "旗式",
@@ -85,6 +86,7 @@
       "vesicaPiscis": "鱼形椭圆",
       "square": "矩形",
       "diamond": "菱形",
+      "hexagon": "Hexagon",
       "no": "无"
     },
     "fantasy": {
@@ -284,7 +286,7 @@
     "confirm": "确认",
     "restoreDefault": "恢复默认颜色",
     "close": "关闭",
-    "tip_local": "**本地字体**。若字体[安装于您的计算机](https://faqs.skillcrush.com/article/275-downloading-installing-a-font-on-your-computer)，仅需提供字体名称。请确保字体安装完成后重启浏览器。字体不会在未安装其的设备上生效。较好的字体库有[Fontdesk](https://fontesk.com)和[DaFont](https://www.dafont.com)。",
+    "tip_local": "**Local font**. If you have a font [installed on your computer](https://faqs.skillcrush.com/article/275-downloading-installing-a-font-on-your-computer), just provide the font name. Make sure the browser is reloaded after the installation. The font won't work on machines not having it installed. Good sources of fonts are [Fontesk](https://fontesk.com) and [DaFont](https://www.dafont.com).",
     "tip_web": "**网页托管字体**。提供字体名称以及指向在线托管的字体文件的链接。最好的免费字体托管服务有[Google Fonts](https://fonts.google.com)和[CDN Fonts](https://www.cdnfonts.com)。要获取字体文件链接请打开这些服务提供的css链接并手动复制指向所需变种的 .woff2 链接。添加其它变种时（如西里尔语）请使用不同的名称。"
   },
   "editor": {
@@ -752,6 +754,7 @@
     "inescutcheonTarge2": "塔里式盾牌2纹饰",
     "inescutcheonPavise": "弓弩兵巨盾纹饰",
     "inescutcheonWedged": "楔形盾牌纹饰",
+    "inescutcheonEmbowed": "Inescutcheon Embowed",
     "inescutcheonFlag": "旗形盾纹饰",
     "inescutcheonPennon": "三角盾纹饰",
     "inescutcheonGuidon": "三角旗形盾牌纹饰",
@@ -764,6 +767,7 @@
     "inescutcheonVesicaPiscis": "鱼形椭圆盾牌纹饰",
     "inescutcheonSquare": "正方形盾牌纹饰",
     "inescutcheonDiamond": "菱形盾牌纹饰",
+    "inescutcheonHexagon": "Inescutcheon Hexagon",
     "inescutcheonNo": "无盾牌纹饰",
     "inescutcheonFantasy1": "奇幻盾牌纹饰1",
     "inescutcheonFantasy2": "奇幻盾牌纹饰2",
