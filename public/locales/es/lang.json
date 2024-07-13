@@ -68,7 +68,8 @@
       "targe": "Tarja",
       "targe2": "Tarja 2",
       "pavise": "Pavés",
-      "wedged": "Recortado"
+      "wedged": "Recortado",
+      "embowed": "Embowed"
     },
     "banner": {
       "flag": "Bandera",
@@ -85,6 +86,7 @@
       "vesicaPiscis": "Vesica Piscis",
       "square": "Cuadrado",
       "diamond": "Rombo",
+      "hexagon": "Hexagon",
       "no": "Sin forma"
     },
     "fantasy": {
@@ -284,7 +286,7 @@
     "confirm": "Confirmar",
     "restoreDefault": "Restore default fonts",
     "close": "Close",
-    "tip_local": "**Local font**. If you have a font [installed on your computer](https://faqs.skillcrush.com/article/275-downloading-installing-a-font-on-your-computer), just provide the font name. Make sure the browser is reloaded after the installation. The font won't work on machines not having it installed. Good source of fonts are [Fontdesk](https://fontesk.com) and [DaFont](https://www.dafont.com).",
+    "tip_local": "**Local font**. If you have a font [installed on your computer](https://faqs.skillcrush.com/article/275-downloading-installing-a-font-on-your-computer), just provide the font name. Make sure the browser is reloaded after the installation. The font won't work on machines not having it installed. Good sources of fonts are [Fontesk](https://fontesk.com) and [DaFont](https://www.dafont.com).",
     "tip_web": "**Web-hosted font**. Provide font name and link to the font file hosted online. The best free font hostings are [Google Fonts](https://fonts.google.com) and [CDN Fonts](https://www.cdnfonts.com). To get font file open the link to css provided by these services and manually copy the link to .woff2 of desired variant. To add another variant (e.g. Cyrillic), add the font under a different name."
   },
   "editor": {
@@ -752,6 +754,7 @@
     "inescutcheonTarge2": "Escusón en forma de tarja 2",
     "inescutcheonPavise": "Escusón en forma de pavés",
     "inescutcheonWedged": "Escusón escudo recortado",
+    "inescutcheonEmbowed": "Inescutcheon Embowed",
     "inescutcheonFlag": "Escusón en forma de bandera",
     "inescutcheonPennon": "Escusón en forma de banderín",
     "inescutcheonGuidon": "Escusón en forma de guión",
@@ -764,6 +767,7 @@
     "inescutcheonVesicaPiscis": "Escusón en forma de vesica piscis",
     "inescutcheonSquare": "Escusón cuadrado",
     "inescutcheonDiamond": "Escusón en rombo",
+    "inescutcheonHexagon": "Inescutcheon Hexagon",
     "inescutcheonNo": "Sin escusón",
     "inescutcheonFantasy1": "Escusón fantástico 1",
     "inescutcheonFantasy2": "Escusón fantástico 2",
