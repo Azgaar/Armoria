@@ -68,7 +68,8 @@
       "targe": "Targe",
       "targe2": "Targe 2",
       "pavise": "Pavise",
-      "wedged": "Wedged"
+      "wedged": "Wedged",
+      "embowed": "Embowed"
     },
     "banner": {
       "flag": "Flag",
@@ -85,6 +86,7 @@
       "vesicaPiscis": "Vesica Piscis",
       "square": "Square",
       "diamond": "Diamond",
+      "hexagon": "Hexagon",
       "no": "No"
     },
     "fantasy": {
@@ -284,7 +286,7 @@
     "confirm": "Confirm",
     "restoreDefault": "Restore default fonts",
     "close": "Close",
-    "tip_local": "**Local font**. If you have a font [installed on your computer](https://faqs.skillcrush.com/article/275-downloading-installing-a-font-on-your-computer), just provide the font name. Make sure the browser is reloaded after the installation. The font won't work on machines not having it installed. Good source of fonts are [Fontdesk](https://fontesk.com) and [DaFont](https://www.dafont.com).",
+    "tip_local": "**Local font**. If you have a font [installed on your computer](https://faqs.skillcrush.com/article/275-downloading-installing-a-font-on-your-computer), just provide the font name. Make sure the browser is reloaded after the installation. The font won't work on machines not having it installed. Good sources of fonts are [Fontesk](https://fontesk.com) and [DaFont](https://www.dafont.com).",
     "tip_web": "**Web-hosted font**. Provide font name and link to the font file hosted online. The best free font hostings are [Google Fonts](https://fonts.google.com) and [CDN Fonts](https://www.cdnfonts.com). To get font file open the link to css provided by these services and manually copy the link to .woff2 of desired variant. To add another variant (e.g. Cyrillic), add the font under a different name."
   },
   "editor": {
@@ -752,6 +754,7 @@
     "inescutcheonTarge2": "Inescutcheon Targe2",
     "inescutcheonPavise": "Inescutcheon Pavise",
     "inescutcheonWedged": "Inescutcheon Wedged",
+    "inescutcheonEmbowed": "Inescutcheon Embowed",
     "inescutcheonFlag": "Inescutcheon Flag",
     "inescutcheonPennon": "Inescutcheon Pennon",
     "inescutcheonGuidon": "Inescutcheon Guidon",
@@ -764,6 +767,7 @@
     "inescutcheonVesicaPiscis": "Inescutcheon Vesica Piscis",
     "inescutcheonSquare": "Inescutcheon Square",
     "inescutcheonDiamond": "Inescutcheon Diamond",
+    "inescutcheonHexagon": "Inescutcheon Hexagon",
     "inescutcheonNo": "Inescutcheon No",
     "inescutcheonFantasy1": "Inescutcheon Fantasy1",
     "inescutcheonFantasy2": "Inescutcheon Fantasy2",
