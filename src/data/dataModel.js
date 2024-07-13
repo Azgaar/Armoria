@@ -318,6 +318,9 @@ const chargeData = {
     colors: 2,
     positions: {e: 1}
   },
+  ant: {
+    reversed: true
+  },
   anvil: {
     sinister: true
   },
@@ -440,6 +443,10 @@ const chargeData = {
     colors: 2,
     sinister: true
   },
+  camelBactrian: {
+    colors: 2,
+    sinister: true
+  },
   cancer: {
     reversed: true
   },
@@ -472,6 +479,9 @@ const chargeData = {
   },
   chalice: {
     colors: 2
+  },
+  church: {
+    colors: 3
   },
   cinquefoil: {
     reversed: true
@@ -659,6 +669,10 @@ const chargeData = {
   },
   gauntlet: {
     sinister: true,
+    reversed: true
+  },
+  gladius: {
+    colors: 2,
     reversed: true
   },
   goat: {
@@ -1068,6 +1082,9 @@ const chargeData = {
     colors: 2,
     reversed: true
   },
+  spider: {
+    reversed: true
+  },
   spiral: {
     sinister: true,
     reversed: true
@@ -1085,6 +1102,10 @@ const chargeData = {
   },
   stirrup: {
     colors: 2
+  },
+  stork: {
+    colors: 2,
+    sinister: true
   },
   swallow: {
     colors: 2,
@@ -1317,6 +1338,7 @@ export const charges = {
     boarRampant: 1,
     bullPassant: 1,
     camel: 1,
+    camelBactrian: 1,
     catPassantGuardant: 1,
     cowStatant: 1,
     dolphin: 1,
@@ -1378,6 +1400,7 @@ export const charges = {
     peacock: 1,
     peacockInPride: 1,
     raven: 2,
+    stork: 1,
     swallow: 1,
     swan: 2,
     swanErased: 1
@@ -1390,6 +1413,7 @@ export const charges = {
     snake: 1
   },
   bugs: {
+    ant: 1,
     bee: 1,
     butterfly: 1,
     cancer: 1,
@@ -1397,6 +1421,7 @@ export const charges = {
     fly: 1,
     ladybird: 1,
     scorpion: 1,
+    spider: 1,
     wasp: 1
   },
   fishes: {
@@ -1468,6 +1493,7 @@ export const charges = {
     flamberge: 1,
     flangedMace: 1,
     gauntlet: 1,
+    gladius: 1,
     grenade: 1,
     hatchet: 3,
     helmet: 2,
@@ -1513,6 +1539,7 @@ export const charges = {
     bridge2: 1,
     castle: 2,
     castle2: 1,
+    church: 1,
     column: 1,
     lighthouse: 1,
     palace: 1,
@@ -1587,6 +1614,7 @@ export const charges = {
     snowflake: 1,
     stagsAttires: 1,
     stirrup: 2,
+    violin: 1,
     wheel: 3,
     wing: 2,
     wingSword: 1
