@@ -86,7 +86,12 @@
         if (menu.division.size !== "standard") attibutes.push(menu.division.size);
         coa.division.t = attibutes.join("-");
       }
-    } else delete coa.division;
+    }
+    else {
+      delete coa.division;
+      menu.charges.forEach(c => c.divided = "");
+      menu.ordinaries.forEach(o => o.divided = "");
+    }
 
     // ordinary attributes changed
     if (menu.ordinaries.length) {
