@@ -68,7 +68,8 @@
       "targe": "Turniejowa",
       "targe2": "Turniejowa",
       "pavise": "Pawęż",
-      "wedged": "Klinowa"
+      "wedged": "Klinowa",
+      "embowed": "Embowed"
     },
     "banner": {
       "flag": "Flaga",
@@ -85,6 +86,7 @@
       "vesicaPiscis": "Rybi pęcherz",
       "square": "Kwadrat",
       "diamond": "Diament",
+      "hexagon": "Hexagon",
       "no": "Brak"
     },
     "fantasy": {
@@ -284,7 +286,7 @@
     "confirm": "Potwierdź",
     "restoreDefault": "Przywróć domyślne czcionki",
     "close": "Zamknij",
-    "tip_local": "**Czcionka lokalna**. Jeśli masz czcionkę [zainstalowaną na komputerze](https://faqs.skillcrush.com/article/275-downloading-installing-a-font-on-your-computer), wystarczy podać nazwę czcionki. Upewnij się, żeby odświeżyć przeglądarkę po zainstalowaniu czcionki. Czcionka nie będzie działać na komputerach, na których nie została zainstalowana. Dobre źródło czcionek to [Fontdesk](https://fontesk.com) i [DaFont](https://www.dafont.com).",
+    "tip_local": "**Local font**. If you have a font [installed on your computer](https://faqs.skillcrush.com/article/275-downloading-installing-a-font-on-your-computer), just provide the font name. Make sure the browser is reloaded after the installation. The font won't work on machines not having it installed. Good sources of fonts are [Fontesk](https://fontesk.com) and [DaFont](https://www.dafont.com).",
     "tip_web": "**Czcionka hostowana przez stronę internetową**. Podaj nazwę czcionki i link do pliku czcionki hostowanego online. Najlepszymi stronami hostującymi darmowe czcionek są [Fonty Google](https://fonts.google.com) i [Fonty CDN](https://www.cdnfonts.com). Aby uzyskać plik czcionki, otwórz link do css zapewniony przez te usługi i ręcznie skopiuj link do .woff2 wybranego wariantu. Aby dodać inny wariant (np. Cyrillic), dodaj czcionkę pod inną nazwą."
   },
   "editor": {
@@ -752,6 +754,7 @@
     "inescutcheonTarge2": "Tarcza Turniejowa2",
     "inescutcheonPavise": "Tarcza Pawęż",
     "inescutcheonWedged": "Tarcza Klinowa",
+    "inescutcheonEmbowed": "Inescutcheon Embowed",
     "inescutcheonFlag": "Tarcza Flaga",
     "inescutcheonPennon": "Tarcza proporzec poziomy",
     "inescutcheonGuidon": "Tarcza Bandera",
@@ -764,6 +767,7 @@
     "inescutcheonVesicaPiscis": "Tarcza rybi pęcherz",
     "inescutcheonSquare": "Tarcza Kwadrat",
     "inescutcheonDiamond": "Tarcza diament",
+    "inescutcheonHexagon": "Inescutcheon Hexagon",
     "inescutcheonNo": "Tarcza brak (kwadrat)",
     "inescutcheonFantasy1": "Tarcza Fantasy 1",
     "inescutcheonFantasy2": "Tarcza Fantasy 2",
