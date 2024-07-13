@@ -68,7 +68,8 @@
       "targe": "Targe 1",
       "targe2": "Targe 2",
       "pavise": "Pavese",
-      "wedged": "Keilförmig"
+      "wedged": "Keilförmig",
+      "embowed": "Embowed"
     },
     "banner": {
       "flag": "Flagge",
@@ -85,6 +86,7 @@
       "vesicaPiscis": "Vesica piscis",
       "square": "Quadrat",
       "diamond": "Raute",
+      "hexagon": "Hexagon",
       "no": "Keins"
     },
     "fantasy": {
@@ -284,7 +286,7 @@
     "confirm": "Bestätigen",
     "restoreDefault": "Standardschriftarten wiederherstellen",
     "close": "Schließen",
-    "tip_local": "**Lokale Schriftarten**. Falls du eine Schriftart [auf deinem Computer installiert](https://faqs.skillcrush.com/article/275-downloading-installing-a-font-on-your-computer) hast, gib einfach den Schriftnamen an. Stellen Sie sicher, dass der Browser nach der Installation neu geladen wird. Die Schriftart funktioniert nicht auf Rechnern, die sie nicht installiert haben. Gute Quelle für Schriften sind [Fontdesk](https://fontesk.com) und [DaFont](https://www.dafont.com).",
+    "tip_local": "**Local font**. If you have a font [installed on your computer](https://faqs.skillcrush.com/article/275-downloading-installing-a-font-on-your-computer), just provide the font name. Make sure the browser is reloaded after the installation. The font won't work on machines not having it installed. Good sources of fonts are [Fontesk](https://fontesk.com) and [DaFont](https://www.dafont.com).",
     "tip_web": "**Web-hosted font**. Provide font name and link to the font file hosted online. The best free font hostings are [Google Fonts](https://fonts.google.com) and [CDN Fonts](https://www.cdnfonts.com). To get font file open the link to css provided by these services and manually copy the link to .woff2 of desired variant. To add another variant (e.g. Cyrillic), add the font under a different name."
   },
   "editor": {
@@ -752,6 +754,7 @@
     "inescutcheonTarge2": "Targe Wappen 2",
     "inescutcheonPavise": "Pavese Wappen",
     "inescutcheonWedged": "Keilförmiges Wappen",
+    "inescutcheonEmbowed": "Inescutcheon Embowed",
     "inescutcheonFlag": "Flaggenförmiges Wappen",
     "inescutcheonPennon": "Wimpelförmiges Wappen",
     "inescutcheonGuidon": "Guidon Wappen",
@@ -764,6 +767,7 @@
     "inescutcheonVesicaPiscis": "Vesica piscis Wappen",
     "inescutcheonSquare": "Quadratförmiges Wappen",
     "inescutcheonDiamond": "Rauten Wappen",
+    "inescutcheonHexagon": "Inescutcheon Hexagon",
     "inescutcheonNo": "Rechteckiges Wappen",
     "inescutcheonFantasy1": "Fantasy Wappen 1",
     "inescutcheonFantasy2": "Fantasy Wappen 2",
