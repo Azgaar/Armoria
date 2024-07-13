@@ -68,7 +68,8 @@
       "targe": "Targa štit",
       "targe2": "Targa 2 štit",
       "pavise": "Duguljasti štit",
-      "wedged": "Klinasti štit"
+      "wedged": "Klinasti štit",
+      "embowed": "Embowed"
     },
     "banner": {
       "flag": "Zastava",
@@ -85,6 +86,7 @@
       "vesicaPiscis": "Oblik leće",
       "square": "Kvadrat",
       "diamond": "Dijamant",
+      "hexagon": "Hexagon",
       "no": "Ne"
     },
     "fantasy": {
@@ -284,7 +286,7 @@
     "confirm": "Potvrdi",
     "restoreDefault": "Restore default fonts",
     "close": "Close",
-    "tip_local": "**Local font**. If you have a font [installed on your computer](https://faqs.skillcrush.com/article/275-downloading-installing-a-font-on-your-computer), just provide the font name. Make sure the browser is reloaded after the installation. The font won't work on machines not having it installed. Good source of fonts are [Fontdesk](https://fontesk.com) and [DaFont](https://www.dafont.com).",
+    "tip_local": "**Local font**. If you have a font [installed on your computer](https://faqs.skillcrush.com/article/275-downloading-installing-a-font-on-your-computer), just provide the font name. Make sure the browser is reloaded after the installation. The font won't work on machines not having it installed. Good sources of fonts are [Fontesk](https://fontesk.com) and [DaFont](https://www.dafont.com).",
     "tip_web": "**Web-hosted font**. Provide font name and link to the font file hosted online. The best free font hostings are [Google Fonts](https://fonts.google.com) and [CDN Fonts](https://www.cdnfonts.com). To get font file open the link to css provided by these services and manually copy the link to .woff2 of desired variant. To add another variant (e.g. Cyrillic), add the font under a different name."
   },
   "editor": {
@@ -752,6 +754,7 @@
     "inescutcheonTarge2": "Targa štit2",
     "inescutcheonPavise": "Duguljasti štit",
     "inescutcheonWedged": "Klinasti štit",
+    "inescutcheonEmbowed": "Inescutcheon Embowed",
     "inescutcheonFlag": "Zastavski štit",
     "inescutcheonPennon": "Zastavica štit",
     "inescutcheonGuidon": "Guidon štit",
@@ -764,6 +767,7 @@
     "inescutcheonVesicaPiscis": "Lećasti štit",
     "inescutcheonSquare": "Kvadratni štit",
     "inescutcheonDiamond": "Dijamantni štit",
+    "inescutcheonHexagon": "Inescutcheon Hexagon",
     "inescutcheonNo": "Štit ne",
     "inescutcheonFantasy1": "Fantastičan štit1",
     "inescutcheonFantasy2": "Fantastičan štit2",
