@@ -5,7 +5,7 @@ export const shields = {
   historical: {boeotian: 1, roman: 2, kite: 1, oldFrench: 5, renaissance: 2, baroque: 2},
   specific: {targe: 1, targe2: 0, pavise: 5, wedged: 10, embowed: 1},
   banner: {flag: 1, pennon: 0, guidon: 0, banner: 0, dovetail: 1, gonfalon: 5, pennant: 0},
-  simple: {round: 12, oval: 6, vesicaPiscis: 1, square: 1, diamond: 2, hexagon: 0, no: 0},
+  simple: {round: 12, oval: 6, vesicaPiscis: 1, square: 1, diamond: 2, hexagon: 1, no: 0},
   middleEarth: {noldor: 1, gondor: 1, easterling: 1, erebor: 1, ironHills: 1, urukHai: 1, moriaOrc: 1},
   fantasy: {fantasy1: 2, fantasy2: 2, fantasy3: 1, fantasy4: 1, fantasy5: 3}
 };
