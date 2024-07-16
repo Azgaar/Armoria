@@ -10,7 +10,7 @@ A tutorial is available [on Wiki](https://github.com/Azgaar/Armoria/wiki/Armoria
 
 ![Gallery View](public/preview.png)
 
-![Editor View](https://cdn.discordapp.com/attachments/587406457725779968/787792526907015234/preview2.png)
+![Editor View](public/preview2.png)
 
 ## For Developers
 
