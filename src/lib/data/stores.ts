@@ -19,6 +19,7 @@ import {writable} from "svelte/store";
 import type {Tinctures} from "$lib/types/tinctures";
 import {shields} from "./shields";
 import {validateTinctures} from "./validators";
+import {browser} from "$app/environment";
 
 export const isTextReady = writable(false);
 
@@ -115,16 +116,19 @@ export const changes = createChangesStore();
 
 function defineInitialOptions() {
   const stored = (key: string) => {
+    if (!browser) return null;
     const value = localStorage.getItem(key);
     if (value === "null") return null;
     return value;
   };
 
   const storedObj = (key: string) => {
+    if (!browser) return null;
     return localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : null;
   };
 
   const getShieldFromURL = () => {
+    if (!browser) return null;
     const coaParam = new URL(window.location.href).searchParams.get("coa");
     if (!coaParam) return null;
     const coa = JSON.parse(coaParam);
