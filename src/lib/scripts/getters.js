@@ -3,7 +3,6 @@ import {templates, lines, patterns} from "$lib/data/templates";
 import {shieldPaths} from "$lib/data/shields";
 import {colors, shield} from "$lib/data/stores";
 
-const chargesGroup = document.getElementById("charges");
 const colorsData = get(colors);
 const loadedCharges = {};
 
@@ -43,7 +42,7 @@ export function addShieldPatterns(coa) {
   }
 }
 
-function semy(string) {
+export function semy(string) {
   const isSemy = /^semy/.test(string);
   if (!isSemy) return false;
   return string.match(/semy_of_(.*?)-/)[1];
@@ -64,7 +63,7 @@ function addInescutcheon(charge) {
     ? `author="Weta Workshop" source="www.wetanz.com" license="https://en.wikipedia.org/wiki/Fair_use"`
     : `author=Azgaar license="https://creativecommons.org/publicdomain/zero/1.0"`;
   const g = `<g id=${id} ${licenseAttrs}><path transform="translate(67 67) scale(.33)" d="${shieldPaths[shieldName]}"/></g>`;
-  chargesGroup.insertAdjacentHTML("beforeend", g);
+  document.getElementById("charges").insertAdjacentHTML("beforeend", g);
 }
 
 function fetchCharge(charge) {
@@ -91,7 +90,7 @@ function fetchCharge(charge) {
         if (license) g.setAttribute("license", license);
       }
 
-      chargesGroup.insertAdjacentHTML("beforeend", g.outerHTML);
+      document.getElementById("charges").insertAdjacentHTML("beforeend", g.outerHTML);
     })
     .catch(err => console.error(err));
 }
@@ -101,7 +100,7 @@ function clr(tincture) {
   return colorsData[tincture];
 }
 
-function getSizeMod(size) {
+export function getSizeMod(size) {
   if (size === "small") return 0.8;
   if (size === "smaller") return 0.5;
   if (size === "smallest") return 0.25;
