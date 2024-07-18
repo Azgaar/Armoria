@@ -9,11 +9,13 @@ import {getColors, parseSeed} from "$lib/api/utils";
 const SIZE_DEFAULT = 1200;
 const FORMAT_DEFAULT = "svg";
 const SHIELD_DEFAULT = "heater";
+const ZOOM_DEFAULT = 1;
 
 export const GET: RequestHandler = async ({ url }) => {
   const params = url.searchParams;
   const format = params.get("format") || FORMAT_DEFAULT;
   const size = parseInt(params.get("size")) || SIZE_DEFAULT;
+  const zoom = parseFloat(params.get("zoom")) || ZOOM_DEFAULT;
   const seed = params.get("seed") ? parseSeed(params.get("seed")) : Math.floor(Math.random() * 1e9);
   const colors = getColors(params);
   const coaString = params.get("coa");
@@ -23,7 +25,7 @@ export const GET: RequestHandler = async ({ url }) => {
   if (!coa.shield) coa.shield = SHIELD_DEFAULT;
 
   const id = "coa" + (seed || Math.floor(Math.random() * 1e6));
-  const svg = await render(id, coa, size, colors);
+  const svg = await render(id, coa, size, zoom, colors);
   return send(format, svg);
 };
 

@@ -1,8 +1,6 @@
 import {get} from "svelte/store";
 import {scale, grad, diaper, fonts} from "$lib/data/stores";
 
-const isFirefox = navigator.userAgent.includes("Firefox");
-
 export async function download(i, format = "png") {
   const coas = i || i === 0 ? [document.getElementById("coa" + i)] : document.querySelectorAll("svg.coa");
   let {width, height} = coas[0].getBoundingClientRect();
@@ -96,7 +94,7 @@ async function getURL(svg, width, height) {
 
   // load needed web fonts
   const usedFonts = getUsedWebFonts(clone);
-  if (usedFonts) {
+  if (usedFonts.length) {
     const dataURLfonts = await loadFontsAsDataURI(usedFonts);
 
     const fontFaces = dataURLfonts
@@ -112,7 +110,7 @@ async function getURL(svg, width, height) {
   }
 
   const serialized = new XMLSerializer().serializeToString(clone);
-  const pretty = isFirefox ? serialized : prettify(serialized); // don't prettify in Firefox
+  const pretty = navigator.userAgent.includes("Firefox") ? serialized : prettify(serialized); // don't prettify in Firefox
   const blob = new Blob([pretty], {type: "image/svg+xml;charset=utf-8"});
   const url = window.URL.createObjectURL(blob);
   window.setTimeout(() => window.URL.revokeObjectURL(url), 6000);

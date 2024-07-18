@@ -1,7 +1,6 @@
 <script lang="ts">
   // @ts-check
-  import {DEFAULT_ZOOM} from "$lib/config/defaults";
-  import {DEFAULT_SHIELD_BOX, shieldBox} from "$lib/data/shields";
+  import {getViewBox} from "$lib/scripts/getters";
   import {border, borderWidth, shield, zoom} from "$lib/data/stores";
   import Grid from "./../editor/Grid.svelte";
   import Positions from "./../editor/Positions.svelte";
@@ -14,16 +13,6 @@
   export let height: string | number = "100%";
 
   const isEdit = i === "Edit";
-
-  function getViewBox(shield: string, zoom: number) {
-    const box = shieldBox[shield] || DEFAULT_SHIELD_BOX;
-    const [x0, y0, w0, h0] = box.split(" ");
-    const w = Math.round((w0 * DEFAULT_ZOOM) / zoom);
-    const h = Math.round((h0 * DEFAULT_ZOOM) / zoom);
-    const x = x0 - w / 2 + 100;
-    const y = y0 - h / 2 + 100;
-    return `${x} ${y} ${w} ${h}`;
-  }
 
   $: viewBox = getViewBox($shield, $zoom);
 </script>

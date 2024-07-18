@@ -1,7 +1,8 @@
 import {get} from "svelte/store";
 import {templates, lines, patterns} from "$lib/data/templates";
-import {shieldPaths} from "$lib/data/shields";
+import {shieldBox, shieldPaths, DEFAULT_SHIELD_BOX} from "$lib/data/shields";
 import {colors, shield} from "$lib/data/stores";
+import {DEFAULT_ZOOM} from "$lib/config/defaults";
 
 const colorsData = get(colors);
 const loadedCharges = {};
@@ -107,6 +108,16 @@ export function getSizeMod(size) {
   if (size === "big") return 1.6;
   if (size === "bigger") return 2;
   return 1;
+}
+
+export function getViewBox(shield, zoom) {
+  const box = shieldBox[shield] || DEFAULT_SHIELD_BOX;
+  const [x0, y0, w0, h0] = box.split(" ");
+  const w = Math.round((w0 * DEFAULT_ZOOM) / zoom);
+  const h = Math.round((h0 * DEFAULT_ZOOM) / zoom);
+  const x = x0 - w / 2 + 100;
+  const y = y0 - h / 2 + 100;
+  return `${x} ${y} ${w} ${h}`;
 }
 
 export function analyzePath(string) {
