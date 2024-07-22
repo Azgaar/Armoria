@@ -60,6 +60,9 @@
     .tertiary {
       fill: var(--tertiary);
     }
+    .pseudostroke {
+      fill: var(--stroke);
+    }
   </style>
 </defs>
 
