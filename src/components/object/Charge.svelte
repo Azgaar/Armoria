@@ -41,7 +41,7 @@
   transform={transform(charge)}
   stroke={charge.stroke || "#000"}
   on:mousedown={addDrag}
-  style="--secondary: {t2 || t}; --tertiary: {t3 || t}"
+  style="--secondary: {t2 || t}; --tertiary: {t3 || t}; --stroke: {charge.stroke || "#000"}"
 >
   {#each validPositions as position}
     <use xlink:href="#{chargeId}" transform={getElTransform(charge, position, shield)} />
