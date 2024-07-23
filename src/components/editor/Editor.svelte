@@ -12,6 +12,7 @@
   import EditorDivided from "./EditorDivided.svelte";
   import EditorDivision from "./EditorDivision.svelte";
   import EditorInscription from "./EditorInscription.svelte";
+  import EditorLayered from "./EditorLayered.svelte";
   import EditorLine from "./EditorLine.svelte";
   import EditorOrdinary from "./EditorOrdinary.svelte";
   import EditorOutside from "./EditorOutside.svelte";
@@ -123,7 +124,8 @@
         if (c.divided) item.divided = c.divided;
         if (c.sinister) item.sinister = 1;
         if (c.reversed) item.reversed = 1;
-        if (c.outside) item.outside = c.outside;
+        if (c.layered && charges.data[c.charge]?.layered && c.outside !== "around") item.layered = 1;
+        if (c.outside && (charges.data[c.charge]?.layered || c.outside !== "around")) item.outside = c.outside;
         if (c.x || c.y) {
           item.x = c.x;
           item.y = c.y;
@@ -260,6 +262,7 @@
         const divided = c.divided || "";
         const sinister = c.sinister || false;
         const reversed = c.reversed || false;
+        const layered = c.layered || false;
         const outside = c.outside || "";
         const x = c.x || 0;
         const y = c.y || 0;
@@ -278,6 +281,7 @@
           size,
           sinister,
           reversed,
+          layered,
           outside,
           x,
           y,
@@ -374,6 +378,7 @@
       size: 1.5,
       sinister: false,
       reversed: false,
+      layered: false,
       x: 0,
       y: 0,
       angle: 0,
@@ -623,6 +628,8 @@
             <i>[{$t("editor.aboveShield")}]</i>
           {:else if charge.outside === "below"}
             <i>[{$t("editor.belowShield")}]</i>
+          {:else if charge.outside === "around"}
+            <i>[{$t("editor.aroundShield")}]</i>
           {/if}
           <EditorControls bind:els={menu.charges} el={charge} {i} />
         {/if}
@@ -665,8 +672,11 @@
 
           <div class="subsection">
             <EditorPosition bind:charge />
+            {#if charges.data[charge.charge]?.layered && charge.outside !== "around"}
+              <EditorLayered bind:layered={charge.layered} />
+            {/if}
             {#if !charge.divided}
-              <EditorOutside bind:outside={charge.outside} />
+              <EditorOutside charge={charge.charge} bind:outside={charge.outside} />
             {/if}
           </div>
 
