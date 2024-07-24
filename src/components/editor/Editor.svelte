@@ -351,6 +351,7 @@
       strokeWidth: 1,
       line: "straight",
       size: 1,
+      above: false,
       x: 0,
       y: 0,
       angle: 0,
