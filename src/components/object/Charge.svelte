@@ -11,6 +11,7 @@
   export let t: string;
   export let t2: string | undefined = undefined;
   export let t3: string | undefined = undefined;
+  export let hideBackground: boolean = false;
   export let type: string;
 
   let chargeId: string;
@@ -41,7 +42,7 @@
   transform={transform(charge)}
   stroke={charge.stroke || "#000"}
   on:mousedown={addDrag}
-  style="--secondary: {t2 || t}; --tertiary: {t3 || t}; --stroke: {charge.stroke || "#000"}"
+  style="--secondary: {t2 || t}; --tertiary: {t3 || t}; --stroke: {charge.stroke || "#000"}; --background: {hideBackground ? 'none' : 'block'}"
 >
   {#each validPositions as position}
     <use xlink:href="#{chargeId}" transform={getElTransform(charge, position, shield)} />

@@ -340,7 +340,8 @@ const chargeData = {
     sinister: true
   },
   armEmbowedVambraced: {
-    sinister: true
+    sinister: true,
+    layered: true
   },
   armEmbowedVambracedHoldingSword: {
     colors: 3,
@@ -378,7 +379,8 @@ const chargeData = {
   },
   bearRampant: {
     colors: 3,
-    sinister: true
+    sinister: true,
+    layered: true
   },
   bee: {
     colors: 3,
@@ -591,7 +593,8 @@ const chargeData = {
   },
   dragonRampant: {
     colors: 3,
-    sinister: true
+    sinister: true,
+    layered: true
   },
   drakkar: {
     colors: 3,
@@ -701,6 +704,7 @@ const chargeData = {
   greyhoundRampant: {
     colors: 2,
     sinister: true,
+    layered: true,
     positions: {e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1}
   },
   greyhoundSejant: {
@@ -715,6 +719,7 @@ const chargeData = {
   griffinRampant: {
     colors: 3,
     sinister: true,
+    layered: true,
     positions: {e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1}
   },
   hand: {
@@ -777,7 +782,8 @@ const chargeData = {
   },
   horseRampant: {
     colors: 3,
-    sinister: true
+    sinister: true,
+    layered: true
   },
   horseSalient: {
     colors: 2,
@@ -830,6 +836,7 @@ const chargeData = {
   lionRampant: {
     colors: 3,
     sinister: true,
+    layered: true,
     positions: {e: 10, def: 2, abc: 2, bdefh: 1, kn: 1, jlh: 2, abcpqh: 1}
   },
   lionSejant: {
@@ -944,7 +951,8 @@ const chargeData = {
   },
   pegasus: {
     colors: 3,
-    sinister: true
+    sinister: true,
+    layered: true
   },
   pike: {
     colors: 2,
@@ -1147,7 +1155,8 @@ const chargeData = {
   },
   unicornRampant: {
     colors: 3,
-    sinister: true
+    sinister: true,
+    layered: true
   },
   wasp: {
     colors: 3,
@@ -1178,7 +1187,8 @@ const chargeData = {
   },
   wolfRampant: {
     colors: 3,
-    sinister: true
+    sinister: true,
+    layered: true
   },
   wolfStatant: {
     colors: 3,

@@ -29,6 +29,7 @@ interface Charge {
   stroke?: string;
   reversed?: true;
   sinister?: true;
+  layered?: true;
   outside?: Outside;
 }
 
@@ -65,7 +66,7 @@ interface Shadow {
 }
 
 type Divided = "field" | "division" | "counter";
-type Outside = "above" | "below";
+type Outside = "above" | "below" | "around";
 
 interface Inscription {
   text: string;
