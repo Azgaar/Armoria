@@ -3,6 +3,7 @@ import {templates, lines, patterns} from "$lib/data/templates";
 import {shieldBox, shieldPaths, DEFAULT_SHIELD_BOX} from "$lib/data/shields";
 import {colors, shield} from "$lib/data/stores";
 import {DEFAULT_ZOOM} from "$lib/config/defaults";
+import {browser} from "$app/environment";
 
 const colorsData = get(colors);
 const loadedCharges = {};
@@ -16,7 +17,7 @@ export const getTemplate = (id, line) => {
 
 export const addPattern = patternId => {
   if (!patternId) return console.error("No patternId");
-  if (document.getElementById(patternId)) return; // already added;
+  if (!browser || document.getElementById(patternId)) return; // already added;
 
   const [pattern, t1, t2, size] = patternId.split("-");
   const charge = semy(patternId);
@@ -69,6 +70,7 @@ function addInescutcheon(charge) {
 
 function fetchCharge(charge) {
   if (loadedCharges[charge]) return; // already added
+  if (!browser) return;
   loadedCharges[charge] = true;
 
   fetch("charges/" + charge + ".svg")

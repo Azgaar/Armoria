@@ -26,7 +26,7 @@
 		"url": "https://github.com/Azgaar/Armoria/issues"
 	},
 	"dependencies": {
-		"@resvg/resvg-js": "^2.6.0",
+		"convert-svg-to-png": "^0.6.4",
 		"minify-xml": "^4.0.0",
 		"mongodb": "^4.0.0",
 		"node-html-parser": "^6.0.0"

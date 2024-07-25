@@ -1,12 +1,13 @@
 import type {RequestHandler} from "./$types";
-import {Resvg} from "@resvg/resvg-js";
 import {minify} from "minify-xml";
 import {generate} from "$lib/scripts/generator";
 import {render} from "$lib/api/renderer";
 import {isConnected, getClaim} from "$lib/api/db";
 import {getColors, parseSeed} from "$lib/api/utils";
+import pkg from "convert-svg-to-png";
+const {createConverter} = pkg;
 
-const SIZE_DEFAULT = 1200;
+const SIZE_DEFAULT = 500;
 const FORMAT_DEFAULT = "svg";
 const SHIELD_DEFAULT = "heater";
 const ZOOM_DEFAULT = 1;
@@ -21,11 +22,11 @@ export const GET: RequestHandler = async ({ url }) => {
   const coaString = params.get("coa");
 
   const coa = coaString ? JSON.parse(coaString) : await getCOA(seed);
+  coa.seed = seed;
   if (params.shield) coa.shield = req.query.shield;
   if (!coa.shield) coa.shield = SHIELD_DEFAULT;
 
-  const id = "coa" + (seed || Math.floor(Math.random() * 1e6));
-  const svg = await render(id, coa, size, zoom, colors);
+  const svg = await render(coa, size, zoom, colors);
   return send(format, svg);
 };
 
@@ -37,7 +38,9 @@ async function getCOA(seed) {
   return claimed && claimed.coa ? claimed.coa : generate(seed);
 }
 
-function send(format, svg) {
+const converter = createConverter();
+
+async function send(format, svg) {
   if (format === "svg") {
     const svgMinified = minify(svg);
     return new Response(svgMinified, {
@@ -46,14 +49,9 @@ function send(format, svg) {
         "Content-Type": "image/svg+xml"
       }
     });
-  } else {
-    const opts = {
-      font: {loadSystemFonts: false},
-      logLevel: "debug"
-    };
-    const resvg = new Resvg(svg, opts);
-    const pngData = resvg.render();
-    const pngBuffer = pngData.asPng();
+  }
+  else {
+    const pngBuffer = await converter.convert(svg);
 
     return new Response(pngBuffer, {
       status: 200,
