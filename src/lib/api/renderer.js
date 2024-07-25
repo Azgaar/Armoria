@@ -23,7 +23,7 @@ export async function render(coa, size, zoom, colors) {
   const loadedFonts = await getFonts(coa);
   const shieldClip = `<clipPath id="shield_${coa.seed}"><path d="${shieldPath}"/></clipPath>`;
   const divisionClip = division
-    ? `<clipPath id="divisionClip_${coa.seed}">${getTemplate(division.division, division.line)}</clipPath>`
+    ? `<clipPath id="division_${coa.seed}">${getTemplate(division.division, division.line)}</clipPath>`
     : "";
   const style = `<style>
     .secondary {fill: var(--secondary);}
