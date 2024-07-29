@@ -9,8 +9,8 @@
   export let category: string;
   export let t1: string;
   export let t2: string;
-  export let t3: string | undefined;
-  export let t4: string | undefined;
+  export let t3: string | undefined = undefined;
+  export let t4: string | undefined = undefined;
   export let size = null;
   export let sinister = null;
   export let reversed = null;
