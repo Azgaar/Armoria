@@ -1,13 +1,12 @@
 import {dev} from "$app/environment";
+import {read} from "$app/server";
 import COA from "$lib/components/object/COA.svelte";
 import {DEFAULT_FONTS} from "$lib/config/defaults";
 import {shieldPaths} from "$lib/data/shields";
 import * as stores from "$lib/data/stores";
 import {patterns} from "$lib/data/templates";
 import {getSizeMod, getTemplate, semy} from "$lib/scripts/getters";
-import {readFileSync} from "fs";
 import {parse} from "node-html-parser";
-import path from "path";
 
 const backlight = `<radialGradient id="backlight" cx="100%" cy="100%" r="150%">
   <stop stop-color="#fff" stop-opacity=".3" offset="0"/>
@@ -95,9 +94,9 @@ async function getCharges(coa, shieldPath) {
 }
 
 async function fetchCharge(charge) {
-  const url = path.join(process.cwd(), "static", "charges", charge + ".svg");
+  const url = `/static/charges/${charge}.svg`;
+  const text = await read(url).text();
   console.log({dev, url});
-  const text = readFileSync(url, "utf8");
   const root = parse(text);
   const g = root.querySelector("g");
   return g.outerHTML;
