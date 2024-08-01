@@ -8,6 +8,13 @@ import {patterns} from "$lib/data/templates";
 import {getSizeMod, getTemplate, semy} from "$lib/scripts/getters";
 import {parse} from "node-html-parser";
 
+const charges = import.meta.glob("/static/charges/*.svg", {
+  query: "?url",
+  import: "default",
+  eager: true
+});
+console.log(charges);
+
 const backlight = `<radialGradient id="backlight" cx="100%" cy="100%" r="150%">
   <stop stop-color="#fff" stop-opacity=".3" offset="0"/>
   <stop stop-color="#fff" stop-opacity=".15" offset=".25"/>
