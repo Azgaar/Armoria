@@ -94,7 +94,8 @@ async function getCharges(coa, shieldPath) {
 }
 
 async function fetchCharge(charge) {
-  const url = `/static/charges/${charge}.svg`;
+  const base = dev ? "/static" : "";
+  const url = `${base}/charges/${charge}.svg`;
   const text = await read(url).text();
   console.log({dev, url});
   const root = parse(text);
