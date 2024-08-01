@@ -5,7 +5,7 @@ import {getColors, parseSeed, README_URL} from "$lib/api/utils";
 
 const SIZE_DEFAULT = 1200;
 
-export const GET: RequestHandler = async ({ url, params }) => {
+export const GET: RequestHandler = async ({url, params}) => {
   const seed = parseSeed(params.name);
 
   // Not allowed to claims numeric names

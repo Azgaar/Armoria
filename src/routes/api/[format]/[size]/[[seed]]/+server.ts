@@ -1,6 +1,6 @@
 import type {RequestHandler} from "./$types";
 
-export const GET: RequestHandler = async ({ url, params }) => {
+export const GET: RequestHandler = async ({url, params}) => {
   const searchParams = new URLSearchParams();
   searchParams.set("format", params.format);
   searchParams.set("size", params.size);

@@ -2,7 +2,7 @@ import type {RequestHandler} from "./$types";
 import {isConnected, getClaim, unclaim} from "$lib/api/db";
 import {parseSeed, README_URL} from "$lib/api/utils";
 
-export const GET: RequestHandler = async ({ url, params }) => {
+export const GET: RequestHandler = async ({url, params}) => {
   if (!isConnected()) {
     console.error(`Cannot unclaim as database connection is down`);
     return new Response(`<h1>Armoria API</h1><p>Cannot connect to the database</p>`, {

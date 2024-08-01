@@ -12,7 +12,7 @@ const FORMAT_DEFAULT = "svg";
 const SHIELD_DEFAULT = "heater";
 const ZOOM_DEFAULT = 1;
 
-export const GET: RequestHandler = async ({ url }) => {
+export const GET: RequestHandler = async ({url}) => {
   const params = url.searchParams;
   const format = params.get("format") || FORMAT_DEFAULT;
   const size = parseInt(params.get("size")) || SIZE_DEFAULT;
