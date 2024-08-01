@@ -7,6 +7,7 @@ import {patterns} from "$lib/data/templates";
 import {getSizeMod, getTemplate, semy} from "$lib/scripts/getters";
 import {readFileSync} from "fs";
 import {parse} from "node-html-parser";
+import path from "path";
 
 const backlight = `<radialGradient id="backlight" cx="100%" cy="100%" r="150%">
   <stop stop-color="#fff" stop-opacity=".3" offset="0"/>
@@ -94,7 +95,7 @@ async function getCharges(coa, shieldPath) {
 }
 
 async function fetchCharge(charge) {
-  const url = `${dev ? "static" : "."}/charges/${charge}.svg`;
+  const url = path.join(process.cwd(), "static", "charges", charge + ".svg");
   console.log({dev, url});
   const text = readFileSync(url, "utf8");
   const root = parse(text);
