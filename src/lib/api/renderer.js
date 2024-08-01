@@ -1,11 +1,12 @@
-import {parse} from "node-html-parser";
-import {readFileSync} from "fs";
+import {dev} from "$app/environment";
+import COA from "$lib/components/object/COA.svelte";
+import {DEFAULT_FONTS} from "$lib/config/defaults";
 import {shieldPaths} from "$lib/data/shields";
+import * as stores from "$lib/data/stores";
 import {patterns} from "$lib/data/templates";
 import {getSizeMod, getTemplate, semy} from "$lib/scripts/getters";
-import {DEFAULT_FONTS} from "$lib/config/defaults";
-import COA from "$lib/components/object/COA.svelte";
-import * as stores from "$lib/data/stores";
+import {readFileSync} from "fs";
+import {parse} from "node-html-parser";
 
 const backlight = `<radialGradient id="backlight" cx="100%" cy="100%" r="150%">
   <stop stop-color="#fff" stop-opacity=".3" offset="0"/>
@@ -39,7 +40,8 @@ export async function render(coa, size, zoom, colors) {
 
   const svg = COA.render({coa, height: size, width: size, i: "View"});
   const root = parse(svg.html);
-  root.querySelector("defs").innerHTML = `${shieldClip}${divisionClip}${loadedCharges}${loadedPatterns}${loadedFonts}${backlight}${style}`;
+  root.querySelector("defs").innerHTML =
+    `${shieldClip}${divisionClip}${loadedCharges}${loadedPatterns}${loadedFonts}${backlight}${style}`;
   return root.outerHTML;
 
   function getPatterns(coa) {
@@ -80,8 +82,7 @@ async function getCharges(coa, shieldPath) {
   const fetchedCharges = await Promise.all(
     uniqueCharges.map(async charge => {
       if (charge.slice(0, 12) === "inescutcheon") {
-        const path =
-          charge.length > 12 ? shieldPaths[charge.slice(12, 13).toLowerCase() + charge.slice(13)] : shieldPath;
+        const path = charge.length > 12 ? shieldPaths[charge.slice(12, 13).toLowerCase() + charge.slice(13)] : shieldPath;
         return `<g id="${charge}"><path transform="translate(66 66) scale(.34)" d="${path}"/></g>`;
       }
 
@@ -93,7 +94,8 @@ async function getCharges(coa, shieldPath) {
 }
 
 async function fetchCharge(charge) {
-  const text = readFileSync("static/charges/" + charge + ".svg", "utf8");
+  const base = dev ? "static" : "";
+  const text = readFileSync(base + "/charges/" + charge + ".svg", "utf8");
   const root = parse(text);
   const g = root.querySelector("g");
   return g.outerHTML;

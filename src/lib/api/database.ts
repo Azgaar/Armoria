@@ -1,5 +1,5 @@
 import {MONGO_ID, MONGO_PASS} from "$env/static/private";
-import {Collection, MongoClient} from "mongodb";
+import {type Collection, MongoClient} from "mongodb";
 
 const MONGO_URL = `mongodb+srv://${MONGO_ID}:${MONGO_PASS}@cluster0.auhmw.mongodb.net/armoria_api?retryWrites=true&w=majority`;
 const DB_NAME = "armoria_api";

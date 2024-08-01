@@ -1,7 +1,7 @@
 <script lang="ts">
   // @ts-check
-  import {tooltip} from "$lib/scripts/tooltip";
   import {iconedNav} from "$lib/data/stores";
+  import {tooltip} from "$lib/scripts/tooltip";
   import NavLabel from "./NavLabel.svelte";
 
   export let value: string = undefined;
@@ -21,7 +21,18 @@
   };
 </script>
 
-<li class:disabled class:selected class:flutter class:right data-tooltip={tip} data-gesture={gesture} data-hotkey={hotkey} on:click={handleClick} use:tooltip>
+<li
+  class:disabled
+  class:selected
+  class:flutter
+  class:right
+  data-tooltip={tip}
+  data-gesture={gesture}
+  data-hotkey={hotkey}
+  on:click={handleClick}
+  on:keydown={handleClick}
+  use:tooltip
+>
   {#if value && $iconedNav}
     <svg>
       <use href="#{value}-icon" />
