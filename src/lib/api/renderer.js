@@ -95,6 +95,7 @@ async function getCharges(coa, shieldPath) {
 
 async function fetchCharge(charge) {
   const base = dev ? "static" : "";
+  console.log("DEV", dev);
   const text = readFileSync(base + "/charges/" + charge + ".svg", "utf8");
   const root = parse(text);
   const g = root.querySelector("g");
