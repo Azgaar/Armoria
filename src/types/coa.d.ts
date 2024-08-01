@@ -31,6 +31,7 @@ interface Charge {
   sinister?: true;
   layered?: true;
   outside?: Outside;
+  element?: SVGElement;
 }
 
 interface Ordinary {
@@ -44,6 +45,7 @@ interface Ordinary {
   angle?: number;
   above?: true;
   stroke?: string;
+  element: SVGElement;
 }
 
 interface Inscription {
