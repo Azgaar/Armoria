@@ -1,55 +1,56 @@
 {
-	"name": "armoria",
-	"description": "Heraldry generator and editor",
-	"version": "1.1.0",
-	"author": "Azgaar <azgaar.fmg@yandex.com>",
-	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
-		"preview": "vite preview",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write ."
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Azgaar/Armoria.git"
-	},
-	"keywords": [
-		"heraldry",
-		"svelte",
-		"procedural-generation"
-	],
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/Azgaar/Armoria/issues"
-	},
-	"dependencies": {
-		"convert-svg-to-png": "^0.6.4",
-		"minify-xml": "^4.0.0",
-		"mongodb": "^4.0.0",
-		"node-html-parser": "^6.0.0"
-	},
-	"devDependencies": {
-		"@sveltejs/adapter-auto": "^3.0.0",
-		"@sveltejs/kit": "^2.0.0",
-		"@sveltejs/vite-plugin-svelte": "^3.0.0",
-		"@types/eslint": "^8.56.7",
-		"eslint": "^9.0.0",
-		"eslint-config-prettier": "^9.1.0",
-		"eslint-plugin-svelte": "^2.36.0",
-		"globals": "^15.0.0",
-		"prettier": "^3.1.1",
-		"prettier-plugin-svelte": "^3.1.2",
-		"svelte": "^4.2.7",
-		"svelte-check": "^3.6.0",
-		"svelte-i18n": "^4.0.0",
-		"tslib": "^2.4.1",
-		"typescript": "^5.0.0",
-		"typescript-eslint": "^8.0.0-alpha.20",
-		"vite": "^5.0.3",
-		"workbox-precaching": "^6.0.0"
-	},
-	"type": "module"
+  "name": "armoria",
+  "description": "Heraldry generator and editor",
+  "version": "1.1.0",
+  "author": "Azgaar <azgaar.fmg@yandex.com>",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "lint": "prettier --check . && eslint .",
+    "format": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Azgaar/Armoria.git"
+  },
+  "keywords": [
+    "heraldry",
+    "svelte",
+    "procedural-generation"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Azgaar/Armoria/issues"
+  },
+  "dependencies": {
+    "convert-svg-to-jpeg": "^0.6.4",
+    "convert-svg-to-png": "^0.6.4",
+    "minify-xml": "^4.0.0",
+    "mongodb": "^4.0.0",
+    "node-html-parser": "^6.0.0"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-auto": "^3.0.0",
+    "@sveltejs/kit": "^2.0.0",
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "@types/eslint": "^8.56.7",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-svelte": "^2.36.0",
+    "globals": "^15.0.0",
+    "prettier": "^3.1.1",
+    "prettier-plugin-svelte": "^3.1.2",
+    "svelte": "^4.2.7",
+    "svelte-check": "^3.6.0",
+    "svelte-i18n": "^4.0.0",
+    "tslib": "^2.4.1",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.0.0-alpha.20",
+    "vite": "^5.0.3",
+    "workbox-precaching": "^6.0.0"
+  },
+  "type": "module"
 }
