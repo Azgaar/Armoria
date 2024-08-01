@@ -1,4 +1,4 @@
-import {getClaim} from "$lib/api/database";
+import {getClaim} from "$lib/api/claims";
 import {render} from "$lib/api/renderer";
 import {generateSeed, parseColors, parseSeed} from "$lib/api/utils";
 import {generate} from "$lib/scripts/generator";

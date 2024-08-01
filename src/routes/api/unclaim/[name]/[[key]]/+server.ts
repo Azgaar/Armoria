@@ -1,5 +1,5 @@
 import {MASTER_KEY} from "$env/static/private";
-import {getClaim, unclaim} from "$lib/api/database";
+import {getClaim, unclaim} from "$lib/api/claims";
 import {parseSeed, README_URL} from "$lib/api/utils";
 import type {RequestHandler} from "./$types";
 

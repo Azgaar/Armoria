@@ -1,4 +1,3 @@
-import {dev} from "$app/environment";
 import {read} from "$app/server";
 import COA from "$lib/components/object/COA.svelte";
 import {DEFAULT_FONTS} from "$lib/config/defaults";
@@ -13,7 +12,6 @@ const charges = import.meta.glob("/static/charges/*.svg", {
   import: "default",
   eager: true
 });
-console.log(charges);
 
 const backlight = `<radialGradient id="backlight" cx="100%" cy="100%" r="150%">
   <stop stop-color="#fff" stop-opacity=".3" offset="0"/>
@@ -103,7 +101,6 @@ async function getCharges(coa, shieldPath) {
 async function fetchCharge(charge) {
   const url = charges[`/static/charges/${charge}.svg`];
   const text = await read(url).text();
-  console.log({dev, url});
   const root = parse(text);
   const g = root.querySelector("g");
   return g.outerHTML;
