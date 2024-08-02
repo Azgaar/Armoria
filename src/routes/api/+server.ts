@@ -2,6 +2,7 @@ import {getClaim} from "$lib/api/claims";
 import {render} from "$lib/api/renderer";
 import {generateSeed, parseColors, parseSeed} from "$lib/api/utils";
 import {generate} from "$lib/scripts/generator";
+import chromium from "chrome-aws-lambda";
 import convertToJpg from "convert-svg-to-jpeg";
 import convertToPng from "convert-svg-to-png";
 import {minify} from "minify-xml";
@@ -37,8 +38,13 @@ async function getCoa(seed: string) {
   return claimed?.coa || generate(seed);
 }
 
-const pngConverter = convertToPng.createConverter();
-const jpgConverter = convertToJpg.createConverter();
+const pngConverter = convertToPng.createConverter({
+  executablePath: await chromium.executablePath
+});
+
+const jpgConverter = convertToJpg.createConverter({
+  executablePath: await chromium.executablePath
+});
 
 async function send(format: string, svg: string) {
   if (format === "svg") {
