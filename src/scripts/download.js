@@ -53,11 +53,21 @@ async function getURL(svg, width, height) {
   clone.removeAttribute("id");
   const d = clone.getElementsByTagName("defs")[0];
 
-  // remove grid if any
+  // remove grid and positions if any
   const grid = clone.getElementById("grid");
   const gridPattern = clone.getElementById("gridPattern");
+  const positions = clone.getElementById("positions");
   if (grid) grid.remove();
   if (gridPattern) gridPattern.remove();
+  if (positions) positions.remove();
+
+  // remove inscription handles
+  clone.querySelectorAll(".text-path").forEach(el => {
+    el.setAttribute("stroke", "none");
+  });
+  clone.querySelectorAll(".points").forEach(el => {
+    el.remove();
+  });
 
   const gr = get(grad),
     di = get(diaper);
