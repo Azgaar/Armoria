@@ -39,11 +39,17 @@ async function getCoa(seed: string) {
 }
 
 const pngConverter = convertToPng.createConverter({
-  executablePath: await chromium.executablePath
+  puppeteer: {
+    ignoreHTTPSErrors: true,
+    executablePath: await chromium.executablePath
+  }
 });
 
 const jpgConverter = convertToJpg.createConverter({
-  executablePath: await chromium.executablePath
+  puppeteer: {
+    ignoreHTTPSErrors: true,
+    executablePath: await chromium.executablePath
+  }
 });
 
 async function send(format: string, svg: string) {

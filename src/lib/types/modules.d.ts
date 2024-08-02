@@ -1,5 +1,8 @@
 type Options = {
-  executablePath: string;
+  puppeteer: {
+    ignoreHTTPSErrors: boolean;
+    executablePath: string;
+  };
 };
 
 declare module "convert-svg-to-jpeg" {
