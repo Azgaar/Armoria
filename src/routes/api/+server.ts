@@ -38,6 +38,9 @@ async function getCoa(seed: string) {
   return claimed?.coa || generate(seed);
 }
 
+const path = await chromium.executablePath;
+console.log("Chromium path:", path);
+
 const pngConverter = convertToPng.createConverter({
   puppeteer: {
     ignoreHTTPSErrors: true,
