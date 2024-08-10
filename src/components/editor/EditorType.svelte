@@ -5,7 +5,7 @@
   export let type: string;
 </script>
 
-{$t("editor.type")}:
+{$t("editor.type")}
 <select bind:value={type}>
   <option value="tincture">{$t("editor.tincture")}</option>
   <option value="pattern">{$t("editor.pattern")}</option>
