@@ -610,7 +610,7 @@
           </div>
 
           <div class="subsection">
-            <EditorShift bind:element={o} />
+            <EditorShift bind:element={o} coaElement={coa.ordinaries[i]} coa={coa}/>
           </div>
         </div>
       {/if}
@@ -681,7 +681,7 @@
           </div>
 
           <div class="subsection">
-            <EditorShift bind:element={charge} />
+            <EditorShift bind:element={charge} coaElement={coa.charges[i]} coa={coa}/>
           </div>
         </div>
       {/if}

@@ -15,7 +15,7 @@
   }
 </script>
 
-<g class="ordinary" {i} transform={transform(ordinary)} fill={t} {stroke} stroke-width={width} on:mousedown={addDrag}>
+<g bind:this={ordinary.element} class="ordinary" {i} transform={transform(ordinary)} fill={t} {stroke} stroke-width={width} on:mousedown={addDrag}>
   {#if ordinary.ordinary === "bordure"}
     <path d={shieldPath} fill="none" stroke={t} stroke-width="33.3" />
   {:else if ordinary.ordinary === "orle"}
