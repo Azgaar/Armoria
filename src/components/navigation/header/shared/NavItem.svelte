@@ -28,7 +28,8 @@
     padding: 1em;
     color: #fff;
     list-style: none;
-    transition: all 0.1s;
+    transition: all 0.5s;
+    border-radius: 5px;
   }
 
   @media (max-width: 380px) {
