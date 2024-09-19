@@ -33,6 +33,7 @@
     width: max-content;
     user-select: none;
     background-color: #00000095;
+    border-radius: 5px;
   }
 
   .error {
