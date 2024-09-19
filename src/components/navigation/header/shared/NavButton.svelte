@@ -39,6 +39,7 @@
     list-style: none;
     transition: all 0.5s;
     border-radius: 5px;
+    margin: 5px;
   }
 
   @media (max-width: 380px) {

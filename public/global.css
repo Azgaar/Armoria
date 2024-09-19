@@ -176,7 +176,7 @@ font {
   background-color: #1b1c1d;
   min-width: 10em;
   overflow-y: auto;
-  max-height: 80vh;
+  max-height: 90vh;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   border-radius: 5px;
