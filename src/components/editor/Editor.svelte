@@ -773,6 +773,8 @@
     scrollbar-width: thin;
     transition: 1s;
     background-color: #11111180;
+    margin: 5px;
+    border-radius: 5px;
   }
 
   #menu::-webkit-scrollbar {
@@ -792,6 +794,8 @@
     cursor: pointer;
     transition: background-color 0.1s ease;
     overflow-x: hidden;
+    margin: 5px;
+    border-radius: 5px;
   }
 
   .section:hover {
@@ -828,6 +832,8 @@
     max-width: max-content;
     background-color: #13131320;
     overflow: hidden;
+    margin: 5px;
+    border-radius: 5px;
   }
 
   .buttonLine {
@@ -836,6 +842,8 @@
     background-color: #00000040;
     cursor: pointer;
     transition: background-color 0.1s ease;
+    margin: 5px;
+    border-radius: 5px;
   }
 
   .buttonLine:hover {
