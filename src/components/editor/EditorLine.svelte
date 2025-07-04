@@ -9,12 +9,13 @@
   export let ordinary = null;
   export let t1: string;
   export let t2: string;
+  export let shield: string = undefined;
 
   const lineList = Object.keys(lines);
 
   $: linesData = division
-    ? lineList.map(line => ({coa: {t1, division: {division, t: t2, line}}, newLine: line}))
-    : lineList.map(line => ({coa: {t1, ordinaries: [{ordinary, t: t2, line}]}, newLine: line}));
+    ? lineList.map(line => ({coa: {t1, shield, division: {division, t: t2, line}}, newLine: line}))
+    : lineList.map(line => ({coa: {t1, shield, ordinaries: [{ordinary, t: t2, line}]}, newLine: line}));
 
   const getTip = (line: string) => `${$t("editor.line")}: ${$t(`lines.${line}`)}`;
 

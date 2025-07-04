@@ -7,6 +7,7 @@ export interface Coa {
   charges?: Charge[];
   inscriptions?: Inscription[];
   diaper?: string;
+  zoom?: number;
 }
 
 interface Division {

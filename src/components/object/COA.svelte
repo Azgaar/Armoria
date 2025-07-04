@@ -2,7 +2,7 @@
   // @ts-check
   import {DEFAULT_ZOOM} from "config/defaults";
   import {DEFAULT_SHIELD_BOX, shieldBox} from "data/shields";
-  import {border, borderWidth, shield, zoom} from "data/stores";
+  import {border, borderWidth, shield} from "data/stores";
   import Grid from "./../editor/Grid.svelte";
   import Positions from "./../editor/Positions.svelte";
   import Shield from "./Shield.svelte";
@@ -25,7 +25,7 @@
     return `${x} ${y} ${w} ${h}`;
   }
 
-  $: viewBox = getViewBox($shield, $zoom);
+  $: viewBox = getViewBox(coa.shield || $shield, coa.zoom || DEFAULT_ZOOM);
 </script>
 
 <svg
@@ -42,6 +42,6 @@
   <Shield {coa} border={$border} borderWidth={$borderWidth} type={i} />
   {#if isEdit}
     <Grid />
-    <Positions />
+    <Positions shield={coa.shield || $shield} />
   {/if}
 </svg>

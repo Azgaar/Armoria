@@ -11,7 +11,6 @@ import {
   DEFAULT_SHOW_GRID,
   DEFAULT_SIZE,
   DEFAULT_TINCTURES,
-  DEFAULT_ZOOM,
   type Fonts
 } from "config/defaults";
 import {ra, rw} from "scripts/utils";
@@ -32,7 +31,6 @@ export const tinctures = writable(options.tinctures);
 export const fonts = writable(options.fonts);
 export const background = writable(options.background);
 export const scale = writable(options.scale);
-export const zoom = writable(options.zoom);
 export const border = writable(options.border);
 export const borderWidth = writable(options.borderWidth);
 
@@ -125,25 +123,16 @@ function defineInitialOptions() {
     return localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : null;
   };
 
-  const getShieldFromURL = () => {
-    const coaParam = new URL(window.location.href).searchParams.get("coa");
-    if (!coaParam) return null;
-    const coa = JSON.parse(coaParam);
-    return coa?.shield;
-  };
-
   const size = +stored("size") || DEFAULT_SIZE;
   const diaper = stored("diaper") || DEFAULT_DIAPER;
   const grad = stored("grad") || ra(DEFAULT_GRADIENTS);
-  const shield = getShieldFromURL() || stored("shield") || rw(shields[rw(shields.types)]);
+  const shield = stored("shield") || rw(shields[rw(shields.types)]);
   const colors = storedObj("colors") || JSON.parse(JSON.stringify(DEFAULT_COLORS));
   const fonts: Fonts = storedObj("fonts") || JSON.parse(JSON.stringify(DEFAULT_FONTS));
   const border = stored("border") || DEFAULT_BORDER;
   const borderWidth = +stored("borderWidth") || DEFAULT_BORDER_WIDTH;
   const background = stored("background") || DEFAULT_BACKGROUND;
   const scale = +stored("scale") || DEFAULT_SCALE;
-  const zoom = +stored("zoom") || DEFAULT_ZOOM;
-
   const grid = +stored("grid") || DEFAULT_GRID;
   const showGrid = storedObj("showGrid") || DEFAULT_SHOW_GRID;
 
@@ -165,7 +154,6 @@ function defineInitialOptions() {
     borderWidth,
     background,
     scale,
-    zoom,
     grid,
     showGrid
   };

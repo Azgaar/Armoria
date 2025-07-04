@@ -10,7 +10,6 @@
   import NavBorderOption from "./NavBorderOption.svelte";
   import NavBackgroundOption from "./NavBackgroundOption.svelte";
   import NavScaleOption from "./NavScaleOption.svelte";
-  import NavZoomOption from "./NavZoomOption.svelte";
 </script>
 
 <div class="container">
@@ -25,6 +24,5 @@
     <NavBorderOption />
     <NavBackgroundOption />
     <NavScaleOption />
-    <NavZoomOption />
   </div>
 </div>

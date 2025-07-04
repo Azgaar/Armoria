@@ -21,7 +21,6 @@
     "border": "Border",
     "background": "Background",
     "scale": "Scale",
-    "zoom": "Zoom",
     "width": "Width",
     "color": "Color",
     "downloadSVG": "Download SVG",
@@ -291,11 +290,15 @@
     "tip_web": "**Web-hosted font**. Provide font name and link to the font file hosted online. The best free font hostings are [Google Fonts](https://fonts.google.com) and [CDN Fonts](https://www.cdnfonts.com). To get font file open the link to css provided by these services and manually copy the link to .woff2 of desired variant. To add another variant (e.g. Cyrillic), add the font under a different name."
   },
   "editor": {
+    "general": "General",
+    "shield": "Shield",
     "ordinary": "Ordinary",
     "inscription": "Inscription",
     "addOrdinary": "Add ordinary",
     "addCharge": "Add charge",
     "addInscription": "Add inscription",
+    "zoom": "Zoom",
+    "default": "default",
     "type": "Type",
     "tincture": "Tincture",
     "pattern": "Pattern",
