@@ -47,6 +47,7 @@ export const state = writable({
   about: 0,
   license: 0,
   tinctures: 0,
+  import: 0,
   raster: 0,
   vector: 0,
   i: 0,

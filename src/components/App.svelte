@@ -14,6 +14,7 @@
   import Gallery from "./navigation/Gallery.svelte";
   import License from "./navigation/License.svelte";
   import Tinctures from "./navigation/Tinctures.svelte";
+  import UploadJSON from "./navigation/UploadJSON.svelte";
   import UploadRaster from "./navigation/UploadRaster.svelte";
   import UploadVector from "./navigation/UploadVector.svelte";
   import Viewer from "./navigation/Viewer.svelte";
@@ -157,6 +158,7 @@
 
     {#if $state.about}<About />{/if}
     {#if $state.license}<License />{/if}
+    {#if $state.import}<UploadJSON />{/if}
     {#if $state.raster}<UploadRaster />{/if}
     {#if $state.vector}<UploadVector />{/if}
     {#if $state.tinctures}<Tinctures />{/if}
