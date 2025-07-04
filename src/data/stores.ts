@@ -38,6 +38,7 @@ export const borderWidth = writable(options.borderWidth);
 
 export const grid = writable(options.grid);
 export const showGrid = writable(options.showGrid);
+export const uploaded = writable(options.uploaded);
 
 export const history = writable([]);
 export const matrices = writable([]);
@@ -149,6 +150,7 @@ function defineInitialOptions() {
   const storedTinctures = storedObj("tinctures");
   const areTincturesValid = storedTinctures ? validateTinctures(storedTinctures) : false;
   const tinctures: Tinctures = areTincturesValid ? storedTinctures : JSON.parse(JSON.stringify(DEFAULT_TINCTURES));
+  const uploaded = storedObj("uploaded") || {};
 
   return {
     size,
@@ -157,6 +159,7 @@ function defineInitialOptions() {
     shield,
     colors,
     tinctures,
+    uploaded,
     fonts,
     border,
     borderWidth,

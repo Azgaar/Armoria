@@ -1,7 +1,8 @@
 <script lang="ts">
   // @ts-check
   import {shields} from "data/shields";
-  import {background, fonts, history, isTextReady, matrices, matrix, message, shield, size, state} from "data/stores";
+  import {background, fonts, history, isTextReady, matrices, matrix, message, shield, size, state, uploaded} from "data/stores";
+  import {charges} from "data/dataModel";
   import "scripts/i18n";
   import {rw} from "scripts/utils";
   import {locale} from "svelte-i18n";
@@ -28,6 +29,7 @@
   $locale = "en"; // fallback locale
 
   loadFonts();
+  loadCustomCharges();
   checkLoadParameters();
 
   $: [quantity, width, height] = defineGallerySize($size);
@@ -70,6 +72,15 @@
       if (url) {
         const font = new FontFace(name, `url(${url})`);
         document.fonts.add(font);
+      }
+    });
+  }
+
+  function loadCustomCharges() {
+    Object.entries($uploaded).forEach(([name, {category, type, data, content}]) => {
+      charges[category][name] = 0;
+      if (data) {
+        charges.data[name] = data;
       }
     });
   }
