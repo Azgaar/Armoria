@@ -28,7 +28,12 @@
   $: clr = (tincture: string) => {
     if (!tincture) return null;
     if ($colors[tincture]) return $colors[tincture];
-    addPattern(tincture);
+    if (tincture.includes("-")) {
+      addPattern(tincture);
+    } else {
+      console.warn(`Tincture ${tincture} not found, fallback to black`);
+      return "#000000";
+    }
     return "url(#" + tincture + ")";
   };
 
