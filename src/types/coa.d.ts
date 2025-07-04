@@ -1,4 +1,5 @@
 export interface Coa {
+  name?: string;
   seed?: number | string;
   t1: string;
   shield?: string;

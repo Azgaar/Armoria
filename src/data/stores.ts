@@ -4,6 +4,7 @@ import {
   DEFAULT_BORDER_WIDTH,
   DEFAULT_COLORS,
   DEFAULT_DIAPER,
+  DEFAULT_FONT_COLOR,
   DEFAULT_FONTS,
   DEFAULT_GRADIENTS,
   DEFAULT_GRID,
@@ -30,10 +31,10 @@ export const colors = writable(options.colors);
 export const tinctures = writable(options.tinctures);
 export const fonts = writable(options.fonts);
 export const background = writable(options.background);
+export const fontColor = writable(options.fontColor);
 export const scale = writable(options.scale);
 export const border = writable(options.border);
 export const borderWidth = writable(options.borderWidth);
-
 export const grid = writable(options.grid);
 export const showGrid = writable(options.showGrid);
 export const uploaded = writable(options.uploaded);
@@ -132,10 +133,10 @@ function defineInitialOptions() {
   const border = stored("border") || DEFAULT_BORDER;
   const borderWidth = +stored("borderWidth") || DEFAULT_BORDER_WIDTH;
   const background = stored("background") || DEFAULT_BACKGROUND;
+  const fontColor = stored("fontColor") || DEFAULT_FONT_COLOR;
   const scale = +stored("scale") || DEFAULT_SCALE;
   const grid = +stored("grid") || DEFAULT_GRID;
   const showGrid = storedObj("showGrid") || DEFAULT_SHOW_GRID;
-
   const storedTinctures = storedObj("tinctures");
   const areTincturesValid = storedTinctures ? validateTinctures(storedTinctures) : false;
   const tinctures: Tinctures = areTincturesValid ? storedTinctures : JSON.parse(JSON.stringify(DEFAULT_TINCTURES));
@@ -153,6 +154,7 @@ function defineInitialOptions() {
     border,
     borderWidth,
     background,
+    fontColor,
     scale,
     grid,
     showGrid

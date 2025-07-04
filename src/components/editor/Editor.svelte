@@ -74,6 +74,13 @@
     // shield attribute changed
     coa.shield = menu.shield;
 
+    // name attribute changed
+    if (menu.name) {
+      coa.name = menu.name;
+    } else {
+      delete coa.name;
+    }
+
     // zoom attribute changed
     if (menu.zoom !== DEFAULT_ZOOM) {
       coa.zoom = menu.zoom;
@@ -173,6 +180,9 @@
   function defineMenuState() {
     // Shield
     menu.shield = coa.shield;
+
+    // Name
+    menu.name = coa.name;
 
     // Zoom
     menu.zoom = coa.zoom || DEFAULT_ZOOM;
@@ -462,7 +472,7 @@
     </div>
     {#if section.general}
       <div class="panel" transition:slide>
-        <EditorGeneral bind:zoom={menu.zoom} />
+        <EditorGeneral bind:name={menu.name} bind:zoom={menu.zoom} />
       </div>
     {/if}
 

@@ -9,6 +9,7 @@
   import NavGalleryOption from "./NavGalleryOption.svelte";
   import NavBorderOption from "./NavBorderOption.svelte";
   import NavBackgroundOption from "./NavBackgroundOption.svelte";
+  import NavFontOption from "./NavFontOption.svelte";
   import NavScaleOption from "./NavScaleOption.svelte";
 </script>
 
@@ -23,6 +24,7 @@
     <NavGalleryOption />
     <NavBorderOption />
     <NavBackgroundOption />
+    <NavFontOption />
     <NavScaleOption />
   </div>
 </div>

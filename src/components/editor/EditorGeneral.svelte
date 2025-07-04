@@ -3,9 +3,16 @@
   import {t} from "svelte-i18n";
   import {tooltip} from "scripts/tooltip";
 
+  export let name: string = undefined;
   export let zoom: number;
 </script>
 
+<div class="subsection">
+  <span data-tooltip={$t("tooltip.coaName")} use:tooltip>
+    <span>{$t("editor.name")}:</span>
+    <input type="text" bind:value={name} />
+  </span>
+</div>
 <div class="subsection">
   <span data-tooltip={$t("tooltip.zoom")} use:tooltip>
     <span>{$t("editor.zoom")}:</span>
