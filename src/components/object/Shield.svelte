@@ -19,7 +19,7 @@
   const ordinariesAboveCharges = ordinaries.filter(o => o.above);
   charges.forEach(({charge}) => addCharge(charge));
 
-  $: shieldPath = shieldPaths[$shield];
+  $: shieldPath = shieldPaths[coa.shield || $shield];
   $: coaDiaper = type === "menuItem" ? null : coa.diaper || $diaper;
   $: diaperType = getDieperType(coaDiaper);
   $: overFill = !$grad || $grad === "no" ? "none" : `url(#${$grad})`;
@@ -71,13 +71,13 @@
 
 {#each charges as charge, i}
   {#if charge.outside === "below" || charge.outside === "around"}
-    <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
+    <Charge {coa} {charge} {i} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
   {/if}
 {/each}
 
 {#each charges as charge, i}
   {#if charge.outside === "below" && charge.layered}
-    <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} hideBackground={true} {type} />
+    <Charge {coa} {charge} {i} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} hideBackground={true} {type} />
   {/if}
 {/each}
 
@@ -101,17 +101,17 @@
 
     {#each charges as charge, i}
       {#if charge.divided === "field"}
-        <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
+        <Charge {coa} {charge} {i} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
       {:else if charge.divided === "counter"}
-        <Charge {coa} {charge} {i} shield={$shield} t={clr(division.t)} {type} />
+        <Charge {coa} {charge} {i} t={clr(division.t)} {type} />
       {/if}
     {/each}
 
     {#each charges as charge, i}
       {#if charge.divided === "field" && charge.layered}
-        <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} hideBackground={true} {type} />
+        <Charge {coa} {charge} {i} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} hideBackground={true} {type} />
       {:else if charge.divided === "counter" && charge.layered}
-        <Charge {coa} {charge} {i} shield={$shield} t={clr(division.t)} {type} hideBackground={true} />
+        <Charge {coa} {charge} {i} t={clr(division.t)} {type} hideBackground={true} />
       {/if}
     {/each}
 
@@ -149,17 +149,17 @@
 
       {#each charges as charge, i}
         {#if charge.divided === "division"}
-          <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
+          <Charge {coa} {charge} {i} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
         {:else if charge.divided === "counter"}
-          <Charge {coa} {charge} {i} shield={$shield} t={clr(coa.t1)} {type} />
+          <Charge {coa} {charge} {i} t={clr(coa.t1)} {type} />
         {/if}
       {/each}
 
       {#each charges as charge, i}
         {#if charge.divided === "division" && charge.layered}
-          <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} hideBackground={true} {type} />
+          <Charge {coa} {charge} {i} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} hideBackground={true} {type} />
         {:else if charge.divided === "counter" && charge.layered}
-          <Charge {coa} {charge} {i} shield={$shield} t={clr(coa.t1)} hideBackground={true} {type} />
+          <Charge {coa} {charge} {i} t={clr(coa.t1)} hideBackground={true} {type} />
         {/if}
       {/each}
 
@@ -186,13 +186,13 @@
 
   {#each charges as charge, i}
     {#if !charge.outside && (!charge.divided || !division)}
-      <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
+      <Charge {coa} {charge} {i} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
     {/if}
   {/each}
 
   {#each charges as charge, i}
     {#if !charge.outside && (!charge.divided || !division) && charge.layered}
-      <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} hideBackground={true} {type} />
+      <Charge {coa} {charge} {i} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} hideBackground={true} {type} />
     {/if}
   {/each}
 
@@ -214,13 +214,13 @@
 
 {#each charges as charge, i}
   {#if charge.outside === "above"}
-    <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
+    <Charge {coa} {charge} {i} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} {type} />
   {/if}
 {/each}
 
 {#each charges as charge, i}
   {#if charge.outside === "above" && charge.layered || charge.outside === "around"}
-    <Charge {coa} {charge} {i} shield={$shield} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} hideBackground={true} {type} />
+    <Charge {coa} {charge} {i} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} hideBackground={true} {type} />
   {/if}
 {/each}
 

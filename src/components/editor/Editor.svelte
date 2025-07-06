@@ -1,8 +1,10 @@
 <script>
   import {t, dictionary, locale} from "svelte-i18n";
   import {fade, fly, slide} from "svelte/transition";
+  import {DEFAULT_ZOOM} from "config/defaults";
   import {changes, grid, history, isTextReady, message, shield, showGrid, state, tinctures} from "data/stores";
   import {charges, divisions, ordinaries} from "data/dataModel";
+  import {shields} from "data/shields";
   import {createConfig, generate, getTincture} from "scripts/generator";
   import {P, ra, rw} from "scripts/utils";
   import COA from "./../object/COA.svelte";
@@ -11,6 +13,7 @@
   import EditorControls from "./EditorControls.svelte";
   import EditorDivided from "./EditorDivided.svelte";
   import EditorDivision from "./EditorDivision.svelte";
+  import EditorGeneral from "./EditorGeneral.svelte";
   import EditorInscription from "./EditorInscription.svelte";
   import EditorLayered from "./EditorLayered.svelte";
   import EditorLine from "./EditorLine.svelte";
@@ -19,7 +22,9 @@
   import EditorPath from "./EditorPath.svelte";
   import EditorPattern from "./EditorPattern.svelte";
   import EditorPosition from "./EditorPosition.svelte";
+  import EditorRestore from "./EditorRestore.svelte";
   import EditorShadow from "./EditorShadow.svelte";
+  import EditorShield from "./EditorShield.svelte";
   import EditorShift from "./EditorShift.svelte";
   import EditorSize from "./EditorSize.svelte";
   import EditorStroke from "./EditorStroke.svelte";
@@ -50,7 +55,6 @@
   }
 
   function edit(coa) {
-    if (!coa.shield) coa.shield = $shield;
     changes.add(JSON.stringify(coa));
   }
 
@@ -66,6 +70,23 @@
   function update() {
     // remove seed reference as it would be confusing
     delete coa.seed;
+
+    // shield attribute changed
+    coa.shield = menu.shield;
+
+    // name attribute changed
+    if (menu.name) {
+      coa.name = menu.name;
+    } else {
+      delete coa.name;
+    }
+
+    // zoom attribute changed
+    if (menu.zoom !== DEFAULT_ZOOM) {
+      coa.zoom = menu.zoom;
+    } else {
+      delete coa.zoom;
+    }
 
     // field attributes changed
     if (menu.field.type === "tincture") coa.t1 = menu.field.t1;
@@ -158,7 +179,13 @@
   // define initial menu state
   function defineMenuState() {
     // Shield
-    if (coa.shield) $shield = coa.shield;
+    menu.shield = coa.shield;
+
+    // Name
+    menu.name = coa.name;
+
+    // Zoom
+    menu.zoom = coa.zoom || DEFAULT_ZOOM;
 
     // Field
     menu.field = getField();
@@ -339,6 +366,10 @@
     return menu;
   }
 
+  function getShieldType(shield) {
+    return Object.keys(shields.types).find(type => shields[type][shield] !== undefined);
+  }
+
   function selectChargeTincture() {
     return getTincture(createConfig(), "charge", [], coa.t1);
   }
@@ -433,6 +464,35 @@
   </div>
 
   <div id="menu" in:fly={{x: isLandscape ? 1000 : 0, y: isLandscape ? 0 : 1000, duration: 1000}}>
+    <!-- General -->
+    <div class="section" class:expanded={section.general} on:click={toggleSection("general")}>
+      {#if $isTextReady}
+        {$t("editor.general")}
+      {/if}
+    </div>
+    {#if section.general}
+      <div class="panel" transition:slide>
+        <EditorGeneral bind:name={menu.name} bind:zoom={menu.zoom} />
+      </div>
+    {/if}
+
+    <!-- Shield -->
+    <div class="section" class:expanded={section.shield} on:click={toggleSection("shield")}>
+      {#if $isTextReady}
+        {$t("editor.shield")}: {coa.shield ? $t(`shield.${getShieldType(coa.shield)}.${coa.shield}`) : $t("editor.default")}
+        {#if coa.shield}
+          <EditorRestore callback={() => (menu.shield = undefined)} />
+        {/if}
+      {/if}
+    </div>
+    {#if section.shield}
+      <div class="panel" transition:slide>
+        <div class="subsection">
+          <EditorShield bind:shield={menu.shield} t1={coa.t1} />
+        </div>
+      </div>
+    {/if}
+
     <!-- Field -->
     <div class="section" class:expanded={section.field} on:click={toggleSection("field")}>
       {#if $isTextReady}
@@ -449,12 +509,12 @@
         </div>
 
         <div class="subsection">
-          <EditorTincture bind:t1={menu.field.t1} />
+          <EditorTincture bind:t1={menu.field.t1} shield={coa.shield} />
         </div>
 
         {#if menu.field.type !== "tincture"}
           <div class="subsection">
-            <EditorTincture bind:t1={menu.field.t2} />
+            <EditorTincture bind:t1={menu.field.t2} shield={coa.shield} />
           </div>
         {/if}
 
@@ -479,6 +539,7 @@
               t1={menu.field.t1}
               t2={menu.field.t2}
               size={menu.field.size}
+              shield={coa.shield}
             />
           </div>
         {/if}
@@ -499,6 +560,7 @@
             t1={coa.t1}
             t2={coa.division ? coa.division.t : menu.division.t1}
             line={menu.division.line}
+            shield={coa.shield}
           />
         </div>
 
@@ -509,6 +571,7 @@
               division={menu.division.division}
               t1={coa.t1}
               t2={coa.division ? coa.division.t : menu.division.t1}
+              shield={coa.shield}
             />
           </div>
         {/if}
@@ -522,12 +585,12 @@
           </div>
 
           <div class="subsection">
-            <EditorTincture bind:t1={menu.division.t1} />
+            <EditorTincture bind:t1={menu.division.t1} shield={coa.shield} />
           </div>
 
           {#if menu.division.type !== "tincture"}
             <div class="subsection">
-              <EditorTincture bind:t1={menu.division.t2} />
+              <EditorTincture bind:t1={menu.division.t2} shield={coa.shield} />
             </div>
           {/if}
 
@@ -552,6 +615,7 @@
                 t1={menu.division.t1}
                 t2={menu.division.t2}
                 size={menu.division.size}
+                shield={coa.shield}
               />
             </div>
           {/if}
@@ -587,18 +651,18 @@
           {/if}
 
           <div class="subsection">
-            <EditorOrdinary bind:ordinary={o.ordinary} t1={coa.t1} line={o.line} t2={o.t} />
+            <EditorOrdinary bind:ordinary={o.ordinary} t1={coa.t1} line={o.line} t2={o.t} shield={coa.shield} />
           </div>
 
           {#if ordinaries.lined[o.ordinary]}
             <div class="subsection">
-              <EditorLine bind:line={o.line} ordinary={o.ordinary} t1={coa.t1} t2={o.t} />
+              <EditorLine bind:line={o.line} ordinary={o.ordinary} t1={coa.t1} t2={o.t} shield={coa.shield} />
             </div>
           {/if}
 
           {#if o.divided !== "counter"}
             <div class="subsection">
-              <EditorTincture bind:t1={o.t} />
+              <EditorTincture bind:t1={o.t} shield={coa.shield} />
             </div>
           {/if}
 
@@ -651,16 +715,17 @@
               sinister={charge.sinister}
               reversed={charge.reversed}
               division={coa.division}
+              shield={coa.shield}
             />
           </div>
 
           {#if !isRaster(charge.charge) && charge.divided !== "counter"}
             <div class="subsection">
-              <EditorTincture bind:t1={charge.t} />
+              <EditorTincture bind:t1={charge.t} shield={coa.shield} />
               {#if charges.data[charge.charge]?.colors > 1}
-                <EditorTincture bind:t1={charge.t2} />
+                <EditorTincture bind:t1={charge.t2} shield={coa.shield} />
                 {#if charges.data[charge.charge]?.colors > 2}
-                  <EditorTincture bind:t1={charge.t3} />
+                  <EditorTincture bind:t1={charge.t3} shield={coa.shield} />
                 {/if}
               {/if}
             </div>
@@ -842,7 +907,7 @@
     background-color: #00000080;
   }
 
-  .subsection {
+  :global(.subsection) {
     color: #fff;
     padding: 0.5em 0.5em 0.5em 1em;
   }

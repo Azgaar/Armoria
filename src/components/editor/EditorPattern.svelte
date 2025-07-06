@@ -22,7 +22,7 @@
     if (size !== "standard") tincture += `-${size}`;
 
     const tip = $t(`patterns.${pattern}`);
-    return {coa: {pattern, t1: tincture}, tip};
+    return {coa: {pattern, shield: coa.shield, t1: tincture}, tip};
   });
 
   const handleChange = (newPattern: string) => () => {

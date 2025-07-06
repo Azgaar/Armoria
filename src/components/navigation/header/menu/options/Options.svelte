@@ -9,8 +9,8 @@
   import NavGalleryOption from "./NavGalleryOption.svelte";
   import NavBorderOption from "./NavBorderOption.svelte";
   import NavBackgroundOption from "./NavBackgroundOption.svelte";
+  import NavFontOption from "./NavFontOption.svelte";
   import NavScaleOption from "./NavScaleOption.svelte";
-  import NavZoomOption from "./NavZoomOption.svelte";
 </script>
 
 <div class="container">
@@ -24,7 +24,7 @@
     <NavGalleryOption />
     <NavBorderOption />
     <NavBackgroundOption />
+    <NavFontOption />
     <NavScaleOption />
-    <NavZoomOption />
   </div>
 </div>

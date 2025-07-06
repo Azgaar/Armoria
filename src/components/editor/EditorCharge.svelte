@@ -15,6 +15,7 @@
   export let sinister = null;
   export let reversed = null;
   export let division = false;
+  export let shield: string = undefined;
 
   let chargesData = [];
   let query: string;
@@ -30,7 +31,7 @@
 
   function update() {
     const chargeList = Object.keys(charges[category]);
-    chargesData = chargeList.map(charge => ({charge, t1: getTincture(charge), charges: getCharge(charge)}));
+    chargesData = chargeList.map(charge => ({charge, shield, t1: getTincture(charge), charges: getCharge(charge)}));
   }
 
   function filterCharges(query: string) {
@@ -41,7 +42,7 @@
 
     const regEx = new RegExp(query.replaceAll(" ", ""), "i");
     const results = allCharges.filter((_charge, index) => regEx.test(allChargesTranslated[index]));
-    chargesData = results.map(charge => ({charge, t1: getTincture(charge), charges: getCharge(charge)}));
+    chargesData = results.map(charge => ({charge, shield, t1: getTincture(charge), charges: getCharge(charge)}));
   }
 
   function resetQuery() {

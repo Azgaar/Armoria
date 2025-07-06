@@ -5,6 +5,10 @@
   import NavButton from "../shared/NavButton.svelte";
   import NavItem from "../shared/NavItem.svelte";
 
+  const showJSONUpload = () => {
+    $state.import = 1;
+  };
+
   const showRasterUpload = () => {
     $state.raster = 1;
   };
@@ -17,6 +21,10 @@
 <div class="container">
   <NavItem value="upload" label={$t(`menu.upload`)} />
   <div class="dropdown level1">
+    <NavButton onclick={showJSONUpload} tip={$t("tooltip.importJSON")}>
+      {$t(`menu.importJSON`)}
+    </NavButton>
+
     <NavButton onclick={showRasterUpload} tip={$t("tooltip.rasterCharge")}>
       {$t(`menu.rasterCharge`)}
     </NavButton>

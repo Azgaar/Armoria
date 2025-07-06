@@ -4,6 +4,7 @@ export const DEFAULT_GRADIENTS = ["luster", "spotlight", "backlight"];
 export const DEFAULT_BORDER = "#333333";
 export const DEFAULT_BORDER_WIDTH = 1;
 export const DEFAULT_BACKGROUND = "#333333";
+export const DEFAULT_FONT_COLOR = "#f1f1f1";
 export const DEFAULT_SCALE = 2;
 export const DEFAULT_ZOOM = 1;
 

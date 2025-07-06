@@ -10,12 +10,6 @@
   const changeShield = (value: string) => {
     shield.set(value);
     localStorage.setItem("shield", value);
-
-    if (changes.length()) {
-      const coa = JSON.parse($changes[0] as string);
-      coa.shield = $shield;
-      changes.add(JSON.stringify(coa));
-    }
   };
 
   const getShieldsInType = (type: string) => Object.keys(shields[type]);

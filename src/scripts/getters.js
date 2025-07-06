@@ -1,11 +1,12 @@
 import {get} from "svelte/store";
 import {templates, lines, patterns} from "data/templates";
 import {shieldPaths} from "data/shields";
-import {colors, shield} from "data/stores";
+import {colors, shield, uploaded} from "data/stores";
 
 const chargesGroup = document.getElementById("charges");
 const colorsData = get(colors);
 const loadedCharges = {};
+const customCharges = get(uploaded);
 
 export const getTemplate = (id, line) => {
   const linedId = id + "Lined";
@@ -70,6 +71,12 @@ function addInescutcheon(charge) {
 function fetchCharge(charge) {
   if (loadedCharges[charge]) return; // already added
   loadedCharges[charge] = true;
+
+  if (customCharges[charge]) {
+    const {type, data, content} = customCharges[charge];
+    chargesGroup.insertAdjacentHTML("beforeend", content);
+    return;
+  }
 
   fetch("charges/" + charge + ".svg")
     .then(res => {
