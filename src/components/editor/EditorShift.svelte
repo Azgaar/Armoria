@@ -4,6 +4,7 @@
   import Switch from "./Switch.svelte";
   import {grid, showGrid, state} from "data/stores";
   import {tooltip} from "scripts/tooltip";
+  import { drag } from "scripts/drag";
 
   interface IElement {
     size: number;
@@ -13,6 +14,8 @@
   }
 
   export let element: IElement;
+  export let coaElement = null;
+  export let coa
 
   const hadleSizeChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
@@ -22,15 +25,23 @@
   const updateGrid = () => {
     $state.transform = `rotate(${element.angle || 0})`;
   };
+
+   const startDragging = (event: Event, action:{move:boolean, resize: boolean, rotate:boolean}) => {
+    drag(event, coaElement, coa,  action, coaElement.element);
+   }
 </script>
 
 <span data-tooltip={$t("tooltip.size")} use:tooltip>
-  {$t("editor.size")}:
+		<span style="cursor: ns-resize;" on:pointerdown={(e) => startDragging(e, {move:false, resize:true, rotate:false})}>
+      {$t("editor.size")}:
+    </span>
   <input type="number" min="1" max="500" step="1" value={(element.size * 100) | 0} on:input={hadleSizeChange} />
 </span>
 
 <span data-tooltip={$t("tooltip.rotation")} use:tooltip>
-  <span>{$t("editor.rotation")}:</span>
+	<span style="cursor: ew-resize;" on:pointerdown={(e) => startDragging(e, {move:false, resize:false, rotate:true})}>
+    <span>{$t("editor.rotation")}:</span>
+  </span>
   <input type="number" min="-180" max="180" bind:value={element.angle} on:change={updateGrid} />
 </span>
 
