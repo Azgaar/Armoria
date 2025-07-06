@@ -26,7 +26,7 @@
 
 <span data-tooltip={$t("tooltip.size")} use:tooltip>
   {$t("editor.size")}:
-  <input type="number" min="1" max="500" step="1" value={(element.size * 100) | 0} on:input={hadleSizeChange} />
+  <input type="number" min="1" max="500" step="1" value={Math.round(element.size * 100) | 0} on:input={hadleSizeChange} />
 </span>
 
 <span data-tooltip={$t("tooltip.rotation")} use:tooltip>
