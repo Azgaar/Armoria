@@ -33,19 +33,6 @@ function checkPattern(string) {
   if (string?.includes("-")) addPattern(string);
 }
 
-export function addShieldPatterns(coa) {
-  checkPattern(coa.t1);
-  checkPattern(coa.division?.t);
-  for (let o of coa.ordinaries || []) {
-    checkPattern(o.t);
-  }
-  for (let c of coa.charges || []) {
-    checkPattern(c.t);
-    checkPattern(c.t2);
-    checkPattern(c.t3);
-  }
-}
-
 function semy(string) {
   const isSemy = /^semy/.test(string);
   if (!isSemy) return false;
