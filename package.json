@@ -26,8 +26,8 @@
     "url": "https://github.com/Azgaar/Armoria/issues"
   },
   "dependencies": {
-    "convert-svg-to-jpeg": "^0.6.4",
-    "convert-svg-to-png": "^0.6.4",
+    "convert-svg-to-jpeg": "^0.7.1",
+    "convert-svg-to-png": "^0.7.1",
     "minify-xml": "^4.0.0",
     "mongodb": "^4.0.0",
     "node-html-parser": "^6.0.0"
@@ -37,14 +37,13 @@
     "@sveltejs/kit": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "@types/eslint": "^8.56.7",
-    "chrome-aws-lambda": "^10.1.0",
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-svelte": "^2.36.0",
     "globals": "^15.0.0",
     "prettier": "^3.1.1",
     "prettier-plugin-svelte": "^3.1.2",
-    "puppeteer-core": "10.1.0",
+    "puppeteer": "24.10.0",
     "svelte": "^4.2.7",
     "svelte-check": "^3.6.0",
     "svelte-i18n": "^4.0.0",

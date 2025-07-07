@@ -2,9 +2,9 @@ import {getClaim} from "$lib/api/claims";
 import {render} from "$lib/api/renderer";
 import {generateSeed, parseColors, parseSeed} from "$lib/api/utils";
 import {generate} from "$lib/scripts/generator";
-import chromium from "chrome-aws-lambda";
-import convertToJpg from "convert-svg-to-jpeg";
-import convertToPng from "convert-svg-to-png";
+import {executablePath} from "puppeteer";
+import {createConverter as JpegConverter} from "convert-svg-to-jpeg";
+import {createConverter as PngConverter} from "convert-svg-to-png";
 import {minify} from "minify-xml";
 import type {RequestHandler} from "./$types";
 
@@ -38,20 +38,19 @@ async function getCoa(seed: string) {
   return claimed?.coa || generate(seed);
 }
 
-const path = await chromium.executablePath;
-console.log("Chromium path:", path);
+console.log("Chromium path:", executablePath());
 
-const pngConverter = convertToPng.createConverter({
-  puppeteer: {
+const pngConverter = await PngConverter({
+  launch: {
     ignoreHTTPSErrors: true,
-    executablePath: await chromium.executablePath
+    executablePath,
   }
 });
 
-const jpgConverter = convertToJpg.createConverter({
-  puppeteer: {
+const jpgConverter = await JpegConverter({
+  launch: {
     ignoreHTTPSErrors: true,
-    executablePath: await chromium.executablePath
+    executablePath,
   }
 });
 
