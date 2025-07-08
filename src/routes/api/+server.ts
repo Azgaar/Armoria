@@ -2,11 +2,12 @@ import {getClaim} from "$lib/api/claims";
 import {render} from "$lib/api/renderer";
 import {generateSeed, parseColors, parseSeed} from "$lib/api/utils";
 import {generate} from "$lib/scripts/generator";
-import {executablePath} from "puppeteer";
-import {createConverter as JpegConverter} from "convert-svg-to-jpeg";
-import {createConverter as PngConverter} from "convert-svg-to-png";
 import {minify} from "minify-xml";
 import type {RequestHandler} from "./$types";
+import chromium from "@sparticuz/chromium-min";
+import puppeteer from "puppeteer-core";
+import svgToJpeg from "convert-svg-to-jpeg";
+import svgToPng from "convert-svg-to-png";
 
 const SIZE_DEFAULT = 500;
 const FORMAT_DEFAULT = "svg";
@@ -38,21 +39,18 @@ async function getCoa(seed: string) {
   return claimed?.coa || generate(seed);
 }
 
-console.log("Chromium path:", executablePath());
-
-const pngConverter = await PngConverter({
-  launch: {
-    ignoreHTTPSErrors: true,
-    executablePath,
-  }
-});
-
-const jpgConverter = await JpegConverter({
-  launch: {
-    ignoreHTTPSErrors: true,
-    executablePath,
-  }
-});
+let jpegConverter, pngConverter;
+let options = {
+  ignoreHTTPSErrors: true,
+  headless: true,
+}
+if (process.env.VERCEL) {
+  options.executablePath = await chromium.executablePath("https://github.com/Sparticuz/chromium/releases/download/v137.0.1/chromium-v137.0.1-pack.x64.tar");
+  options.args = chromium.args;
+}
+else {
+  options.channel = "chrome";
+}
 
 async function send(format: string, svg: string) {
   if (format === "svg") {
@@ -63,21 +61,22 @@ async function send(format: string, svg: string) {
     });
   }
 
+  let converter, contentType;
   if (format === "png") {
-    const pngBuffer = await pngConverter.convert(svg);
-    return new Response(pngBuffer, {
-      status: 200,
-      headers: {"Content-Type": "image/png", "Content-Length": String(pngBuffer.length)}
-    });
+    pngConverter ||= svgToPng.createConverter({puppeteer: options});
+    converter = pngConverter;
+    contentType = "image/png";
+  } else if (format === "jpg" || format === "jpeg") {
+    jpegConverter ||= svgToJpeg.createConverter({puppeteer: options});
+    converter = jpegConverter;
+    contentType = "image/jpeg";
+  } else {
+    return new Response("Invalid format", {status: 400});
   }
 
-  if (format === "jpg" || format === "jpeg") {
-    const jpgBuffer = await jpgConverter.convert(svg);
-    return new Response(jpgBuffer, {
-      status: 200,
-      headers: {"Content-Type": "image/jpeg", "Content-Length": String(jpgBuffer.length)}
-    });
-  }
-
-  return new Response("Invalid format", {status: 400});
+  const buffer = await converter.convert(svg);
+  return new Response(buffer, {
+    status: 200,
+    headers: {"Content-Type": contentType, "Content-Length": String(buffer.length)}
+  });
 }

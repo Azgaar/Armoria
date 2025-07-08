@@ -26,14 +26,17 @@
     "url": "https://github.com/Azgaar/Armoria/issues"
   },
   "dependencies": {
-    "convert-svg-to-jpeg": "^0.7.1",
-    "convert-svg-to-png": "^0.7.1",
+    "convert-svg-to-jpeg": "^0.6.4",
+    "convert-svg-to-png": "^0.6.4",
     "minify-xml": "^4.0.0",
     "mongodb": "^4.0.0",
-    "node-html-parser": "^6.0.0"
+    "node-html-parser": "^6.0.0",
+    "puppeteer-core": "24.10.0",
+    "@sparticuz/chromium-min": "^137.0.1"
+
   },
   "devDependencies": {
-    "@sveltejs/adapter-vercel": "^5.4.1",
+    "@sveltejs/adapter-vercel": "^5.4.8",
     "@sveltejs/kit": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "@types/eslint": "^8.56.7",
