@@ -46,9 +46,13 @@ let options = {
 }
 if (process.env.VERCEL) {
   options.executablePath = await chromium.executablePath("https://github.com/Sparticuz/chromium/releases/download/v137.0.1/chromium-v137.0.1-pack.x64.tar");
-  options.args = chromium.args;
-}
-else {
+  const remove = [
+    '--use-gl=angle',
+    '--use-angle=swiftshader',
+    '--enable-unsafe-swiftshader',
+  ];
+  options.args = chromium.args.filter(v => !remove.includes(v));
+} else {
   options.channel = "chrome";
 }
 
