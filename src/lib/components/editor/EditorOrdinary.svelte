@@ -8,9 +8,10 @@
   export let line: string;
   export let t1: string;
   export let t2: string;
+  export let shield: string = undefined;
 
   const ordinariesList = Object.keys(ordinaries.lined).concat(Object.keys(ordinaries.straight));
-  $: coas = ordinariesList.map(ordinary => ({coa: {t1, ordinaries: [{ordinary, line, t: t2}]}, ordinaryName: ordinary}));
+  $: coas = ordinariesList.map(ordinary => ({coa: {t1, shield, ordinaries: [{ordinary, line, t: t2}]}, ordinaryName: ordinary}));
 
   const getTip = (ordinary: string) => {
     const ordinaryName = $t(`ordinaries.${ordinary}`);

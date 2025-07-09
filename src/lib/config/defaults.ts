@@ -4,6 +4,7 @@ export const DEFAULT_GRADIENTS = ["luster", "spotlight", "backlight"];
 export const DEFAULT_BORDER = "#333333";
 export const DEFAULT_BORDER_WIDTH = 1;
 export const DEFAULT_BACKGROUND = "#333333";
+export const DEFAULT_FONT_COLOR = "#f1f1f1";
 export const DEFAULT_SCALE = 2;
 export const DEFAULT_ZOOM = 1;
 
@@ -18,6 +19,9 @@ export const DEFAULT_COLORS = {
   azure: "#377cd7",
   vert: "#26c061",
   purpure: "#522d5b",
+  carnation: "#eabfa2",
+  celeste: "#96c8fa",
+  cendrée: "#777777",
   murrey: "#85185b",
   sanguine: "#b63a3a",
   tenné: "#cc7f19"
@@ -28,7 +32,7 @@ export const DEFAULT_TINCTURES = {
   division: {metals: 35, colours: 49, stains: 1, patterns: 8},
   charge: {metals: 16, colours: 24, stains: 1, patterns: 0},
   metals: {argent: 3, or: 2},
-  colours: {gules: 5, azure: 4, sable: 3, purpure: 3, vert: 2},
+  colours: {gules: 5, azure: 4, sable: 3, purpure: 3, vert: 2, carnation: 0, celeste: 0, cendrée: 0},
   stains: {murrey: 1, sanguine: 1, tenné: 1},
   patterns: {
     semy: 8,

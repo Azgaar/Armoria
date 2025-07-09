@@ -2,6 +2,10 @@ import {get} from "svelte/store";
 import {scale, grad, diaper, fonts} from "$lib/data/stores";
 
 export async function download(i, format = "png") {
+  if (format === "json") {
+    return downloadJSON(i);
+  }
+
   const coas = i || i === 0 ? [document.getElementById("coa" + i)] : document.querySelectorAll("svg.coa");
   let {width, height} = coas[0].getBoundingClientRect();
   const numberX = coas.length > 1 ? Math.floor(window.innerWidth / width) : 1;
@@ -27,7 +31,7 @@ export async function download(i, format = "png") {
     link.download = `armoria_${getTimestamp()}.svg`;
     link.href = url;
     link.click();
-    window.setTimeout(() => window.URL.revokeObjectURL(URL), 5000);
+    window.setTimeout(() => window.URL.revokeObjectURL(url), 5000);
   }
 
   function downloadRaster(url, i) {
@@ -40,6 +44,17 @@ export async function download(i, format = "png") {
       if (loaded === coas.length) drawCanvas(canvas, format);
     };
   }
+
+  function downloadJSON(coas) {
+    const blob = new Blob([JSON.stringify(coas)], {type: "application/json"});
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    const name = coas.length === 1 && coas[0].name && coas[0].name.toLowerCase().replaceAll(/[^a-z]/g, "") || "armoria";
+    link.download = `${name}_${getTimestamp()}.json`;
+    link.href = url;
+    link.click();
+    window.setTimeout(() => window.URL.revokeObjectURL(url), 5000);
+  }
 }
 
 async function getURL(svg, width, height) {
@@ -51,11 +66,21 @@ async function getURL(svg, width, height) {
   clone.removeAttribute("id");
   const d = clone.getElementsByTagName("defs")[0];
 
-  // remove grid if any
+  // remove grid and positions if any
   const grid = clone.getElementById("grid");
   const gridPattern = clone.getElementById("gridPattern");
+  const positions = clone.getElementById("positions");
   if (grid) grid.remove();
   if (gridPattern) gridPattern.remove();
+  if (positions) positions.remove();
+
+  // remove inscription handles
+  clone.querySelectorAll(".text-path").forEach(el => {
+    el.setAttribute("stroke", "none");
+  });
+  clone.querySelectorAll(".points").forEach(el => {
+    el.remove();
+  });
 
   const gr = get(grad),
     di = get(diaper);

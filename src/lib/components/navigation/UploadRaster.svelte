@@ -2,7 +2,7 @@
   // @ts-check
   import {t} from "svelte-i18n";
   import LicenseList from "./LicenseList.svelte";
-  import {state, message, shield} from "$lib/data/stores";
+  import {state, message, shield, uploaded} from "$lib/data/stores";
   import {charges} from "$lib/data/dataModel";
   import {DEFAULT_SHIELD_BOX, shieldPaths} from "$lib/data/shields";
   import {tooltip} from "$lib/scripts/tooltip";
@@ -84,7 +84,12 @@
     if (license) image.setAttribute("license", license);
     if (author) image.setAttribute("author", author);
 
-    document.getElementById("charges").appendChild(image);
+    $uploaded[name] = {
+      category,
+      type: "raster",
+      content: image.outerHTML,
+    };
+    localStorage.setItem("uploaded", JSON.stringify($uploaded));
 
     selected = false;
     $state.raster = 0;

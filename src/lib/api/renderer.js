@@ -19,7 +19,7 @@ const backlight = `<radialGradient id="backlight" cx="100%" cy="100%" r="150%">
   <stop stop-color="#000" stop-opacity="0" offset="1"/>
 </radialGradient>`;
 
-export async function render(coa, size, zoom, colors) {
+export async function render(coa, size, colors) {
   const {division, ordinaries = [], charges = [], inscriptions = [], shield} = coa;
   logCOAdetails(coa, shield, division, ordinaries, charges);
 
@@ -39,9 +39,7 @@ export async function render(coa, size, zoom, colors) {
   </style>`;
 
   stores.grad.set("backlight");
-  stores.shield.set(shield);
   stores.colors.set(colors);
-  stores.zoom.set(zoom);
 
   const svg = COA.render({coa, height: size, width: size, i: "View"});
   const root = parse(svg.html);

@@ -46,7 +46,7 @@ export const GET: RequestHandler = async ({url, params}) => {
   const size = Number(query.get("size")) || SIZE_DEFAULT;
   const colors = parseColors(query);
   const svg = await render(coa, size, colors);
-  const link = `https://armoria.herokuapp.com/svg/${size}/${seed}`;
+  const link = `https://armoria.vercel.app/api/svg/${size}/${seed}`;
 
   if (claim) await reclaim({name: seed, coa, key});
   else await setClaim({name: seed, coa, key});

@@ -21,9 +21,7 @@
       font.load().then(
         () => {
           document.fonts.add(font);
-          $fonts[name] = {url};
-          message.info($t("success.fontAdded"));
-          close();
+          addFont(name, {url});
         },
         err => {
           console.error(err);
@@ -32,12 +30,15 @@
       );
     } else {
       // type === "local"
-      $fonts[name] = {};
-      message.info($t("success.fontAdded"));
-      close();
+      addFont(name, {});
     }
+  }
 
+  function addFont(name, data) {
+    $fonts[name] = data;
     localStorage.setItem("fonts", JSON.stringify($fonts));
+    message.info($t("success.fontAdded"));
+    close();
   }
 
   function restoreDefaultFonts() {

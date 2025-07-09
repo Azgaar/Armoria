@@ -1,6 +1,6 @@
 <script lang="ts">
   // @ts-check
-  import {history, matrices, matrix, state} from "$lib/data/stores";
+  import {fontColor, history, matrices, matrix, state} from "$lib/data/stores";
   import {download} from "$lib/scripts/download";
   import {generate} from "$lib/scripts/generator";
   import {minmax} from "$lib/scripts/utils";
@@ -32,9 +32,10 @@
   }
 </script>
 
-<main style="font-size: {fontSize}px" transition:fade={{duration: 500}}>
+<main style="color: {$fontColor}; font-size: {fontSize}px" transition:fade={{duration: 500}}>
   {#each coas as coa, i}
     <div>
+      <div class="name">{coa.name || ""}</div>
       {#key coa}
         <COA {coa} {i} {width} {height} />
       {/key}
@@ -57,6 +58,17 @@
 
   main > div:hover {
     background: #00000020;
+  }
+
+  .name {
+    position: absolute;
+    font-size: 1.6em;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .control {

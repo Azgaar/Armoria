@@ -4,6 +4,7 @@ import {
   DEFAULT_BORDER_WIDTH,
   DEFAULT_COLORS,
   DEFAULT_DIAPER,
+  DEFAULT_FONT_COLOR,
   DEFAULT_FONTS,
   DEFAULT_GRADIENTS,
   DEFAULT_GRID,
@@ -11,7 +12,6 @@ import {
   DEFAULT_SHOW_GRID,
   DEFAULT_SIZE,
   DEFAULT_TINCTURES,
-  DEFAULT_ZOOM,
   type Fonts
 } from "$lib/config/defaults";
 import {ra, rw} from "$lib/scripts/utils";
@@ -32,13 +32,13 @@ export const colors = writable(options.colors);
 export const tinctures = writable(options.tinctures);
 export const fonts = writable(options.fonts);
 export const background = writable(options.background);
+export const fontColor = writable(options.fontColor);
 export const scale = writable(options.scale);
-export const zoom = writable(options.zoom);
 export const border = writable(options.border);
 export const borderWidth = writable(options.borderWidth);
-
 export const grid = writable(options.grid);
 export const showGrid = writable(options.showGrid);
+export const uploaded = writable(options.uploaded);
 
 export const history = writable([]);
 export const matrices = writable([]);
@@ -48,6 +48,7 @@ export const state = writable({
   about: 0,
   license: 0,
   tinctures: 0,
+  import: 0,
   raster: 0,
   vector: 0,
   i: 0,
@@ -127,32 +128,23 @@ function defineInitialOptions() {
     return localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : null;
   };
 
-  const getShieldFromURL = () => {
-    if (!browser) return null;
-    const coaParam = new URL(window.location.href).searchParams.get("coa");
-    if (!coaParam) return null;
-    const coa = JSON.parse(coaParam);
-    return coa?.shield;
-  };
-
   const size = +stored("size") || DEFAULT_SIZE;
   const diaper = stored("diaper") || DEFAULT_DIAPER;
   const grad = stored("grad") || ra(DEFAULT_GRADIENTS);
-  const shield = getShieldFromURL() || stored("shield") || rw(shields[rw(shields.types)]);
+  const shield = stored("shield") || rw(shields[rw(shields.types)]);
   const colors = storedObj("colors") || JSON.parse(JSON.stringify(DEFAULT_COLORS));
   const fonts: Fonts = storedObj("fonts") || JSON.parse(JSON.stringify(DEFAULT_FONTS));
   const border = stored("border") || DEFAULT_BORDER;
   const borderWidth = +stored("borderWidth") || DEFAULT_BORDER_WIDTH;
   const background = stored("background") || DEFAULT_BACKGROUND;
+  const fontColor = stored("fontColor") || DEFAULT_FONT_COLOR;
   const scale = +stored("scale") || DEFAULT_SCALE;
-  const zoom = +stored("zoom") || DEFAULT_ZOOM;
-
   const grid = +stored("grid") || DEFAULT_GRID;
   const showGrid = storedObj("showGrid") || DEFAULT_SHOW_GRID;
-
   const storedTinctures = storedObj("tinctures");
   const areTincturesValid = storedTinctures ? validateTinctures(storedTinctures) : false;
   const tinctures: Tinctures = areTincturesValid ? storedTinctures : JSON.parse(JSON.stringify(DEFAULT_TINCTURES));
+  const uploaded = storedObj("uploaded") || {};
 
   return {
     size,
@@ -161,12 +153,13 @@ function defineInitialOptions() {
     shield,
     colors,
     tinctures,
+    uploaded,
     fonts,
     border,
     borderWidth,
     background,
+    fontColor,
     scale,
-    zoom,
     grid,
     showGrid
   };

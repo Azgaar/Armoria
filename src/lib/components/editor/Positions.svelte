@@ -1,10 +1,13 @@
-<script>
-  import {state, shield} from "$lib/data/stores";
+<script lang="ts">
+  // @ts-check
+  import {state} from "$lib/data/stores";
   import {shieldPositions} from "$lib/data/shields";
   import {fade} from "svelte/transition";
 
+  export let shield: string;
+
   // on shield change
-  $: points = shieldPositions[$shield] ? Object.entries(shieldPositions[$shield]) : Object.entries(shieldPositions.spanish);
+  $: points = shieldPositions[shield] ? Object.entries(shieldPositions[shield]) : Object.entries(shieldPositions.spanish);
 
   function getClass(p) {
     if ("abcdefghi".includes(p)) return "green";

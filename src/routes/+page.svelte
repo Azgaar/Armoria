@@ -1,7 +1,7 @@
 <script lang="ts">
   // @ts-check
   import {shields} from "$lib/data/shields";
-  import {background, fonts, history, isTextReady, matrices, matrix, message, shield, size, state} from "$lib/data/stores";
+  import {background, fonts, history, isTextReady, matrices, matrix, message, shield, size, state, uploaded} from "$lib/data/stores";
   import "$lib/scripts/i18n";
   import {rw} from "$lib/scripts/utils";
   import {locale} from "svelte-i18n";
@@ -13,6 +13,7 @@
   import Gallery from "$lib/components/navigation/Gallery.svelte";
   import License from "$lib/components/navigation/License.svelte";
   import Tinctures from "$lib/components/navigation/Tinctures.svelte";
+  import UploadJSON from "$lib/components/navigation/UploadJSON.svelte";
   import UploadRaster from "$lib/components/navigation/UploadRaster.svelte";
   import UploadVector from "$lib/components/navigation/UploadVector.svelte";
   import Viewer from "$lib/components/navigation/Viewer.svelte";
@@ -28,6 +29,7 @@
   $locale = "en"; // fallback locale
 
   loadFonts();
+  loadCustomCharges();
   checkLoadParameters();
 
   $: [quantity, width, height] = defineGallerySize($size);
@@ -70,6 +72,15 @@
       if (url) {
         const font = new FontFace(name, `url(${url})`);
         document.fonts.add(font);
+      }
+    });
+  }
+
+  function loadCustomCharges() {
+    Object.entries($uploaded).forEach(([name, {category, type, data, content}]) => {
+      charges[category][name] = 0;
+      if (data) {
+        charges.data[name] = data;
       }
     });
   }
@@ -146,6 +157,7 @@
 
     {#if $state.about}<About />{/if}
     {#if $state.license}<License />{/if}
+    {#if $state.import}<UploadJSON />{/if}
     {#if $state.raster}<UploadRaster />{/if}
     {#if $state.vector}<UploadVector />{/if}
     {#if $state.tinctures}<Tinctures />{/if}

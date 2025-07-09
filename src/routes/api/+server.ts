@@ -12,13 +12,11 @@ import svgToPng from "convert-svg-to-png";
 const SIZE_DEFAULT = 500;
 const FORMAT_DEFAULT = "svg";
 const SHIELD_DEFAULT = "heater";
-const ZOOM_DEFAULT = 1;
 
 export const GET: RequestHandler = async ({url}) => {
   const params = url.searchParams;
   const format = params.get("format") || FORMAT_DEFAULT;
   const size = Number(params.get("size")) || SIZE_DEFAULT;
-  const zoom = Number(params.get("zoom")) || ZOOM_DEFAULT;
   const seedParam = params.get("seed");
   const seed = seedParam ? parseSeed(seedParam) : generateSeed();
   const colors = parseColors(params);
@@ -26,9 +24,9 @@ export const GET: RequestHandler = async ({url}) => {
 
   const coa = coaParam ? JSON.parse(coaParam) : await getCoa(seed);
   coa.seed = seed;
-  coa.shield = params.get("shield") || SHIELD_DEFAULT;
+  coa.shield ||= SHIELD_DEFAULT;
 
-  const svg = await render(coa, size, zoom, colors);
+  const svg = await render(coa, size, colors);
   return send(format, svg);
 };
 

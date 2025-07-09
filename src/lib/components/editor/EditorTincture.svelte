@@ -7,6 +7,7 @@
   import {DEFAULT_COLORS as defaults} from "$lib/config/defaults";
 
   export let t1: string = undefined;
+  export let shield: string = undefined;
 
   $: localStorage.setItem("colors", JSON.stringify($colors));
   $: colorChanged = (tincture: string) => defaults[tincture] && $colors[tincture] !== defaults[tincture];
@@ -16,7 +17,7 @@
       Object.keys($tinctures[type]).map(tincture => {
         const tinctureName = $dictionary[$locale]?.tinctures?.[tincture] ? $t(`tinctures.${tincture}`) : tincture;
         const typeName = $t(`editor.${type.slice(0, -1)}`);
-        return {coa: {t1: tincture}, tip: `${typeName}: ${tinctureName}`};
+        return {coa: {t1: tincture, shield}, tip: `${typeName}: ${tinctureName}`};
       })
     )
     .flat();

@@ -1,7 +1,8 @@
 <script lang="ts">
   // @ts-check
-  import {getViewBox} from "$lib/scripts/getters";
-  import {border, borderWidth, shield, zoom} from "$lib/data/stores";
+  import {DEFAULT_ZOOM} from "$lib/config/defaults";
+  import {DEFAULT_SHIELD_BOX, shieldBox} from "$lib/data/shields";
+  import {border, borderWidth, shield} from "$lib/data/stores";
   import Grid from "./../editor/Grid.svelte";
   import Positions from "./../editor/Positions.svelte";
   import Shield from "./Shield.svelte";
@@ -14,7 +15,17 @@
 
   const isEdit = i === "Edit";
 
-  $: viewBox = getViewBox($shield, $zoom);
+  function getViewBox(shield: string, zoom: number) {
+    const box = shieldBox[shield] || DEFAULT_SHIELD_BOX;
+    const [x0, y0, w0, h0] = box.split(" ");
+    const w = Math.round((w0 * DEFAULT_ZOOM) / zoom);
+    const h = Math.round((h0 * DEFAULT_ZOOM) / zoom);
+    const x = x0 - w / 2 + 100;
+    const y = y0 - h / 2 + 100;
+    return `${x} ${y} ${w} ${h}`;
+  }
+
+  $: viewBox = getViewBox(coa.shield || $shield, coa.zoom || DEFAULT_ZOOM);
 </script>
 
 <svg
@@ -31,6 +42,6 @@
   <Shield {coa} border={$border} borderWidth={$borderWidth} type={i} />
   {#if isEdit}
     <Grid />
-    <Positions />
+    <Positions shield={coa.shield || $shield} />
   {/if}
 </svg>

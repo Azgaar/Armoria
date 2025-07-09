@@ -1,13 +1,13 @@
 <script lang="ts">
   // @ts-check
   import {shieldPositions} from "$lib/data/shields";
+  import {shield} from "$lib/data/stores";
   import {drag, transform, getElTransform} from "$lib/scripts/drag";
   import type {Coa, Charge} from "$lib/types/coa";
 
   export let coa: Coa;
   export let charge: Charge;
   export let i: number;
-  export let shield: string;
   export let t: string;
   export let t2: string | undefined = undefined;
   export let t3: string | undefined = undefined;
@@ -16,16 +16,19 @@
 
   let chargeId: string;
   let validPositions: string[];
+  let coaShield: string;
+
+  $: coaShield = coa.shield || $shield;
 
   $: {
-    const positions = shieldPositions[shield] || shieldPositions.spanish;
+    const positions = shieldPositions[coaShield] || shieldPositions.spanish;
     validPositions = [...new Set(charge.p)].filter(p => positions[p]);
   }
 
   $: {
     chargeId = charge.charge;
     // select shield shape if charge is just 'inescutcheon'
-    if (chargeId === "inescutcheon") chargeId = "inescutcheon" + shield.charAt(0).toUpperCase() + shield.slice(1);
+    if (chargeId === "inescutcheon") chargeId = "inescutcheon" + coaShield.charAt(0).toUpperCase() + coaShield.slice(1);
   }
 
   function addDrag(event: Event) {
@@ -45,6 +48,6 @@
   style="--secondary: {t2 || t}; --tertiary: {t3 || t}; --stroke: {charge.stroke || "#000"}; --background: {hideBackground ? 'none' : 'block'}"
 >
   {#each validPositions as position}
-    <use xlink:href="#{chargeId}" transform={getElTransform(charge, position, shield)} />
+    <use xlink:href="#{chargeId}" transform={getElTransform(charge, position, coaShield)} />
   {/each}
 </g>

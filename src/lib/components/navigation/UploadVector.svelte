@@ -2,7 +2,7 @@
   // @ts-check
   import {t} from "svelte-i18n";
   import LicenseList from "./LicenseList.svelte";
-  import {state, colors, tinctures, message, shield} from "$lib/data/stores";
+  import {state, colors, tinctures, message, shield, uploaded} from "$lib/data/stores";
   import {charges} from "$lib/data/dataModel";
   import {DEFAULT_SHIELD_BOX, shieldPaths} from "$lib/data/shields";
   import {camelize} from "$lib/scripts/utils";
@@ -110,6 +110,8 @@
     if (!charges.types[category]) charges.types[category] = 6;
     if (!charges.single[category]) charges.single[category] = 6;
     charges[category][name] = 5;
+    const colors = svg.includes("tertiary") ? 3 : svg.includes("secondary") ? 2 : 1;
+    charges.data[name] = {colors};
 
     const el = document.createElement("html");
     el.innerHTML = svg;
@@ -120,7 +122,13 @@
     if (license) image.setAttribute("license", license);
     if (author) image.setAttribute("author", author);
 
-    query("defs").insertAdjacentHTML("beforeend", image.outerHTML);
+    $uploaded[name] = {
+      category,
+      type: "vector",
+      data: {colors},
+      content: image.outerHTML,
+    };
+    localStorage.setItem("uploaded", JSON.stringify($uploaded));
 
     selected = false;
     $state.vector = 0;
@@ -184,7 +192,7 @@
         </div>
 
         <div
-          data-tooltip="Tincture preview color, does not affect uploaded actual color. Charges must not have exact color defined. In this case charge will support all tunctures"
+          data-tooltip="Tincture preview color, does not affect uploaded actual color. Charges must not have exact color defined. In this case charge will support all tinctures"
           use:tooltip
         >
           <div class="label">Tincture:</div>
