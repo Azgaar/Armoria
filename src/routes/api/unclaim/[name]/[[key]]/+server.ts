@@ -13,7 +13,7 @@ export const GET: RequestHandler = async ({params}) => {
     console.error(`Cannot unclaim as ${seed} is not claimed`);
     return new Response(
       `<h1>Armoria API</h1>
-    <p>Cannot unclaim ${seed} as it was not claimed before.</a></p>
+    <p>Cannot unclaim <code>${seed}</code> as it was not claimed before.</p>
     <p>See <a href="${README_URL}" target="_blank">README</a> for guidance.</p>`,
       {
         status: 400,
