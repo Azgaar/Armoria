@@ -175,7 +175,7 @@
 
       <div>
         <div class="label">SVG Markup:</div>
-        <textarea rows="5" bind:value={svg} />
+        <textarea rows="5" bind:value={svg}></textarea>
       </div>
 
       <div class="inputs">

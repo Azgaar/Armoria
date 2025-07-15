@@ -134,7 +134,7 @@
     <table>
       <thead>
         <tr>
-          <th />
+          <th></th>
           {#each Object.keys($tinctures.field) as type (type)}
             <th>{$t(`tinctures.${type}`)}</th>
           {/each}
@@ -162,7 +162,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td />
+          <td></td>
           <td colspan="2">
             {#if addLine.show}
               <button on:click={applyAddTincture}>{$t("tinctures.apply")}</button>
