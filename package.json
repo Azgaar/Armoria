@@ -10,7 +10,8 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --check . && eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "postinstall": "patch-package"
   },
   "repository": {
     "type": "git",
@@ -26,14 +27,13 @@
     "url": "https://github.com/Azgaar/Armoria/issues"
   },
   "dependencies": {
-    "convert-svg-to-jpeg": "^0.6.4",
-    "convert-svg-to-png": "^0.6.4",
+    "@sparticuz/chromium-min": "138.0.1",
+    "convert-svg-to-jpeg": "^0.7.1",
+    "convert-svg-to-png": "^0.7.1",
     "minify-xml": "^4.5.2",
     "mongodb": "^6.17.0",
     "node-html-parser": "^7.0.1",
-    "puppeteer-core": "24.10.0",
-    "@sparticuz/chromium-min": "^137.0.1"
-
+    "puppeteer-core": "24.11.2"
   },
   "devDependencies": {
     "@sveltejs/adapter-vercel": "^5.7.2",
@@ -44,9 +44,10 @@
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-svelte": "^3.10.1",
     "globals": "^16.3.0",
+    "patch-package": "^8.0.0",
     "prettier": "^3.6.2",
     "prettier-plugin-svelte": "^3.4.0",
-    "puppeteer": "24.10.0",
+    "puppeteer": "24.11.2",
     "svelte": "^5.35.6",
     "svelte-check": "^4.2.2",
     "svelte-i18n": "^4.0.1",

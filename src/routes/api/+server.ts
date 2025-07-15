@@ -6,8 +6,8 @@ import {minify} from "minify-xml";
 import type {RequestHandler} from "./$types";
 import chromium from "@sparticuz/chromium-min";
 import puppeteer from "puppeteer-core";
-import svgToJpeg from "convert-svg-to-jpeg";
-import svgToPng from "convert-svg-to-png";
+import {createConverter as createJpegConverter} from "convert-svg-to-jpeg";
+import {createConverter as createPngConverter} from "convert-svg-to-png";
 
 const SIZE_DEFAULT = 500;
 const FORMAT_DEFAULT = "svg";
@@ -43,7 +43,7 @@ let options = {
   headless: true,
 }
 if (process.env.VERCEL) {
-  options.executablePath = await chromium.executablePath("https://github.com/Sparticuz/chromium/releases/download/v137.0.1/chromium-v137.0.1-pack.x64.tar");
+  options.executablePath = await chromium.executablePath("https://github.com/Sparticuz/chromium/releases/download/v138.0.1/chromium-v138.0.1-pack.x64.tar");
   const remove = [
     '--use-gl=angle',
     '--use-angle=swiftshader',
@@ -65,11 +65,11 @@ async function send(format: string, svg: string) {
 
   let converter, contentType;
   if (format === "png") {
-    pngConverter ||= svgToPng.createConverter({puppeteer: options});
+    pngConverter ||= await createPngConverter({launch: options});
     converter = pngConverter;
     contentType = "image/png";
   } else if (format === "jpg" || format === "jpeg") {
-    jpegConverter ||= svgToJpeg.createConverter({puppeteer: options});
+    jpegConverter ||= await createJpegConverter({launch: options});
     converter = jpegConverter;
     contentType = "image/jpeg";
   } else {
