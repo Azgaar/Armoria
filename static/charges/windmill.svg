@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#d7374a" stroke="#000" viewBox="50 50 200 200">
+<svg xmlns="http://www.w3.org/2000/svg" fill="#d7374a" stroke="#000" viewBox="50 50 200 200">
   <metadata author="Christie L. Ward" source="http://www.vikinganswerlady.com/Stars/Heraldry_SVG_Images/Windmill.svg" license="https://creativecommons.org/licenses/by-sa/3.0"/>
   <g id="windmill" stroke-width=".22">
     <g>
@@ -24,37 +24,37 @@
     </g>
     <rect fill="none" stroke-width=".66" x="87.62" y="93.56" width="24.84" height="26.35"/>
     <g>
-      <use xlink:href="#windmill-a" transform="rotate(90 122.8 116.63)"/>
-      <use xlink:href="#windmill-a" transform="rotate(180 99.45 116.48)"/>
-      <use xlink:href="#windmill-a" transform="rotate(-90 76.04 116.1)"/>
+      <use href="#windmill-a" transform="rotate(90 122.8 116.63)"/>
+      <use href="#windmill-a" transform="rotate(180 99.45 116.48)"/>
+      <use href="#windmill-a" transform="rotate(-90 76.04 116.1)"/>
       <g transform="translate(.47 -46.94)">
         <g id="windmill-a" class="secondary">
           <rect stroke-width=".66" x="67.2" y="136.92" width="43.13" height="2.88" transform="rotate(45 106.05 129.45)"/>
           <g class="tertiary" transform="rotate(45 93.83 128.77)">
             <rect id="windmill-b" x="67.2" y="136.88" width="3.77" height="2.93"/>
-            <use xlink:href="#windmill-b" transform="translate(26.41)"/>
-            <use xlink:href="#windmill-b" transform="translate(22.64)"/>
-            <use xlink:href="#windmill-b" transform="translate(18.86)"/>
-            <use xlink:href="#windmill-b" transform="translate(15.09)"/>
-            <use xlink:href="#windmill-b" transform="translate(11.32)"/>
-            <use xlink:href="#windmill-b" transform="translate(7.54)"/>
-            <use xlink:href="#windmill-b" transform="translate(3.77)"/>
-            <use xlink:href="#windmill-b" transform="translate(0 -5.86)"/>
-            <use xlink:href="#windmill-b" transform="translate(0 -2.93)"/>
-            <use xlink:href="#windmill-b" transform="translate(3.77 -5.86)"/>
-            <use xlink:href="#windmill-b" transform="translate(3.77 -2.93)"/>
-            <use xlink:href="#windmill-b" transform="translate(7.54 -5.86)"/>
-            <use xlink:href="#windmill-b" transform="translate(7.54 -2.93)"/>
-            <use xlink:href="#windmill-b" transform="translate(11.32 -5.86)"/>
-            <use xlink:href="#windmill-b" transform="translate(11.32 -2.93)"/>
-            <use xlink:href="#windmill-b" transform="translate(15.09 -5.86)"/>
-            <use xlink:href="#windmill-b" transform="translate(15.09 -2.93)"/>
-            <use xlink:href="#windmill-b" transform="translate(18.86 -5.86)"/>
-            <use xlink:href="#windmill-b" transform="translate(18.86 -2.93)"/>
-            <use xlink:href="#windmill-b" transform="translate(22.64 -5.86)"/>
-            <use xlink:href="#windmill-b" transform="translate(26.41 -5.86)"/>
-            <use xlink:href="#windmill-b" transform="translate(26.41 -2.93)"/>
-            <use xlink:href="#windmill-b" transform="translate(22.64 -2.93)"/>
+            <use href="#windmill-b" transform="translate(26.41)"/>
+            <use href="#windmill-b" transform="translate(22.64)"/>
+            <use href="#windmill-b" transform="translate(18.86)"/>
+            <use href="#windmill-b" transform="translate(15.09)"/>
+            <use href="#windmill-b" transform="translate(11.32)"/>
+            <use href="#windmill-b" transform="translate(7.54)"/>
+            <use href="#windmill-b" transform="translate(3.77)"/>
+            <use href="#windmill-b" transform="translate(0 -5.86)"/>
+            <use href="#windmill-b" transform="translate(0 -2.93)"/>
+            <use href="#windmill-b" transform="translate(3.77 -5.86)"/>
+            <use href="#windmill-b" transform="translate(3.77 -2.93)"/>
+            <use href="#windmill-b" transform="translate(7.54 -5.86)"/>
+            <use href="#windmill-b" transform="translate(7.54 -2.93)"/>
+            <use href="#windmill-b" transform="translate(11.32 -5.86)"/>
+            <use href="#windmill-b" transform="translate(11.32 -2.93)"/>
+            <use href="#windmill-b" transform="translate(15.09 -5.86)"/>
+            <use href="#windmill-b" transform="translate(15.09 -2.93)"/>
+            <use href="#windmill-b" transform="translate(18.86 -5.86)"/>
+            <use href="#windmill-b" transform="translate(18.86 -2.93)"/>
+            <use href="#windmill-b" transform="translate(22.64 -5.86)"/>
+            <use href="#windmill-b" transform="translate(26.41 -5.86)"/>
+            <use href="#windmill-b" transform="translate(26.41 -2.93)"/>
+            <use href="#windmill-b" transform="translate(22.64 -2.93)"/>
           </g>
           <path fill="none" stroke-width=".66" d="m92.68 134.94 2.07-2.07-2.67-2.67-2.66-2.66-2.67-2.67-2.67-2.67-2.67-2.67-2.66-2.66-2.67-2.67-2.67-2.67-2.07 2.07-2.07 2.07-2.07 2.07 2.67 2.67 2.67 2.67 2.66 2.67 2.67 2.66 2.67 2.67 2.67 2.67 2.66 2.67 2.67 2.66 2.07-2.07 2.07-2.07Z"/>
         </g>

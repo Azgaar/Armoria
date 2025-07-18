@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#d7374a" stroke="#000" viewBox="50 50 200 200">
+<svg xmlns="http://www.w3.org/2000/svg" fill="#d7374a" stroke="#000" viewBox="50 50 200 200">
   <metadata author="Celbusro" source="https://commons.wikimedia.org/wiki/File:Coat_of_arms_elements_-_wasps_2.svg" license="https://creativecommons.org/licenses/by-sa/4.0"/>
   <g id="wasp" stroke-width=".81" stroke-linejoin="round">
     <path d="M100.03 70.59a6.3 6.3 0 0 0-4.5 1.92c-.37.34-.75.67-.82 1.17-.14 1.03 2.62 2.22 1.52 3.2l-3.66 2.18c-1.36 1.22.37 2.63.37 2.63l7.09-2.3 7.09 2.3s1.73-1.41.37-2.63l-3.66-2.18c-1.1-.98 1.66-2.17 1.52-3.2-.07-.5-.45-.83-.81-1.17a6.3 6.3 0 0 0-4.51-1.92z"/>
@@ -36,6 +36,6 @@
         <path d="M110.76 107.26c2.5 3.36 4.46 7.64 8.42 8.53"/>
       </g>
     </g>
-    <use xlink:href="#wasp-a" transform="translate(200 0) scale(-1 1)"/>
+    <use href="#wasp-a" transform="translate(200 0) scale(-1 1)"/>
   </g>
 </svg>
