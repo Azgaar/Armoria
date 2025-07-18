@@ -1,0 +1,13 @@
+diff --git a/node_modules/convert-svg-core/dist/esm/converter.js b/node_modules/convert-svg-core/dist/esm/converter.js
+index b6c5687..b8c5a83 100644
+--- a/node_modules/convert-svg-core/dist/esm/converter.js
++++ b/node_modules/convert-svg-core/dist/esm/converter.js
+@@ -317,7 +317,7 @@ html { background-color: ${provider.getBackgroundColor(options)}; }
+     }
+     async #createContext(html) {
+         const [page, tempFile] = await Promise.all([
+-            this.#browserContext.newPage(),
++            this.#browser.newPage(),
+             this.#createTempFile(),
+         ]);
+         await writeFile(tempFile.path, html);
