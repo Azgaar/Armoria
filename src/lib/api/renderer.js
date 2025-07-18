@@ -86,8 +86,9 @@ async function getCharges(coa, shieldPath) {
   const fetchedCharges = await Promise.all(
     uniqueCharges.map(async charge => {
       if (charge.slice(0, 12) === "inescutcheon") {
+        const chargeId = charge.length === 12 ? charge + coa.shield[0].toUpperCase() + coa.shield.slice(1) : charge;
         const path = charge.length > 12 ? shieldPaths[charge.slice(12, 13).toLowerCase() + charge.slice(13)] : shieldPath;
-        return `<g id="${charge}"><path transform="translate(66 66) scale(.34)" d="${path}"/></g>`;
+        return `<g id="${chargeId}"><path transform="translate(66 66) scale(.34)" d="${path}"/></g>`;
       }
 
       const fetched = await fetchCharge(charge);

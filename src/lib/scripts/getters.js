@@ -59,6 +59,7 @@ function addInescutcheon(charge) {
   const id = charge.length > 12 ? charge : "inescutcheon" + shieldName.charAt(0).toUpperCase() + shieldName.slice(1);
 
   if (loadedCharges[id]) return; // already added
+  if (!browser) return;
   loadedCharges[id] = true;
 
   const licenseAttrs = ["noldor", "gondor", "easterling", "ironHills", "urukHai", "moriaOrc"].includes(shieldName)
