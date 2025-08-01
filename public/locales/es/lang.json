@@ -27,7 +27,7 @@
     "downloadSVG": "Descargar SVG",
     "downloadPNG": "Descargar PNG",
     "downloadJPEG": "Descargar JPEG",
-    "exportJSON": "Export JSON",
+    "exportJSON": "Exportar a JSON",
     "copyEditLink": "Copiar escudo en modo edición",
     "copyApiLink": "Copiar enlace API",
     "copyCoaString": "Copiar la cadena de código del escudo de armas",
@@ -300,7 +300,7 @@
     "restoreDefault": "Restore default fonts",
     "close": "Close",
     "tip_local": "**Local font**. If you have a font [installed on your computer](https://faqs.skillcrush.com/article/275-downloading-installing-a-font-on-your-computer), just provide the font name. Make sure the browser is reloaded after the installation. The font won't work on machines not having it installed. Good sources of fonts are [Fontesk](https://fontesk.com) and [DaFont](https://www.dafont.com).",
-    "tip_web": "**Web-hosted font**. Provide font name and link to the font file hosted online. The best free font hostings are [Google Fonts](https://fonts.google.com) and [CDN Fonts](https://www.cdnfonts.com). To get font file open the link to css provided by these services and manually copy the link to .woff2 of desired variant. To add another variant (e.g. Cyrillic), add the font under a different name."
+    "tip_web": "**Fuente alojada en la Web**. Proporcione el nombre de la fuente y el enlace al archivo de fuentes alojado en línea. Los mejores alojamientos gratuitos de fuentes son [Fuentes de Google](https://fonts.google.com) y [CDN Fonts](https://www.cdnfonts.com). Para obtener el archivo de fuentes, abra el enlace CSS proporcionado por estos servicios y copie manualmente el enlace a .woff2 de la variante deseada. Para añadir otra variante (por ejemplo, cirílico), añada la fuente bajo un nombre diferente."
   },
   "editor": {
     "general": "General",
