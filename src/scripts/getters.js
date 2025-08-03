@@ -117,30 +117,34 @@ function getSizeMod(size) {
   return 1;
 }
 
+function round(number, precision = 3) {
+  return Math.round(number * 10**precision) / 10**precision;
+}
+
 export function analyzePath(string) {
   // Line
-  let match = string.match(/^M(-?\d+) (-?\d+) L(-?\d+) (-?\d+)$/);
+  let match = string.match(/^M(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?) L(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)$/);
   if (match) {
-    const values = match.splice(1).map(x => parseInt(x));
+    const values = match.splice(1).map(x => Number(x));
     return {
       type: "line",
       points: [
-        {index: 0, x: Number(values[0]), y: Number(values[1])},
-        {index: 1, x: Number(values[2]), y: Number(values[3])}
+        {index: 0, x: values[0], y: values[1]},
+        {index: 1, x: values[2], y: values[3]}
       ]
     };
   }
 
   // Quadratic Bezier curve
-  match = string.match(/^M(-?\d+) (-?\d+) Q(-?\d+) (-?\d+) (-?\d+) (-?\d+)$/);
+  match = string.match(/^M(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?) Q(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)$/);
   if (match) {
-    const values = match.splice(1).map(x => parseInt(x));
+    const values = match.splice(1).map(x => Number(x));
     return {
       type: "curve",
       points: [
-        {index: 0, x: Number(values[0]), y: Number(values[1])},
-        {index: 1, x: Number(values[4]), y: Number(values[5])},
-        {index: 2, x: Number(values[2]), y: Number(values[3])}
+        {index: 0, x: values[0], y: values[1]},
+        {index: 1, x: values[4], y: values[5]},
+        {index: 2, x: values[2], y: values[3]}
       ]
     };
   }
@@ -152,8 +156,9 @@ export function analyzePath(string) {
 }
 
 export function buildPath(type, points) {
-  if (type === "line") return `M${points[0].x} ${points[0].y} L${points[1].x} ${points[1].y}`;
+  if (type === "line")
+    return `M${round(points[0].x)} ${round(points[0].y)} L${round(points[1].x)} ${round(points[1].y)}`;
   if (type === "curve")
-    return `M${points[0].x} ${points[0].y} Q${points[2].x} ${points[2].y} ${points[1].x} ${points[1].y}`;
+    return `M${round(points[0].x)} ${round(points[0].y)} Q${round(points[2].x)} ${round(points[2].y)} ${round(points[1].x)} ${round(points[1].y)}`;
   return null;
 }
