@@ -25,7 +25,8 @@
     if ((pathType === "line" && mode === 2) || mode === undefined) mode = -1;
   }
 
-  function changePathType() {
+  function changePathType(e: Event) {
+    pathData.type = e.target.value;
     if (pathData.type == "line") {
       if (pathType === "curve") {
         if (mode === 2) $state.pathChangeMode = -1;
@@ -66,7 +67,7 @@
 
 <span data-tooltip={$t("tooltip.inscriptions.path")} use:tooltip>
   <span>{$t("editor.inscriptions.path")}:</span>
-  <select bind:value={pathData.type} on:change={changePathType}>
+  <select value={pathData.type} on:change={changePathType}>
     <option value="line">{$t("editor.inscriptions.line")}</option>
     <option value="curve">{$t("editor.inscriptions.curve")}</option>
     <option value="custom">{$t("editor.inscriptions.custom")}</option>
