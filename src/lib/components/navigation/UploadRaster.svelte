@@ -5,6 +5,7 @@
   import {state, message, shield, uploaded} from "$lib/data/stores";
   import {charges} from "$lib/data/dataModel";
   import {DEFAULT_SHIELD_BOX, shieldPaths} from "$lib/data/shields";
+  import {updateCharge} from "$lib/scripts/getters";
   import {tooltip} from "$lib/scripts/tooltip";
   import {camelize} from "$lib/scripts/utils";
   import {query} from "$lib/scripts/aliases";
@@ -90,6 +91,7 @@
       content: image.outerHTML,
     };
     localStorage.setItem("uploaded", JSON.stringify($uploaded));
+    updateCharge(name); // for the case where charge was previously not found
 
     selected = false;
     $state.raster = 0;

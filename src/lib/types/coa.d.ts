@@ -25,6 +25,7 @@ interface Charge {
   p: string;
   divided?: Divided;
   size?: number;
+  stretch?: number;
   x?: number;
   y?: number;
   angle?: number;
@@ -41,6 +42,7 @@ interface Ordinary {
   line?: string;
   divided?: Divided;
   size?: number;
+  stretch?: number;
   x?: number;
   y?: number;
   angle?: number;

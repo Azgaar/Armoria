@@ -2,7 +2,7 @@
   import {t, dictionary, locale} from "svelte-i18n";
   import {fade, fly, slide} from "svelte/transition";
   import {DEFAULT_ZOOM} from "$lib/config/defaults";
-  import {changes, grid, history, isTextReady, message, shield, showGrid, state, tinctures} from "$lib/data/stores";
+  import {changes, grid, history, isTextReady, message, shield, showGrid, state, tinctures, uploaded} from "$lib/data/stores";
   import {charges, divisions, ordinaries} from "$lib/data/dataModel";
   import {shields} from "$lib/data/shields";
   import {createConfig, generate, getTincture} from "$lib/scripts/generator";
@@ -42,7 +42,7 @@
   let coa = $history[historyId] || generate(seed || undefined); // on load
   $: restore($changes); // on undo/redo
   $: reroll(historyId); // on reroll
-  $: update(menu); // on menu update
+  $: update(menu, $uploaded); // on menu update and charge upload
   $: edit(coa); // on edit
   $: localStorage.setItem("grid", $grid); // on grid change
   $: localStorage.setItem("showGrid", $showGrid); // on grid change
@@ -124,6 +124,7 @@
         if (o.showStroke) item.stroke = o.stroke;
         if (o.showStroke && o.strokeWidth !== 1) item.strokeWidth = o.strokeWidth;
         if (o.size && o.size !== 1) item.size = o.size;
+        if (o.stretch) item.stretch = o.stretch;
         if (o.x || o.y) {
           item.x = o.x;
           item.y = o.y;
@@ -147,6 +148,7 @@
         if (c.reversed) item.reversed = 1;
         if (c.layered && charges.data[c.charge]?.layered && c.outside !== "around") item.layered = 1;
         if (c.outside && (charges.data[c.charge]?.layered || c.outside !== "around")) item.outside = c.outside;
+        if (c.stretch) item.stretch = c.stretch;
         if (c.x || c.y) {
           item.x = c.x;
           item.y = c.y;
@@ -265,13 +267,14 @@
         const stroke = o.stroke || "#000000";
         const strokeWidth = o.strokeWidth || 1;
         const size = o.size || 1;
+        const stretch = o.stretch || 0;
         const x = o.x || 0;
         const y = o.y || 0;
         const angle = o.angle || 0;
         const divided = o.divided || "";
         const above = o.above || false;
         if (angle) $state.transform = `rotate(${angle})`;
-        return {ordinary, t, line, showStroke, stroke, strokeWidth, size, x, y, angle, divided, above};
+        return {ordinary, t, line, showStroke, stroke, strokeWidth, size, stretch, x, y, angle, divided, above};
       });
 
       return ordinaries;
@@ -291,6 +294,7 @@
         const reversed = c.reversed || false;
         const layered = c.layered || false;
         const outside = c.outside || "";
+        const stretch = c.stretch || 0;
         const x = c.x || 0;
         const y = c.y || 0;
         const angle = c.angle || 0;
@@ -306,6 +310,7 @@
           t3,
           p,
           size,
+          stretch,
           sinister,
           reversed,
           layered,
@@ -349,8 +354,9 @@
     }
 
     function getChargeCategory(charge) {
+      if (charge === "inescutcheon") return charge;
       const type = Object.keys(charges.types).find(type => charges[type][charge] !== undefined);
-      return type || charge;
+      return type || "uploaded";
     }
 
     function getSemyType(array) {
@@ -934,5 +940,42 @@
 
   :global(.item.selected) {
     background-color: #ffffff15;
+  }
+
+  :global(.wrapper) {
+    position: relative;
+    max-width: 200px;
+  }
+
+  :global(.controls) {
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+  }
+
+  :global(.wrapper:hover > .controls) {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  :global(.controls svg) {
+    position: absolute;
+    fill: #f5f5f5;
+    stroke: #000;
+    stroke-width: 5;
+    width: 1em;
+    height: 1em;
+    background-color: #33333320;
+    padding: 0.2em;
+  }
+
+  :global(.controls svg:hover) {
+    fill: #fff;
+    background-color: #33333340;
+  }
+
+  :global(.controls svg:active) {
+    transform: translateY(1px);
   }
 </style>

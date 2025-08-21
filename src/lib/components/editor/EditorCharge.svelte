@@ -3,6 +3,9 @@
   import {t, dictionary, locale} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
   import {charges} from "$lib/data/dataModel";
+  import {uploaded} from "$lib/data/stores";
+  import {removeCharge} from "$lib/scripts/getters";
+  import {tooltip} from "$lib/scripts/tooltip";
 
   export let charge: string;
   export let type: string;
@@ -69,6 +72,15 @@
     if (type === "semy") return `${$t("editor.semyOf")} ${chargeName}`;
     return `${$t("tinctures.charge")}: ${chargeName}`;
   }
+
+  function removeUploaded(charge: string) {
+    delete charges.data[charge];
+    delete charges[$uploaded[charge].category][charge];
+    update();
+    delete $uploaded[charge];
+    localStorage.setItem("uploaded", JSON.stringify($uploaded));
+    removeCharge(charge);
+  }
 </script>
 
 <span class:indented={division}>{$t("editor.category")}:</span>
@@ -83,8 +95,17 @@
 
 <div class="items">
   {#each chargesData as coa (coa)}
-    <div class="item" class:selected={charge === coa.charge} on:click={() => (charge = coa.charge)}>
-      <EditorItem {coa} tip={getTip(coa.charge)} />
+    <div class="wrapper">
+      <div class="item" class:selected={charge === coa.charge} on:click={() => (charge = coa.charge)}>
+        <EditorItem {coa} tip={getTip(coa.charge)} />
+      </div>
+      {#if $uploaded[coa.charge]}
+      <div class="controls">
+        <svg class="remove" on:click={() => removeUploaded(coa.charge)} data-tooltip={$t("tooltip.removeUploaded")} use:tooltip>
+          <use href="#remove-icon" />
+        </svg>
+      </div>
+      {/if}
     </div>
   {/each}
 </div>
@@ -100,5 +121,10 @@
 
   .indented {
     margin-left: 1em;
+  }
+
+  .remove {
+    top: 0.8em;
+    right: 0.8em;
   }
 </style>
