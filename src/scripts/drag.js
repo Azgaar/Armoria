@@ -125,16 +125,16 @@ export function getElTransform(charge, p, shield) {
 
   const size = round((charge.size || 1) * sizeModifier);
   const stretch = charge.stretch;
-  const sx = charge.sinister ? -size : size;
-  const sy = charge.reversed ? -size : size;
+  let sx = charge.sinister ? -size : size;
+  let sy = charge.reversed ? -size : size;
+  if (charge.stretch < 0) sx = round(sx * (1 - charge.stretch));
+  else if (charge.stretch > 0) sy = round(sy * (1 + charge.stretch));
   let [x, y] = positions[p];
   x = round(x - 100 * (sx - 1));
   y = round(y - 100 * (sy - 1));
 
   let transform = "";
-  if (stretch > 0) transform += `translate(0 ${-stretch * 100}) scale(1 ${1 + stretch})`;
-  else if (stretch < 0) transform += `translate(${stretch * 100} 0) scale(${1 - stretch} 1)`;
-  if (x || y) transform += ` translate(${x} ${y})`;
+  if (x || y) transform += `translate(${x} ${y})`;
   if (sx !== 1 || sy !== 1) transform += (sx === sy ? ` scale(${sx})` : ` scale(${sx} ${sy})`);
 
   return transform ? transform.trim() : null;
