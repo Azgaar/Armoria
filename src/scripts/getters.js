@@ -81,7 +81,7 @@ function fetchCharge(charge) {
   fetch("charges/" + charge + ".svg")
     .then(res => {
       if (res.ok) return res.text();
-      else throw new Error("Cannot fetch charge");
+      else throw new Error(`Cannot fetch charge ${charge}`);
     })
     .then(text => {
       const el = document.createElement("html");
@@ -100,7 +100,17 @@ function fetchCharge(charge) {
 
       chargesGroup.insertAdjacentHTML("beforeend", g.outerHTML);
     })
-    .catch(err => console.error(err));
+    .catch(err => console.error(err.message));
+}
+
+export function removeCharge(charge) {
+  document.getElementById(charge)?.remove();
+  delete loadedCharges[charge];
+}
+
+export function updateCharge(charge) {
+  removeCharge(charge);
+  fetchCharge(charge);
 }
 
 function clr(tincture) {

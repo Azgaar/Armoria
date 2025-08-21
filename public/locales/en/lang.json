@@ -188,6 +188,7 @@
     "reversed": "Show charge upside down",
     "layered": "Separate charge background and foreground",
     "outsideShield": "Put charge outside of the shield",
+    "removeUploaded": "Remove uploaded charge",
     "inscriptions": {
       "text": "Text to be displayed (use '|' as line separator)",
       "font": "Font name",

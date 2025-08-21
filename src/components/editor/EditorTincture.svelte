@@ -62,42 +62,6 @@
 </div>
 
 <style>
-  .wrapper {
-    position: relative;
-  }
-
-  .controls {
-    visibility: hidden;
-    opacity: 0;
-    transition: all 0.2s ease-in-out;
-    cursor: pointer;
-  }
-
-  .wrapper:hover > .controls {
-    visibility: visible;
-    opacity: 1;
-  }
-
-  svg {
-    position: absolute;
-    fill: #f5f5f5;
-    stroke: #000;
-    stroke-width: 5;
-    width: 1em;
-    height: 1em;
-    background-color: #33333320;
-    padding: 0.2em;
-  }
-
-  svg:hover {
-    fill: #fff;
-    background-color: #33333340;
-  }
-
-  svg:active {
-    transform: translateY(1px);
-  }
-
   .edit {
     top: 0.8em;
     right: 0.8em;
