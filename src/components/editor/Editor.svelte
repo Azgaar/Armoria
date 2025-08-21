@@ -2,7 +2,7 @@
   import {t, dictionary, locale} from "svelte-i18n";
   import {fade, fly, slide} from "svelte/transition";
   import {DEFAULT_ZOOM} from "config/defaults";
-  import {changes, grid, history, isTextReady, message, shield, showGrid, state, tinctures} from "data/stores";
+  import {changes, grid, history, isTextReady, message, shield, showGrid, state, tinctures, uploaded} from "data/stores";
   import {charges, divisions, ordinaries} from "data/dataModel";
   import {shields} from "data/shields";
   import {createConfig, generate, getTincture} from "scripts/generator";
@@ -42,7 +42,7 @@
   let coa = $history[historyId] || generate(seed || undefined); // on load
   $: restore($changes); // on undo/redo
   $: reroll(historyId); // on reroll
-  $: update(menu); // on menu update
+  $: update(menu, $uploaded); // on menu update and charge upload
   $: edit(coa); // on edit
   $: localStorage.setItem("grid", $grid); // on grid change
   $: localStorage.setItem("showGrid", $showGrid); // on grid change
@@ -354,8 +354,9 @@
     }
 
     function getChargeCategory(charge) {
+      if (charge === "inescutcheon") return charge;
       const type = Object.keys(charges.types).find(type => charges[type][charge] !== undefined);
-      return type || charge;
+      return type || "uploaded";
     }
 
     function getSemyType(array) {
@@ -939,5 +940,42 @@
 
   :global(.item.selected) {
     background-color: #ffffff15;
+  }
+
+  :global(.wrapper) {
+    position: relative;
+    max-width: 200px;
+  }
+
+  :global(.controls) {
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+  }
+
+  :global(.wrapper:hover > .controls) {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  :global(.controls svg) {
+    position: absolute;
+    fill: #f5f5f5;
+    stroke: #000;
+    stroke-width: 5;
+    width: 1em;
+    height: 1em;
+    background-color: #33333320;
+    padding: 0.2em;
+  }
+
+  :global(.controls svg:hover) {
+    fill: #fff;
+    background-color: #33333340;
+  }
+
+  :global(.controls svg:active) {
+    transform: translateY(1px);
   }
 </style>
