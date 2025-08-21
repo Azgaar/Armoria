@@ -124,6 +124,7 @@
         if (o.showStroke) item.stroke = o.stroke;
         if (o.showStroke && o.strokeWidth !== 1) item.strokeWidth = o.strokeWidth;
         if (o.size && o.size !== 1) item.size = o.size;
+        if (o.stretch) item.stretch = o.stretch;
         if (o.x || o.y) {
           item.x = o.x;
           item.y = o.y;
@@ -147,6 +148,7 @@
         if (c.reversed) item.reversed = 1;
         if (c.layered && charges.data[c.charge]?.layered && c.outside !== "around") item.layered = 1;
         if (c.outside && (charges.data[c.charge]?.layered || c.outside !== "around")) item.outside = c.outside;
+        if (c.stretch) item.stretch = c.stretch;
         if (c.x || c.y) {
           item.x = c.x;
           item.y = c.y;
@@ -265,13 +267,14 @@
         const stroke = o.stroke || "#000000";
         const strokeWidth = o.strokeWidth || 1;
         const size = o.size || 1;
+        const stretch = o.stretch || 0;
         const x = o.x || 0;
         const y = o.y || 0;
         const angle = o.angle || 0;
         const divided = o.divided || "";
         const above = o.above || false;
         if (angle) $state.transform = `rotate(${angle})`;
-        return {ordinary, t, line, showStroke, stroke, strokeWidth, size, x, y, angle, divided, above};
+        return {ordinary, t, line, showStroke, stroke, strokeWidth, size, stretch, x, y, angle, divided, above};
       });
 
       return ordinaries;
@@ -291,6 +294,7 @@
         const reversed = c.reversed || false;
         const layered = c.layered || false;
         const outside = c.outside || "";
+        const stretch = c.stretch || 0;
         const x = c.x || 0;
         const y = c.y || 0;
         const angle = c.angle || 0;
@@ -306,6 +310,7 @@
           t3,
           p,
           size,
+          stretch,
           sinister,
           reversed,
           layered,

@@ -35,8 +35,8 @@ export function drag(
     const dx = x + (event.x - x0) / sizeAdj;
     const dy = y + (event.y - y0) / sizeAdj;
 
-    charge.x = Math.round(dx / gridSize) * gridSize;
-    charge.y = Math.round(dy / gridSize) * gridSize;
+    charge.x = round(Math.round(dx / gridSize) * gridSize);
+    charge.y = round(Math.round(dy / gridSize) * gridSize);
     setGroupTransform(el, charge);
 
     if (options.onMove) options.onMove(event, charge);
@@ -124,13 +124,18 @@ export function getElTransform(charge, p, shield) {
   const sizeModifier = shieldSize[shield] || 1;
 
   const size = round((charge.size || 1) * sizeModifier);
+  const stretch = charge.stretch;
   const sx = charge.sinister ? -size : size;
   const sy = charge.reversed ? -size : size;
   let [x, y] = positions[p];
   x = round(x - 100 * (sx - 1));
   y = round(y - 100 * (sy - 1));
 
-  const translate = x || y ? `translate(${x} ${y})` : null;
-  const scale = sx !== 1 || sy !== 1 ? (sx === sy ? `scale(${sx})` : `scale(${sx} ${sy})`) : null;
-  return translate && scale ? `${translate} ${scale}` : translate ? translate : scale ? scale : null;
+  let transform = "";
+  if (stretch > 0) transform += `translate(0 ${-stretch * 100}) scale(1 ${1 + stretch})`;
+  else if (stretch < 0) transform += `translate(${stretch * 100} 0) scale(${1 - stretch} 1)`;
+  if (x || y) transform += ` translate(${x} ${y})`;
+  if (sx !== 1 || sy !== 1) transform += (sx === sy ? ` scale(${sx})` : ` scale(${sx} ${sy})`);
+
+  return transform ? transform.trim() : null;
 }
