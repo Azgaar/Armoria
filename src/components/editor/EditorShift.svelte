@@ -7,6 +7,7 @@
 
   interface IElement {
     size: number;
+    stretch: number;
     angle: number;
     x: number;
     y: number;
@@ -19,6 +20,11 @@
     element.size = parseInt(target.value) / 100;
   };
 
+  const handleStretchChange = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    element.stretch = parseInt(target.value) / 100;
+  };
+
   const updateGrid = () => {
     $state.transform = `rotate(${element.angle || 0})`;
   };
@@ -27,6 +33,11 @@
 <span data-tooltip={$t("tooltip.size")} use:tooltip>
   {$t("editor.size")}:
   <input type="number" min="1" max="500" step="1" value={Math.round(element.size * 100) | 0} on:input={hadleSizeChange} />
+</span>
+
+<span data-tooltip={$t("tooltip.stretch")} use:tooltip>
+  <span>{$t("editor.stretch")}:</span>
+  <input type="number" min="-1000" max="1000" step="1" value={Math.round(element.stretch * 100) | 0} on:input={handleStretchChange} />
 </span>
 
 <span data-tooltip={$t("tooltip.rotation")} use:tooltip>
