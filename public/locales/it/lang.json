@@ -179,6 +179,7 @@
     "stroke": "Tratto dell'elemento. Seleziona per eseguire il rendering, e seleziona un colore",
     "aboveCharges": "Seleziona per mostrare le forme sopra le figure",
     "size": "Dimensione dell'elemento in percentuali",
+    "stretch": "Element stretch in percents (vertically if positive, horizontally if negative)",
     "rotation": "Rotazione dell'elemento in gradi",
     "shift": "Posizione dell'elemento in coordinate X e Y in pixel",
     "step": "Dimensione delle celle della griglia e posizione in pixel",
@@ -188,6 +189,7 @@
     "reversed": "Capovolgi l'elemento in verticale",
     "layered": "Separate charge background and foreground",
     "outsideShield": "Put charge outside of the shield",
+    "removeUploaded": "Remove uploaded charge",
     "inscriptions": {
       "text": "Text to be displayed (use '|' as line separator)",
       "font": "Font name",
@@ -341,6 +343,7 @@
     "color": "Colore",
     "width": "Larghezza",
     "aboveCharges": "Sopra le figure",
+    "stretch": "Stretch",
     "rotation": "Ruota",
     "shift": "Sposta",
     "step": "Passo",
