@@ -179,6 +179,7 @@
     "stroke": "Element lijn. Selecteer om te renderen en een kleur te selecteren",
     "aboveCharges": "Selecteer om het herautstuk boven wapenfiguren",
     "size": "Element grootte in procenten",
+    "stretch": "Element stretch in percents (vertically if positive, horizontally if negative)",
     "rotation": "Rotatiehoek van element in graden",
     "shift": "Element X en Y verschuiving in pixels",
     "step": "Rastercel grootte en positie rasterverschuiving in pixels",
@@ -188,6 +189,7 @@
     "reversed": "Geef herautstuk ondersteboven weer",
     "layered": "Separate charge background and foreground",
     "outsideShield": "Put charge outside of the shield",
+    "removeUploaded": "Remove uploaded charge",
     "inscriptions": {
       "text": "Text to be displayed (use '|' as line separator)",
       "font": "Font name",
@@ -341,6 +343,7 @@
     "color": "Kleur",
     "width": "Breedte",
     "aboveCharges": "Boven herautstukken",
+    "stretch": "Stretch",
     "rotation": "Rotatie",
     "shift": "Verschuif",
     "step": "Stap",
