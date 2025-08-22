@@ -179,6 +179,7 @@
     "stroke": "Traç de l'element. Marcar per a renderitzar i seleccionar un color",
     "aboveCharges": "Clicar per a mostrar damunt de les figures",
     "size": "Grandària de l'element en percentatges",
+    "stretch": "Element stretch in percents (vertically if positive, horizontally if negative)",
     "rotation": "Angle de rotació d'element en graus",
     "shift": "L'element es mou en les coordenades X i Y en píxels",
     "step": "La grandària de la reixeta i la seua posició es mou per píxels",
@@ -188,6 +189,7 @@
     "reversed": "Torna la figura boca avall",
     "layered": "Separate charge background and foreground",
     "outsideShield": "Put charge outside of the shield",
+    "removeUploaded": "Remove uploaded charge",
     "inscriptions": {
       "text": "Text to be displayed (use '|' as line separator)",
       "font": "Font name",
@@ -341,6 +343,7 @@
     "color": "Color",
     "width": "Amplària",
     "aboveCharges": "Sobre les figures",
+    "stretch": "Stretch",
     "rotation": "Rotació",
     "shift": "Moure",
     "step": "Pas",
