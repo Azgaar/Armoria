@@ -179,6 +179,7 @@
     "stroke": "Trazo del elemento. Marcar para renderizar y seleccionar un color",
     "aboveCharges": "Clicar para mostrar encima de las figuras",
     "size": "Tamaño del elemento en porcentajes",
+    "stretch": "Element stretch in percents (vertically if positive, horizontally if negative)",
     "rotation": "La rotación se produce por grados",
     "shift": "El elemento se mueve en las coordenadas X e Y en pixeles",
     "step": "El tamaño de la rejilla y su posición se mueve por pixeles",
@@ -188,6 +189,7 @@
     "reversed": "Vuelve la figura bocabajo",
     "layered": "Separate charge background and foreground",
     "outsideShield": "Coloca la figura fuera del escudo",
+    "removeUploaded": "Remove uploaded charge",
     "inscriptions": {
       "text": "Texto que será mostrado (usa \"|\" para separar las líneas)",
       "font": "Nombre de la fuente",
@@ -341,6 +343,7 @@
     "color": "Color",
     "width": "Anchura",
     "aboveCharges": "Sobre las figuras",
+    "stretch": "Stretch",
     "rotation": "Rotar",
     "shift": "Mover",
     "step": "Rejilla",
