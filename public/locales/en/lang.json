@@ -840,7 +840,12 @@
     "perCross": "Per Cross",
     "perPile": "Per Pile",
     "perSaltire": "Per Saltire",
+    "gyronnyOfSixPerFess": "Gyronny of six per fess",
+    "gyronnyOfSixPerPale": "Gyronny of six per pale",
     "gyronny": "Gyronny",
+    "gyronnyOfTenPerFess": "Gyronny of ten per fess",
+    "gyronnyOfTenPerPale": "Gyronny of ten per pale",
+    "gyronnyOfTwelve": "Gyronny of twelve",
     "chevronny": "Chevronny"
   },
   "lines": {

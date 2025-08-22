@@ -109,17 +109,22 @@ export const lines = {
 
 export const divisions = {
   variants: {
-    perPale: 5,
-    perFess: 5,
-    perBend: 2,
-    perBendSinister: 1,
-    perChevron: 1,
-    perChevronReversed: 1,
-    perCross: 5,
-    perPile: 1,
-    perSaltire: 1,
-    gyronny: 1,
-    chevronny: 1
+    perPale: 25,
+    perFess: 25,
+    perBend: 10,
+    perBendSinister: 5,
+    perChevron: 5,
+    perChevronReversed: 5,
+    perCross: 25,
+    perPile: 5,
+    perSaltire: 5,
+    gyronnyOfSixPerFess: 1,
+    gyronnyOfSixPerPale: 1,
+    gyronny: 5,
+    gyronnyOfTenPerFess: 1,
+    gyronnyOfTenPerPale: 1,
+    gyronnyOfTwelve: 1,
+    chevronny: 5
   },
   perPale: lines,
   perFess: lines,
