@@ -179,6 +179,7 @@
     "stroke": "Obrzeże obiektu. Zaznacz żeby wyświetlić i wybrać kolor.",
     "aboveCharges": "Zaznacz, aby dodana figura była nad godłem",
     "size": "Wielkość elementu w procentach",
+    "stretch": "Element stretch in percents (vertically if positive, horizontally if negative)",
     "rotation": "Kąt obrotu elementu w stopniach",
     "shift": "Przesunięcie elementu X i Y w pikselach",
     "step": "Rozmiar pola siatki i przesunięcia w pikselach",
@@ -188,6 +189,7 @@
     "reversed": "Pokaż godło do góry nogami",
     "layered": "Separate charge background and foreground",
     "outsideShield": "Umieść godło poza tarczą",
+    "removeUploaded": "Remove uploaded charge",
     "inscriptions": {
       "text": "Tekst do wyświetlenia (użyj '|' jako separator linii)",
       "font": "Czcionka",
@@ -341,6 +343,7 @@
     "color": "Kolor",
     "width": "Szerokość",
     "aboveCharges": "Ponad godłem",
+    "stretch": "Stretch",
     "rotation": "Obrót",
     "shift": "Przesunięcie",
     "step": "Krok",
