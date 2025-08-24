@@ -3,6 +3,7 @@
   import {shieldPositions} from "data/shields";
   import {shield} from "data/stores";
   import {drag, transform, getElTransform} from "scripts/drag";
+  import {highlight, lowlight} from "scripts/highlight";
   import type {Coa, Charge} from "types/coa";
 
   export let coa: Coa;
@@ -45,6 +46,8 @@
   transform={transform(charge)}
   stroke={charge.stroke || "#000"}
   on:mousedown={addDrag}
+  on:mouseenter={type === "Edit" ? highlight("menu", "charge", i) : null}
+  on:mouseleave={type === "Edit" ? lowlight("menu", "charge", i) : null}
   style="--secondary: {t2 || t}; --tertiary: {t3 || t}; --stroke: {charge.stroke || "#000"}; --background: {hideBackground ? 'none' : 'block'}"
 >
   {#each validPositions as position}

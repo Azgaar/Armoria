@@ -36,6 +36,18 @@
   <body>
     <svg id="defs" width="0" height="0" style="position: absolute">
       <defs>
+        <g id="filters">
+          <filter id="highlight">
+            <feMorphology operator="dilate" radius="0.5" />
+            <feGaussianBlur stdDeviation="0.5" result="blur" />
+            <feFlood flood-color="yellow" />
+            <feComposite in2="blur" operator="in" />
+            <feMerge>
+              <feMergeNode />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </g>
         <g id="gradients">
           <linearGradient id="luster" x1="0%" y1="100%" x2="95%" y2="10%">
             <stop stop-color="#000" stop-opacity=".3" offset="0" />

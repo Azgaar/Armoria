@@ -1,4 +1,5 @@
 <script>
+  import {tick} from "svelte";
   import {t, dictionary, locale} from "svelte-i18n";
   import {fade, fly, slide} from "svelte/transition";
   import {DEFAULT_ZOOM} from "config/defaults";
@@ -6,6 +7,7 @@
   import {charges, divisions, ordinaries} from "data/dataModel";
   import {shields} from "data/shields";
   import {createConfig, generate, getTincture} from "scripts/generator";
+  import {highlight, lowlight} from "scripts/highlight";
   import {P, ra, rw} from "scripts/utils";
   import COA from "./../object/COA.svelte";
   import EditorAbove from "./EditorAbove.svelte";
@@ -58,9 +60,15 @@
     changes.add(JSON.stringify(coa));
   }
 
-  const toggleSection = (name, index) => () => {
+  const toggleSection = (name, index) => async () => {
     if (index !== undefined) {
       section[name][index] = !section[name][index];
+      /* When a section is shown, the COA highlighting disappears due to a reactivity issue
+         that should be fixed in Svelte 5 (see https://github.com/sveltejs/svelte/issues/8551)
+         For now, we have to highlight it again.
+      */
+      await tick();
+      highlight("shield", name, index)();
     } else {
       section[name] = !section[name];
     }
@@ -632,10 +640,13 @@
     <!-- Ordinaries -->
     {#each menu.ordinaries as o, i}
       <div
+        id="ordinary_{i}"
         class="section"
         transition:slide
         class:expanded={section.ordinary[i]}
         on:click={toggleSection("ordinary", i)}
+        on:mouseenter={highlight("shield", "ordinary", i)}
+        on:mouseleave={lowlight("shield", "ordinary", i)}
       >
         {#if $isTextReady}
           {$t("editor.ordinary")}{menu.ordinaries.length > 1 ? ` ${i + 1}` : ""}: {translateSafely(
@@ -688,7 +699,15 @@
 
     <!-- Charges -->
     {#each menu.charges as charge, i}
-      <div class="section" transition:slide class:expanded={section.charge[i]} on:click={toggleSection("charge", i)}>
+      <div
+        id="charge_{i}"
+        class="section"
+        transition:slide
+        class:expanded={section.charge[i]}
+        on:click={toggleSection("charge", i)}
+        on:mouseenter={highlight("shield", "charge", i)}
+        on:mouseleave={lowlight("shield", "charge", i)}
+      >
         {#if $isTextReady}
           {$t("tinctures.charge")}{menu.charges.length > 1 ? ` ${i + 1}` : ""}: {translateSafely(
             "charges",
@@ -761,10 +780,13 @@
     <!-- Inscriptions -->
     {#each menu.inscriptions as inscription, i}
       <div
+        id="inscription_{i}"
         class="section"
         transition:slide
         class:expanded={section.inscription[i]}
         on:click={toggleSection("inscription", i)}
+        on:mouseenter={highlight("shield", "inscription", i)}
+        on:mouseleave={lowlight("shield", "inscription", i)}
       >
         {#if $isTextReady}
           {$t("editor.inscription")}{menu.inscriptions.length > 1 ? ` ${i + 1}` : ""}: {inscription.text}
@@ -878,6 +900,10 @@
 
   .expanded:after {
     transform: rotate(90deg);
+  }
+
+  :global(.section.highlighted) {
+    text-shadow: 1px 0 4px yellow, 0 1px 4px yellow, -1px 0 4px yellow, 0 -1px 4px yellow;
   }
 
   :global(.section > span) {
