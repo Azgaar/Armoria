@@ -6,7 +6,6 @@ import * as stores from "$lib/data/stores";
 import {patterns} from "$lib/data/templates";
 import {getSizeMod, getTemplate, semy} from "$lib/scripts/getters";
 import {parse} from "node-html-parser";
-import {render as renderComponent} from "svelte/server";
 
 const charges = import.meta.glob("/static/charges/*.svg", {
   query: "?url",
@@ -42,7 +41,7 @@ export async function render(coa, size, colors) {
   stores.grad.set("backlight");
   stores.colors.set(colors);
 
-  const svg = renderComponent(COA, {props: {coa, height: size, width: size, i: "View"}});
+  const svg = COA.render({coa, height: size, width: size, i: "View"});
   const root = parse(svg.html);
   root.querySelector("defs").innerHTML =
     `${shieldClip}${divisionClip}${loadedCharges}${loadedPatterns}${loadedFonts}${backlight}${style}`;
