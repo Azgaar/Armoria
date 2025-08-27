@@ -6,6 +6,7 @@
   const exitEdit = () => {
     $history[$state.c] = JSON.parse($changes[0]);
     $state.edit = 0;
+    $state.selectedPath = -1;
   };
 </script>
 
