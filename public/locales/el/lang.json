@@ -179,6 +179,7 @@
     "stroke": "Γραμμές στοιχειού. Επιλέξτε για απόδοση και επιλέξτε ένα χρώμα",
     "aboveCharges": "Επιλέξτε για να εμφανίσετε το σχήμα πάνω από εμβλήματα",
     "size": "Μέγεθος στοιχείου σε εκατοστά",
+    "stretch": "Element stretch in percents (vertically if positive, horizontally if negative)",
     "rotation": "Γωνία περιστροφής στοιχείων σε μοίρες",
     "shift": "Μετατόπιση στοιχείων X και Y σε εικονοστοιχεία",
     "step": "Μέγεθος κελιού πλέγματος και βήμα μετατόπισης θέσης σε εικονοστοιχεία",
@@ -188,6 +189,7 @@
     "reversed": "Εμφάνιση εμβλήματος ανάποδα",
     "layered": "Separate charge background and foreground",
     "outsideShield": "Εμφάνιση εμβλήματος έξω από την ασπίδα",
+    "removeUploaded": "Remove uploaded charge",
     "inscriptions": {
       "text": "Κείμενο που θα εμφανίζεται (χρησιμοποιήστε το διαχωριστικό γραμμής '|')",
       "font": "Όνομα γραμματοσειράς",
@@ -341,6 +343,7 @@
     "color": "Χρώμα",
     "width": "Πλάτος",
     "aboveCharges": "Άνω Εμβλημάτων",
+    "stretch": "Stretch",
     "rotation": "Περιστροφή",
     "shift": "Τοποθεσία",
     "step": "Βήμα",

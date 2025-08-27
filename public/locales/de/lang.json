@@ -179,6 +179,7 @@
     "stroke": "Element-Kontur. Auswählen, um eine Anzeigefarbearbe zu wählen",
     "aboveCharges": "Auswählen, um Heroldsbild vor der Wappenfigur zu rendern",
     "size": "Elementgröße in Prozent",
+    "stretch": "Element stretch in percents (vertically if positive, horizontally if negative)",
     "rotation": "Drehwinkel des Elements in Grad",
     "shift": "Element verschieben um X und Y in Pixeln",
     "step": "Rastergröße und Positionsverschiebung in Pixeln",
@@ -188,6 +189,7 @@
     "reversed": "Wappenfigur horizontal drehen",
     "layered": "Separate charge background and foreground",
     "outsideShield": "Put charge outside of the shield",
+    "removeUploaded": "Remove uploaded charge",
     "inscriptions": {
       "text": "Angezeigter Text (benutze '|' als Zeilentrenner)",
       "font": "Schriftart",
@@ -341,6 +343,7 @@
     "color": "Farbe",
     "width": "Breite",
     "aboveCharges": "Über der Wappenfigur",
+    "stretch": "Stretch",
     "rotation": "Rotation",
     "shift": "Verschiebung",
     "step": "Schritt",

@@ -179,6 +179,7 @@
     "stroke": "Elemento do traço. Marque para renderizar e selecionar uma cor",
     "aboveCharges": "Marque para renderizar as peças de primeira ordem acima das cargas",
     "size": "Tamanho do elemento em porcentagem",
+    "stretch": "Element stretch in percents (vertically if positive, horizontally if negative)",
     "rotation": "Ângulo de rotação do elemento em graus",
     "shift": "Deslocamento em pixels nos eixos X e Y",
     "step": "Tamanho da célula e deslocamento em pixels",
@@ -188,6 +189,7 @@
     "reversed": "Virar a carga de cabeça para baixo",
     "layered": "Separate charge background and foreground",
     "outsideShield": "Put charge outside of the shield",
+    "removeUploaded": "Remove uploaded charge",
     "inscriptions": {
       "text": "Text to be displayed (use '|' as line separator)",
       "font": "Nome da fonte",
@@ -341,6 +343,7 @@
     "color": "Cor",
     "width": "Largura",
     "aboveCharges": "Cargas acima",
+    "stretch": "Stretch",
     "rotation": "Rotação",
     "shift": "Deslocar",
     "step": "Passo",

@@ -179,6 +179,7 @@
     "stroke": "像素画笔。勾选以渲染并选择颜色",
     "aboveCharges": "选中以便呈现填充上面的普通图像",
     "size": "元素大小（百分比）",
+    "stretch": "Element stretch in percents (vertically if positive, horizontally if negative)",
     "rotation": "元素旋转角度（度）",
     "shift": "元素偏移X和Y像素值",
     "step": "网格单元大小和位置偏移长度（像素单位）",
@@ -188,6 +189,7 @@
     "reversed": "将填充上下颠倒",
     "layered": "Separate charge background and foreground",
     "outsideShield": "将填充置于护盾之外",
+    "removeUploaded": "Remove uploaded charge",
     "inscriptions": {
       "text": "要显示的文本（使用 '|' 作为行分隔符）",
       "font": "字体名称",
@@ -341,6 +343,7 @@
     "color": "颜色",
     "width": "宽度",
     "aboveCharges": "填充之上",
+    "stretch": "Stretch",
     "rotation": "旋转度",
     "shift": "移动",
     "step": "边长",
