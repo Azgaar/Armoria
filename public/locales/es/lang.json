@@ -88,7 +88,7 @@
       "vesicaPiscis": "Vesica Piscis",
       "square": "Cuadrado",
       "diamond": "Rombo",
-      "hexagon": "Hexagon",
+      "hexagon": "Hexágono",
       "no": "Sin forma"
     },
     "fantasy": {
@@ -145,11 +145,11 @@
     "downloadSVG": "Descargar imagen o grupo de imágenes vectoriales. Para abrir en buscador o subir a Map Generator. El tamaño puede ser ajustado en Opciones",
     "downloadPNG": "Descargar como imagen raster. El tamaño puede ser ajustado en opciones",
     "downloadJPEG": "Descargar como una imagen raster comprimida. El tamaño puede ser ajustado en opciones",
-    "exportJSON": "Export as a JSON file",
+    "exportJSON": "Exporta como un archivo JSON",
     "copyEditLink": "Copia un enlace al escudo de armas en modo edición a tu portapapeles",
     "copyApiLink": "Copia el enlace del escudo de armas para incrustarlo. El API de Armoria no soporta figuras personalizadas",
     "copyCoaString": "Copia el objeto del escudo de armas como una cadena codificada para usar en la API de Armoria o en el Medieval Fantasy City Generator de Watabou",
-    "importJSON": "Import a JSON file",
+    "importJSON": "Importa un archivo JSON",
     "rasterCharge": "Subir figura raster (un color y con perdida de la calidad basada en el tamaño) desde una imagen jpg png o svg",
     "vectorCharge": "Subir figura vectorial (multicolor y sin perdida de calidad al modificar el tamaño) desde un svg preparado",
     "install": "Añade la aplicación de Armoria al escritorio o a la pantalla de inicio",
@@ -175,7 +175,7 @@
     "fontColor": "Window font color",
     "scale": "El tamaño de la imagen descargada, 1 es el tamaño por defecto, 2 es el doble de tamaño, etc.",
     "zoom": "Nivel de zoom",
-    "coaName": "Name of the coat-of-arms, displayed in the gallery",
+    "coaName": "Nombre del escudo de armas, aparece en la galería",
     "stroke": "Trazo del elemento. Marcar para renderizar y seleccionar un color",
     "aboveCharges": "Clicar para mostrar encima de las figuras",
     "size": "Tamaño del elemento en porcentajes",
@@ -189,7 +189,7 @@
     "reversed": "Vuelve la figura bocabajo",
     "layered": "Separate charge background and foreground",
     "outsideShield": "Coloca la figura fuera del escudo",
-    "removeUploaded": "Remove uploaded charge",
+    "removeUploaded": "Elimina figuras subidas",
     "inscriptions": {
       "text": "Texto que será mostrado (usa \"|\" para separar las líneas)",
       "font": "Nombre de la fuente",
@@ -216,8 +216,8 @@
     "incorrectSvg": "El archivo debe ser un svg preparado. ¡Descarga la plantilla para orientación!",
     "emptyFontURL": "¡El LRU está vacío!",
     "loadingFont": "¡La fuente no pudo ser cargada!",
-    "notJsonOrText": "File must be text or JSON!",
-    "loadingCoa": "COA cannot be loaded!"
+    "notJsonOrText": "¡El archivo debe ser texto o JSON!",
+    "loadingCoa": "¡El escudo de armas no pudo ser cargado!"
   },
   "success": {
     "copyEditLink": "El enlace del escudo de armas se ha copiado a tu portapapeles",
@@ -227,7 +227,7 @@
     "tinctureAdded": "El color se ha añadido",
     "fontAdded": "La fuente se añadió",
     "chargeAdded": "La figura se ha añadido",
-    "coaLoaded": "COA is loaded"
+    "coaLoaded": "El escudo de armas fue cargado"
   },
   "info": {
     "tipFromFmg": "Configura el emblema, guárdalo en formato SVG y luego cárgalo de nuevo en Fantasy Map Generator",
@@ -292,29 +292,29 @@
     "remove": "Eliminar"
   },
   "fonts": {
-    "type": "Font type",
-    "local": "Local font",
-    "web": "Web-hosted font",
-    "name_local": "Name of the font installed on your device",
-    "name_web": "Name of the font",
-    "url": "Link to the font file (.woff2, .ttf, .otf)",
+    "type": "Tipo de fuente",
+    "local": "Fuente local",
+    "web": "Fuente alojada en la web",
+    "name_local": "Nombre de la fuente instalada en tu equipo",
+    "name_web": "Nombre de la fuente",
+    "url": "Enlace al archivo de la fuente (.woff2, .ttf, .otf)",
     "confirm": "Confirmar",
-    "restoreDefault": "Restore default fonts",
-    "close": "Close",
+    "restoreDefault": "Restaurar fuentes predeterminadas",
+    "close": "Cerrar",
     "tip_local": "**Local font**. If you have a font [installed on your computer](https://faqs.skillcrush.com/article/275-downloading-installing-a-font-on-your-computer), just provide the font name. Make sure the browser is reloaded after the installation. The font won't work on machines not having it installed. Good sources of fonts are [Fontesk](https://fontesk.com) and [DaFont](https://www.dafont.com).",
     "tip_web": "**Fuente alojada en la Web**. Proporcione el nombre de la fuente y el enlace al archivo de fuentes alojado en línea. Los mejores alojamientos gratuitos de fuentes son [Fuentes de Google](https://fonts.google.com) y [CDN Fonts](https://www.cdnfonts.com). Para obtener el archivo de fuentes, abra el enlace CSS proporcionado por estos servicios y copie manualmente el enlace a .woff2 de la variante deseada. Para añadir otra variante (por ejemplo, cirílico), añada la fuente bajo un nombre diferente."
   },
   "editor": {
     "general": "General",
-    "shield": "Shield",
+    "shield": "Escudo",
     "ordinary": "Piezas",
     "inscription": "Divisa",
     "addOrdinary": "Añadir piezas",
     "addCharge": "Añadir figura",
     "addInscription": "Añadir divisa",
-    "name": "Name",
+    "name": "Nombre",
     "zoom": "Zoom",
-    "default": "default",
+    "default": "por defecto",
     "type": "Tipo",
     "tincture": "Tintura",
     "pattern": "Patrón",
