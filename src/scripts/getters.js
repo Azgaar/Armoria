@@ -17,13 +17,15 @@ export const getTemplate = (id, line) => {
 
 export const addPattern = patternId => {
   if (!patternId) return console.error("No patternId");
-  if (document.getElementById(patternId)) return; // already added;
+  const elem = document.getElementById(patternId);
 
   const [pattern, t1, t2, size] = patternId.split("-");
   const charge = semy(patternId);
   if (charge) addCharge(charge);
 
   const html = patterns[charge ? "semy" : pattern](patternId, clr(t1), clr(t2), getSizeMod(size), charge);
+  if (elem?.outerHTML === html) return; // already added
+  elem?.remove();
   document.getElementById("patterns").insertAdjacentHTML("beforeend", html);
 };
 
