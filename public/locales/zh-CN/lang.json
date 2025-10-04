@@ -840,7 +840,12 @@
     "perCross": "十字分",
     "perPile": "堆分",
     "perSaltire": "X十字分",
+    "gyronnyOfSixPerFess": "Gyronny of six per fess",
+    "gyronnyOfSixPerPale": "Gyronny of six per pale",
     "gyronny": "三角副章分",
+    "gyronnyOfTenPerFess": "Gyronny of ten per fess",
+    "gyronnyOfTenPerPale": "Gyronny of ten per pale",
+    "gyronnyOfTwelve": "Gyronny of twelve",
     "chevronny": "多V形分"
   },
   "lines": {
