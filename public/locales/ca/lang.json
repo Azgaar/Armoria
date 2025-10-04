@@ -179,6 +179,7 @@
     "stroke": "Element stroke. Check to render and select a color",
     "aboveCharges": "Check to render ordinary above charges",
     "size": "Element size in percents",
+    "stretch": "Element stretch in percents (vertically if positive, horizontally if negative)",
     "rotation": "Element rotation angle in degrees",
     "shift": "Element shift X and Y in pixels",
     "step": "Grid cell size and position shift step in pixels",
@@ -188,6 +189,7 @@
     "reversed": "Show charge upside down",
     "layered": "Separate charge background and foreground",
     "outsideShield": "Put charge outside of the shield",
+    "removeUploaded": "Remove uploaded charge",
     "inscriptions": {
       "text": "Text to be displayed (use '|' as line separator)",
       "font": "Font name",
@@ -341,6 +343,7 @@
     "color": "Color",
     "width": "Width",
     "aboveCharges": "Above charges",
+    "stretch": "Stretch",
     "rotation": "Rotation",
     "shift": "Shift",
     "step": "Step",
@@ -837,7 +840,12 @@
     "perCross": "Per Cross",
     "perPile": "Per Pile",
     "perSaltire": "Per Saltire",
+    "gyronnyOfSixPerFess": "Gyronny of six per fess",
+    "gyronnyOfSixPerPale": "Gyronny of six per pale",
     "gyronny": "Gyronny",
+    "gyronnyOfTenPerFess": "Gyronny of ten per fess",
+    "gyronnyOfTenPerPale": "Gyronny of ten per pale",
+    "gyronnyOfTwelve": "Gyronny of twelve",
     "chevronny": "Chevronny"
   },
   "lines": {
