@@ -840,7 +840,12 @@
     "perCross": "Quarterat en creu",
     "perPile": "Calçat",
     "perSaltire": "Quarterat en aspa",
+    "gyronnyOfSixPerFess": "Gyronny of six per fess",
+    "gyronnyOfSixPerPale": "Gyronny of six per pale",
     "gyronny": "Jironat",
+    "gyronnyOfTenPerFess": "Gyronny of ten per fess",
+    "gyronnyOfTenPerPale": "Gyronny of ten per pale",
+    "gyronnyOfTwelve": "Gyronny of twelve",
     "chevronny": "Cabriat"
   },
   "lines": {
