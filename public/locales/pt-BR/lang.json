@@ -840,7 +840,12 @@
     "perCross": "Esquartelado",
     "perPile": "Terciado em Pala",
     "perSaltire": "Franchado",
+    "gyronnyOfSixPerFess": "Gyronny of six per fess",
+    "gyronnyOfSixPerPale": "Gyronny of six per pale",
     "gyronny": "Girão",
+    "gyronnyOfTenPerFess": "Gyronny of ten per fess",
+    "gyronnyOfTenPerPale": "Gyronny of ten per pale",
+    "gyronnyOfTwelve": "Gyronny of twelve",
     "chevronny": "Chaveirão"
   },
   "lines": {
