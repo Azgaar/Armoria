@@ -840,7 +840,12 @@
     "perCross": "Inquadrato",
     "perPile": "Pila",
     "perSaltire": "Inquartato in Decusse",
+    "gyronnyOfSixPerFess": "Gyronny of six per fess",
+    "gyronnyOfSixPerPale": "Gyronny of six per pale",
     "gyronny": "Gheronato",
+    "gyronnyOfTenPerFess": "Gyronny of ten per fess",
+    "gyronnyOfTenPerPale": "Gyronny of ten per pale",
+    "gyronnyOfTwelve": "Gyronny of twelve",
     "chevronny": "Scaglioni"
   },
   "lines": {
