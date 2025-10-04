@@ -840,7 +840,12 @@
     "perCross": "Cuartelado en cruz",
     "perPile": "Calzado",
     "perSaltire": "Cuartelado en aspa",
+    "gyronnyOfSixPerFess": "Gyronny of six per fess",
+    "gyronnyOfSixPerPale": "Gyronny of six per pale",
     "gyronny": "Jironado",
+    "gyronnyOfTenPerFess": "Gyronny of ten per fess",
+    "gyronnyOfTenPerPale": "Gyronny of ten per pale",
+    "gyronnyOfTwelve": "Gyronny of twelve",
     "chevronny": "Cabriado"
   },
   "lines": {
