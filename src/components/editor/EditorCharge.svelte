@@ -12,8 +12,8 @@
   export let category: string;
   export let t1: string;
   export let t2: string;
-  export let t3: string | undefined;
-  export let t4: string | undefined;
+  export let t3: string | undefined = undefined;
+  export let t4: string | undefined = undefined;
   export let size = null;
   export let sinister = null;
   export let reversed = null;
@@ -34,7 +34,7 @@
 
   function update() {
     const chargeList = Object.keys(charges[category]);
-    chargesData = chargeList.map(charge => ({charge, shield, t1: getTincture(charge), charges: getCharge(charge)}));
+    chargesData = chargeList.map(charge => ({charge, shield, t1, charges: getCharge(charge)}));
   }
 
   function filterCharges(query: string) {
@@ -45,20 +45,14 @@
 
     const regEx = new RegExp(query.replaceAll(" ", ""), "i");
     const results = allCharges.filter((_charge, index) => regEx.test(allChargesTranslated[index]));
-    chargesData = results.map(charge => ({charge, shield, t1: getTincture(charge), charges: getCharge(charge)}));
+    chargesData = results.map(charge => ({charge, shield, t1, charges: getCharge(charge)}));
   }
 
   function resetQuery() {
     query = "";
   }
 
-  function getTincture(charge: string) {
-    if (type === "semy") return `semy_of_${charge}-${t1}-${t2}-${size}`;
-    return t1;
-  }
-
   function getCharge(charge: string) {
-    if (type === "semy") return [];
     return [{charge, t: t2, t2: t3, t3: t4, p: "e", size: 1.5, sinister, reversed}];
   }
 

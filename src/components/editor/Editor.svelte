@@ -15,6 +15,7 @@
   import EditorControls from "./EditorControls.svelte";
   import EditorDivided from "./EditorDivided.svelte";
   import EditorDivision from "./EditorDivision.svelte";
+  import EditorField from "./EditorField.svelte";
   import EditorGeneral from "./EditorGeneral.svelte";
   import EditorInscription from "./EditorInscription.svelte";
   import EditorLayered from "./EditorLayered.svelte";
@@ -22,16 +23,12 @@
   import EditorOrdinary from "./EditorOrdinary.svelte";
   import EditorOutside from "./EditorOutside.svelte";
   import EditorPath from "./EditorPath.svelte";
-  import EditorPattern from "./EditorPattern.svelte";
   import EditorPosition from "./EditorPosition.svelte";
   import EditorRestore from "./EditorRestore.svelte";
   import EditorShadow from "./EditorShadow.svelte";
   import EditorShield from "./EditorShield.svelte";
   import EditorShift from "./EditorShift.svelte";
-  import EditorSize from "./EditorSize.svelte";
   import EditorStroke from "./EditorStroke.svelte";
-  import EditorTincture from "./EditorTincture.svelte";
-  import EditorType from "./EditorType.svelte";
   export let historyId, seed;
 
   let menu = {};
@@ -79,6 +76,14 @@
     // remove seed reference as it would be confusing
     delete coa.seed;
 
+    function getTinctureFromField(field) {
+      if (field.type === "tincture") return field.t1;
+      const type = field.type === "semy" ? "semy_of_" + field.charge : field.pattern;
+      const attributes = [type, field.t1, field.t2];
+      if (field.size !== "standard") attributes.push(field.size);
+      return attributes.join("-");
+    }
+
     // shield attribute changed
     coa.shield = menu.shield;
 
@@ -97,25 +102,13 @@
     }
 
     // field attributes changed
-    if (menu.field.type === "tincture") coa.t1 = menu.field.t1;
-    else {
-      const type = menu.field.type === "semy" ? "semy_of_" + menu.field.charge : menu.field.pattern;
-      const attibutes = [type, menu.field.t1, menu.field.t2];
-      if (menu.field.size !== "standard") attibutes.push(menu.field.size);
-      coa.t1 = attibutes.join("-");
-    }
+    coa.t1 = getTinctureFromField(menu.field);
 
     // division attributes changed
     if (menu.division.division && menu.division.division !== "no") {
       coa.division = {division: menu.division.division};
       if (divisions[menu.division.division]) coa.division.line = menu.division.line;
-      if (menu.division.type === "tincture") coa.division.t = menu.division.t1;
-      else {
-        const attr0 = menu.division.type === "semy" ? "semy_of_" + menu.division.charge : menu.division.pattern;
-        const attibutes = [attr0, menu.division.t1, menu.division.t2];
-        if (menu.division.size !== "standard") attibutes.push(menu.division.size);
-        coa.division.t = attibutes.join("-");
-      }
+      coa.division.t = getTinctureFromField(menu.division);
     }
     else {
       delete coa.division;
@@ -126,7 +119,7 @@
     // ordinary attributes changed
     if (menu.ordinaries.length) {
       coa.ordinaries = menu.ordinaries.map(o => {
-        const item = {ordinary: o.ordinary, t: o.t};
+        const item = {ordinary: o.ordinary, t: getTinctureFromField(o.field)};
         if (ordinaries.lined[o.ordinary]) item.line = o.line;
         if (coa.division && o.divided) item.divided = o.divided;
         if (o.showStroke) item.stroke = o.stroke;
@@ -146,9 +139,16 @@
     // charges attributes changed
     if (menu.charges.length) {
       coa.charges = menu.charges.map(c => {
-        const item = {charge: c.charge, t: c.t, p: c.p, size: c.size};
-        if (charges.data[c.charge]?.colors > 1) item.t2 = c.t2;
-        if (charges.data[c.charge]?.colors > 2) item.t3 = c.t3;
+        updateFields(c);
+        const item = {charge: c.charge, t: getTinctureFromField(c.field1), p: c.p, size: c.size};
+        if (charges.data[c.charge]?.colors > 1 && c.field2) {
+          const t2 = getTinctureFromField(c.field2);
+          if (t2 !== item.t) item.t2 = t2;
+        }
+        if (charges.data[c.charge]?.colors > 2 && c.field3) {
+          const t3 = getTinctureFromField(c.field3);
+          if (t3 !== item.t) item.t3 = t3;
+        }
         if (!c.showStroke) item.stroke = "none";
         else if (c.stroke !== "#000000") item.stroke = c.stroke;
         if (c.divided) item.divided = c.divided;
@@ -186,6 +186,49 @@
     defineMenuState();
   }
 
+  function getField(fieldStr) {
+    const type = isSemy(fieldStr) ? "semy" : isPattern(fieldStr) ? "pattern" : "tincture";
+    let t1,
+      t2,
+      pattern = "vair",
+      charge = "lozenge",
+      category = "conventional",
+      size = "standard";
+
+    const field = fieldStr.split("-"); // parsed field tincture
+
+    if (type === "tincture") {
+      t1 = fieldStr;
+      t2 = selectSecondTincture(fieldStr);
+    } else {
+      t1 = field[1];
+      t2 = field[2];
+      size = field[3] || "standard";
+    }
+
+    if (type === "pattern") pattern = field[0];
+    else if (type === "semy") {
+      charge = getSemyCharge(field);
+      category = getChargeCategory(charge);
+    }
+
+    return {type, t1, t2, pattern, charge, category, size};
+  }
+
+  function updateFields(charge) {
+    const colors = charges.data[charge.charge]?.colors || 1;
+    if (colors === 1) {
+      delete charge.field2;
+      delete charge.field3;
+    } else if (colors === 2) {
+      charge.field2 ||= getField(charge.field1.t1);
+      delete charge.field3;
+    } else {
+      charge.field2 ||= getField(charge.field1.t1);
+      charge.field3 ||= getField(charge.field1.t1);
+    }
+  }
+
   // define initial menu state
   function defineMenuState() {
     // Shield
@@ -198,69 +241,18 @@
     menu.zoom = coa.zoom || DEFAULT_ZOOM;
 
     // Field
-    menu.field = getField();
-    function getField() {
-      const type = isSemy(coa.t1) ? "semy" : isPattern(coa.t1) ? "pattern" : "tincture";
-      let t1,
-        t2,
-        pattern = "vair",
-        charge = "lozenge",
-        semy = "conventional",
-        size = "standard";
-
-      const field = coa.t1.split("-"); // parsed field tincture
-
-      if (type === "tincture") {
-        t1 = coa.t1;
-        t2 = selectSecondTincture(coa.t1);
-      } else {
-        t1 = field[1];
-        t2 = field[2];
-        size = field[3] || "standard";
-      }
-
-      if (type === "pattern") pattern = field[0];
-      else if (type === "semy") {
-        charge = getSemyCharge(field);
-        semy = getSemyType(field);
-      }
-
-      return {type, t1, t2, pattern, charge, semy, size};
-    }
+    menu.field = getField(coa.t1);
 
     // Division
-    menu.division = getDivision();
-    function getDivision() {
-      let type = "tincture",
-        division = "no",
-        line = "straight",
-        t1,
-        t2,
-        pattern = "vair",
-        charge = "lozenge",
-        semy = "conventional",
-        size = "standard";
-
-      if (coa.division) {
-        const tSplit = coa.division.t.split("-"); // parsed division tincture
-        type = isSemy(coa.division.t) ? "semy" : isPattern(coa.division.t) ? "pattern" : "tincture";
-
-        division = coa.division.division;
-        line = coa.division.line || "straight";
-        t1 = type === "tincture" ? coa.division.t : tSplit[1];
-        t2 = type === "tincture" ? selectSecondTincture(t1) : tSplit[2];
-        if (type === "pattern") pattern = tSplit[0];
-        if (type === "semy") {
-          charge = getSemyCharge(tSplit);
-          semy = getSemyType(tSplit);
-        }
-        size = tSplit[3] || "standard";
-      } else {
-        t1 = selectSecondTincture(menu.field.t1);
-        t2 = selectSecondTincture(t1);
-      }
-
-      return {division, line, type, t1, t2, pattern, charge, semy, size};
+    if (coa.division) {
+      menu.division = getField(coa.division.t);
+      menu.division.division = coa.division.division;
+      menu.division.line = coa.division.line || "straight";
+    }
+    else {
+      menu.division = getField(selectSecondTincture(menu.field.t1));
+      menu.division.division = "no";
+      menu.division.line = "straight";
     }
 
     // Ordinaries
@@ -270,6 +262,7 @@
 
       const ordinaries = coa.ordinaries.map(o => {
         const {ordinary, t} = o;
+        const field = getField(t);
         const line = o.line || "straight";
         const showStroke = Boolean(o.stroke);
         const stroke = o.stroke || "#000000";
@@ -282,7 +275,7 @@
         const divided = o.divided || "";
         const above = o.above || false;
         if (angle) $state.transform = `rotate(${angle})`;
-        return {ordinary, t, line, showStroke, stroke, strokeWidth, size, stretch, x, y, angle, divided, above};
+        return {ordinary, field, line, showStroke, stroke, strokeWidth, size, stretch, x, y, angle, divided, above};
       });
 
       return ordinaries;
@@ -292,7 +285,7 @@
     menu.charges = getCharges();
     function getCharges() {
       if (!coa.charges) return [];
-      const charges = coa.charges.map(c => {
+      return coa.charges.map(c => {
         const {charge, t, t2, t3, p, size} = c;
         const type = getChargeCategory(charge);
         const showStroke = c.stroke !== "none";
@@ -307,15 +300,13 @@
         const y = c.y || 0;
         const angle = c.angle || 0;
         if (angle) $state.transform = `rotate(${angle})`;
-        return {
+        const chargeObj = {
           charge,
           type,
           showStroke,
           stroke,
           divided,
-          t,
-          t2,
-          t3,
+          field1: getField(t),
           p,
           size,
           stretch,
@@ -327,9 +318,10 @@
           y,
           angle
         };
+        if (charges.data[charge]?.colors > 1) chargeObj.field2 = getField(t2 || t);
+        if (charges.data[charge]?.colors > 2) chargeObj.field3 = getField(t3 || t);
+        return chargeObj;
       });
-
-      return charges;
     }
 
     // Inscriptions
@@ -349,39 +341,34 @@
       return inscriptions;
     }
 
-    function isPattern(string) {
-      return string?.includes("-");
-    }
-
-    function isSemy(string) {
-      return string?.slice(0, 4) === "semy";
-    }
-
-    function getSemyCharge(array) {
-      return array[0].split("_of_")[1];
-    }
-
-    function getChargeCategory(charge) {
-      if (charge === "inescutcheon") return charge;
-      const type = Object.keys(charges.types).find(type => charges[type][charge] !== undefined);
-      return type || "uploaded";
-    }
-
-    function getSemyType(array) {
-      const charge = getSemyCharge(array);
-      return getChargeCategory(charge);
-    }
-
-    function selectSecondTincture(t1) {
-      const metal = t1 === "argent" || t1 === "or";
-      return rw(metal ? $tinctures.colours : $tinctures.metals);
-    }
-
     return menu;
+  }
+
+  function isPattern(string) {
+    return string?.includes("-");
+  }
+
+  function isSemy(string) {
+    return string?.slice(0, 4) === "semy";
+  }
+
+  function getSemyCharge(array) {
+    return array[0].split("_of_")[1];
+  }
+
+  function getChargeCategory(charge) {
+    if (charge === "inescutcheon") return charge;
+    const type = Object.keys(charges.types).find(type => charges[type][charge] !== undefined);
+    return type || "uploaded";
   }
 
   function getShieldType(shield) {
     return Object.keys(shields.types).find(type => shields[type][shield] !== undefined);
+  }
+
+  function selectSecondTincture(t1) {
+    const metal = t1 === "argent" || t1 === "or";
+    return rw(metal ? $tinctures.colours : $tinctures.metals);
   }
 
   function selectChargeTincture() {
@@ -394,7 +381,7 @@
     const t = selectChargeTincture();
     const o = {
       ordinary,
-      t,
+      field: getField(t),
       showStroke: false,
       stroke: "#000000",
       strokeWidth: 1,
@@ -415,7 +402,7 @@
     const t = selectChargeTincture();
     const c = {
       charge,
-      t,
+      field1: getField(t),
       p: "e",
       showStroke: true,
       stroke: "#000000",
@@ -430,8 +417,8 @@
       divided: "",
       outside: ""
     };
-    if (charges.data[charge]?.colors > 1) c.t2 = P(0.25) ? selectChargeTincture() : t;
-    if (charges.data[charge]?.colors > 2) c.t3 = P(0.5) ? selectChargeTincture() : t;
+    if (charges.data[charge]?.colors > 1) c.field2 = getField(P(0.25) ? selectChargeTincture() : t);
+    if (charges.data[charge]?.colors > 2) c.field3 = getField(P(0.5) ? selectChargeTincture() : t);
     menu.charges = [...menu.charges, c];
   }
 
@@ -515,48 +502,7 @@
     </div>
     {#if section.field}
       <div class="panel" transition:slide>
-        <div class="subsection">
-          <EditorType bind:type={menu.field.type} />
-          {#if menu.field.type !== "tincture"}
-            <EditorSize bind:size={menu.field.size} />
-          {/if}
-        </div>
-
-        <div class="subsection">
-          <EditorTincture bind:t1={menu.field.t1} shield={coa.shield} />
-        </div>
-
-        {#if menu.field.type !== "tincture"}
-          <div class="subsection">
-            <EditorTincture bind:t1={menu.field.t2} shield={coa.shield} />
-          </div>
-        {/if}
-
-        {#if menu.field.type === "pattern"}
-          <div class="subsection">
-            <EditorPattern
-              bind:pattern={menu.field.pattern}
-              t1={menu.field.t1}
-              t2={menu.field.t2}
-              size={menu.field.size}
-              {coa}
-            />
-          </div>
-        {/if}
-
-        {#if menu.field.type === "semy"}
-          <div class="subsection">
-            <EditorCharge
-              type="semy"
-              bind:charge={menu.field.charge}
-              bind:category={menu.field.semy}
-              t1={menu.field.t1}
-              t2={menu.field.t2}
-              size={menu.field.size}
-              shield={coa.shield}
-            />
-          </div>
-        {/if}
+        <EditorField bind:field={menu.field} shield={coa.shield} />
       </div>
     {/if}
 
@@ -591,48 +537,7 @@
         {/if}
 
         {#if coa.division}
-          <div class="subsection">
-            <EditorType bind:type={menu.division.type} />
-            {#if menu.division.type !== "tincture"}
-              <EditorSize bind:size={menu.division.size} />
-            {/if}
-          </div>
-
-          <div class="subsection">
-            <EditorTincture bind:t1={menu.division.t1} shield={coa.shield} />
-          </div>
-
-          {#if menu.division.type !== "tincture"}
-            <div class="subsection">
-              <EditorTincture bind:t1={menu.division.t2} shield={coa.shield} />
-            </div>
-          {/if}
-
-          {#if menu.division.type === "pattern"}
-            <div class="subsection">
-              <EditorPattern
-                bind:pattern={menu.division.pattern}
-                t1={menu.division.t1}
-                t2={menu.division.t2}
-                size={menu.division.size}
-                {coa}
-              />
-            </div>
-          {/if}
-
-          {#if menu.division.type === "semy"}
-            <div class="subsection">
-              <EditorCharge
-                type="semy"
-                bind:charge={menu.division.charge}
-                bind:category={menu.division.semy}
-                t1={menu.division.t1}
-                t2={menu.division.t2}
-                size={menu.division.size}
-                shield={coa.shield}
-              />
-            </div>
-          {/if}
+          <EditorField bind:field={menu.division} shield={coa.shield} />
         {/if}
       </div>
     {/if}
@@ -668,18 +573,18 @@
           {/if}
 
           <div class="subsection">
-            <EditorOrdinary bind:ordinary={o.ordinary} t1={coa.t1} line={o.line} t2={o.t} shield={coa.shield} />
+            <EditorOrdinary bind:ordinary={o.ordinary} t1={coa.t1} line={o.line} t2={o.field.t1} shield={coa.shield} />
           </div>
 
           {#if ordinaries.lined[o.ordinary]}
             <div class="subsection">
-              <EditorLine bind:line={o.line} ordinary={o.ordinary} t1={coa.t1} t2={o.t} shield={coa.shield} />
+              <EditorLine bind:line={o.line} ordinary={o.ordinary} t1={coa.t1} t2={o.field.t1} shield={coa.shield} />
             </div>
           {/if}
 
           {#if o.divided !== "counter"}
             <div class="subsection">
-              <EditorTincture bind:t1={o.t} shield={coa.shield} />
+              <EditorField bind:field={o.field} shield={coa.shield} />
             </div>
           {/if}
 
@@ -734,9 +639,9 @@
               bind:charge={charge.charge}
               bind:category={charge.type}
               t1={coa.t1}
-              t2={charge.t}
-              t3={charge.t2}
-              t4={charge.t3}
+              t2={charge.field1.t1}
+              t3={charge.field2?.t1}
+              t4={charge.field3?.t1}
               sinister={charge.sinister}
               reversed={charge.reversed}
               division={coa.division}
@@ -745,15 +650,24 @@
           </div>
 
           {#if !isRaster(charge.charge) && charge.divided !== "counter"}
-            <div class="subsection">
-              <EditorTincture bind:t1={charge.t} shield={coa.shield} />
-              {#if charges.data[charge.charge]?.colors > 1}
-                <EditorTincture bind:t1={charge.t2} shield={coa.shield} />
-                {#if charges.data[charge.charge]?.colors > 2}
-                  <EditorTincture bind:t1={charge.t3} shield={coa.shield} />
-                {/if}
+            {#if charges.data[charge.charge]?.colors > 1}
+              <div class="subsection">{$t("editor.primary")}:</div>
+              <div class="subsection">
+                <EditorField bind:field={charge.field1} shield={coa.shield} />
+              </div>
+              <div class="subsection">{$t("editor.secondary")}:</div>
+              <div class="subsection">
+                <EditorField bind:field={charge.field2} shield={coa.shield} />
+              </div>
+              {#if charges.data[charge.charge]?.colors > 2}
+                <div class="subsection">{$t("editor.tertiary")}:</div>
+                <div class="subsection">
+                  <EditorField bind:field={charge.field3} shield={coa.shield} />
+                </div>
               {/if}
-            </div>
+            {:else}
+              <EditorField bind:field={charge.field1} shield={coa.shield} />
+            {/if}
           {/if}
 
           <div class="subsection">
