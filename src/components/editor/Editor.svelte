@@ -143,11 +143,11 @@
         const item = {charge: c.charge, t: getTinctureFromField(c.field1), p: c.p, size: c.size};
         if (charges.data[c.charge]?.colors > 1 && c.field2) {
           const t2 = getTinctureFromField(c.field2);
-          if (t2 != item.t) item.t2 = t2;
+          if (t2 !== item.t) item.t2 = t2;
         }
         if (charges.data[c.charge]?.colors > 2 && c.field3) {
           const t3 = getTinctureFromField(c.field3);
-          if (t3 != item.t) item.t3 = t3;
+          if (t3 !== item.t) item.t3 = t3;
         }
         if (!c.showStroke) item.stroke = "none";
         else if (c.stroke !== "#000000") item.stroke = c.stroke;
@@ -223,8 +223,7 @@
     } else if (colors === 2) {
       charge.field2 ||= getField(charge.field1.t1);
       delete charge.field3;
-    }
-    else {
+    } else {
       charge.field2 ||= getField(charge.field1.t1);
       charge.field3 ||= getField(charge.field1.t1);
     }
