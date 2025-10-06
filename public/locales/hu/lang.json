@@ -179,6 +179,7 @@
     "stroke": "Elemvonás. Aktiválja a renderelést és válasszon ki egy színt",
     "aboveCharges": "Kattintson, hogy a mesteralak a címerábrák felett legyen renderelve",
     "size": "Az elem mérete százalékban",
+    "stretch": "Element stretch in percents (vertically if positive, horizontally if negative)",
     "rotation": "Az elem elforgatásának szöge",
     "shift": "Elemeltolás X és Y pixelben",
     "step": "Rácsméret és pozícióeltolási lépés pixelekben",
@@ -188,6 +189,7 @@
     "reversed": "Címerábra megfordítása vízszintesen",
     "layered": "Separate charge background and foreground",
     "outsideShield": "Put charge outside of the shield",
+    "removeUploaded": "Remove uploaded charge",
     "inscriptions": {
       "text": "Text to be displayed (use '|' as line separator)",
       "font": "Font name",
@@ -341,6 +343,7 @@
     "color": "Szín",
     "width": "Vastagság",
     "aboveCharges": "Címerábrák felett",
+    "stretch": "Stretch",
     "rotation": "Elforgatás",
     "shift": "Eltolás",
     "step": "Lépés",
@@ -837,7 +840,12 @@
     "perCross": "Négyelt",
     "perPile": "Saruzott",
     "perSaltire": "Harántnégyelt",
+    "gyronnyOfSixPerFess": "Gyronny of six per fess",
+    "gyronnyOfSixPerPale": "Gyronny of six per pale",
     "gyronny": "Háromszögezett",
+    "gyronnyOfTenPerFess": "Gyronny of ten per fess",
+    "gyronnyOfTenPerPale": "Gyronny of ten per pale",
+    "gyronnyOfTwelve": "Gyronny of twelve",
     "chevronny": "Szarufázott"
   },
   "lines": {
