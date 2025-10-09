@@ -103,18 +103,24 @@ function round(n) {
 }
 
 export function transform(charge) {
-  let {x = 0, y = 0, angle = 0, size = 1, p} = charge;
-  if (p) size = 1; // size is defined on use element level
-
-  if (size !== 1) {
-    x = round(x + 100 - size * 100);
-    y = round(y + 100 - size * 100);
+  let {x = 0, y = 0, angle = 0, size = 1, stretch = 0, p} = charge;
+  if (p) {
+    // size and stretch are defined on use element level
+    size = 1;
+    stretch = 0;
   }
+
+  let sx = size;
+  let sy = size;
+  if (stretch < 0) sx = round(sx * (1 - stretch));
+  else if (stretch > 0) sy = round(sy * (1 + stretch));
+  x = round(x - 100 * (sx - 1));
+  y = round(y - 100 * (sy - 1));
 
   let transform = "";
   if (x || y) transform += `translate(${x} ${y})`;
-  if (angle) transform += ` rotate(${angle} ${size * 100} ${size * 100})`;
-  if (size !== 1) transform += ` scale(${size})`;
+  if (angle) transform += ` rotate(${angle} ${sx * 100} ${sy * 100})`;
+  if (sx !== 1 || sy !== 1) transform += (sx === sy ? ` scale(${sx})` : ` scale(${sx} ${sy})`);
 
   return transform ? transform.trim() : null;
 }
