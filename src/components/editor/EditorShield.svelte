@@ -41,7 +41,7 @@
   }
 
   function getShieldType(name: string) {
-    return Object.keys(shields).find(type => shields[type][name] !== undefined);
+    return shieldTypes.find(type => shields[type][name] !== undefined);
   }
 
   function getTip(name: string) {
