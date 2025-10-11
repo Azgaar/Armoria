@@ -12,7 +12,7 @@
   $: localStorage.setItem("colors", JSON.stringify($colors));
   $: colorChanged = (tincture: string) => defaults[tincture] && $colors[tincture] !== defaults[tincture];
 
-  const tincturesData = ["metals", "colours", "stains"]
+  $: tincturesData = ["metals", "colours", "stains"]
     .map(type =>
       Object.keys($tinctures[type]).map(tincture => {
         const tinctureName = $dictionary[$locale]?.tinctures?.[tincture] ? $t(`tinctures.${tincture}`) : tincture;

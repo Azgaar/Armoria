@@ -29,7 +29,7 @@
   $: allChargesTranslated = allCharges.map(charge => $t(`charges.${charge}`));
 
   // @ts-ignore
-  $: update(category, t1, t2, t3, t4, size, sinister, reversed);
+  $: update(category, t1, t2, t3, t4, size, sinister, reversed, shield);
   $: filterCharges(query);
 
   function update() {
