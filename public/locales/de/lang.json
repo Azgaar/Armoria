@@ -176,7 +176,7 @@
     "scale": "Heruntergeladene Bildgröße, 1 ist die Standardgröße, 2 - 2x Größe, etc.",
     "zoom": "Zoomstufe",
     "coaName": "Name des Wappens in der Galerie",
-    "stroke": "Element-Kontur. Auswählen, um eine Anzeigefarbearbe zu wählen",
+    "stroke": "Element-Kontur. Auswählen, um eine Anzeigefarbe zu wählen",
     "aboveCharges": "Auswählen, um Heroldsbild vor der Wappenfigur zu rendern",
     "size": "Elementgröße in Prozent",
     "stretch": "Elementstreckung in Prozent (vertikal wenn positiv, horizontal wenn negativ)",
