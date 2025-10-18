@@ -1084,7 +1084,7 @@ const chargeData = {
   scythe2: {
     sinister: true
   },
-  seehorse: {
+  seahorse: {
     colors: 2,
     sinister: true,
     layered: true
@@ -1500,7 +1500,7 @@ export const charges = {
     griffinRampant: 2,
     pegasus: 1,
     sagittarius: 1,
-    seehorse: 1,
+    seahorse: 1,
     serpent: 1,
     unicornRampant: 1,
     wyvern: 1,
