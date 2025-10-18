@@ -148,7 +148,7 @@
     "exportJSON": "JSON exportieren",
     "copyEditLink": "Link zum Wappen im Bearbeiten-Modus in die Zwischenablage kopieren",
     "copyApiLink": "Link des Wappen zum Einbetten kopieren. Die Armoria API unterstützt keine benutzerdefinierten Änderungen",
-    "copyCoaString": "Kopiert das COA-Objekt als ein String zur verwendung in der Amoria API oder in Watabou's Medieval Fantasy City Generator",
+    "copyCoaString": "Kopiert das COA-Objekt als String zur Verwendung in der Armoria API oder in Watabou's Medieval Fantasy City Generator",
     "importJSON": "JSON importieren",
     "rasterCharge": "Rastergrafik hochladen (eine Farbe, Qualitätsverlust beim skalieren) von jpg, png oder svg Datei",
     "vectorCharge": "Vektorgrafik hochladen (mehrfarbig und verlustfrei) von vorbereiteten svg Dateien",
