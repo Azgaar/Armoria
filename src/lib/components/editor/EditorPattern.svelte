@@ -3,26 +3,32 @@
   import {t} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
   import {DEFAULT_TINCTURES} from "$lib/config/defaults";
-  import {addShieldPatterns} from "$lib/scripts/getters";
 
   export let pattern: string;
   export let t1: string;
   export let t2: string;
   export let size: string;
-  export let coa;
+  export let shield: string = undefined;
 
   const patterns = Object.keys(DEFAULT_TINCTURES.patterns).filter(pattern => pattern !== "semy");
 
-  // clean group
-  document.getElementById("patterns").innerHTML = "";
-  addShieldPatterns(coa);
+  // clean unused patterns
+  const usedPatterns = new Set();
+  document.querySelectorAll("[fill]").forEach(function(elem) {
+    const fill = elem.getAttribute("fill");
+    const match = fill.match(/url\(#(.+)\)/);
+    if (match) usedPatterns.add(match[1]);
+  });
+  document.querySelectorAll("#patterns pattern").forEach(function(elem) {
+    if (!usedPatterns.has(elem.getAttribute("id"))) elem.remove();
+  });
 
   $: patternsData = patterns.map(pattern => {
     let tincture = `${pattern}-${t1}-${t2}`;
     if (size !== "standard") tincture += `-${size}`;
 
     const tip = $t(`patterns.${pattern}`);
-    return {coa: {pattern, shield: coa.shield, t1: tincture}, tip};
+    return {coa: {pattern, shield, t1: tincture}, tip};
   });
 
   const handleChange = (newPattern: string) => () => {

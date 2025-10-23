@@ -45,7 +45,12 @@ export const templates = {
   perCross: `<rect x="100" y="0" width="100" height="100"/><rect x="0" y="100" width="100" height="100"/>`,
   perPile: `<polygon points="0,0 15,0 100,200 185,0 200,0 200,200 0,200"/>`,
   perSaltire: `<polygon points="0,0 0,200 200,0 200,200"/>`,
+  gyronnyOfSixPerFess: `<polygon points="0,100 200,100 200,200 157.7,200 42.3,0 157.7,0 42.3,200 0,200"/>`,
+  gyronnyOfSixPerPale: `<polygon points="100,0 100,200 200,200 200,157.7 0,42.3 0,157.7 200,42.3 200,0"/>`,
   gyronny: `<polygon points="0,0 200,200 200,100 0,100"/><polygon points="200,0 0,200 100,200 100,0"/>`,
+  gyronnyOfTenPerFess: `<polygon points="0,100 200,100 200,27.3 0,172.7 0,200 67.5,200 132.5,0 67.5,0 132.5,200 200,200 200,172.7 0,27.3"/>`,
+  gyronnyOfTenPerPale: `<polygon points="100,0 100,200 27.3,200 172.7,0 200,0 200,67.5 0,132.5 0,67.5 200,132.5 200,200 172.7,200 27.3,0"/>`,
+  gyronnyOfTwelve: `<polygon points="100,0 100,200 157.7,200 42.3,0"/><polygon points="0,100 200,100 200,157.7 0,42.3"/><polygon points="0,157.7 0,200 42.3,200 157.7,0 200,0 200,42.3"/>`,
   chevronny: `<path d="M0,80 100,-15 200,80 200,120 100,25 0,120z M0,160 100,65 200,160 200,200 100,105 0,200z M0,240 100,145 200,240 0,240z"/>`,
   // lined divisions
   perFessLined: line => `<path d="${line} V200 H0 Z"/>`,

@@ -17,31 +17,21 @@ export const getTemplate = (id, line) => {
 
 export const addPattern = patternId => {
   if (!patternId) return console.error("No patternId");
-  if (!browser || document.getElementById(patternId)) return; // already added;
+  if (!browser) return;
+  const elem = document.getElementById(patternId);
 
   const [pattern, t1, t2, size] = patternId.split("-");
   const charge = semy(patternId);
   if (charge) addCharge(charge);
 
   const html = patterns[charge ? "semy" : pattern](patternId, clr(t1), clr(t2), getSizeMod(size), charge);
+  if (elem?.outerHTML === html) return; // already added
+  elem?.remove();
   document.getElementById("patterns").insertAdjacentHTML("beforeend", html);
 };
 
 function checkPattern(string) {
   if (string?.includes("-")) addPattern(string);
-}
-
-export function addShieldPatterns(coa) {
-  checkPattern(coa.t1);
-  checkPattern(coa.division?.t);
-  for (let o of coa.ordinaries || []) {
-    checkPattern(o.t);
-  }
-  for (let c of coa.charges || []) {
-    checkPattern(c.t);
-    checkPattern(c.t2);
-    checkPattern(c.t3);
-  }
 }
 
 export function semy(string) {

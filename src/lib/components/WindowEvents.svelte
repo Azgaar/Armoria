@@ -22,7 +22,8 @@
       raster: 0,
       vector: 0,
       tinctures: 0,
-      edit: 0
+      edit: 0,
+      selectedPath: -1
     });
     message.clear();
   }

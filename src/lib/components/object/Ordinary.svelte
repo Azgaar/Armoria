@@ -1,6 +1,7 @@
 <script>
   import {drag, transform} from "$lib/scripts/drag";
   import {getTemplate} from "$lib/scripts/getters";
+  import {highlight, lowlight} from "$lib/scripts/highlight";
   export let coa, ordinary, i, shieldPath, t, type;
 
   let stroke, width;
@@ -15,7 +16,17 @@
   }
 </script>
 
-<g class="ordinary" {i} transform={transform(ordinary)} fill={t} {stroke} stroke-width={width} on:mousedown={addDrag}>
+<g
+  class="ordinary"
+  {i}
+  transform={transform(ordinary)}
+  fill={t}
+  {stroke}
+  stroke-width={width}
+  on:mousedown={addDrag}
+  on:mouseenter={type === "Edit" ? highlight("menu", "ordinary", i) : null}
+  on:mouseleave={type === "Edit" ? lowlight("menu", "ordinary", i) : null}
+>
   {#if ordinary.ordinary === "bordure"}
     <path d={shieldPath} fill="none" stroke={t} stroke-width="33.3" />
   {:else if ordinary.ordinary === "orle"}

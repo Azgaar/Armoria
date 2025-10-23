@@ -4,6 +4,7 @@
   import {state} from "$lib/data/stores";
   import {drag} from "$lib/scripts/drag";
   import {analyzePath, buildPath} from "$lib/scripts/getters";
+  import {highlight, lowlight} from "$lib/scripts/highlight";
   import type {Coa, Inscription} from "$lib/types/coa";
 
   export let coa: Coa;
@@ -48,7 +49,14 @@
 </script>
 
 <g transform="translate(100, 100)">
-  <g class="inscription" {i} tabindex="-1" on:mousedown={addInscriptionDrag}>
+  <g
+    class="inscription"
+    {i}
+    tabindex="-1"
+    on:mousedown={addInscriptionDrag}
+    on:mouseenter={type === "Edit" ? highlight("menu", "inscription", i) : null}
+    on:mouseleave={type === "Edit" ? lowlight("menu", "inscription", i) : null}
+  >
     <path id={pathId} class="text-path" fill="none" stroke={isSelected ? "black" : "none"} d={inscription.path} />
 
     <text

@@ -356,6 +356,9 @@
     "aboveShield": "above the shield",
     "belowShield": "below the shield",
     "aroundShield": "around the shield",
+    "primary": "Primary",
+    "secondary": "Secondary",
+    "tertiary": "Tertiary",
     "clone": "Clone element",
     "backward": "Send backward",
     "forward": "Bring forward",
@@ -840,7 +843,12 @@
     "perCross": "Per Cross",
     "perPile": "Per Pile",
     "perSaltire": "Per Saltire",
+    "gyronnyOfSixPerFess": "Gyronny of six per fess",
+    "gyronnyOfSixPerPale": "Gyronny of six per pale",
     "gyronny": "Gyronny",
+    "gyronnyOfTenPerFess": "Gyronny of ten per fess",
+    "gyronnyOfTenPerPale": "Gyronny of ten per pale",
+    "gyronnyOfTwelve": "Gyronny of twelve",
     "chevronny": "Chevronny"
   },
   "lines": {
