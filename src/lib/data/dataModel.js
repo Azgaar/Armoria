@@ -446,6 +446,9 @@ const chargeData = {
     colors: 3,
     reversed: true
   },
+  caduceus: {
+    colors: 3
+  },
   camel: {
     colors: 2,
     sinister: true
@@ -767,6 +770,9 @@ const chargeData = {
   helmetZischagge: {
     sinister: true
   },
+  hermit: {
+    colors: 3
+  },
   heron: {
     colors: 2,
     sinister: true
@@ -799,6 +805,10 @@ const chargeData = {
   },
   hourglass: {
     colors: 3
+  },
+  kraken: {
+    colors: 2,
+    reversed: true
   },
   ladybird: {
     colors: 3,
@@ -977,6 +987,10 @@ const chargeData = {
   ploughshare: {
     sinister: true
   },
+  polypus: {
+    colors: 2,
+    reversed: true
+  },
   porcupine: {
     colors: 2,
     sinister: true
@@ -1069,6 +1083,11 @@ const chargeData = {
   },
   scythe2: {
     sinister: true
+  },
+  seahorse: {
+    colors: 2,
+    sinister: true,
+    layered: true
   },
   serpent: {
     colors: 2,
@@ -1446,6 +1465,8 @@ export const charges = {
   },
   molluscs: {
     escallop: 4,
+    kraken: 1,
+    polypus: 1,
     snail: 1
   },
   plants: {
@@ -1479,6 +1500,7 @@ export const charges = {
     griffinRampant: 2,
     pegasus: 1,
     sagittarius: 1,
+    seahorse: 1,
     serpent: 1,
     unicornRampant: 1,
     wyvern: 1,
@@ -1527,7 +1549,8 @@ export const charges = {
     sabresCrossed: 1,
     shield: 1,
     spear: 1,
-    sword: 4
+    sword: 4,
+    trident: 1
   },
   bodyparts: {
     armEmbowedHoldingSabre: 1,
@@ -1547,6 +1570,7 @@ export const charges = {
     archer: 1,
     cavalier: 3,
     cossack: 1,
+    hermit: 1,
     monk: 1
   },
   architecture: {
@@ -1592,6 +1616,7 @@ export const charges = {
     trowel: 1
   },
   miscellaneous: {
+    amphora: 1,
     attire: 2,
     banner: 2,
     bell: 3,
@@ -1602,9 +1627,12 @@ export const charges = {
     buckle: 1,
     bugleHorn: 2,
     bugleHorn2: 1,
+    caduceus: 1,
     chain: 2,
-    chalice: 2,
+    chalice: 1,
+    chalice2: 1,
     cowHorns: 3,
+    crancelin: 0,
     crosier: 1,
     crown: 3,
     crown2: 2,
