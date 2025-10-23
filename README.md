@@ -1,26 +1,26 @@
 # Armoria
 
-Armoria is a procedural heraldry generator and editor by Azgaar. It's both a serverless GUI tool and server-side API. Almost the same code is also used as a part of the [Fantasy Map Generator](https://github.com/Azgaar/Fantasy-Map-Generator) project.
+Armoria is a procedural heraldry generator and editor by Azgaar. It's both a serverless GUI tool and server-side API. It is also used as a part of the [Fantasy Map Generator](https://github.com/Azgaar/Fantasy-Map-Generator) project.
 
-The GUI version is available on [Github Pages](https://azgaar.github.io/Armoria/). Join our [Reddit community](https://www.reddit.com/r/FantasyMapGenerator) and [Discord server](https://discordapp.com/invite/X7E84HU) to share your creations, discuss the tool, suggest ideas and get the most recent updates.
+The GUI is available on [Vercel](https://armoria.vercel.app/). Join our [Reddit community](https://www.reddit.com/r/FantasyMapGenerator) and [Discord server](https://discordapp.com/invite/X7E84HU) to share your creations, discuss the tool, suggest ideas and get the most recent updates.
 
 You can support the project on [Patreon](https://www.patreon.com/azgaar).
 
 A tutorial is available [on Wiki](https://github.com/Azgaar/Armoria/wiki/Armoria-Tutorial). In case you want to help with translation, join the project on [Crowdin](https://crowdin.com/project/armoria).
 
-![Gallery View](public/preview.png)
+![Gallery View](static/preview.png)
 
-![Editor View](public/preview2.png)
+![Editor View](static/preview2.png)
 
 ## For Developers
 
-The tool is almost zero-dependency vanilla JS with just [Svelte](https://github.com/sveltejs/svelte) used for GUI. Svelte is a bit specific framework that compiles components to vanilla JS.
+The tool is almost zero-dependency vanilla JS based on [SvelteKit](https://github.com/sveltejs/kit). [Svelte](https://github.com/sveltejs/svelte) is a framework used for UI that compiles components to vanilla JS.
 
 Pull requests are welcomed.
 
 ### Installation
 
-Clone the repository and install the dependencies, then run `dev` to start Rollup and build in dev mode:
+Clone the repository and install the dependencies, then run `dev` to build and start the application in dev mode:
 
 ```
 git clone https://github.com/Azgaar/Armoria.git
@@ -29,13 +29,15 @@ npm install
 npm run dev
 ```
 
-Navigate to [localhost:5000](http://localhost:5000). You should see the app running. Edit a component file in `src`, save it, and reload the page to see your changes.
+Navigate to [localhost:5173](http://localhost:5173). You should see the app running. Edit a component file in `src`, save it, and reload the page to see your changes.
 
 To create an optimised version run `npm run build`.
 
 ## API
 
-Armoria API is available as a separate project, see [the documentation](https://github.com/Azgaar/armoria-api#readme). The API allows to `GET` random or predefined vector and raster heraldic images of a given size.
+The API allows to `GET` random or predefined vector and raster heraldic images of a given size.
+
+For more details, see [the documentation](https://github.com/Azgaar/Armoria/wiki/Armoria-API).
 
 ## Alternatives
 
