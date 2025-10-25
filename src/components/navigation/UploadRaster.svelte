@@ -4,7 +4,7 @@
   import LicenseList from "./LicenseList.svelte";
   import {state, message, shield, uploaded} from "data/stores";
   import {charges} from "data/dataModel";
-  import {DEFAULT_SHIELD_BOX, shieldPaths} from "data/shields";
+  import {DEFAULT_SHIELD_BOX, shields} from "data/shields";
   import {updateCharge} from "scripts/getters";
   import {tooltip} from "scripts/tooltip";
   import {camelize} from "scripts/utils";
@@ -125,7 +125,7 @@
             width="{size}%"
             height="{size}%"
           />
-          <path d={shieldPaths[$shield]} />
+          <path d={shields.data[$shield].path} />
           <rect x="60" y="60" width="80" height="80" />
         </g>
       </svg>

@@ -1,6 +1,6 @@
 import {get} from "svelte/store";
 import {templates, lines, patterns} from "data/templates";
-import {shieldPaths} from "data/shields";
+import {shields} from "data/shields";
 import {colors, shield, uploaded} from "data/stores";
 
 const chargesGroup = document.getElementById("charges");
@@ -53,7 +53,7 @@ function addInescutcheon(charge) {
   const licenseAttrs = ["noldor", "gondor", "easterling", "ironHills", "urukHai", "moriaOrc"].includes(shieldName)
     ? `author="Weta Workshop" source="www.wetanz.com" license="https://en.wikipedia.org/wiki/Fair_use"`
     : `author=Azgaar license="https://creativecommons.org/publicdomain/zero/1.0"`;
-  const g = `<g id=${id} ${licenseAttrs}><path transform="translate(67 67) scale(.33)" d="${shieldPaths[shieldName]}"/></g>`;
+  const g = `<g id=${id} ${licenseAttrs}><path transform="translate(67 67) scale(.33)" d="${shields.data[shieldName].path}"/></g>`;
   chargesGroup.insertAdjacentHTML("beforeend", g);
 }
 

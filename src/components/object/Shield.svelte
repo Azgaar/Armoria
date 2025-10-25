@@ -4,7 +4,7 @@
   import Charge from "./Charge.svelte";
   import Inscription from "./Inscription.svelte";
   import {shield, colors, grad, diaper} from "data/stores";
-  import {shieldPaths} from "data/shields";
+  import {shields} from "data/shields";
   import {getTemplate, addPattern, addCharge} from "scripts/getters";
   import type {Coa} from "types/coa";
 
@@ -19,7 +19,7 @@
   const ordinariesAboveCharges = ordinaries.filter(o => o.above);
   charges.forEach(({charge}) => addCharge(charge));
 
-  $: shieldPath = shieldPaths[coa.shield || $shield];
+  $: shieldPath = shields.data[coa.shield || $shield].path;
   $: coaDiaper = type === "menuItem" ? null : coa.diaper || $diaper;
   $: diaperType = getDieperType(coaDiaper);
   $: overFill = !$grad || $grad === "no" ? "none" : `url(#${$grad})`;

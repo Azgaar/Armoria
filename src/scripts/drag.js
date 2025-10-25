@@ -1,6 +1,6 @@
 import {get} from "svelte/store";
 import {changes, grid, shield} from "data/stores";
-import {shieldPositions, shieldSize} from "data/shields";
+import {shields} from "data/shields";
 
 export function drag(
   event,
@@ -18,7 +18,7 @@ export function drag(
   const {x = 0, y = 0, size = 1} = charge;
   const gridSize = get(grid);
   const positionElements = el.querySelectorAll("use");
-  const positions = shieldPositions[get(shield)] || shieldPositions.spanish;
+  const positions = shields.data[get(shield)].positions || shields.data.spanish.positions;
 
   if (options.resize && event.shiftKey) {
     document.addEventListener("mousemove", resize);
@@ -126,8 +126,8 @@ export function transform(charge) {
 }
 
 export function getElTransform(charge, p, shield) {
-  const positions = shieldPositions[shield] || shieldPositions.spanish;
-  const sizeModifier = shieldSize[shield] || 1;
+  const positions = shields.data[shield].positions || shields.data.spanish.positions;
+  const sizeModifier = shields.data[shield].size || 1;
 
   const size = round((charge.size || 1) * sizeModifier);
   const stretch = charge.stretch;
