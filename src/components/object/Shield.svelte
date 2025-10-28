@@ -4,7 +4,7 @@
   import Charge from "./Charge.svelte";
   import Inscription from "./Inscription.svelte";
   import {shield, colors, grad, diaper} from "data/stores";
-  import {shields} from "data/shields";
+  import {divisions, shields} from "data/dataModel";
   import {getTemplate, addPattern, addCharge} from "scripts/getters";
   import type {Coa} from "types/coa";
 
@@ -54,7 +54,7 @@
   </clipPath>
   {#if division && division.division !== "no"}
     <clipPath id="division_{id}">
-      {@html getTemplate(division.division, division.line)}
+      {@html getTemplate(divisions.data[division.division], division.line)}
     </clipPath>
   {/if}
 

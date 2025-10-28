@@ -1,7 +1,7 @@
 <script lang="ts">
   // @ts-check
   import {colors} from "data//stores";
-  import {DEFAULT_SHIELD_BOX, shields} from "data/shields";
+  import {DEFAULT_SHIELD_BOX, shields} from "data/dataModel";
   import {rw} from "scripts/utils";
   import {draw, fade} from "svelte/transition";
 

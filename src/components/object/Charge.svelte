@@ -1,6 +1,6 @@
 <script lang="ts">
   // @ts-check
-  import {shields} from "data/shields";
+  import {shields} from "data/dataModel";
   import {shield} from "data/stores";
   import {drag, transform, getElTransform} from "scripts/drag";
   import {highlight, lowlight} from "scripts/highlight";

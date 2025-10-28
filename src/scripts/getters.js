@@ -1,6 +1,5 @@
 import {get} from "svelte/store";
-import {templates, lines, patterns} from "data/templates";
-import {shields} from "data/shields";
+import {lines, patterns, shields} from "data/dataModel";
 import {colors, shield, uploaded} from "data/stores";
 
 const chargesGroup = document.getElementById("charges");
@@ -8,11 +7,10 @@ const colorsData = get(colors);
 const loadedCharges = {};
 const customCharges = get(uploaded);
 
-export const getTemplate = (id, line) => {
-  const linedId = id + "Lined";
-  if (!line || line === "straight" || !templates[linedId]) return templates[id];
-  const linePath = lines[line];
-  return templates[linedId](linePath);
+export const getTemplate = (obj, line) => {
+  if (!line || line === "straight" || !obj.templateLined) return obj.template;
+  const linePath = lines.data[line];
+  return obj.templateLined(linePath);
 };
 
 export const addPattern = patternId => {

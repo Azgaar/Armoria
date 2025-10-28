@@ -1,6 +1,6 @@
 import {get} from "svelte/store";
 import {changes, grid, shield} from "data/stores";
-import {shields} from "data/shields";
+import {shields} from "data/dataModel";
 
 export function drag(
   event,

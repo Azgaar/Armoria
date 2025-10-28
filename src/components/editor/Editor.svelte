@@ -4,8 +4,7 @@
   import {fade, fly, slide} from "svelte/transition";
   import {DEFAULT_ZOOM} from "config/defaults";
   import {changes, grid, history, isTextReady, message, shield, showGrid, state, tinctures, uploaded} from "data/stores";
-  import {charges, divisions, ordinaries} from "data/dataModel";
-  import {shields} from "data/shields";
+  import {charges, divisions, ordinaries, shields} from "data/dataModel";
   import {createConfig, generate, getTincture} from "scripts/generator";
   import {highlight, lowlight} from "scripts/highlight";
   import {P, ra, rw} from "scripts/utils";
@@ -107,7 +106,7 @@
     // division attributes changed
     if (menu.division.division && menu.division.division !== "no") {
       coa.division = {division: menu.division.division};
-      if (divisions[menu.division.division]) coa.division.line = menu.division.line;
+      if (divisions.data[menu.division.division].templateLined) coa.division.line = menu.division.line;
       coa.division.t = getTinctureFromField(menu.division);
     }
     else {
@@ -524,7 +523,7 @@
           />
         </div>
 
-        {#if divisions[coa.division?.division]}
+        {#if divisions.data[coa.division?.division]?.templateLined}
           <div class="subsection">
             <EditorLine
               bind:line={menu.division.line}

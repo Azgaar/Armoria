@@ -11,7 +11,7 @@
   export let t2: string;
   export let shield: string = undefined;
 
-  const lineList = Object.keys(lines);
+  const lineList = Object.keys(lines.variants);
 
   $: linesData = division
     ? lineList.map(line => ({coa: {t1, shield, division: {division, t: t2, line}}, newLine: line}))

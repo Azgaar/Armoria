@@ -4,7 +4,7 @@
   import NavButton from "../../shared/NavButton.svelte";
   import NavItem from "../../shared/NavItem.svelte";
   import Lock from "../../shared/Lock.svelte";
-  import {shields, shieldTypes} from "data/shields";
+  import {shields, shieldTypes} from "data/dataModel";
   import {shield, changes} from "data/stores";
 
   const changeShield = (value: string) => {

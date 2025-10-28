@@ -41,14 +41,14 @@ export const generate = function (providedSeed) {
   if (division) {
     const t = getTincture(config, "division", config.usedTinctures, P(0.98) ? coa.t1 : null);
     coa.division = {division, t};
-    if (divisions[division])
-      coa.division.line = config.usedPattern || (config.ordinary && P(0.7)) ? "straight" : rw(divisions[division]);
+    if (divisions.data[division].templateLined)
+      coa.division.line = config.usedPattern || (config.ordinary && P(0.7)) ? "straight" : rw(divisions.data[division].line || lines.variants);
   }
 
   if (config.ordinary) {
     const t = getTincture(config, "charge", config.usedTinctures, coa.t1);
     coa.ordinaries = [{ordinary: config.ordinary, t}];
-    if (linedOrdinary) coa.ordinaries[0].line = config.usedPattern || (division && P(0.7)) ? "straight" : rw(lines);
+    if (linedOrdinary) coa.ordinaries[0].line = config.usedPattern || (division && P(0.7)) ? "straight" : rw(lines.variants);
     if (
       division &&
       !addCharge &&
@@ -83,9 +83,9 @@ export const generate = function (providedSeed) {
       // place charge out of ordinary (use tincture of ordinary type)
       p = rw(ordinaryData.positionsOff);
       t = !config.usedPattern && P(0.3) ? tOrdinary : getTincture(config, "charge", config.usedTinctures, coa.t1);
-    } else if (positions.divisions[division]) {
+    } else if (divisions.data[division]?.positions) {
       // place charge in fields made by division
-      p = rw(positions.divisions[division]);
+      p = rw(divisions.data[division].positions);
       t = getTincture(
         config,
         "charge",
@@ -128,7 +128,7 @@ export const generate = function (providedSeed) {
       if (P(0.3) && ["perPale", "perFess"].includes(division) && coa.line === "straight") {
         coa.charges[0].divided = "field";
         if (P(0.95)) {
-          const p2 = p === "e" || P(0.5) ? "e" : rw(positions.divisions[division]);
+          const p2 = p === "e" || P(0.5) ? "e" : rw(divisions.data[division].positions);
           const charge = selectCharge(charges.single);
           const t = getTincture(config, "charge", config.usedTinctures, coa.division.t);
           coa.charges.push({charge, t, p: p2, divided: "division"});

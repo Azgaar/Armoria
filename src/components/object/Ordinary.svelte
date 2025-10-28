@@ -1,4 +1,5 @@
 <script>
+  import {ordinaries} from "data/dataModel";
   import {drag, transform} from "scripts/drag";
   import {getTemplate} from "scripts/getters";
   import {highlight, lowlight} from "scripts/highlight";
@@ -33,6 +34,6 @@
     <path d={shieldPath} fill="none" stroke={t} stroke-width="10" transform="translate(15 15) scale(.85)" />
   {:else}
     <!-- Remove superfluous <g> for Svelte >= 3.48 (see https://github.com/sveltejs/svelte/issues/7450) -->
-    <g>{@html getTemplate(ordinary.ordinary, ordinary.line)}</g>
+    <g>{@html getTemplate(ordinaries.data[ordinary.ordinary], ordinary.line)}</g>
   {/if}
 </g>
