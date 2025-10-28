@@ -94,7 +94,7 @@
     <!-- In field part -->
     {#each ordinariesRegular as ordinary, i}
       {#if ordinary.divided === "field"}
-        <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type} />
+        <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} t2={clr(ordinary.t2)} {type} />
       {:else if ordinary.divided === "counter"}
         <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(division.t)} {type} />
       {/if}
@@ -122,7 +122,7 @@
 
     {#each ordinariesAboveCharges as ordinary, i}
       {#if ordinary.divided === "field"}
-        <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type} />
+        <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} t2={clr(ordinary.t2)} {type} />
       {:else if ordinary.divided === "counter"}
         <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(division.t)} {type} />
       {/if}
@@ -134,7 +134,7 @@
 
       {#each ordinariesRegular as ordinary, i}
         {#if ordinary.divided === "division"}
-          <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type} />
+          <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} t2={clr(ordinary.t2)} {type} />
         {:else if ordinary.divided === "counter"}
           <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(coa.t1)} {type} />
         {/if}
@@ -170,7 +170,7 @@
 
       {#each ordinariesAboveCharges as ordinary, i}
         {#if ordinary.divided === "division"}
-          <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type} />
+          <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} t2={clr(ordinary.t2)} {type} />
         {:else if ordinary.divided === "counter"}
           <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(coa.t1)} {type} />
         {/if}
@@ -181,7 +181,7 @@
   <!-- Overall -->
   {#each ordinariesRegular as ordinary, i}
     {#if !ordinary.divided}
-      <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type} />
+      <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} t2={clr(ordinary.t2)} {type} />
     {/if}
   {/each}
 
@@ -203,7 +203,7 @@
 
   {#each ordinariesAboveCharges as ordinary, i}
     {#if !ordinary.divided}
-      <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type} />
+      <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} t2={clr(ordinary.t2)} {type} />
     {/if}
   {/each}
 </g>
