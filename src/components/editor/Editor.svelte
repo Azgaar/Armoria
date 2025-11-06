@@ -4,8 +4,7 @@
   import {fade, fly, slide} from "svelte/transition";
   import {DEFAULT_ZOOM} from "config/defaults";
   import {changes, grid, history, isTextReady, message, shield, showGrid, state, tinctures, uploaded} from "data/stores";
-  import {charges, divisions, ordinaries} from "data/dataModel";
-  import {shields} from "data/shields";
+  import {charges, divisions, ordinaries, shields} from "data/dataModel";
   import {createConfig, generate, getTincture} from "scripts/generator";
   import {highlight, lowlight} from "scripts/highlight";
   import {P, ra, rw} from "scripts/utils";
@@ -28,7 +27,9 @@
   import EditorShadow from "./EditorShadow.svelte";
   import EditorShield from "./EditorShield.svelte";
   import EditorShift from "./EditorShift.svelte";
+  import EditorStriped from "./EditorStriped.svelte";
   import EditorStroke from "./EditorStroke.svelte";
+  import EditorTincture from "./EditorTincture.svelte";
   export let historyId, seed;
 
   let menu = {};
@@ -107,7 +108,7 @@
     // division attributes changed
     if (menu.division.division && menu.division.division !== "no") {
       coa.division = {division: menu.division.division};
-      if (divisions[menu.division.division]) coa.division.line = menu.division.line;
+      if (divisions.data[menu.division.division].templateLined) coa.division.line = menu.division.line;
       coa.division.t = getTinctureFromField(menu.division);
     }
     else {
@@ -119,6 +120,11 @@
     // ordinary attributes changed
     if (menu.ordinaries.length) {
       coa.ordinaries = menu.ordinaries.map(o => {
+        if (o.compony || o.gyronny) {
+          o.field2 ||= getField(o.field.t1);
+        } else {
+          delete o.field2;
+        }
         const item = {ordinary: o.ordinary, t: getTinctureFromField(o.field)};
         if (ordinaries.lined[o.ordinary]) item.line = o.line;
         if (coa.division && o.divided) item.divided = o.divided;
@@ -132,6 +138,13 @@
         }
         if (o.angle) item.angle = o.angle;
         if (o.above) item.above = true;
+        if (["bordure", "orle"].includes(o.ordinary)) {
+          if (o.compony) item.compony = o.compony;
+          if (o.gyronny) item.gyronny = o.gyronny;
+          if ((o.compony || o.gyronny) && o.field2) {
+            item.t2 = getTinctureFromField(o.field2);
+          }
+        }
         return item;
       });
     } else delete coa.ordinaries;
@@ -261,7 +274,7 @@
       if (!coa.ordinaries) return [];
 
       const ordinaries = coa.ordinaries.map(o => {
-        const {ordinary, t} = o;
+        const {ordinary, t, t2} = o;
         const field = getField(t);
         const line = o.line || "straight";
         const showStroke = Boolean(o.stroke);
@@ -274,8 +287,12 @@
         const angle = o.angle || 0;
         const divided = o.divided || "";
         const above = o.above || false;
+        const compony = o.compony || 0;
+        const gyronny = o.gyronny || 0;
         if (angle) $state.transform = `rotate(${angle})`;
-        return {ordinary, field, line, showStroke, stroke, strokeWidth, size, stretch, x, y, angle, divided, above};
+        const ordinaryObj = {ordinary, field, line, showStroke, stroke, strokeWidth, size, stretch, x, y, angle, divided, above, compony, gyronny};
+        if ((compony || gyronny) && t2) ordinaryObj.field2 = getField(t2);
+        return ordinaryObj;
       });
 
       return ordinaries;
@@ -524,7 +541,7 @@
           />
         </div>
 
-        {#if divisions[coa.division?.division]}
+        {#if divisions.data[coa.division?.division]?.templateLined}
           <div class="subsection">
             <EditorLine
               bind:line={menu.division.line}
@@ -576,6 +593,12 @@
             <EditorOrdinary bind:ordinary={o.ordinary} t1={coa.t1} line={o.line} t2={o.field.t1} shield={coa.shield} />
           </div>
 
+          {#if o.divided !== "counter" && ["bordure", "orle"].includes(o.ordinary)}
+            <div class="subsection">
+              <EditorStriped bind:compony={o.compony} bind:gyronny={o.gyronny} />
+            </div>
+          {/if}
+
           {#if ordinaries.lined[o.ordinary]}
             <div class="subsection">
               <EditorLine bind:line={o.line} ordinary={o.ordinary} t1={coa.t1} t2={o.field.t1} shield={coa.shield} />
@@ -583,9 +606,18 @@
           {/if}
 
           {#if o.divided !== "counter"}
-            <div class="subsection">
-              <EditorField bind:field={o.field} shield={coa.shield} />
-            </div>
+            {#if ["bordure", "orle"].includes(o.ordinary) && (o.compony || o.gyronny)}
+              <div class="subsection">
+                <EditorTincture bind:t1={o.field.t1} shield={coa.shield} />
+              </div>
+              <div class="subsection">
+                <EditorTincture bind:t1={o.field2.t1} shield={coa.shield} />
+              </div>
+            {:else}
+              <div class="subsection">
+                <EditorField bind:field={o.field} shield={coa.shield} />
+              </div>
+            {/if}
           {/if}
 
           <div class="subsection">

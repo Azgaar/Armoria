@@ -4,7 +4,7 @@
   import NavButton from "../../shared/NavButton.svelte";
   import NavItem from "../../shared/NavItem.svelte";
   import Lock from "../../shared/Lock.svelte";
-  import {shields, shieldPaths, shieldTypes} from "data/shields";
+  import {shields, shieldTypes} from "data/dataModel";
   import {shield, changes} from "data/stores";
 
   const changeShield = (value: string) => {
@@ -23,7 +23,7 @@
           {#each getShieldsInType(shieldType) as shieldName}
             <NavButton onclick={() => changeShield(shieldName)}>
               <svg class:selected={shieldName === $shield} width="26" height="26" viewBox="0 0 200 210">
-                <path d={shieldPaths[shieldName]} />
+                <path d={shields.data[shieldName].path} />
               </svg>
               {$t(`shield.${shieldType}.${shieldName}`)}
             </NavButton>

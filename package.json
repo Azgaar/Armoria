@@ -23,6 +23,9 @@
     "url": "https://github.com/Azgaar/Armoria/issues"
   },
   "main": "./src/main.js",
+  "dependencies": {
+    "path-data-polyfill": "^1.0.10"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-json": "^4.1.0",

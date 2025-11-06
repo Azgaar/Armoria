@@ -1,7 +1,7 @@
 <script lang="ts">
   // @ts-check
   import {colors} from "data//stores";
-  import {DEFAULT_SHIELD_BOX, shieldPaths} from "data/shields";
+  import {DEFAULT_SHIELD_BOX, shields} from "data/dataModel";
   import {rw} from "scripts/utils";
   import {draw, fade} from "svelte/transition";
 
@@ -55,7 +55,7 @@
 <svg width={size} height={size} viewBox={DEFAULT_SHIELD_BOX}>
   <defs>
     <clipPath id="shieldAbout">
-      <path d={shieldPaths.heater} />
+      <path d={shields.data.heater.path} />
     </clipPath>
   </defs>
 
@@ -71,6 +71,6 @@
   </g>
 
   <g stroke="#000" fill="url(#backlight)">
-    <path d={shieldPaths.heater} in:draw={{delay, duration}} />
+    <path d={shields.data.heater.path} in:draw={{delay, duration}} />
   </g>
 </svg>

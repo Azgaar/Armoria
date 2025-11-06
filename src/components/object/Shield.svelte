@@ -4,7 +4,7 @@
   import Charge from "./Charge.svelte";
   import Inscription from "./Inscription.svelte";
   import {shield, colors, grad, diaper} from "data/stores";
-  import {shieldPaths} from "data/shields";
+  import {divisions, shields} from "data/dataModel";
   import {getTemplate, addPattern, addCharge} from "scripts/getters";
   import type {Coa} from "types/coa";
 
@@ -19,7 +19,7 @@
   const ordinariesAboveCharges = ordinaries.filter(o => o.above);
   charges.forEach(({charge}) => addCharge(charge));
 
-  $: shieldPath = shieldPaths[coa.shield || $shield];
+  $: shieldPath = shields.data[coa.shield || $shield].path;
   $: coaDiaper = type === "menuItem" ? null : coa.diaper || $diaper;
   $: diaperType = getDieperType(coaDiaper);
   $: overFill = !$grad || $grad === "no" ? "none" : `url(#${$grad})`;
@@ -54,7 +54,7 @@
   </clipPath>
   {#if division && division.division !== "no"}
     <clipPath id="division_{id}">
-      {@html getTemplate(division.division, division.line)}
+      {@html getTemplate(divisions.data[division.division], division.line)}
     </clipPath>
   {/if}
 
@@ -94,7 +94,7 @@
     <!-- In field part -->
     {#each ordinariesRegular as ordinary, i}
       {#if ordinary.divided === "field"}
-        <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type} />
+        <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} t2={clr(ordinary.t2)} {type} />
       {:else if ordinary.divided === "counter"}
         <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(division.t)} {type} />
       {/if}
@@ -122,7 +122,7 @@
 
     {#each ordinariesAboveCharges as ordinary, i}
       {#if ordinary.divided === "field"}
-        <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type} />
+        <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} t2={clr(ordinary.t2)} {type} />
       {:else if ordinary.divided === "counter"}
         <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(division.t)} {type} />
       {/if}
@@ -134,7 +134,7 @@
 
       {#each ordinariesRegular as ordinary, i}
         {#if ordinary.divided === "division"}
-          <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type} />
+          <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} t2={clr(ordinary.t2)} {type} />
         {:else if ordinary.divided === "counter"}
           <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(coa.t1)} {type} />
         {/if}
@@ -170,7 +170,7 @@
 
       {#each ordinariesAboveCharges as ordinary, i}
         {#if ordinary.divided === "division"}
-          <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type} />
+          <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} t2={clr(ordinary.t2)} {type} />
         {:else if ordinary.divided === "counter"}
           <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(coa.t1)} {type} />
         {/if}
@@ -181,7 +181,7 @@
   <!-- Overall -->
   {#each ordinariesRegular as ordinary, i}
     {#if !ordinary.divided}
-      <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type} />
+      <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} t2={clr(ordinary.t2)} {type} />
     {/if}
   {/each}
 
@@ -203,7 +203,7 @@
 
   {#each ordinariesAboveCharges as ordinary, i}
     {#if !ordinary.divided}
-      <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} {type} />
+      <Ordinary {coa} {ordinary} {i} {shieldPath} t={clr(ordinary.t)} t2={clr(ordinary.t2)} {type} />
     {/if}
   {/each}
 </g>

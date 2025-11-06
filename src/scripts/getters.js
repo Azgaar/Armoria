@@ -1,6 +1,5 @@
 import {get} from "svelte/store";
-import {templates, lines, patterns} from "data/templates";
-import {shieldPaths} from "data/shields";
+import {lines, patterns, shields} from "data/dataModel";
 import {colors, shield, uploaded} from "data/stores";
 
 const chargesGroup = document.getElementById("charges");
@@ -8,11 +7,10 @@ const colorsData = get(colors);
 const loadedCharges = {};
 const customCharges = get(uploaded);
 
-export const getTemplate = (id, line) => {
-  const linedId = id + "Lined";
-  if (!line || line === "straight" || !templates[linedId]) return templates[id];
-  const linePath = lines[line];
-  return templates[linedId](linePath);
+export const getTemplate = (obj, line) => {
+  if (!line || line === "straight" || !obj.templateLined) return obj.template;
+  const linePath = lines.data[line];
+  return obj.templateLined(linePath);
 };
 
 export const addPattern = patternId => {
@@ -53,7 +51,7 @@ function addInescutcheon(charge) {
   const licenseAttrs = ["noldor", "gondor", "easterling", "ironHills", "urukHai", "moriaOrc"].includes(shieldName)
     ? `author="Weta Workshop" source="www.wetanz.com" license="https://en.wikipedia.org/wiki/Fair_use"`
     : `author=Azgaar license="https://creativecommons.org/publicdomain/zero/1.0"`;
-  const g = `<g id=${id} ${licenseAttrs}><path transform="translate(67 67) scale(.33)" d="${shieldPaths[shieldName]}"/></g>`;
+  const g = `<g id=${id} ${licenseAttrs}><path transform="translate(67 67) scale(.33)" d="${shields.data[shieldName].path}"/></g>`;
   chargesGroup.insertAdjacentHTML("beforeend", g);
 }
 

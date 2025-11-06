@@ -39,6 +39,7 @@ interface Charge {
 interface Ordinary {
   ordinary: string;
   t: string;
+  t2?: string;
   line?: string;
   divided?: Divided;
   size?: number;
@@ -48,6 +49,8 @@ interface Ordinary {
   angle?: number;
   above?: true;
   stroke?: string;
+  compony?: number;
+  gyronny?: number;
 }
 
 interface Inscription {
