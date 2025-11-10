@@ -1,6 +1,6 @@
 <script lang="ts">
   // @ts-check
-  import {DEFAULT_SHIELD_BOX} from "$lib/data/shields";
+  import {DEFAULT_SHIELD_BOX} from "$lib/data/dataModel";
   import {tooltip} from "$lib/scripts/tooltip";
   import Shield from "./../object/Shield.svelte";
 

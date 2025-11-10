@@ -1,6 +1,6 @@
 <script lang="ts">
   // @ts-check
-  import {shieldPositions} from "$lib/data/shields";
+  import {shields} from "$lib/data/dataModel";
   import {shield} from "$lib/data/stores";
   import {drag, transform, getElTransform} from "$lib/scripts/drag";
   import {highlight, lowlight} from "$lib/scripts/highlight";
@@ -22,7 +22,7 @@
   $: coaShield = coa.shield || $shield;
 
   $: {
-    const positions = shieldPositions[coaShield] || shieldPositions.spanish;
+    const positions = shields.data[coaShield].positions || shields.data.spanish.positions;
     validPositions = [...new Set(charge.p)].filter(p => positions[p]);
   }
 

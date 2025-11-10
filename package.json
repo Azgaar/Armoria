@@ -33,6 +33,7 @@
     "minify-xml": "^4.5.2",
     "mongodb": "^6.17.0",
     "node-html-parser": "^7.0.1",
+    "path-data-polyfill": "^1.0.10",
     "puppeteer-core": "24.11.2"
   },
   "devDependencies": {

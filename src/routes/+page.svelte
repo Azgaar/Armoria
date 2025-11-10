@@ -1,8 +1,7 @@
 <script lang="ts">
   // @ts-check
-  import {shields} from "$lib/data/shields";
+  import {charges, shields} from "$lib/data/dataModel";
   import {background, fonts, history, isTextReady, matrices, matrix, message, shield, size, state, uploaded} from "$lib/data/stores";
-  import {charges} from "$lib/data/dataModel";
   import "$lib/scripts/i18n";
   import {rw} from "$lib/scripts/utils";
   import {locale} from "svelte-i18n";

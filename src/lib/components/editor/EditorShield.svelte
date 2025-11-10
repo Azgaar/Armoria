@@ -2,7 +2,7 @@
   // @ts-check
   import {t} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
-  import {shields, shieldTypes} from "$lib/data/shields";
+  import {shields, shieldTypes} from "$lib/data/dataModel";
   import {shield as defaultShield} from "$lib/data/stores";
 
   export let shield: string = undefined;

@@ -1,3 +1,7 @@
+export {charges} from "./charges";
+export {ordinaries} from "./ordinaries";
+export {DEFAULT_SHIELD_BOX, shields, shieldTypes} from "./shields";
+
 export const positionsSelect = [
   "a",
   "b",
@@ -57,55 +61,116 @@ export const positions = {
     ABCDEFGHIJKL: 1
   },
   complex: {e: 40, beh: 1, kn: 1, jeo: 1, abc: 2, jln: 7, jlh: 2, def: 1, abcpqh: 1},
-  divisions: {
-    perPale: {e: 15, pq: 5, jo: 2, jl: 2, ABCDEFGHIJKL: 1},
-    perFess: {e: 12, kn: 4, jkl: 2, gizgiz: 1, jlh: 3, kmo: 1, ABCDEFGHIJKL: 1},
-    perBend: {e: 5, lm: 5, bcfdgh: 1},
-    perBendSinister: {e: 1, jo: 1},
-    perCross: {e: 4, jlmo: 1, j: 1, jo: 2, jl: 1},
-    perChevron: {e: 1, jlh: 1, dfk: 1, dfbh: 2, bdefh: 1},
-    perChevronReversed: {e: 1, mok: 2, dfh: 2, dfbh: 1, bdefh: 1},
-    perSaltire: {bhdf: 8, e: 3, abcdefgzi: 1, bh: 1, df: 1, ABCDEFGHIJKL: 1},
-    perPile: {ee: 3, be: 2, abceh: 1, abcabc: 1, jleh: 1}
-  },
   inescutcheon: {e: 4, jln: 1}
 };
 
 export const lines = {
-  straight: 50,
-  wavy: 8,
-  engrailed: 4,
-  invecked: 3,
-  rayonne: 3,
-  embattled: 1,
-  raguly: 1,
-  urdy: 1,
-  dancetty: 1,
-  indented: 2,
-  dentilly: 1,
-  bevilled: 1,
-  angled: 1,
-  flechy: 1,
-  barby: 1,
-  enclavy: 1,
-  escartely: 1,
-  arched: 2,
-  archedReversed: 1,
-  nowy: 1,
-  nowyReversed: 1,
-  embattledGhibellin: 1,
-  embattledNotched: 1,
-  embattledGrady: 1,
-  dovetailedIndented: 1,
-  dovetailed: 1,
-  potenty: 1,
-  potentyDexter: 1,
-  potentySinister: 1,
-  nebuly: 2,
-  seaWaves: 1,
-  dragonTeeth: 1,
-  firTrees: 1
+  variants: {
+    straight: 50,
+    wavy: 8,
+    engrailed: 4,
+    invecked: 3,
+    rayonne: 3,
+    embattled: 1,
+    raguly: 1,
+    urdy: 1,
+    dancetty: 1,
+    indented: 2,
+    dentilly: 1,
+    bevilled: 1,
+    angled: 1,
+    flechy: 1,
+    barby: 1,
+    enclavy: 1,
+    escartely: 1,
+    arched: 2,
+    archedReversed: 1,
+    nowy: 1,
+    nowyReversed: 1,
+    embattledGhibellin: 1,
+    embattledNotched: 1,
+    embattledGrady: 1,
+    dovetailedIndented: 1,
+    dovetailed: 1,
+    potenty: 1,
+    potentyDexter: 1,
+    potentySinister: 1,
+    nebuly: 2,
+    seaWaves: 1,
+    dragonTeeth: 1,
+    firTrees: 1
+  },
+  data: {
+    straight: "m 0,115 v -15 h 200 v 15",
+    engrailed: `m 0,115 v -20 ${"a 6.25,6.25 0 0 0 12.5,0".repeat(16)} v 20`,
+    invecked: `m 0,115 v -12.5 ${"a 6.25,6.25 0 0 1 12.5,0".repeat(16)} v 12.5`,
+    embattled: `m 0,115 v -10 h 2.5 ${"v -10 h 15 v 10 h 15".repeat(6)} v -10 h 15 v 10 h 2.5 v 10`,
+    wavy: `m 0,115 v -15 ${"c 8.9,-3.5 16,-3.1 25,0 8.9,3.5 16,3.1 25,0 8.9,-3.5 16,-3.2 25,0 8.9,3.5 16,3.2 25,0".repeat(2)} v 15`,
+    raguly: `m 0,115 v -20 h 7 ${"l -5,10 h 10 l 5,-10 h 10".repeat(9)} l -5,10 h 10 l 5,-10 h 3 v 20`,
+    dancetty: `m 0,115 v -10 l 10,-15 ${"l 15,20 15,-20".repeat(6)} l 10,15 v 10`,
+    dentilly: `m 0,115 v -20 ${"l 10,10 v -10".repeat(19)} l 10,10 v 10`,
+    angled: "m 0,115 v -20 h 100 v 10 h 100 v 10",
+    urdy: `m 0,115 v -25 ${"l 5,5 v 10 l 5,5 5,-5 v -10 l 5,-5".repeat(3)} l 5,5 v 10 l 5,6 5,-6 v -10 l 5,-5 ${"l 5,5 v 10 l 5,5 5,-5 v -10 l 5,-5".repeat(2)} l 5,5 v 10 l 5,6 5,-6 v -10 l 5,-5 ${"l 5,5 v 10 l 5,5 5,-5 v -10 l 5,-5".repeat(3)} v 25`,
+    indented: `m 0,115 v -20 ${"l 5,10 5,-10".repeat(20)} v 20`,
+    bevilled: "m 0,115 v -22.5 h 110 l -20,15 h 110 v 7.5",
+    nowy: "m 0,115 v -20 h 80 c 0,0 0.1,20.1 20,20 19.9,-0.1 20,-20 20,-20 h 80 v 20",
+    nowyReversed: "m 0,115 v -10 h 80 c 0,0 0.1,-20.1 20,-20 19.9,0.1 20,20 20,20 h 80 v 10",
+    potenty: `m 0,115 v -10 ${"h 7.5 v -5 h -5 v -5 h 15 v 5 h -5 v 5 h 7.5".repeat(10)} v 10`,
+    potentyDexter: `m 0,115 v -20 h 3 ${"v 10 h 10 v -5 h -5 v -5 h 10".repeat(13)} v 10 h 2 v 20`,
+    potentySinister: `m 0,115 v -10 h 2.5 ${"v -10 h 10 v 5 h -5 v 5 h 10".repeat(13)} v -10 h 2.5 v 20`,
+    embattledGhibellin: `m 0,115 v -15 ${"l 5,-5 v 10 l 5,-5 5,5 V 95 l 5,5".repeat(10)} v 15`,
+    embattledNotched: `m 0,115 v -10 ${"h 5 v -10 l 5,5 5,-5 v 10".repeat(13)} h 5 v 10`,
+    embattledGrady: `m 0,115 v -20 ${"h 2.5 v 5 h 5 v 5 h 5 v -5 h 5 v -5 h 2.5".repeat(10)} v 20`,
+    dovetailed: `m 0,115 v -20 ${"h 7 l -4,10 h 14 l -4,-10 h 7".repeat(10)} v 20`,
+    dovetailedIndented: `m 0,115 v -15 ${"l 7,-5 -4,10 7,-5 7,5 -4,-10 7,5".repeat(10)} v 15`,
+    nebuly: `m 0,115 v -10.1 h 2.35 ${"c 4,0 7.3,-2 7.3,-4.5 0,-1.2 -0.7,-2.3 -1.9,-3 -1.2,-0.8 -1.8,-1.9 -1.8,-3.1 0,-2.5 3.2,-4.5 7.2,-4.5 4.1,0 7.3,2 7.3,4.5 0,1.2 -0.7,2.3 -1.8,3.1 -1.2,0.7 -1.9,1.8 -1.9,3 0,2.5 3.3,4.5 7.3,4.5".repeat(9)} h 2.35 v 10.1`,
+    rayonne: `m 0,115 v -5 ${"a9 9 0 003.1-4.6c.5-2 .4-3.9-.3-5.4-.7-1.5-.8-3.4-.3-5.4.5-2 1.7-3.6 3.1-4.6-.7 1.5-.8 3.4-.3 5.4.5 2 1.7 3.6 3.1 4.6a9 9 0 013.1 4.6c.5 2 .4 3.9-.3 5.4".repeat(17)} a9 9 0 003.1-4.6c.5-2 .4-3.9-.3-5.4-.7-1.5-.8-3.4-.3-5.4.5-2 1.7-3.6 3.1-4.6-.7 1.5-.8 3.4-.3 5.4.75 2.79 2.72 4.08 4.3 5.67 V 115`,
+    seaWaves: `m 0,115 v -14.89 ${"c 1.59,-2.01 4.5,-5.18 8.74,-5.18 2.26,0 4.12,1.54 4.45,3.55 -0.57,-0.31 -1.23,-0.48 -1.93,-0.48 -2.16,0 -3.91,1.63 -3.91,3.64 0,2.01 1.75,3.64 3.91,3.64 4.25,0 7.16,-3.17 8.74,-5.18".repeat(10)} v 14.89`,
+    dragonTeeth: `m 0,115 v -5.7 c 0,-2.7 2.4,4.2 3.9,5.7 ${"c -1.5,-4.6 -1.9,-10.3 -0.8,-16.2 1.1,-5.9 3.5,-10.7 6.3,-13.8 -1.5,4.6 -1.9,10.3 -0.8,16.2 1.1,5.9 3.5,10.7 6.4,13.8".repeat(17)} c -1.5,-4.6 -1.9,-10.3 -0.8,-16.2 1.1,-5.9 3.5,-10.7 6.3,-13.8 -1.5,4.6 -1.9,10.3 -0.8,16.2 0.6,2.9 1.5,5.6 2.7,8 v 5.7`,
+    firTrees: `m 0,115 v -15 l 2,-3.5 -2,0.5 4,-7 ${"l 4,7 -2,-0.5 4,7 -2,-0.5 4,7 4,-7 -2,0.5 4,-7 -2,0.5 4,-7".repeat(12)} 4,7 -2,-0.5 2,3.5 v 15`,
+    flechy: "m 0,115 v -15 h 85 l 15,-15 15,15 h 85 v 15",
+    barby: "m 0,115 v -15 h 85 l 15,15 15,-15 h 85 v 15",
+    enclavy: "m 0,115 v -15 H 85 V 85 h 30 v 15 h 85 v 15",
+    escartely: "m 0,115 v -15 h 85 v 15 h 30 v -15 h 85 v 15",
+    arched: "m 0,115 c 0,0 60,-19.8 100,-20 c 40,-0.2 100,20 100,20",
+    archedReversed: "m 0,115 v -30 c 0,0 60,20.2 100,20 40,-0.2 100,-20 100,-20 v 30"
+
+  }
 };
+
+export const patterns = {
+  semy: (p, c1, c2, size, chargeId) => `<pattern id="${p}" width="${size * 25}" height="${size * 25}" viewBox="0 0 200 200" patternUnits="userSpaceOnUse" stroke="#000"><rect width="200" height="200" fill="${c1}" stroke="none"/><g fill="${c2}"><use transform="translate(-100 -50)" href="#${chargeId}"/><use transform="translate(100 -50)" href="#${chargeId}"/><use transform="translate(0 50)" href="#${chargeId}"/></g></pattern>`,
+  vair: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 50}" viewBox="0 0 25 50" patternUnits="userSpaceOnUse" stroke="#000" stroke-width=".2"><rect width="25" height="25" fill="${c1}" stroke="none"/><path d="m12.5,0 l6.25,6.25 v12.5 l6.25,6.25 h-25 l6.25,-6.25 v-12.5 z" fill="${c2}"/><rect x="0" y="25" width="25" height="25" fill="${c2}" stroke="none"/><path d="m25,25 l-6.25,6.25 v12.5 l-6.25,6.25 l-6.25,-6.25 v-12.5 l-6.25,-6.25 z" fill="${c1}"/><path d="M0 50 h25" fill="none"/></pattern>`,
+  counterVair: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 50}" viewBox="0 0 25 50" patternUnits="userSpaceOnUse" stroke="#000" stroke-width=".2"><rect width="25" height="50" fill="${c2}" stroke="none"/><path d="m 12.5,0 6.25,6.25 v 12.5 L 25,25 18.75,31.25 v 12.5 L 12.5,50 6.25,43.75 V 31.25 L 0,25 6.25,18.75 V 6.25 Z" fill="${c1}"/></pattern>`,
+  vairInPale: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 25}" viewBox="0 0 25 25" patternUnits="userSpaceOnUse"><rect width="25" height="25" fill="${c1}"/><path d="m12.5,0 l6.25,6.25 v12.5 l6.25,6.25 h-25 l6.25,-6.25 v-12.5 z" fill="${c2}" stroke="#000" stroke-width=".2"/></pattern>`,
+  vairEnPointe: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 50}" viewBox="0 0 25 50" patternUnits="userSpaceOnUse"><rect width="25" height="25" fill="${c2}"/><path d="m12.5,0 l6.25,6.25 v12.5 l6.25,6.25 h-25 l6.25,-6.25 v-12.5 z" fill="${c1}"/><rect x="0" y="25" width="25" height="25" fill="${c1}" stroke-width="1" stroke="${c1}"/><path d="m12.5,25 l6.25,6.25 v12.5 l6.25,6.25 h-25 l6.25,-6.25 v-12.5 z" fill="${c2}"/></pattern>`,
+  vairAncien: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 25}" viewBox="0 0 100 100" patternUnits="userSpaceOnUse"><rect width="100" height="100" fill="${c1}"/><path fill="${c2}" stroke="none" d="m 0,90 c 10,0 25,-5 25,-40 0,-25 10,-40 25,-40 15,0 25,15 25,40 0,35 15,40 25,40 v 10 H 0 Z"/><path fill="none" stroke="#000" d="M 0,90 c 10,0 25,-5 25,-40 0,-35 15,-40 25,-40 10,0 25,5 25,40 0,35 15,40 25,40 M0,100 h100"/></pattern>`,
+  potent: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 25}" viewBox="0 0 200 200" patternUnits="userSpaceOnUse" stroke="#000"><rect width="200" height="100" fill="${c1}" stroke="none"/><rect y="100" width="200" height="100" fill="${c2}" stroke="none"/><path d="m25 50h50v-50h50v50h50v50h-150z" fill="${c2}"/><path d="m25 100v50h50v50h50v-50h50v-50z" fill="${c1}"/><path d="m0 0h200 M0 100h200" fill="none"/></pattern>`,
+  counterPotent: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 25}" viewBox="0 0 200 200" patternUnits="userSpaceOnUse" stroke="none"><rect width="200" height="200" fill="${c1}"/><path d="m25 50h50v-50h50v50h50v100h-50v50h-50v-50h-50v-50z" fill="${c2}"/><path d="m0 0h200 M0 100h200 M0 200h200"/></pattern>`,
+  potentInPale: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 12.5}" viewBox="0 0 200 100" patternUnits="userSpaceOnUse" stroke-width="1"><rect width="200" height="100" fill="${c1}" stroke="none"/><path d="m25 50h50v-50h50v50h50v50h-150z" fill="${c2}" stroke="#000"/><path d="m0 0h200 M0 100h200" fill="none" stroke="#000"/></pattern>`,
+  potentEnPointe: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 25}" viewBox="0 0 200 200" patternUnits="userSpaceOnUse" stroke="none"><rect width="200" height="200" fill="${c1}"/><path d="m0 0h25v50h50v50h50v-50h50v-50h25v100h-25v50h-50v50h-50v-50h-50v-50h-25v-100" fill="${c2}"/></pattern>`,
+  ermine: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 25}" viewBox="0 0 200 200" patternUnits="userSpaceOnUse" fill="${c2}"><rect width="200" height="200" fill="${c1}"/><g stroke="none" fill="${c2}"><g transform="translate(-100 -50)"><path d="m100 81.1c-4.25 17.6-12.7 29.8-21.2 38.9 3.65-0.607 7.9-3.04 11.5-5.47-2.42 4.86-4.86 8.51-7.3 12.7 1.82-0.607 6.07-4.86 12.7-10.9 1.21 8.51 2.42 17.6 4.25 23.6 1.82-5.47 3.04-15.2 4.25-23.6 3.65 3.65 7.3 7.9 12.7 10.9l-7.9-13.3c3.65 1.82 7.9 4.86 11.5 6.07-9.11-9.11-17-21.2-20.6-38.9z"/><path d="m82.4 81.7c-0.607-0.607-6.07 2.42-9.72-4.25 7.9 6.68 15.2-7.3 21.8 1.82 1.82 4.25-6.68 10.9-12.1 2.42z"/><path d="m117 81.7c0.607-1.21 6.07 2.42 9.11-4.86-7.3 7.3-15.2-7.3-21.2 2.42-1.82 4.25 6.68 10.9 12.1 2.42z"/><path d="m101 66.5c-1.02-0.607 3.58-4.25-3.07-8.51 5.63 7.9-10.2 10.9-1.54 17.6 3.58 2.42 12.2-2.42 4.6-9.11z"/></g><g transform="translate(100 -50)"><path d="m100 81.1c-4.25 17.6-12.7 29.8-21.2 38.9 3.65-0.607 7.9-3.04 11.5-5.47-2.42 4.86-4.86 8.51-7.3 12.7 1.82-0.607 6.07-4.86 12.7-10.9 1.21 8.51 2.42 17.6 4.25 23.6 1.82-5.47 3.04-15.2 4.25-23.6 3.65 3.65 7.3 7.9 12.7 10.9l-7.9-13.3c3.65 1.82 7.9 4.86 11.5 6.07-9.11-9.11-17-21.2-20.6-38.9z"/><path d="m82.4 81.7c-0.607-0.607-6.07 2.42-9.72-4.25 7.9 6.68 15.2-7.3 21.8 1.82 1.82 4.25-6.68 10.9-12.1 2.42z"/><path d="m117 81.7c0.607-1.21 6.07 2.42 9.11-4.86-7.3 7.3-15.2-7.3-21.2 2.42-1.82 4.25 6.68 10.9 12.1 2.42z"/><path d="m101 66.5c-1.02-0.607 3.58-4.25-3.07-8.51 5.63 7.9-10.2 10.9-1.54 17.6 3.58 2.42 12.2-2.42 4.6-9.11z"/></g><g transform="translate(0 50)"><path d="m100 81.1c-4.25 17.6-12.7 29.8-21.2 38.9 3.65-0.607 7.9-3.04 11.5-5.47-2.42 4.86-4.86 8.51-7.3 12.7 1.82-0.607 6.07-4.86 12.7-10.9 1.21 8.51 2.42 17.6 4.25 23.6 1.82-5.47 3.04-15.2 4.25-23.6 3.65 3.65 7.3 7.9 12.7 10.9l-7.9-13.3c3.65 1.82 7.9 4.86 11.5 6.07-9.11-9.11-17-21.2-20.6-38.9z"/><path d="m82.4 81.7c-0.607-0.607-6.07 2.42-9.72-4.25 7.9 6.68 15.2-7.3 21.8 1.82 1.82 4.25-6.68 10.9-12.1 2.42z"/><path d="m117 81.7c0.607-1.21 6.07 2.42 9.11-4.86-7.3 7.3-15.2-7.3-21.2 2.42-1.82 4.25 6.68 10.9 12.1 2.42z"/><path d="m101 66.5c-1.02-0.607 3.58-4.25-3.07-8.51 5.63 7.9-10.2 10.9-1.54 17.6 3.58 2.42 12.2-2.42 4.6-9.11z"/></g></g></pattern>`,
+  chequy: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 50}" height="${size * 50}" viewBox="0 0 50 50" patternUnits="userSpaceOnUse" fill="${c2}"><rect width="50" height="50"/><rect width="25" height="25" fill="${c1}"/><rect x="25" y="25" width="25" height="25" fill="${c1}"/></pattern>`,
+  lozengy: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 25}" viewBox="0 0 50 50" patternUnits="userSpaceOnUse"><rect width="50" height="50" fill="${c1}"/><polygon points="25,0 50,25 25,50 0,25" fill="${c2}"/></pattern>`,
+  fusily: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 50}" viewBox="0 0 50 100" patternUnits="userSpaceOnUse"><rect width="50" height="100" fill="${c2}"/><polygon points="25,0 50,50 25,100 0,50" fill="${c1}"/></pattern>`,
+  pally: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 100}" height="${size * 25}" viewBox="0 0 100 25" patternUnits="userSpaceOnUse"><rect width="100" height="25" fill="${c2}"/><rect x="25" y="0" width="25" height="25" fill="${c1}"/><rect x="75" y="0" width="25" height="25" fill="${c1}"/></pattern>`,
+  barry: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 100}" viewBox="0 0 25 100" patternUnits="userSpaceOnUse"><rect width="25" height="100" fill="${c2}"/><rect x="0" y="25" width="25" height="25" fill="${c1}"/><rect x="0" y="75" width="25" height="25" fill="${c1}"/></pattern>`,
+  gemelles: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 25}" viewBox="0 0 50 50" patternUnits="userSpaceOnUse"><rect width="50" height="50" fill="${c1}"/><rect y="5" width="50" height="10" fill="${c2}"/><rect y="40" width="50" height="10" fill="${c2}"/></pattern>`,
+  bendy: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 100}" height="${size * 100}" viewBox="0 0 100 100" patternUnits="userSpaceOnUse"><rect width="100" height="100" fill="${c1}"/><polygon points="0,25 75,100 25,100 0,75" fill="${c2}"/><polygon points="25,0 75,0 100,25 100,75" fill="${c2}"/></pattern>`,
+  bendySinister: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 100}" height="${size * 100}" viewBox="0 0 100 100" patternUnits="userSpaceOnUse"><rect width="100" height="100" fill="${c2}"/><polygon points="0,25 25,0 75,0 0,75" fill="${c1}"/><polygon points="25,100 100,25 100,75 75,100" fill="${c1}"/></pattern>`,
+  palyBendy: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 125.16}" height="${size * 71.52}" viewBox="0 0 175 100" patternUnits="userSpaceOnUse"><rect y="0" x="0" width="175" height="100" fill="${c2}"/><g fill="${c1}"><path d="m0 20 35 30v50l-35-30z"/><path d="m35 0 35 30v50l-35-30z"/><path d="m70 0h23l12 10v50l-35-30z"/><path d="m70 80 23 20h-23z"/><path d="m105 60 35 30v10h-35z"/><path d="m105 0h35v40l-35-30z"/><path d="m 140,40 35,30 v 30 h -23 l -12,-10z"/><path d="M 175,0 V 20 L 152,0 Z"/></g></pattern>`,
+  barryBendy: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 71.44}" height="${size * 125.02}" viewBox="0 0 100 175" patternUnits="userSpaceOnUse"><rect width="100" height="175" fill="${c2}"/><g fill="${c1}"><path d="m20 0 30 35h50l-30-35z"/><path d="m0 35 30 35h50l-30-35z"/><path d="m0 70v23l10 12h50l-30-35z"/><path d="m80 70 20 23v-23z"/><path d="m60 105 30 35h10v-35z"/><path d="m0 105v35h40l-30-35z"/><path d="m 40,140 30,35 h 30 v -23 l -10,-12 z"/><path d="m0 175h20l-20-23z"/></g></pattern>`,
+  pappellony: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 25}" viewBox="0 0 100 100" patternUnits="userSpaceOnUse"><rect width="100" height="100" fill="${c1}"/><circle cx="0" cy="51" r="45" stroke="${c2}" fill="${c1}" stroke-width="10"/><circle cx="100" cy="51" r="45" stroke="${c2}" fill="${c1}" stroke-width="10"/><circle cx="50" cy="1" r="45" stroke="${c2}" fill="${c1}" stroke-width="10"/></pattern>`,
+  pappellony2: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 25}" viewBox="0 0 100 100" patternUnits="userSpaceOnUse" stroke="#000" stroke-width="2"><rect width="100" height="100" fill="${c1}" stroke="none"/><circle cy="50" r="49" fill="${c2}"/><circle cx="100" cy="50" r="49" fill="${c2}"/><circle cx="50" cy="0" r="49" fill="${c1}"/></pattern>`,
+  scaly: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 25}" viewBox="0 0 100 100" patternUnits="userSpaceOnUse" stroke="#000"><rect width="100" height="100" fill="${c1}" stroke="none"/><path d="M 0,84 C -40,84 -50,49 -50,49 -50,79 -27,99 0,99 27,99 50,79 50,49 50,49 40,84 0,84 Z" fill="${c2}"/><path d="M 100,84 C 60,84 50,49 50,49 c 0,30 23,50 50,50 27,0 50,-20 50,-50 0,0 -10,35 -50,35 z" fill="${c2}"/><path d="M 50,35 C 10,35 0,0 0,0 0,30 23,50 50,50 77,50 100,30 100,0 100,0 90,35 50,35 Z" fill="${c2}"/></pattern>`,
+  plumetty: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 50}" viewBox="0 0 50 100" patternUnits="userSpaceOnUse" stroke-width=".8"><rect width="50" height="100" fill="${c2}" stroke="none"/><path fill="${c1}" stroke="none" d="M 25,100 C 44,88 49.5,74 50,50 33.5,40 25,25 25,4e-7 25,25 16.5,40 0,50 0.5,74 6,88 25,100 Z"/><path fill="none" stroke="${c2}" d="m17 40c5.363 2.692 10.7 2.641 16 0m-19 7c7.448 4.105 14.78 3.894 22 0m-27 7c6-2 10.75 3.003 16 3 5.412-0.0031 10-5 16-3m-35 9c4-7 12 3 19 2 7 1 15-9 19-2m-35 6c6-2 11 3 16 3s10-5 16-3m-30 7c8 0 8 3 14 3s7-3 14-3m-25 8c7.385 4.048 14.72 3.951 22 0m-19 8c5.455 2.766 10.78 2.566 16 0m-8 6v-78"/><g fill="none" stroke="${c1}"><path d="m42 90c2.678 1.344 5.337 2.004 8 2m-11 5c3.686 2.032 7.344 3.006 10.97 3m0.0261-1.2e-4v-30"/><path d="m0 92c2.689 0.0045 5.328-0.6687 8-2m-8 10c3.709-0.0033 7.348-1.031 11-3m-11 3v-30"/><path d="m0 7c5.412-0.0031 10-5 16-3m-16 11c7 1 15-9 19-2m-19 9c5 0 10-5 16-3m-16 10c6 0 7-3 14-3m-14.02 11c3.685-0.002185 7.357-1.014 11.02-3m-11 10c2.694-0.01117 5.358-0.7036 7.996-2m-8 6v-48"/><path d="m34 4c6-2 10.75 3.003 16 3m-19 6c4-7 12 3 19 2m-16 4c6-2 11 3 16 3m-14 4c8 0 8 3 14 3m-11 5c3.641 1.996 7.383 2.985 11 3m-8 5c2.762 1.401 5.303 2.154 8.002 2.112m-0.00154 3.888v-48"/></g></pattern>`,
+  masoned: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 25}" viewBox="0 0 100 100" patternUnits="userSpaceOnUse" fill="none"><rect width="100" height="100" fill="${c1}"/><rect width="100" height="50" stroke="${c2}" stroke-width="4"/><line x1="50" y1="50" x2="50" y2="100" stroke="${c2}" stroke-width="5"/></pattern>`,
+  fretty: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 40}" height="${size * 40}" viewBox="0 0 140 140" patternUnits="userSpaceOnUse" stroke="#000" stroke-width="2"><rect width="140" height="140" fill="${c1}" stroke="none"/><path d="m-15 5 150 150 20-20-150-150z" fill="${c2}"/><path d="m10 150 140-140-20-20-140 140z" fill="${c2}" stroke="none"/><path d="m0 120 20 20 120-120-20-20z" fill="none"/></pattern>`,
+  grillage: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 50}" height="${size * 50}" viewBox="0 0 200 200" patternUnits="userSpaceOnUse" stroke="#000" stroke-width="2"><rect width="200" height="200" fill="${c1}" stroke="none"/><path d="m205 65v-30h-210v30z" fill="${c2}"/><path d="m65-5h-30v210h30z" fill="${c2}"/><path d="m205 165v-30h-210v30z" fill="${c2}"/><path d="m165,65h-30v140h30z" fill="${c2}"/><path d="m 165,-5h-30v40h30z" fill="${c2}"/></pattern>`,
+  chainy: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 33.4}" height="${size * 33.4}" viewBox="0 0 200 200" patternUnits="userSpaceOnUse" stroke="#000" stroke-width="2"><rect x="-6.691e-6" width="200" height="200" fill="${c1}" stroke="none"/><path d="m155-5-20-20-160 160 20 20z" fill="${c2}"/><path d="m45 205 160-160 20 20-160 160z" fill="${c2}"/><path d="m45-5 20-20 160 160-20 20-160-160" fill="${c2}"/><path d="m-5 45-20 20 160 160 20-20-160-160" fill="${c2}"/></pattern>`,
+  maily: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 33.4}" height="${size * 33.4}" viewBox="0 0 200 200" patternUnits="userSpaceOnUse" stroke="#000" stroke-width="1.2"><path fill="${c1}" stroke="none" d="M0 0h200v200H0z"/><g fill="${c2}"><path d="m80-2c-5.27e-4 2.403-0.1094 6.806-0.3262 9.199 5.014-1.109 10.1-1.768 15.19-2.059 0.09325-1.712 0.1401-5.426 0.1406-7.141z"/><path d="m100 5a95 95 0 0 0-95 95 95 95 0 0 0 95 95 95 95 0 0 0 95-95 95 95 0 0 0-95-95zm0 15a80 80 0 0 1 80 80 80 80 0 0 1-80 80 80 80 0 0 1-80-80 80 80 0 0 1 80-80z"/><path d="m92.8 20.33c-5.562 0.4859-11.04 1.603-16.34 3.217-7.793 25.31-27.61 45.12-52.91 52.91-5.321 1.638-10.8 2.716-16.34 3.217-2.394 0.2168-6.796 0.3256-9.199 0.3262v15c1.714-4.79e-4 5.429-0.04737 7.141-0.1406 5.109-0.2761 10.19-0.9646 15.19-2.059 36.24-7.937 64.54-36.24 72.47-72.47z"/><path d="m202 80c-2.403-5.31e-4 -6.806-0.1094-9.199-0.3262 1.109 5.014 1.768 10.1 2.059 15.19 1.712 0.09326 5.426 0.1401 7.141 0.1406z"/><path d="m179.7 92.8c-0.4859-5.562-1.603-11.04-3.217-16.34-25.31-7.793-45.12-27.61-52.91-52.91-1.638-5.321-2.716-10.8-3.217-16.34-0.2168-2.394-0.3256-6.796-0.3262-9.199h-15c4.8e-4 1.714 0.0474 5.429 0.1406 7.141 0.2761 5.109 0.9646 10.19 2.059 15.19 7.937 36.24 36.24 64.54 72.47 72.47z"/><path d="m120 202c5.3e-4 -2.403 0.1094-6.806 0.3262-9.199-5.014 1.109-10.1 1.768-15.19 2.059-0.0933 1.712-0.1402 5.426-0.1406 7.141z"/><path d="m107.2 179.7c5.562-0.4859 11.04-1.603 16.34-3.217 7.793-25.31 27.61-45.12 52.91-52.91 5.321-1.638 10.8-2.716 16.34-3.217 2.394-0.2168 6.796-0.3256 9.199-0.3262v-15c-1.714 4.7e-4 -5.429 0.0474-7.141 0.1406-5.109 0.2761-10.19 0.9646-15.19 2.059-36.24 7.937-64.54 36.24-72.47 72.47z"/><path d="m -2,120 c 2.403,5.4e-4 6.806,0.1094 9.199,0.3262 -1.109,-5.014 -1.768,-10.1 -2.059,-15.19 -1.712,-0.0933 -5.426,-0.1402 -7.141,-0.1406 z"/><path d="m 20.33,107.2 c 0.4859,5.562 1.603,11.04 3.217,16.34 25.31,7.793 45.12,27.61 52.91,52.91 1.638,5.321 2.716,10.8 3.217,16.34 0.2168,2.394 0.3256,6.796 0.3262,9.199 L 95,202 c -4.8e-4,-1.714 -0.0472,-5.44 -0.1404,-7.152 -0.2761,-5.109 -0.9646,-10.19 -2.059,-15.19 -7.937,-36.24 -36.24,-64.54 -72.47,-72.47 z"/></g></pattern>`,
+  honeycombed: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 28.6}" height="${size * 49.028}" viewBox="0 0 70 120" patternUnits="userSpaceOnUse"><rect width="70" height="120" fill="${c1}"/><path d="M 70,0 V 20 L 35,40 m 35,80 V 100 L 35,80 M 0,120 V 100 L 35,80 V 40 L 0,20 V 0" stroke="${c2}" fill="none" stroke-width="3"/></pattern>`
+}
 
 export const divisions = {
   variants: {
@@ -126,1602 +191,95 @@ export const divisions = {
     gyronnyOfTwelve: 1,
     chevronny: 5
   },
-  perPale: lines,
-  perFess: lines,
-  perBend: lines,
-  perBendSinister: lines,
-  perChevron: lines,
-  perChevronReversed: lines,
-  perCross: {
-    straight: 20,
-    wavy: 5,
-    engrailed: 4,
-    invecked: 3,
-    rayonne: 1,
-    embattled: 1,
-    raguly: 1,
-    urdy: 1,
-    indented: 2,
-    dentilly: 1,
-    bevilled: 1,
-    angled: 1,
-    embattledGhibellin: 1,
-    embattledGrady: 1,
-    dovetailedIndented: 1,
-    dovetailed: 1,
-    potenty: 1,
-    potentyDexter: 1,
-    potentySinister: 1,
-    nebuly: 1
-  },
-  perPile: lines
-};
-
-export const ordinaries = {
-  lined: {
-    pale: 7,
-    fess: 5,
-    bend: 3,
-    bendSinister: 2,
-    chief: 5,
-    bar: 2,
-    gemelle: 1,
-    fessCotissed: 1,
-    fessDoubleCotissed: 1,
-    bendlet: 2,
-    bendletSinister: 1,
-    terrace: 3,
-    cross: 6,
-    crossParted: 1,
-    saltire: 2,
-    saltireParted: 1
-  },
-  straight: {
-    bordure: 8,
-    orle: 4,
-    mount: 1,
-    point: 2,
-    flaunches: 1,
-    gore: 1,
-    gyron: 1,
-    quarter: 1,
-    canton: 2,
-    pall: 3,
-    pallReversed: 2,
-    chevron: 4,
-    chevronReversed: 3,
-    pile: 2,
-    pileInBend: 2,
-    pileInBendSinister: 1,
-    piles: 1,
-    pilesInPoint: 2,
-    label: 1
-  },
   data: {
-    bar: {
-      positionsOn: {defdefdef: 1},
-      positionsOff: {abc: 2, abcgzi: 1, jlh: 5, bgi: 2, ach: 1}
+    chevronny: {
+      template: `<path d="M0,80 100,-15 200,80 200,120 100,25 0,120z M0,160 100,65 200,160 200,200 100,105 0,200z M0,240 100,145 200,240 0,240z"/>`
     },
-    bend: {
-      positionsOn: {ee: 2, jo: 1, joe: 1},
-      positionsOff: {ccg: 2, ccc: 1}
+    gyronny: {
+      template: `<polygon points="0,0 200,200 200,100 0,100"/><polygon points="200,0 0,200 100,200 100,0"/>`
     },
-    bendSinister: {
-      positionsOn: {ee: 1, lm: 1, lem: 4},
-      positionsOff: {aai: 2, aaa: 1}
+    gyronnyOfSixPerFess: {
+      template: `<polygon points="0,100 200,100 200,200 157.7,200 42.3,0 157.7,0 42.3,200 0,200"/>`
     },
-    bendlet: {
-      positionsOn: {joejoejoe: 1},
-      positionsOff: {ccg: 2, ccc: 1}
+    gyronnyOfSixPerPale: {
+      template: `<polygon points="100,0 100,200 200,200 200,157.7 0,42.3 0,157.7 200,42.3 200,0"/>`
     },
-    bendletSinister: {
-      positionsOn: {lemlemlem: 1},
-      positionsOff: {aai: 2, aaa: 1}
+    gyronnyOfTenPerFess: {
+      template: `<polygon points="0,100 200,100 200,27.3 0,172.7 0,200 67.5,200 132.5,0 67.5,0 132.5,200 200,200 200,172.7 0,27.3"/>`
     },
-    bordure: {
-      positionsOn: {ABCDEFGHIJKL: 1},
-      positionsOff: {e: 4, jleh: 2, kenken: 1, peqpeq: 1}
+    gyronnyOfTenPerPale: {
+      template: `<polygon points="100,0 100,200 27.3,200 172.7,0 200,0 200,67.5 0,132.5 0,67.5 200,132.5 200,200 172.7,200 27.3,0"/>`
     },
-    canton: {
-      positionsOn: {yyyy: 1},
-      positionsOff: {e: 5, beh: 1, def: 1, bdefh: 1, kn: 1}
+    gyronnyOfTwelve: {
+      template: `<polygon points="100,0 100,200 157.7,200 42.3,0"/><polygon points="0,100 200,100 200,157.7 0,42.3"/><polygon points="0,157.7 0,200 42.3,200 157.7,0 200,0 200,42.3"/>`
     },
-    chevron: {
-      positionsOn: {ach: 3, hhh: 1}
+    perBend: {
+      template: `<polygon points="0,0 200,200 0,200"/>`,
+      templateLined: line => `<path d="${line} V200 H0 Z" transform="translate(-10 -10) rotate(45 110 110) scale(1.1)"/>`,
+      positions: {e: 5, lm: 5, bcfdgh: 1}
     },
-    chevronReversed: {
-      positionsOff: {bbb: 1}
+    perBendSinister: {
+      template: `<polygon points="200,0 0,200 200,200"/>`,
+      templateLined: line => `<path d="${line} V200 H0 Z" transform="translate(-10 -10) rotate(-45 110 110) scale(1.1)"/>`,
+      positions: {e: 1, jo: 1}
     },
-    chief: {
-      positionsOn: {abc: 5, bbb: 1},
-      positionsOff: {emo: 2, emoz: 1, ez: 2}
+    perChevron: {
+      template: `<polygon points="0,200 100,100 200,200"/>`,
+      templateLined: line => `<path d="${line} L100,200 Z" transform="translate(129 71) rotate(-45 -100 100) scale(-1 1)"/><path d="${line} L100,200 Z" transform="translate(71 71) rotate(45 100 100)"/>`,
+      positions: {e: 1, jlh: 1, dfk: 1, dfbh: 2, bdefh: 1}
     },
-    cross: {
-      positionsOn: {eeee: 1, behdfbehdf: 3, behbehbeh: 2},
-      positionsOff: {acgi: 1}
+    perChevronReversed: {
+      template: `<polygon points="0,0 100,100 200,0"/>`,
+      templateLined: line => `<path d="${line} L100,200 Z" transform="translate(-70.7 -70.7) rotate(225 100 100)"/><path d="${line} L100,200 Z" transform="translate(270.7 -70.7) rotate(-225 -100 100) scale(-1 1)"/>`,
+      positions: {e: 1, mok: 2, dfh: 2, dfbh: 1, bdefh: 1}
     },
-    crossParted: {
-      positionsOn: {e: 5, ee: 1}
+    perCross: {
+      template: `<rect x="100" y="0" width="100" height="100"/><rect x="0" y="100" width="100" height="100"/>`,
+      templateLined: line => `<path d="${line} V400 H0 Z" transform="translate(0 50) scale(.5)"/><path d="${line} V400 H0 Z" transform="translate(200 150) scale(-.5)"/>`,
+      positions: {e: 4, jlmo: 1, j: 1, jo: 2, jl: 1},
+      line: {
+        straight: 20,
+        wavy: 5,
+        engrailed: 4,
+        invecked: 3,
+        rayonne: 1,
+        embattled: 1,
+        raguly: 1,
+        urdy: 1,
+        indented: 2,
+        dentilly: 1,
+        bevilled: 1,
+        angled: 1,
+        embattledGhibellin: 1,
+        embattledGrady: 1,
+        dovetailedIndented: 1,
+        dovetailed: 1,
+        potenty: 1,
+        potentyDexter: 1,
+        potentySinister: 1,
+        nebuly: 1
+      }
     },
-    fess: {
-      positionsOn: {ee: 1, def: 3},
-      positionsOff: {abc: 3, abcz: 1}
+    perFess: {
+      template: `<rect x="0" y="100" width="200" height="100"/>`,
+      templateLined: line => `<path d="${line} V200 H0 Z"/>`,
+      positions: {e: 12, kn: 4, jkl: 2, gizgiz: 1, jlh: 3, kmo: 1, ABCDEFGHIJKL: 1}
     },
-    fessCotissed: {
-      positionsOn: {ee: 1, def: 3}
+    perPale: {
+      template: `<rect x="100" y="0" width="100" height="200"/>`,
+      templateLined: line => `<path d="${line} V200 H0 Z" transform="rotate(-90 100 100)"/>`,
+      positions: {e: 15, pq: 5, jo: 2, jl: 2, ABCDEFGHIJKL: 1}
     },
-    fessDoubleCotissed: {
-      positionsOn: {ee: 1, defdef: 3}
+    perPile: {
+      template: `<polygon points="0,0 15,0 100,200 185,0 200,0 200,200 0,200"/>`,
+      templateLined: line => `<path d="${line} V200 H0 Z" transform="translate(161.66 10) rotate(66.66 -100 100) scale(-1 1)"/><path d="${line} V200 H0 Z" transform="translate(38.33 10) rotate(-66.66 100 100)"/>`,
+      positions: {ee: 3, be: 2, abceh: 1, abcabc: 1, jleh: 1}
     },
-    flaunches: {
-      positionsOff: {e: 3, kn: 1, beh: 3}
-    },
-    gemelle: {
-      positionsOff: {abc: 1}
-    },
-    gyron: {
-      positionsOff: {bh: 1}
-    },
-    label: {
-      positionsOff: {defgzi: 2, eh: 3, defdefhmo: 1, egiegi: 1, pqn: 5}
-    },
-    mount: {
-      positionsOff: {e: 5, def: 1, bdf: 3}
-    },
-    orle: {
-      positionsOff: {e: 4, jleh: 1, kenken: 1, peqpeq: 1}
-    },
-    pale: {
-      positionsOn: {ee: 12, beh: 10, kn: 3, bb: 1},
-      positionsOff: {yyy: 1}
-    },
-    pall: {
-      positionsOn: {ee: 1, jleh: 5, jlhh: 3},
-      positionsOff: {BCKFEILGJbdmfo: 1}
-    },
-    pallReversed: {
-      positionsOn: {ee: 1, bemo: 5},
-      positionsOff: {aczac: 1}
-    },
-    pile: {
-      positionsOn: {bbb: 1},
-      positionsOff: {acdfgi: 1, acac: 1}
-    },
-    pileInBend: {
-      positionsOn: {eeee: 1, eeoo: 1},
-      positionsOff: {cg: 1}
-    },
-    pileInBendSinister: {
-      positionsOn: {eeee: 1, eemm: 1},
-      positionsOff: {ai: 1}
-    },
-    point: {
-      positionsOff: {e: 2, def: 1, bdf: 3, acbdef: 1}
-    },
-    quarter: {
-      positionsOn: {jjj: 1},
-      positionsOff: {e: 1}
-    },
-    saltire: {
-      positionsOn: {ee: 5, jlemo: 1}
-    },
-    saltireParted: {
-      positionsOn: {e: 5, ee: 1}
-    },
-    terrace: {
-      positionsOff: {e: 5, def: 1, bdf: 3}
+    perSaltire: {
+      template: `<polygon points="0,0 0,200 200,0 200,200"/>`,
+      positions: {bhdf: 8, e: 3, abcdefgzi: 1, bh: 1, df: 1, ABCDEFGHIJKL: 1}
     }
   }
-};
-
-const chargeData = {
-  agnusDei: {
-    colors: 2,
-    sinister: true
-  },
-  angel: {
-    colors: 2,
-    positions: {e: 1}
-  },
-  ant: {
-    reversed: true
-  },
-  anvil: {
-    sinister: true
-  },
-  apple: {
-    colors: 2
-  },
-  arbalest: {
-    colors: 3,
-    reversed: true
-  },
-  archer: {
-    colors: 3,
-    sinister: true
-  },
-  armEmbowedHoldingSabre: {
-    colors: 3,
-    sinister: true
-  },
-  armEmbowedVambraced: {
-    sinister: true,
-    layered: true
-  },
-  armEmbowedVambracedHoldingSword: {
-    colors: 3,
-    sinister: true
-  },
-  armillarySphere: {
-    positions: {e: 1}
-  },
-  arrow: {
-    colors: 3,
-    reversed: true
-  },
-  arrowsSheaf: {
-    colors: 3,
-    reversed: true
-  },
-  axe: {
-    colors: 2,
-    sinister: true
-  },
-  badgerStatant: {
-    colors: 2,
-    sinister: true
-  },
-  banner: {
-    colors: 2
-  },
-  basilisk: {
-    colors: 3,
-    sinister: true
-  },
-  bearPassant: {
-    colors: 3,
-    sinister: true
-  },
-  bearRampant: {
-    colors: 3,
-    sinister: true,
-    layered: true
-  },
-  bee: {
-    colors: 3,
-    reversed: true
-  },
-  bell: {
-    colors: 2
-  },
-  boarHeadErased: {
-    colors: 3,
-    sinister: true
-  },
-  boarRampant: {
-    colors: 3,
-    sinister: true,
-    positions: {e: 12, beh: 1, kn: 1, jln: 2}
-  },
-  boat: {
-    colors: 2
-  },
-  bookClosed: {
-    colors: 3,
-    sinister: true
-  },
-  bookClosed2: {
-    sinister: true
-  },
-  bookOpen: {
-    colors: 3
-  },
-  bow: {
-    sinister: true
-  },
-  bowWithArrow: {
-    colors: 3,
-    reversed: true
-  },
-  bowWithThreeArrows: {
-    colors: 3
-  },
-  bucket: {
-    colors: 2
-  },
-  bugleHorn: {
-    colors: 2
-  },
-  bugleHorn2: {
-    colors: 2
-  },
-  bullHeadCaboshed: {
-    colors: 2
-  },
-  bullPassant: {
-    colors: 3,
-    sinister: true
-  },
-  butterfly: {
-    colors: 3,
-    reversed: true
-  },
-  caduceus: {
-    colors: 3
-  },
-  camel: {
-    colors: 2,
-    sinister: true
-  },
-  camelBactrian: {
-    colors: 2,
-    sinister: true
-  },
-  cancer: {
-    reversed: true
-  },
-  cannon: {
-    colors: 2,
-    sinister: true
-  },
-  caravel: {
-    colors: 3,
-    sinister: true
-  },
-  castle: {
-    colors: 2
-  },
-  castle2: {
-    colors: 3
-  },
-  catPassantGuardant: {
-    colors: 2,
-    sinister: true
-  },
-  cavalier: {
-    colors: 3,
-    sinister: true,
-    positions: {e: 1}
-  },
-  centaur: {
-    colors: 3,
-    sinister: true
-  },
-  chalice: {
-    colors: 2
-  },
-  church: {
-    colors: 3
-  },
-  cinquefoil: {
-    reversed: true
-  },
-  cock: {
-    colors: 3,
-    sinister: true
-  },
-  comet: {
-    reversed: true
-  },
-  cowStatant: {
-    colors: 3,
-    sinister: true
-  },
-  cossack: {
-    colors: 3,
-    sinister: true
-  },
-  crescent: {
-    reversed: true
-  },
-  crocodile: {
-    colors: 2,
-    sinister: true
-  },
-  crosier: {
-    sinister: true
-  },
-  crossbow: {
-    colors: 3,
-    sinister: true
-  },
-  crossGamma: {
-    sinister: true
-  },
-  crossLatin: {
-    reversed: true
-  },
-  crossTau: {
-    reversed: true
-  },
-  crossTriquetra: {
-    reversed: true
-  },
-  crown: {
-    colors: 2,
-    positions: {
-      e: 10,
-      abcdefgzi: 1,
-      beh: 3,
-      behdf: 2,
-      acegi: 1,
-      kn: 1,
-      pq: 2,
-      abc: 1,
-      jln: 4,
-      jleh: 1,
-      def: 2,
-      abcpqh: 3
-    }
-  },
-  crown2: {
-    colors: 3,
-    positions: {
-      e: 10,
-      abcdefgzi: 1,
-      beh: 3,
-      behdf: 2,
-      acegi: 1,
-      kn: 1,
-      pq: 2,
-      abc: 1,
-      jln: 4,
-      jleh: 1,
-      def: 2,
-      abcpqh: 3
-    }
-  },
-  deerHeadCaboshed: {
-    colors: 2
-  },
-  dolphin: {
-    colors: 2,
-    sinister: true
-  },
-  donkeyHeadCaboshed: {
-    colors: 2
-  },
-  dove: {
-    colors: 2,
-    natural: "argent",
-    sinister: true
-  },
-  doveDisplayed: {
-    colors: 2,
-    natural: "argent",
-    sinister: true
-  },
-  dragonfly: {
-    colors: 2,
-    reversed: true
-  },
-  dragonPassant: {
-    colors: 3,
-    sinister: true
-  },
-  dragonRampant: {
-    colors: 3,
-    sinister: true,
-    layered: true
-  },
-  drakkar: {
-    colors: 3,
-    sinister: true
-  },
-  drawingCompass: {
-    sinister: true
-  },
-  drum: {
-    colors: 3
-  },
-  duck: {
-    colors: 3,
-    sinister: true
-  },
-  eagle: {
-    colors: 3,
-    sinister: true,
-    positions: {e: 15, beh: 1, kn: 1, abc: 1, jlh: 2, def: 2, pq: 1}
-  },
-  eagleTwoHeads: {
-    colors: 3
-  },
-  elephant: {
-    colors: 2,
-    sinister: true
-  },
-  elephantHeadErased: {
-    colors: 2,
-    sinister: true
-  },
-  falchion: {
-    colors: 2,
-    reversed: true
-  },
-  falcon: {
-    colors: 3,
-    sinister: true
-  },
-  fan: {
-    colors: 2,
-    reversed: true
-  },
-  fasces: {
-    colors: 3,
-    sinister: true
-  },
-  feather: {
-    sinister: true
-  },
-  flamberge: {
-    colors: 2,
-    reversed: true
-  },
-  flangedMace: {
-    reversed: true
-  },
-  fly: {
-    colors: 3,
-    reversed: true
-  },
-  foot: {
-    sinister: true
-  },
-  fountain: {
-    natural: "azure"
-  },
-  frog: {
-    reversed: true
-  },
-  garb: {
-    colors: 2,
-    natural: "or",
-    positions: {e: 1, def: 3, abc: 2, beh: 1, kn: 1, jln: 3, jleh: 1, abcpqh: 1, joe: 1, lme: 1}
-  },
-  gauntlet: {
-    sinister: true,
-    reversed: true
-  },
-  gladius: {
-    colors: 2,
-    reversed: true
-  },
-  goat: {
-    colors: 3,
-    sinister: true
-  },
-  goutte: {
-    reversed: true
-  },
-  grapeBunch: {
-    colors: 3,
-    sinister: true
-  },
-  grapeBunch2: {
-    colors: 3,
-    sinister: true
-  },
-  grenade: {
-    colors: 2
-  },
-  greyhoundCourant: {
-    colors: 3,
-    sinister: true,
-    positions: {e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1}
-  },
-  greyhoundRampant: {
-    colors: 2,
-    sinister: true,
-    layered: true,
-    positions: {e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1}
-  },
-  greyhoundSejant: {
-    colors: 3,
-    sinister: true
-  },
-  griffinPassant: {
-    colors: 3,
-    sinister: true,
-    positions: {e: 10, def: 2, abc: 2, bdefh: 1, kn: 1, jlh: 2, abcpqh: 1}
-  },
-  griffinRampant: {
-    colors: 3,
-    sinister: true,
-    layered: true,
-    positions: {e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1}
-  },
-  hand: {
-    sinister: true,
-    reversed: true,
-    positions: {e: 10, jln: 2, kn: 1, jeo: 1, abc: 2, pqe: 1}
-  },
-  harp: {
-    colors: 2,
-    sinister: true
-  },
-  hatchet: {
-    colors: 2,
-    sinister: true
-  },
-  head: {
-    colors: 2,
-    sinister: true,
-    positions: {e: 1}
-  },
-  headWreathed: {
-    colors: 3,
-    sinister: true,
-    positions: {e: 1}
-  },
-  hedgehog: {
-    colors: 3,
-    sinister: true
-  },
-  helmet: {
-    sinister: true
-  },
-  helmetCorinthian: {
-    colors: 3,
-    sinister: true
-  },
-  helmetGreat: {
-    sinister: true
-  },
-  helmetZischagge: {
-    sinister: true
-  },
-  hermit: {
-    colors: 3
-  },
-  heron: {
-    colors: 2,
-    sinister: true
-  },
-  hindStatant: {
-    colors: 2,
-    sinister: true
-  },
-  hook: {
-    sinister: true
-  },
-  horseHeadCouped: {
-    sinister: true
-  },
-  horsePassant: {
-    colors: 2,
-    sinister: true
-  },
-  horseRampant: {
-    colors: 3,
-    sinister: true,
-    layered: true
-  },
-  horseSalient: {
-    colors: 2,
-    sinister: true
-  },
-  horseshoe: {
-    reversed: true
-  },
-  hourglass: {
-    colors: 3
-  },
-  kraken: {
-    colors: 2,
-    reversed: true
-  },
-  ladybird: {
-    colors: 3,
-    reversed: true
-  },
-  lamb: {
-    colors: 2,
-    sinister: true
-  },
-  lambPassantReguardant: {
-    colors: 2,
-    sinister: true
-  },
-  lanceWithBanner: {
-    colors: 3,
-    sinister: true
-  },
-  laurelWreath: {
-    colors: 2
-  },
-  lighthouse: {
-    colors: 3
-  },
-  lionHeadCaboshed: {
-    colors: 2
-  },
-  lionHeadErased: {
-    colors: 2,
-    sinister: true
-  },
-  lionPassant: {
-    colors: 3,
-    sinister: true,
-    positions: {e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1}
-  },
-  lionPassantGuardant: {
-    colors: 3,
-    sinister: true
-  },
-  lionRampant: {
-    colors: 3,
-    sinister: true,
-    layered: true,
-    positions: {e: 10, def: 2, abc: 2, bdefh: 1, kn: 1, jlh: 2, abcpqh: 1}
-  },
-  lionSejant: {
-    colors: 3,
-    sinister: true
-  },
-  lizard: {
-    reversed: true
-  },
-  lochaberAxe: {
-    colors: 2,
-    sinister: true
-  },
-  log: {
-    sinister: true
-  },
-  lute: {
-    colors: 2,
-    sinister: true
-  },
-  lymphad: {
-    colors: 3,
-    sinister: true,
-    positions: {e: 1}
-  },
-  mace: {
-    colors: 2
-  },
-  maces: {
-    colors: 2
-  },
-  mallet: {
-    colors: 2
-  },
-  mantle: {
-    colors: 3
-  },
-  martenCourant: {
-    colors: 3,
-    sinister: true
-  },
-  mascle: {
-    positions: {
-      e: 15,
-      abcdefgzi: 3,
-      beh: 3,
-      bdefh: 4,
-      acegi: 1,
-      kn: 3,
-      joe: 2,
-      abc: 3,
-      jlh: 8,
-      jleh: 1,
-      df: 3,
-      abcpqh: 4,
-      pqe: 3,
-      eknpq: 3
-    }
-  },
-  mastiffStatant: {
-    colors: 3,
-    sinister: true
-  },
-  mitre: {
-    colors: 3
-  },
-  monk: {
-    sinister: true
-  },
-  moonInCrescent: {
-    sinister: true
-  },
-  mullet: {
-    reversed: true
-  },
-  mullet7: {
-    reversed: true
-  },
-  oak: {
-    colors: 3
-  },
-  orb: {
-    colors: 3
-  },
-  ouroboros: {
-    sinister: true
-  },
-  owl: {
-    colors: 2,
-    sinister: true
-  },
-  owlDisplayed: {
-    colors: 2
-  },
-  palmTree: {
-    colors: 3
-  },
-  parrot: {
-    colors: 2,
-    sinister: true
-  },
-  peacock: {
-    colors: 3,
-    sinister: true
-  },
-  peacockInPride: {
-    colors: 3,
-    sinister: true
-  },
-  pear: {
-    colors: 2
-  },
-  pegasus: {
-    colors: 3,
-    sinister: true,
-    layered: true
-  },
-  pike: {
-    colors: 2,
-    sinister: true
-  },
-  pineTree: {
-    colors: 2
-  },
-  plaice: {
-    colors: 2,
-    sinister: true
-  },
-  plough: {
-    colors: 2,
-    sinister: true
-  },
-  ploughshare: {
-    sinister: true
-  },
-  polypus: {
-    colors: 2,
-    reversed: true
-  },
-  porcupine: {
-    colors: 2,
-    sinister: true
-  },
-  portcullis: {
-    colors: 2
-  },
-  rabbitSejant: {
-    colors: 2,
-    sinister: true
-  },
-  rake: {
-    reversed: true
-  },
-  rapier: {
-    colors: 2,
-    sinister: true,
-    reversed: true
-  },
-  ramHeadErased: {
-    colors: 3,
-    sinister: true
-  },
-  ramPassant: {
-    colors: 3,
-    sinister: true
-  },
-  ratRampant: {
-    colors: 2,
-    sinister: true
-  },
-  raven: {
-    colors: 2,
-    natural: "sable",
-    sinister: true,
-    positions: {e: 15, beh: 1, kn: 1, jeo: 1, abc: 3, jln: 3, def: 1}
-  },
-  rhinoceros: {
-    colors: 2,
-    sinister: true
-  },
-  rose: {
-    colors: 3
-  },
-  sabre: {
-    colors: 2,
-    sinister: true
-  },
-  sabre2: {
-    colors: 2,
-    sinister: true,
-    reversed: true
-  },
-  sabresCrossed: {
-    colors: 2,
-    reversed: true
-  },
-  sagittarius: {
-    colors: 3,
-    sinister: true
-  },
-  salmon: {
-    colors: 2,
-    sinister: true
-  },
-  saw: {
-    colors: 2
-  },
-  scale: {
-    colors: 2
-  },
-  scaleImbalanced: {
-    colors: 2,
-    sinister: true
-  },
-  scissors: {
-    reversed: true
-  },
-  scorpion: {
-    reversed: true
-  },
-  scrollClosed: {
-    colors: 2,
-    sinister: true
-  },
-  scythe: {
-    colors: 2,
-    sinister: true,
-    reversed: true
-  },
-  scythe2: {
-    sinister: true
-  },
-  seahorse: {
-    colors: 2,
-    sinister: true,
-    layered: true
-  },
-  serpent: {
-    colors: 2,
-    sinister: true
-  },
-  shield: {
-    colors: 2,
-    sinister: true
-  },
-  sickle: {
-    colors: 2,
-    sinister: true,
-    reversed: true
-  },
-  snail: {
-    colors: 2,
-    sinister: true
-  },
-  snake: {
-    colors: 2,
-    sinister: true
-  },
-  spear: {
-    colors: 2,
-    reversed: true
-  },
-  spider: {
-    reversed: true
-  },
-  spiral: {
-    sinister: true,
-    reversed: true
-  },
-  squirrel: {
-    sinister: true
-  },
-  stagLodgedRegardant: {
-    colors: 3,
-    sinister: true
-  },
-  stagPassant: {
-    colors: 2,
-    sinister: true
-  },
-  stirrup: {
-    colors: 2
-  },
-  stork: {
-    colors: 2,
-    sinister: true
-  },
-  swallow: {
-    colors: 2,
-    sinister: true
-  },
-  swan: {
-    colors: 3,
-    sinister: true
-  },
-  swanErased: {
-    colors: 3,
-    sinister: true
-  },
-  sword: {
-    colors: 2,
-    reversed: true
-  },
-  talbotPassant: {
-    colors: 3,
-    sinister: true
-  },
-  talbotSejant: {
-    colors: 3,
-    sinister: true
-  },
-  tower: {
-    colors: 2
-  },
-  tree: {
-    positions: {e: 1}
-  },
-  trefoil: {
-    reversed: true
-  },
-  trowel: {
-    colors: 2,
-    sinister: true,
-    reversed: true
-  },
-  unicornRampant: {
-    colors: 3,
-    sinister: true,
-    layered: true
-  },
-  wasp: {
-    colors: 3,
-    reversed: true
-  },
-  wheatStalk: {
-    colors: 2
-  },
-  windmill: {
-    colors: 3,
-    sinister: true
-  },
-  wing: {
-    sinister: true
-  },
-  wingSword: {
-    colors: 3,
-    sinister: true
-  },
-  wolfHeadErased: {
-    colors: 2,
-    sinister: true
-  },
-  wolfPassant: {
-    colors: 3,
-    sinister: true,
-    positions: {e: 10, def: 1, abc: 1, bdefh: 1, jlh: 1, abcpqh: 1}
-  },
-  wolfRampant: {
-    colors: 3,
-    sinister: true,
-    layered: true
-  },
-  wolfStatant: {
-    colors: 3,
-    sinister: true
-  },
-  wyvern: {
-    colors: 3,
-    sinister: true,
-    positions: {e: 10, jln: 1}
-  },
-  wyvernWithWingsDisplayed: {
-    colors: 3,
-    sinister: true
-  }
-};
-
-export const charges = {
-  types: {
-    conventional: 33, // 40 charges
-    crosses: 13, // 30 charges
-    beasts: 7, // 41 charges
-    beastHeads: 3, // 10 charges
-    birds: 3, // 16 charges
-    reptiles: 2, // 5 charges
-    bugs: 2, // 8 charges
-    fishes: 1, // 3 charges
-    molluscs: 1, // 2 charges
-    plants: 3, // 18 charges
-    fantastic: 5, // 14 charges
-    agriculture: 2, // 8 charges
-    arms: 5, // 32 charges
-    bodyparts: 2, // 12 charges
-    people: 2, // 4 charges
-    architecture: 3, // 11 charges
-    seafaring: 3, // 9 charges
-    tools: 3, // 15 charges
-    miscellaneous: 5, // 30 charges
-    inescutcheon: 3, // 43 charges
-    ornaments: 0, // 9 charges
-    uploaded: 0
-  },
-  single: {
-    conventional: 10,
-    crosses: 8,
-    beasts: 7,
-    beastHeads: 3,
-    birds: 3,
-    reptiles: 2,
-    bugs: 2,
-    fishes: 1,
-    molluscs: 1,
-    plants: 3,
-    fantastic: 5,
-    agriculture: 2,
-    arms: 5,
-    bodyparts: 2,
-    people: 2,
-    architecture: 3,
-    seafaring: 3,
-    tools: 3,
-    miscellaneous: 5,
-    inescutcheon: 1
-  },
-  semy: {
-    conventional: 4,
-    crosses: 1
-  },
-  conventional: {
-    annulet: 4,
-    billet: 5,
-    carreau: 1,
-    comet: 1,
-    compassRose: 1,
-    crescent: 5,
-    delf: 0,
-    estoile: 1,
-    fleurDeLis: 6,
-    fountain: 1,
-    fusil: 4,
-    gear: 1,
-    goutte: 4,
-    heart: 4,
-    lozenge: 2,
-    lozengeFaceted: 3,
-    lozengePloye: 1,
-    mascle: 4,
-    moonInCrescent: 1,
-    mullet: 5,
-    mullet10: 1,
-    mullet4: 3,
-    mullet6: 4,
-    mullet6Faceted: 1,
-    mullet6Pierced: 1,
-    mullet7: 1,
-    mullet8: 1,
-    mulletFaceted: 1,
-    mulletPierced: 1,
-    pique: 2,
-    roundel: 4,
-    roundel2: 3,
-    rustre: 2,
-    spiral: 1,
-    sun: 3,
-    sunInSplendour: 1,
-    sunInSplendour2: 1,
-    trefle: 2,
-    triangle: 3,
-    trianglePierced: 1
-  },
-  crosses: {
-    crossHummetty: 15,
-    crossVoided: 1,
-    crossPattee: 2,
-    crossPatteeAlisee: 1,
-    crossFormee: 1,
-    crossFormee2: 2,
-    crossPotent: 2,
-    crossJerusalem: 1,
-    crosslet: 1,
-    crossClechy: 3,
-    crossBottony: 1,
-    crossFleury: 3,
-    crossPatonce: 1,
-    crossPommy: 1,
-    crossGamma: 1,
-    crossArrowed: 1,
-    crossFitchy: 1,
-    crossCercelee: 1,
-    crossMoline: 2,
-    crossFourchy: 1,
-    crossAvellane: 1,
-    crossErminee: 1,
-    crossBiparted: 1,
-    crossMaltese: 3,
-    crossTemplar: 2,
-    crossCeltic: 1,
-    crossCeltic2: 1,
-    crossTriquetra: 1,
-    crossCarolingian: 1,
-    crossOccitan: 1,
-    crossSaltire: 3,
-    crossBurgundy: 1,
-    crossLatin: 3,
-    crossPatriarchal: 1,
-    crossOrthodox: 1,
-    crossCalvary: 1,
-    crossDouble: 1,
-    crossTau: 1,
-    crossSantiago: 1,
-    crossAnkh: 1
-  },
-  beasts: {
-    agnusDei: 1,
-    badgerStatant: 1,
-    bearPassant: 1,
-    bearRampant: 3,
-    boarRampant: 1,
-    bullPassant: 1,
-    camel: 1,
-    camelBactrian: 1,
-    catPassantGuardant: 1,
-    cowStatant: 1,
-    dolphin: 1,
-    elephant: 1,
-    goat: 1,
-    greyhoundCourant: 1,
-    greyhoundRampant: 1,
-    greyhoundSejant: 1,
-    hedgehog: 1,
-    hindStatant: 1,
-    horsePassant: 1,
-    horseRampant: 2,
-    horseSalient: 1,
-    lamb: 1,
-    lambPassantReguardant: 1,
-    lionPassant: 3,
-    lionPassantGuardant: 2,
-    lionRampant: 7,
-    lionSejant: 2,
-    martenCourant: 1,
-    mastiffStatant: 1,
-    porcupine: 1,
-    rabbitSejant: 1,
-    ramPassant: 1,
-    ratRampant: 1,
-    rhinoceros: 1,
-    squirrel: 1,
-    stagLodgedRegardant: 1,
-    stagPassant: 1,
-    talbotPassant: 1,
-    talbotSejant: 1,
-    wolfPassant: 1,
-    wolfRampant: 1,
-    wolfStatant: 1
-  },
-  beastHeads: {
-    boarHeadErased: 1,
-    bullHeadCaboshed: 1,
-    deerHeadCaboshed: 1,
-    donkeyHeadCaboshed: 1,
-    elephantHeadErased: 1,
-    horseHeadCouped: 1,
-    lionHeadCaboshed: 2,
-    lionHeadErased: 2,
-    ramHeadErased: 1,
-    wolfHeadErased: 2
-  },
-  birds: {
-    cock: 3,
-    dove: 2,
-    doveDisplayed: 1,
-    duck: 1,
-    eagle: 9,
-    falcon: 2,
-    heron: 1,
-    owl: 1,
-    owlDisplayed: 1,
-    parrot: 1,
-    peacock: 1,
-    peacockInPride: 1,
-    raven: 2,
-    stork: 1,
-    swallow: 1,
-    swan: 2,
-    swanErased: 1
-  },
-  reptiles: {
-    crocodile: 1,
-    frog: 1,
-    lizard: 1,
-    ouroboros: 1,
-    snake: 1
-  },
-  bugs: {
-    ant: 1,
-    bee: 1,
-    butterfly: 1,
-    cancer: 1,
-    dragonfly: 1,
-    fly: 1,
-    ladybird: 1,
-    scorpion: 1,
-    spider: 1,
-    wasp: 1
-  },
-  fishes: {
-    pike: 1,
-    plaice: 1,
-    salmon: 1
-  },
-  molluscs: {
-    escallop: 4,
-    kraken: 1,
-    polypus: 1,
-    snail: 1
-  },
-  plants: {
-    apple: 1,
-    cinquefoil: 1,
-    earOfWheat: 1,
-    grapeBunch: 1,
-    grapeBunch2: 1,
-    mapleLeaf: 1,
-    oak: 1,
-    palmTree: 1,
-    pear: 1,
-    pineCone: 1,
-    pineTree: 1,
-    quatrefoil: 1,
-    rose: 1,
-    sextifoil: 1,
-    thistle: 1,
-    tree: 1,
-    trefoil: 1,
-    wheatStalk: 1
-  },
-  fantastic: {
-    angel: 3,
-    basilisk: 1,
-    centaur: 1,
-    dragonPassant: 3,
-    dragonRampant: 2,
-    eagleTwoHeads: 2,
-    griffinPassant: 1,
-    griffinRampant: 2,
-    pegasus: 1,
-    sagittarius: 1,
-    seahorse: 1,
-    serpent: 1,
-    unicornRampant: 1,
-    wyvern: 1,
-    wyvernWithWingsDisplayed: 1
-  },
-  agriculture: {
-    garb: 2,
-    millstone: 1,
-    plough: 1,
-    ploughshare: 1,
-    rake: 1,
-    scythe: 1,
-    scythe2: 1,
-    sickle: 1
-  },
-  arms: {
-    arbalest: 1,
-    arbalest2: 1,
-    arrow: 1,
-    arrowsSheaf: 1,
-    axe: 3,
-    bow: 1,
-    bowWithArrow: 2,
-    bowWithThreeArrows: 1,
-    cannon: 1,
-    falchion: 1,
-    flamberge: 1,
-    flangedMace: 1,
-    gauntlet: 1,
-    gladius: 1,
-    grenade: 1,
-    hatchet: 3,
-    helmet: 2,
-    helmetCorinthian: 1,
-    helmetGreat: 2,
-    helmetZischagge: 1,
-    lanceHead: 1,
-    lanceWithBanner: 1,
-    lochaberAxe: 1,
-    mace: 1,
-    maces: 1,
-    mallet: 1,
-    rapier: 1,
-    sabre: 1,
-    sabre2: 1,
-    sabresCrossed: 1,
-    shield: 1,
-    spear: 1,
-    sword: 4,
-    trident: 1
-  },
-  bodyparts: {
-    armEmbowedHoldingSabre: 1,
-    armEmbowedVambraced: 1,
-    armEmbowedVambracedHoldingSword: 1,
-    bone: 1,
-    crossedBones: 2,
-    foot: 1,
-    hand: 4,
-    head: 1,
-    headWreathed: 1,
-    skeleton: 2,
-    skull: 2,
-    skull2: 1
-  },
-  people: {
-    archer: 1,
-    cavalier: 3,
-    cossack: 1,
-    hermit: 1,
-    monk: 1
-  },
-  architecture: {
-    bridge: 1,
-    bridge2: 1,
-    castle: 2,
-    castle2: 1,
-    church: 1,
-    column: 1,
-    lighthouse: 1,
-    palace: 1,
-    pillar: 1,
-    portcullis: 1,
-    tower: 2,
-    windmill: 1
-  },
-  seafaring: {
-    anchor: 6,
-    armillarySphere: 1,
-    boat: 2,
-    boat2: 1,
-    caravel: 1,
-    drakkar: 1,
-    lymphad: 2,
-    raft: 1,
-    shipWheel: 1
-  },
-  tools: {
-    anvil: 2,
-    drawingCompass: 2,
-    fan: 1,
-    hook: 1,
-    ladder: 1,
-    ladder2: 1,
-    pincers: 1,
-    saw: 1,
-    scale: 1,
-    scaleImbalanced: 1,
-    scalesHanging: 1,
-    scissors: 1,
-    scissors2: 1,
-    shears: 1,
-    trowel: 1
-  },
-  miscellaneous: {
-    amphora: 1,
-    attire: 2,
-    banner: 2,
-    bell: 3,
-    bookClosed: 1,
-    bookClosed2: 1,
-    bookOpen: 1,
-    bucket: 1,
-    buckle: 1,
-    bugleHorn: 2,
-    bugleHorn2: 1,
-    caduceus: 1,
-    chain: 2,
-    chalice: 1,
-    chalice2: 1,
-    cowHorns: 3,
-    crancelin: 0,
-    crosier: 1,
-    crown: 3,
-    crown2: 2,
-    drum: 1,
-    fasces: 1,
-    feather: 3,
-    harp: 2,
-    horseshoe: 3,
-    hourglass: 2,
-    key: 3,
-    laurelWreath: 2,
-    laurelWreath2: 1,
-    log: 1,
-    lute: 2,
-    lyre: 1,
-    mitre: 1,
-    orb: 1,
-    pot: 2,
-    ramsHorn: 1,
-    sceptre: 1,
-    scrollClosed: 1,
-    snowflake: 1,
-    stagsAttires: 1,
-    stirrup: 2,
-    violin: 1,
-    wheel: 3,
-    wing: 2,
-    wingSword: 1
-  },
-  inescutcheon: {
-    inescutcheonHeater: 1,
-    inescutcheonSpanish: 1,
-    inescutcheonFrench: 1,
-    inescutcheonHorsehead: 1,
-    inescutcheonHorsehead2: 1,
-    inescutcheonPolish: 1,
-    inescutcheonHessen: 1,
-    inescutcheonSwiss: 1,
-    inescutcheonBoeotian: 1,
-    inescutcheonRoman: 1,
-    inescutcheonKite: 1,
-    inescutcheonOldFrench: 1,
-    inescutcheonRenaissance: 1,
-    inescutcheonBaroque: 1,
-    inescutcheonTarge: 1,
-    inescutcheonTarge2: 1,
-    inescutcheonPavise: 1,
-    inescutcheonWedged: 1,
-    inescutcheonEmbowed: 1,
-    inescutcheonFlag: 1,
-    inescutcheonPennon: 1,
-    inescutcheonGuidon: 1,
-    inescutcheonBanner: 1,
-    inescutcheonDovetail: 1,
-    inescutcheonGonfalon: 1,
-    inescutcheonPennant: 1,
-    inescutcheonRound: 1,
-    inescutcheonOval: 1,
-    inescutcheonVesicaPiscis: 1,
-    inescutcheonSquare: 1,
-    inescutcheonDiamond: 1,
-    inescutcheonHexagon: 1,
-    inescutcheonNo: 1,
-    inescutcheonFantasy1: 1,
-    inescutcheonFantasy2: 1,
-    inescutcheonFantasy3: 1,
-    inescutcheonFantasy4: 1,
-    inescutcheonFantasy5: 1,
-    inescutcheonNoldor: 1,
-    inescutcheonGondor: 1,
-    inescutcheonEasterling: 1,
-    inescutcheonErebor: 1,
-    inescutcheonIronHills: 1,
-    inescutcheonUrukHai: 1,
-    inescutcheonMoriaOrc: 1
-  },
-  ornaments: {
-    mantle: 0,
-    ribbon1: 3,
-    ribbon2: 2,
-    ribbon3: 1,
-    ribbon4: 1,
-    ribbon5: 1,
-    ribbon6: 1,
-    ribbon7: 1,
-    ribbon8: 1
-  },
-  uploaded: {},
-  data: chargeData
 };
 
 export const patternSize = {standard: 154, small: 20, smaller: 20, big: 5, smallest: 1};
