@@ -74,6 +74,7 @@
   .control {
     display: block;
     position: absolute;
+    visibility: hidden;
     opacity: 0;
     transition: 0.5s ease-in-out;
     transform: translate(-50%, -150%);
@@ -83,7 +84,14 @@
   }
 
   main > div:hover > .control {
+    visibility: visible;
     opacity: 1;
+  }
+
+  @media not (pointer: fine) {
+    main > div:hover > .control {
+      animation: disable-pointer-events 0.5s;
+    }
   }
 
   .control > svg {
