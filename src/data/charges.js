@@ -1407,3 +1407,27 @@ export const charges = {
   uploaded: {},
   data: chargeData
 };
+
+export function registerCharge(name, category, chance) {
+  if (!charges.types[category]) {
+    charges.types[category] = 6;
+    delete charges.types.array;
+  }
+  if (!charges.single[category]) {
+    charges.single[category] = 6;
+    delete charges.single.array;
+  }
+  charges[category][name] = chance;
+  delete charges[category].array;
+}
+
+export function unregisterCharge(name, category) {
+  delete charges[category][name];
+  delete charges[category].array;
+  if (Object.keys(charges[category]).length === 0) {
+    charges.types[category] = 0;
+    delete charges.types.array;
+    charges.single[category] = 0;
+    delete charges.single.array;
+  }
+}
