@@ -124,7 +124,7 @@ export const generate = function (providedSeed) {
     } else if (division && !config.ordinary) {
       const allowCounter = !config.usedPattern && (!coa.line || coa.line === "straight");
 
-      // dimidiation: second charge at division basic positons
+      // dimidiation: second charge at division basic positions
       if (P(0.3) && ["perPale", "perFess"].includes(division) && coa.line === "straight") {
         coa.charges[0].divided = "field";
         if (P(0.95)) {
