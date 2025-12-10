@@ -120,10 +120,10 @@
     // ordinary attributes changed
     if (menu.ordinaries.length) {
       coa.ordinaries = menu.ordinaries.map(o => {
-        if (o.compony || o.gyronny) {
-          o.field2 ||= getField(o.field.t1);
+        if (o.striped) {
+          o.t2 ||= selectSecondTincture(o.field.t1);
         } else {
-          delete o.field2;
+          delete o.t2;
         }
         const item = {ordinary: o.ordinary, t: getTinctureFromField(o.field)};
         if (ordinaries.lined[o.ordinary]) item.line = o.line;
@@ -139,11 +139,10 @@
         if (o.angle) item.angle = o.angle;
         if (o.above) item.above = true;
         if (["bordure", "orle"].includes(o.ordinary)) {
-          if (o.compony) item.compony = o.compony;
-          if (o.gyronny) item.gyronny = o.gyronny;
-          if ((o.compony || o.gyronny) && o.field2) {
-            item.t2 = getTinctureFromField(o.field2);
-          }
+          if (o.striped) item.t = o.field.t1;
+          if (o.striped === "compony") item.compony = o.componySize || 25;
+          if (o.striped === "gyronny") item.gyronny = o.gyronnyNumber || 8;
+          if (o.t2) item.t2 = o.t2;
         }
         return item;
       });
@@ -287,11 +286,12 @@
         const angle = o.angle || 0;
         const divided = o.divided || "";
         const above = o.above || false;
-        const compony = o.compony || 0;
-        const gyronny = o.gyronny || 0;
+        const striped = o.compony ? "compony" : o.gyronny ? "gyronny" : "";
+        const componySize = o.compony || 0;
+        const gyronnyNumber = o.gyronny || 0;
         if (angle) $state.transform = `rotate(${angle})`;
-        const ordinaryObj = {ordinary, field, line, showStroke, stroke, strokeWidth, size, stretch, x, y, angle, divided, above, compony, gyronny};
-        if ((compony || gyronny) && t2) ordinaryObj.field2 = getField(t2);
+        const ordinaryObj = {ordinary, field, line, showStroke, stroke, strokeWidth, size, stretch, x, y, angle, divided, above, striped, componySize, gyronnyNumber};
+        if (t2) ordinaryObj.t2 = t2;
         return ordinaryObj;
       });
 
@@ -595,7 +595,7 @@
 
           {#if o.divided !== "counter" && ["bordure", "orle"].includes(o.ordinary)}
             <div class="subsection">
-              <EditorStriped bind:compony={o.compony} bind:gyronny={o.gyronny} />
+              <EditorStriped bind:striped={o.striped} bind:componySize={o.componySize} bind:gyronnyNumber={o.gyronnyNumber} />
             </div>
           {/if}
 
@@ -606,12 +606,12 @@
           {/if}
 
           {#if o.divided !== "counter"}
-            {#if ["bordure", "orle"].includes(o.ordinary) && (o.compony || o.gyronny)}
+            {#if ["bordure", "orle"].includes(o.ordinary) && o.striped}
               <div class="subsection">
                 <EditorTincture bind:t1={o.field.t1} shield={coa.shield} />
               </div>
               <div class="subsection">
-                <EditorTincture bind:t1={o.field2.t1} shield={coa.shield} />
+                <EditorTincture bind:t1={o.t2} shield={coa.shield} />
               </div>
             {:else}
               <div class="subsection">

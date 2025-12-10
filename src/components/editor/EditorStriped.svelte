@@ -3,17 +3,17 @@
   import {t} from "svelte-i18n";
   import {tooltip} from "scripts/tooltip";
 
-  export let compony = 0;
-  export let gyronny = 0;
-  let striped = compony ? "compony" : gyronny ? "gyronny" : "";
+  export let componySize = 0;
+  export let gyronnyNumber = 0;
+  export let striped = "";
 
   function changeStriped(e: Event) {
-    compony = 0;
-    gyronny = 0;
+    componySize = 0;
+    gyronnyNumber = 0;
     if (striped === "compony") {
-      compony = 25;
+      componySize = 25;
     } else if (striped === "gyronny") {
-      gyronny = 8;
+      gyronnyNumber = 8;
     }
   }
 </script>
@@ -28,12 +28,12 @@
 {#if striped === "compony"}
   <span data-tooltip={$t("tooltip.componySize")} use:tooltip>
     {$t("editor.componySize")}:
-    <input type="number" min="5" max="100" step="1" bind:value={compony} />
+    <input type="number" min="5" max="100" step="1" bind:value={componySize} />
   </span>
 {:else if striped === "gyronny"}
   <span data-tooltip={$t("tooltip.gyronnyNumber")} use:tooltip>
     {$t("editor.gyronnyNumber")}:
-    <input type="number" min="4" max="100" step="2" bind:value={gyronny} />
+    <input type="number" min="4" max="100" step="2" bind:value={gyronnyNumber} />
   </span>
 {/if}
 
