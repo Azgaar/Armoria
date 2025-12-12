@@ -1,9 +1,8 @@
 import {read} from "$app/server";
 import COA from "$lib/components/object/COA.svelte";
 import {DEFAULT_FONTS} from "$lib/config/defaults";
-import {shieldPaths} from "$lib/data/shields";
+import {patterns, shields} from "$lib/data/dataModel";
 import * as stores from "$lib/data/stores";
-import {patterns} from "$lib/data/templates";
 import {getSizeMod, getTemplate, semy} from "$lib/scripts/getters";
 import {parse} from "node-html-parser";
 
@@ -23,7 +22,7 @@ export async function render(coa, size, colors) {
   const {division, ordinaries = [], charges = [], inscriptions = [], shield} = coa;
   logCOAdetails(coa, shield, division, ordinaries, charges);
 
-  const shieldPath = shieldPaths[shield];
+  const shieldPath = shields[shield].path;
   const loadedCharges = await getCharges(coa, shieldPath);
   const loadedPatterns = getPatterns(coa);
   const loadedFonts = await getFonts(coa);
@@ -86,7 +85,7 @@ async function getCharges(coa, shieldPath) {
     uniqueCharges.map(async charge => {
       if (charge.slice(0, 12) === "inescutcheon") {
         const chargeId = charge.length === 12 ? charge + coa.shield[0].toUpperCase() + coa.shield.slice(1) : charge;
-        const path = charge.length > 12 ? shieldPaths[charge.slice(12, 13).toLowerCase() + charge.slice(13)] : shieldPath;
+        const path = charge.length > 12 ? shields[charge.slice(12, 13).toLowerCase() + charge.slice(13)].path : shieldPath;
         return `<g id="${chargeId}"><path transform="translate(66 66) scale(.34)" d="${path}"/></g>`;
       }
 
