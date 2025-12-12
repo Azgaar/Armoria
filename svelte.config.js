@@ -8,7 +8,7 @@ const config = {
     adapter: adapter()
   },
   onwarn: (warning, handler) => {
-    if (warning.code === "a11y_click_events_have_key_events" || warning.code === "a11y_no_static_element_interactions") return;
+    if (warning.code === "a11y-click-events-have-key-events" || warning.code === "a11y-no-static-element-interactions") return;
     handler(warning);
   }
 };
