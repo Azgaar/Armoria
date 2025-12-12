@@ -21,7 +21,7 @@
 
   $: shieldPath = shields.data[coa.shield || $shield].path;
   $: coaDiaper = type === "menuItem" ? null : coa.diaper || $diaper;
-  $: diaperType = getDieperType(coaDiaper);
+  $: diaperType = getDiaperType(coaDiaper);
   $: overFill = !$grad || $grad === "no" ? "none" : `url(#${$grad})`;
 
   // get color or link to pattern
@@ -37,7 +37,7 @@
     return "url(#" + tincture + ")";
   };
 
-  function getDieperType(coaDiaper: string) {
+  function getDiaperType(coaDiaper: string) {
     if (!coaDiaper || coaDiaper === "no") return null;
     const f = !coa.t1.includes("-");
     const d = !division?.t.includes("-");

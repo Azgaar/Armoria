@@ -15,7 +15,7 @@
 
   export let element: IElement;
 
-  const hadleSizeChange = (event: Event) => {
+  const handleSizeChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
     element.size = parseInt(target.value) / 100;
   };
@@ -32,7 +32,7 @@
 
 <span data-tooltip={$t("tooltip.size")} use:tooltip>
   {$t("editor.size")}:
-  <input type="number" min="1" max="500" step="1" value={Math.round(element.size * 100) | 0} on:input={hadleSizeChange} />
+  <input type="number" min="1" max="500" step="1" value={Math.round(element.size * 100) | 0} on:input={handleSizeChange} />
 </span>
 
 <span data-tooltip={$t("tooltip.stretch")} use:tooltip>
