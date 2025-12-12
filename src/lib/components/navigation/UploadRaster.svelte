@@ -4,6 +4,7 @@
   import LicenseList from "./LicenseList.svelte";
   import {state, message, shield, uploaded} from "$lib/data/stores";
   import {charges, DEFAULT_SHIELD_BOX, shields} from "$lib/data/dataModel";
+  import {registerCharge} from "$lib/data/charges";
   import {updateCharge} from "$lib/scripts/getters";
   import {tooltip} from "$lib/scripts/tooltip";
   import {camelize} from "$lib/scripts/utils";
@@ -69,14 +70,7 @@
       return;
     }
 
-    if (!charges.types[category]) charges.types[category] = 6;
-    if (!charges.single[category]) charges.single[category] = 6;
-    charges[category][name] = 5;
-
-    // remove stored weighted arrays
-    delete charges.types.array;
-    delete charges.single.array;
-    delete charges[category].array;
+    registerCharge(name, category, 5);
 
     const image = query("#rasterUpload svg image").cloneNode(true) as Element;
     image.id = name;

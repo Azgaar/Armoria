@@ -3,6 +3,7 @@
   import {t, dictionary, locale} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
   import {charges} from "$lib/data/dataModel";
+  import {unregisterCharge} from "$lib/data/charges";
   import {uploaded} from "$lib/data/stores";
   import {removeCharge} from "$lib/scripts/getters";
   import {tooltip} from "$lib/scripts/tooltip";
@@ -69,7 +70,7 @@
 
   function removeUploaded(charge: string) {
     delete charges.data[charge];
-    delete charges[$uploaded[charge].category][charge];
+    unregisterCharge(charge, $uploaded[charge].category);
     update();
     delete $uploaded[charge];
     localStorage.setItem("uploaded", JSON.stringify($uploaded));

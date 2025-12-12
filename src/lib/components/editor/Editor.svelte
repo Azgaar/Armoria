@@ -854,12 +854,20 @@
 
   :global(.section > span) {
     transition: 1s ease-out;
+    visibility: hidden;
     opacity: 0;
     margin-left: 0.6em;
   }
 
   :global(.section:hover > span) {
+    visibility: visible;
     opacity: 1;
+  }
+
+  @media not (pointer: fine) {
+    :global(.section:hover > span) {
+      animation: disable-pointer-events 0.5s;
+    }
   }
 
   .section > i {
@@ -931,6 +939,12 @@
     opacity: 1;
   }
 
+  @media not (pointer: fine) {
+    :global(.wrapper:hover > .controls) {
+      animation: disable-pointer-events 0.5s;
+    }
+  }
+
   :global(.controls svg) {
     position: absolute;
     fill: #f5f5f5;
@@ -949,5 +963,11 @@
 
   :global(.controls svg:active) {
     transform: translateY(1px);
+  }
+
+  @keyframes -global-disable-pointer-events {
+    0%, 99% {
+      pointer-events: none;
+    }
   }
 </style>

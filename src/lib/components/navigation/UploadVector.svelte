@@ -4,6 +4,7 @@
   import LicenseList from "./LicenseList.svelte";
   import {state, colors, tinctures, message, shield, uploaded} from "$lib/data/stores";
   import {charges, DEFAULT_SHIELD_BOX, shields} from "$lib/data/dataModel";
+  import {registerCharge} from "$lib/data/charges";
   import {updateCharge} from "$lib/scripts/getters";
   import {camelize} from "$lib/scripts/utils";
   import {tooltip} from "$lib/scripts/tooltip";
@@ -107,9 +108,7 @@
       return;
     }
 
-    if (!charges.types[category]) charges.types[category] = 6;
-    if (!charges.single[category]) charges.single[category] = 6;
-    charges[category][name] = 5;
+    registerCharge(name, category, 5);
     const colors = svg.includes("tertiary") ? 3 : svg.includes("secondary") ? 2 : 1;
     charges.data[name] = {colors};
 
