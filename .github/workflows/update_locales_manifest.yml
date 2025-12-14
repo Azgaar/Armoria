@@ -21,25 +21,18 @@ jobs:
           import os
           import time
           import json
-          languages = []
-          for i in os.listdir('public/locales'):
-              if os.path.isdir(os.path.join('public/locales',i)):
-                languages.append(i)
-          # Start with a default in case there is no file found
-          old = {"files":["\/lang.json"],"languages":["en"],"language_mapping":[],"custom_languages":[]}
-          new = {}
-          if os.path.exists("public/locales/manifest.json"):
+          languages = [i.name for i in os.scandir("public/locales") if i.is_dir()]
+          languages.sort()
+          try:
               with open("public/locales/manifest.json") as f:
-                  old = json.load(f)
-          # Timestamp is not part of the keys we want to check for updates to
-          old.pop('timestamp',None)
-          # Carry over any keys that aren't being changed
-          new.update(old)
-          new['languages'] = languages
-          if not old==new:
-              new['timestamp'] = int(time.time())
+                  manifest = json.load(f)
+          except OSError:
+              manifest = {"files": ["\/lang.json"], "languages": ["en"], "language_mapping": [], "custom_languages": []}
+          if languages != manifest['languages']:
+              manifest['languages'] = languages
+              manifest['timestamp'] = int(time.time())
               with open("public/locales/manifest.json", 'w') as f:
-                  json.dump(new,f)
+                  json.dump(manifest, f)
         shell: python
 
       - uses: peter-evans/create-pull-request@v3
