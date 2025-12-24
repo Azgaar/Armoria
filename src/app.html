@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    %sveltekit.head%
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Armoria</title>
+    <meta name="author" content="Azgaar" />
+    <meta name="description" content="Heraldry generator and editor by Azgaar" />
+    <meta name="theme-color" content="#000000" />
+    <meta property="og:url" content="https://https://armoria.vercel.app" />
+    <meta property="og:title" content="Armoria" />
+    <meta property="og:description" content="Heraldry Generator and Editor by Azgaar" />
+    <meta property="og:image" content="https://armoria.vercel.app/preview.png" />
+    <meta property="og:image:width" content="1015" />
+    <meta property="og:image:height" content="468" />
+    <link rel="canonical" href="https://armoria.vercel.app/" />
+    <link rel="manifest" href="%sveltekit.assets%/manifest.json" />
+
+    <link rel="icon" type="image/svg+xml" sizes="any" href="%sveltekit.assets%/logo.svg" />
+    <link rel="apple-touch-icon" href="%sveltekit.assets%/logo192.png" />
+    <link rel="stylesheet" href="%sveltekit.assets%/global.css" />
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-079Z8WG156"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-079Z8WG156");
+    </script>
+  </head>
+
+  <body>
+    <svg id="defs" width="0" height="0" style="position: absolute">
+      <defs>
+        <g id="filters">
+          <filter id="highlight">
+            <feMorphology operator="dilate" radius="0.5" />
+            <feGaussianBlur stdDeviation="0.5" result="blur" />
+            <feFlood flood-color="yellow" />
+            <feComposite in2="blur" operator="in" />
+            <feMerge>
+              <feMergeNode />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </g>
+        <g id="gradients">
+          <linearGradient id="luster" x1="0%" y1="100%" x2="95%" y2="10%">
+            <stop stop-color="#000" stop-opacity=".3" offset="0" />
+            <stop stop-color="#ccc" stop-opacity="0" offset=".8" />
+            <stop stop-color="#fff" stop-opacity=".2" offset="1" />
+          </linearGradient>
+          <radialGradient id="spotlight" cx="35%" cy="35%" r="100%">
+            <stop stop-color="#fff" stop-opacity=".3" offset="0" />
+            <stop stop-color="#fff" stop-opacity=".15" offset=".2" />
+            <stop stop-color="#000" stop-opacity="0" offset=".7" />
+          </radialGradient>
+          <radialGradient id="backlight" cx="100%" cy="100%" r="150%">
+            <stop stop-color="#fff" stop-opacity=".3" offset="0" />
+            <stop stop-color="#fff" stop-opacity=".15" offset=".25" />
+            <stop stop-color="#000" stop-opacity="0" offset="1" />
+          </radialGradient>
+          <linearGradient id="brink" x1="0%" y1="100%" x2="100%" y2="100%">
+            <stop stop-color="#fff" stop-opacity=".3" offset="0" />
+            <stop stop-color="#000" stop-opacity=".2" offset=".5" />
+          </linearGradient>
+        </g>
+        <g id="diapers">
+          <pattern id="sulzbach" width=".101" height=".101" viewBox="0 0 100 100" patternTransform="rotate(45)">
+            <g fill="#000" stroke="none" opacity=".08">
+              <circle cx="50" cy="50" r="6" />
+              <circle cx="0" cy="0" r="6" />
+              <circle cx="100" cy="0" r="6" />
+              <circle cx="100" cy="100" r="6" />
+              <circle cx="0" cy="100" r="6" />
+            </g>
+            <g fill="none" stroke="#000" stroke-width="4" opacity=".08">
+              <path d="m6 80v-60" />
+              <path d="m20 6h60" />
+              <path d="m94 20v60" />
+              <path d="m80 94h-60" />
+              <path d="m6 6c11.787 2.9106 18.776 10.599 22 22-13.205-3.8261-19.647-11.696-22-22z" />
+              <path d="m28 72c-2.9106 11.787-10.599 18.776-22 22 3.8261-13.205 11.696-19.647 22-22z" />
+              <path d="m94 6c-2.9106 11.787-10.599 18.776-22 22 3.8261-13.205 11.696-19.647 22-22z" />
+              <path d="m72 72c11.787 2.9106 18.776 10.599 22 22-13.205-3.8261-19.647-11.696-22-22z" />
+            </g>
+          </pattern>
+          <pattern id="sennwald" width=".101" height=".101" viewBox="0 0 100 100" patternTransform="rotate(45)">
+            <g fill="none" stroke="#000" opacity=".2">
+              <path d="M6 6 h88 v88 H6 z" />
+              <path
+                d="M29.8 47c-22.6 1-9.3 35.9 10 23.5-2.6 19 32.2 21.8 25.8-4.4 21 7.7 30.5-26.4 4-24.4C92 21.7 44.4 4.3 47.6 31.2 45 7.4 3.3 26.5 30 46.9z"
+              />
+              <path d="M59.6 45a11 10.5 38.5 11-19 9.5 11 10.5 38.5 1119-9.4z" />
+            </g>
+          </pattern>
+          <pattern id="tessellation" width=".125" height=".125" viewBox="0 0 84 84">
+            <path
+              fill="#222"
+              opacity=".1"
+              stroke-width="2"
+              fill-rule="evenodd"
+              d="M84 23c-4.417 0-8-3.584-8-7.998V8h-7.002C64.58 8 61 4.42 61 0H23c0 4.417-3.584 8-7.998 8H8v7.002C8 19.42 4.42 23 0 23v38c4.417 0 8 3.584 8 7.998V76h7.002C19.42 76 23 79.58 23 84h38c0-4.417 3.584-8 7.998-8H76v-7.002C76 64.58 79.58 61 84 61V23zM59.05 83H43V66.95c5.054-.5 9-4.764 9-9.948V52h5.002c5.18 0 9.446-3.947 9.95-9H83v16.05c-5.054.5-9 4.764-9 9.948V74h-5.002c-5.18 0-9.446 3.947-9.95 9zm-34.1 0H41V66.95c-5.053-.502-9-4.768-9-9.948V52h-5.002c-5.184 0-9.447-3.946-9.95-9H1v16.05c5.053.502 9 4.768 9 9.948V74h5.002c5.184 0 9.447 3.946 9.95 9zm0-82H41v16.05c-5.054.5-9 4.764-9 9.948V32h-5.002c-5.18 0-9.446 3.947-9.95 9H1V24.95c5.054-.5 9-4.764 9-9.948V10h5.002c5.18 0 9.446-3.947 9.95-9zm34.1 0H43v16.05c5.053.502 9 4.768 9 9.948V32h5.002c5.184 0 9.447 3.946 9.95 9H83V24.95c-5.053-.502-9-4.768-9-9.948V10h-5.002c-5.184 0-9.447-3.946-9.95-9zM50 50v7.002C50 61.42 46.42 65 42 65c-4.417 0-8-3.584-8-7.998V50h-7.002C22.58 50 19 46.42 19 42c0-4.417 3.584-8 7.998-8H34v-7.002C34 22.58 37.58 19 42 19c4.417 0 8 3.584 8 7.998V34h7.002C61.42 34 65 37.58 65 42c0 4.417-3.584 8-7.998 8H50z"
+            />
+          </pattern>
+          <pattern id="nourse" width=".25" height=".25" viewBox="0 0 26 26">
+            <g fill="none" stroke="#000" stroke-width="1" opacity=".06">
+              <path d="M26 1h-.2A25 25 0 001 26M25.2 26A25 25 0 000 1" />
+              <path d="M1 0v.2a25 25 0 0025 25" />
+              <path d="M0 25.2h.2A25 25 0 0025.2 0" />
+              <path stroke-width=".4" d="M10.5 10.6h5v5h-5z" />
+              <path
+                stroke-width=".5"
+                d="M11 10c0-3.2 4.1-3.2 4 0M15 16.2c0 3.4-4 3.3-4 0M16.2 11c3.2.2 3.1 4.3 0 4.1M9.9 15.1c-3.3 0-3.3-4 0-4"
+              />
+              <g fill="#000" stroke="none">
+                <circle cx="21.9" cy="19.7" r="1" />
+                <circle cx="20" cy="20.7" r="1" />
+                <circle cx="21.9" cy="21.9" r="1" />
+                <circle cx="5" cy="7.2" r="1" />
+                <circle cx="6.9" cy="6.1" r="1" />
+                <circle cx="5" cy="5" r="1" />
+                <circle cx="21.9" cy="4.9" r="1" />
+                <circle cx="20" cy="6" r="1" />
+                <circle cx="21.9" cy="7.1" r="1" />
+                <circle cx="4.9" cy="22" r="1" />
+                <circle cx="6.9" cy="20.9" r="1" />
+                <circle cx="4.9" cy="19.8" r="1" />
+                <circle cx="12" cy="14.2" r=".9" />
+                <circle cx="14.1" cy="14.2" r=".9" />
+                <circle cx="12" cy="12" r=".9" />
+                <circle cx="14.1" cy="12" r=".9" />
+                <circle cx="1.8" cy="13.1" r=".8" />
+                <circle cx=".9" cy="14.6" r=".8" />
+                <circle cx=".9" cy="11.6" r=".8" />
+                <circle cx="24.3" cy="13.1" r=".8" />
+                <circle cx="25.2" cy="14.6" r=".8" />
+                <circle cx="25.2" cy="11.6" r=".8" />
+                <circle cx="13" cy="24.3" r=".8" />
+                <circle cx="14.6" cy="25.1" r=".8" />
+                <circle cx="11.5" cy="25.1" r=".8" />
+                <circle cx="13" cy="1.8" r=".8" />
+                <circle cx="11.4" cy="1" r=".8" />
+                <circle cx="14.6" cy="1" r=".8" />
+              </g>
+            </g>
+          </pattern>
+        </g>
+        <g id="charges">
+          <!-- Loaded charges -->
+        </g>
+        <g id="patterns">
+          <!-- patterns to add -->
+        </g>
+        <g id="icons">
+          <!-- Icons are from FontAwesome set and available under CC4, see https://fontawesome.com/license -->
+          <symbol id="dice-icon" viewBox="0 0 640 512">
+            <path
+              d="M592 192H473.26c12.69 29.59 7.12 65.2-17 89.32L320 417.58V464c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48V240c0-26.51-21.49-48-48-48zM480 376c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24zm-46.37-186.7L258.7 14.37c-19.16-19.16-50.23-19.16-69.39 0L14.37 189.3c-19.16 19.16-19.16 50.23 0 69.39L189.3 433.63c19.16 19.16 50.23 19.16 69.39 0L433.63 258.7c19.16-19.17 19.16-50.24 0-69.4zM96 248c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24zm128 128c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24zm0-128c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24zm0-128c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24zm128 128c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24z"
+            />
+          </symbol>
+          <symbol id="pencil-icon" viewBox="0 0 536 536">
+            <path
+              d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
+            />
+          </symbol>
+          <symbol id="download-icon" viewBox="0 0 536 536">
+            <path
+              d="M216 0h80c13 0 24 11 24 24v168h88c17 0 26 22 14 34L270 378c-8 8-20 8-28 0L90 226c-13-13-4-34 14-34h88V24c0-13 11-24 24-24zm296 376v112c0 13-11 24-24 24H24c-13 0-24-11-24-24V376c0-13 11-24 24-24h147l49 49c20 20 52 20 72 0l49-49h147c13 0 24 11 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"
+            />
+          </symbol>
+          <symbol id="upload-icon" viewBox="0 0 536 536">
+            <path
+              d="M307 390h-80c-13 0-24-11-24-24V198h-88c-17 0-26-22-14-34L253 12c8-8 20-8 28 0l152 152c12 12 4 34-14 34h-88v168c0 13-11 24-24 24zm216-8v112c0 13-11 24-24 24H35c-13 0-24-11-24-24V382c0-13 11-24 24-24h136v8c0 31 25 56 56 56h80c31 0 56-25 56-56v-8h136c13 0 24 11 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"
+            />
+          </symbol>
+          <symbol id="save-icon" viewBox="0 0 512 512">
+            <path
+              d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM224 416c-35.346 0-64-28.654-64-64 0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64zm96-304.52V212c0 6.627-5.373 12-12 12H76c-6.627 0-12-5.373-12-12V108c0-6.627 5.373-12 12-12h228.52c3.183 0 6.235 1.264 8.485 3.515l3.48 3.48A11.996 11.996 0 0 1 320 111.48z"
+            />
+          </symbol>
+          <symbol id="options-icon" viewBox="0 0 536 536">
+            <path
+              d="M60 145h416c9 0 16-7 16-16V89c0-9-7-16-16-16H60c-9 0-16 7-16 16v40c0 9 7 16 16 16zm0 160h416c9 0 16-7 16-16v-40c0-9-7-16-16-16H60c-9 0-16 7-16 16v40c0 9 7 16 16 16zm0 160h416c9 0 16-7 16-16v-40c0-9-7-16-16-16H60c-9 0-16 7-16 16v40c0 9 7 16 16 16z"
+            />
+          </symbol>
+          <symbol id="rollback-icon" viewBox="0 0 536 536">
+            <path
+              d="M110 45v420c0 7 8 15 15 15h45c7 0 15-8 15-15V290l196 181c19 19 54 8 54-21V65c0-27-35-45-54-27L185 220V42c0-6-5-12-12-12h-48c-7 0-15 8-15 15z"
+            />
+          </symbol>
+          <symbol id="reroll-icon" viewBox="0 0 536 536">
+            <path
+              d="M435 45v420c0 7-8 15-15 15h-45c-7 0-15-8-15-15V290L165 471c-20 19-55 8-55-21V65c0-27 35-45 55-27l195 182V42c0-6 5-12 12-12h48c7 0 15 8 15 15z"
+            />
+          </symbol>
+          <symbol id="undo-icon" viewBox="0 0 536 536">
+            <path
+              d="M525 32v47c0 7-6 13-13 12l-85-1a244 244 0 01-158 434A248 248 0 0185 110c4-5 12-5 17-1l34 34c5 5 5 12 1 17a176 176 0 10303 156c17-71-7-145-68-186v102c0 6-5 12-12 12h-48c-6 0-12-5-12-12V32c0-7 6-12 12-12h201c6 0 12 5 12 12z"
+            />
+          </symbol>
+          <symbol id="redo-icon" viewBox="0 0 536 536">
+            <path
+              d="M17 32v47c0 7 6 13 13 12l85-1a244 244 0 00158 434 248 248 0 00184-414c-4-5-12-5-17-1l-34 34c-5 5-5 12-1 17a176 176 0 11-303 156c-17-71 7-145 68-186v102c0 6 5 12 12 12h48c6 0 12-5 12-12V32c0-7-6-12-12-12H29c-6 0-12 5-12 12z"
+            />
+          </symbol>
+          <symbol id="about-icon" viewBox="0 0 536 536">
+            <path
+              d="M270 7C190 7 139 39 98 98c-7 10-5 25 5 32l43 33c11 8 25 6 33-4 26-31 44-49 83-49 31 0 69 19 69 49 0 23-19 34-49 51-35 20-82 45-82 107v10c0 13 11 24 24 24h72c13 0 24-11 24-24v-6c0-43 126-45 126-161C446 73 355 7 270 7zm-10 373a69 69 0 100 139 69 69 0 000-139z"
+            />
+          </symbol>
+          <symbol id="back-icon" viewBox="0 0 536 536">
+            <path
+              d="M268 516a248 248 0 110-496 248 248 0 010 496zm116-292H268v-71c0-11-13-16-20-8L133 260c-5 4-5 12 0 16l114 115c8 8 21 2 21-8v-71h116c7 0 12-5 12-12v-64c0-7-5-12-12-12z"
+            />
+          </symbol>
+          <symbol id="random-icon" viewBox="0 0 536 536">
+            <path
+              d="M505 359c9 9 9 25 0 34l-80 80c-15 15-41 4-41-17v-40h-59a12 12 0 01-9-4l-70-75 53-58 53 57h32v-40c0-21 26-32 41-17l80 80zM12 176h84l53 57 53-58-70-75a12 12 0 00-9-4H12c-7 0-12 5-12 12v56c0 7 5 12 12 12zm372 0v40c0 21 26 32 41 17l80-80c9-9 9-25 0-34l-80-80c-15-15-41-4-41 17v40h-59a12 12 0 00-9 4L96 336H12c-7 0-12 5-12 12v56c0 7 5 12 12 12h111c3 0 6-1 9-4l220-236h32z"
+            />
+          </symbol>
+          <symbol id="info-icon" viewBox="0 0 536 536">
+            <path
+              d="M270 21a248 248 0 100 496 248 248 0 000-496zm0 110a42 42 0 110 84 42 42 0 010-84zm56 254c0 6-6 12-12 12h-88c-7 0-12-6-12-12v-24c0-7 5-12 12-12h12v-64h-12c-7 0-12-6-12-12v-24c0-7 5-12 12-12h64c6 0 12 5 12 12v100h12c6 0 12 5 12 12z"
+            />
+          </symbol>
+          <symbol id="install-icon" viewBox="0 0 512 512">
+            <path
+              d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+            />
+          </symbol>
+          <symbol id="clone-icon" viewBox="0 0 512 512">
+            <path
+              d="M464 0H144c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h320c26.51 0 48-21.49 48-48v-48h48c26.51 0 48-21.49 48-48V48c0-26.51-21.49-48-48-48zM362 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h42v224c0 26.51 21.49 48 48 48h224v42a6 6 0 0 1-6 6zm96-96H150a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h308a6 6 0 0 1 6 6v308a6 6 0 0 1-6 6z"
+            />
+          </symbol>
+          <symbol id="remove-icon" viewBox="0 0 512 512">
+            <path
+              d="M268 416h24a12 12 0 0 0 12-12V188a12 12 0 0 0-12-12h-24a12 12 0 0 0-12 12v216a12 12 0 0 0 12 12zM432 80h-82.41l-34-56.7A48 48 0 0 0 274.41 0H173.59a48 48 0 0 0-41.16 23.3L98.41 80H16A16 16 0 0 0 0 96v16a16 16 0 0 0 16 16h16v336a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128h16a16 16 0 0 0 16-16V96a16 16 0 0 0-16-16zM171.84 50.91A6 6 0 0 1 177 48h94a6 6 0 0 1 5.15 2.91L293.61 80H154.39zM368 464H80V128h288zm-212-48h24a12 12 0 0 0 12-12V188a12 12 0 0 0-12-12h-24a12 12 0 0 0-12 12v216a12 12 0 0 0 12 12z"
+            />
+          </symbol>
+          <symbol id="up-icon" viewBox="0 0 512 512">
+            <path
+              d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"
+            />
+          </symbol>
+          <symbol id="down-icon" viewBox="0 0 512 512">
+            <path
+              d="M413.1 222.5l22.2 22.2c9.4 9.4 9.4 24.6 0 33.9L241 473c-9.4 9.4-24.6 9.4-33.9 0L12.7 278.6c-9.4-9.4-9.4-24.6 0-33.9l22.2-22.2c9.5-9.5 25-9.3 34.3.4L184 343.4V56c0-13.3 10.7-24 24-24h32c13.3 0 24 10.7 24 24v287.4l114.8-120.5c9.3-9.8 24.8-10 34.3-.4z"
+            />
+          </symbol>
+          <symbol id="license-icon" viewBox="0 0 512 512">
+            <path
+              d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm117.134 346.753c-1.592 1.867-39.776 45.731-109.851 45.731-84.692 0-144.484-63.26-144.484-145.567 0-81.303 62.004-143.401 143.762-143.401 66.957 0 101.965 37.315 103.422 38.904a12 12 0 0 1 1.238 14.623l-22.38 34.655c-4.049 6.267-12.774 7.351-18.234 2.295-.233-.214-26.529-23.88-61.88-23.88-46.116 0-73.916 33.575-73.916 76.082 0 39.602 25.514 79.692 74.277 79.692 38.697 0 65.28-28.338 65.544-28.625 5.132-5.565 14.059-5.033 18.508 1.053l24.547 33.572a12.001 12.001 0 0 1-.553 14.866z"
+            />
+          </symbol>
+          <symbol id="support-icon" viewBox="0 0 512 512">
+            <path
+              d="M512 194.8c0 101.3-82.4 183.8-183.8 183.8-101.7 0-184.4-82.4-184.4-183.8 0-101.6 82.7-184.3 184.4-184.3C429.6 10.5 512 93.2 512 194.8zM0 501.5h90v-491H0v491z"
+            />
+          </symbol>
+          <symbol id="language-icon" viewBox="0 0 512 512">
+            <path
+              d="M336.5 160C322 70.7 287.8 8 248 8s-74 62.7-88.5 152h177zM152 256c0 22.2 1.2 43.5 3.3 64h185.3c2.1-20.5 3.3-41.8 3.3-64s-1.2-43.5-3.3-64H155.3c-2.1 20.5-3.3 41.8-3.3 64zm324.7-96c-28.6-67.9-86.5-120.4-158-141.6 24.4 33.8 41.2 84.7 50 141.6h108zM177.2 18.4C105.8 39.6 47.8 92.1 19.3 160h108c8.7-56.9 25.5-107.8 49.9-141.6zM487.4 192H372.7c2.1 21 3.3 42.5 3.3 64s-1.2 43-3.3 64h114.6c5.5-20.5 8.6-41.8 8.6-64s-3.1-43.5-8.5-64zM120 256c0-21.5 1.2-43 3.3-64H8.6C3.2 212.5 0 233.8 0 256s3.2 43.5 8.6 64h114.6c-2-21-3.2-42.5-3.2-64zm39.5 96c14.5 89.3 48.7 152 88.5 152s74-62.7 88.5-152h-177zm159.3 141.6c71.4-21.2 129.4-73.7 158-141.6h-108c-8.8 56.9-25.6 107.8-50 141.6zM19.3 352c28.6 67.9 86.5 120.4 158 141.6-24.4-33.8-41.2-84.7-50-141.6h-108z"
+            />
+          </symbol>
+          <symbol id="other-icon" viewBox="0 0 512 512">
+            <path
+              d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"
+            />
+          </symbol>
+          <symbol id="plus-icon" viewBox="0 0 448 512">
+            <path
+              d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"
+            />
+          </symbol>
+        </g>
+      </defs>
+    </svg>
+    <noscript
+      >JavaScript support is absolutely required to run this Application. Please enable JavaScript and refresh the page</noscript
+    >
+    <div style="display: contents">%sveltekit.body%</div>
+  </body>
+</html>

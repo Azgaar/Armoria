@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - "public/locales/*"
+      - "static/locales/*"
   workflow_dispatch:
     branches:
       - master
@@ -21,21 +21,21 @@ jobs:
           import os
           import time
           import json
-          languages = [i.name for i in os.scandir("public/locales") if i.is_dir()]
+          languages = [i.name for i in os.scandir("static/locales") if i.is_dir()]
           languages.sort()
           try:
-              with open("public/locales/manifest.json") as f:
+              with open("static/locales/manifest.json") as f:
                   manifest = json.load(f)
           except OSError:
               manifest = {"files": ["\/lang.json"], "languages": ["en"], "language_mapping": [], "custom_languages": []}
           if languages != manifest['languages']:
               manifest['languages'] = languages
               manifest['timestamp'] = int(time.time())
-              with open("public/locales/manifest.json", 'w') as f:
+              with open("static/locales/manifest.json", 'w') as f:
                   json.dump(manifest, f)
         shell: python
 
       - uses: peter-evans/create-pull-request@v3
         with:
-          commit-message: "Auto-update Crowdin manifest.json on changes to public/locales"
+          commit-message: "Auto-update Crowdin manifest.json on changes to static/locales"
           title: "Update locales manifest"
