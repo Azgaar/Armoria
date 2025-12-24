@@ -6,7 +6,7 @@
   let touch = {startX: 0, startY: 0};
 
   // prevent unwanted refresh
-  if (location.host === "azgaar.github.io" && !navigator.userAgent.includes("Electron")) {
+  if (location.host === "armoria.vercel.app" && !navigator.userAgent.includes("Electron")) {
     window.onbeforeunload = () => "Are you sure you want to navigate away?";
   }
 
