@@ -7,7 +7,7 @@ A human-preference model that helps you pick your ideal coat of arms. The system
 ```
 ┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
 │  Armoria Svelte  │────▶│  Preference API   │────▶│  Reward Model   │
-│  Frontend        │     │  (FastAPI, 8787)  │     │  (GBC + feature │
+│  Frontend        │     │  (FastAPI, 8080)  │     │  (GBC + feature │
 │  (Svelte 3)      │◀────│                   │◀────│   extraction)   │
 └─────────────────┘     └──────────────────┘     └─────────────────┘
 ```
@@ -95,6 +95,13 @@ Click the **"Preference Mode"** button in the top-right corner of the Armoria he
 - You can also click **"Train Model"** at any time from the toolbar
 - Stats (preference count, model accuracy, training samples) are shown in the dashboard
 
+### Favorites
+
+- Click the **"Favorites"** tab to review all designs you liked
+- **Grid Selections**: Coats of arms you selected as favourites during grid rounds
+- **Pairwise Winners**: Coats of arms you chose in head-to-head comparisons
+- Click any coat of arms to copy its JSON to clipboard
+
 ## API Endpoints
 
 | Method | Endpoint | Description |
@@ -106,6 +113,7 @@ Click the **"Preference Mode"** button in the top-right corner of the Armoria he
 | POST | `/api/suggest-pair` | Get the most uncertain pair (active learning) |
 | GET | `/api/stats` | Get preference and model statistics |
 | POST | `/api/reset` | Clear all preferences and reset the model |
+| GET | `/api/favorites` | Get liked COAs grouped by source (grid selections and pairwise winners) |
 
 ## Feature Extraction
 
