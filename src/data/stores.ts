@@ -59,6 +59,7 @@ export const state = writable({
 });
 
 export const iconedNav = writable(false);
+export const preferenceMode = writable(false);
 
 const createMessageStore = () => {
   const {subscribe, set} = writable(null);

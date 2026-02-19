@@ -1,7 +1,7 @@
 <script lang="ts">
   // @ts-check
   import {charges, shields} from "data/dataModel";
-  import {background, fonts, history, isTextReady, matrices, matrix, message, shield, size, state, uploaded} from "data/stores";
+  import {background, fonts, history, isTextReady, matrices, matrix, message, shield, size, state, uploaded, preferenceMode} from "data/stores";
   import {registerCharge} from "data/charges";
   import "scripts/i18n";
   import {rw} from "scripts/utils";
@@ -19,6 +19,7 @@
   import UploadVector from "./navigation/UploadVector.svelte";
   import Viewer from "./navigation/Viewer.svelte";
   import Navbar from "./navigation/header/Navbar.svelte";
+  import PreferenceMode from "./preference/PreferenceMode.svelte";
 
   let quantity: number;
   let width: number;
@@ -66,6 +67,14 @@
 
     // on coa edit or view mode
     if ($state.edit || $state.view) $state.c = $matrices[matrix][$state.i];
+  }
+
+  function togglePreferenceMode() {
+    $preferenceMode = !$preferenceMode;
+    if ($preferenceMode) {
+      $state.edit = 0;
+      $state.view = 0;
+    }
   }
 
   function loadFonts() {
@@ -151,9 +160,14 @@
   <div style="background-color: {$background}">
     <header>
       <Navbar />
+      <button class="pref-toggle" on:click={togglePreferenceMode}>
+        {$preferenceMode ? "Exit Preference Mode" : "Preference Mode"}
+      </button>
     </header>
 
-    {#if $state.edit}<Editor historyId={$state.c} {seed} />
+    {#if $preferenceMode}
+      <PreferenceMode />
+    {:else if $state.edit}<Editor historyId={$state.c} {seed} />
     {:else}<Gallery {gallery} {width} {height} />{/if}
 
     {#if $state.about}<About />{/if}
@@ -174,5 +188,30 @@
     height: 100%;
     width: 100%;
     background-image: url(../background.svg);
+  }
+
+  header {
+    position: relative;
+  }
+
+  .pref-toggle {
+    position: absolute;
+    right: 12px;
+    top: 10px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: 1px solid #444;
+    background: #222;
+    color: #f1f1f1;
+    font-size: 0.9em;
+    cursor: pointer;
+  }
+
+  .pref-toggle:hover {
+    background: #333;
+  }
+
+  .pref-toggle:active {
+    transform: translateY(1px);
   }
 </style>
