@@ -1,0 +1,15 @@
+diff --git a/node_modules/path-data-polyfill/path-data-polyfill.js b/node_modules/path-data-polyfill/path-data-polyfill.js
+index 7e97241..a77b88b 100644
+--- a/node_modules/path-data-polyfill/path-data-polyfill.js
++++ b/node_modules/path-data-polyfill/path-data-polyfill.js
+@@ -11,6 +11,10 @@
+ // @license
+ //   MIT License
+ (function() {
++  if (typeof SVGPathElement === "undefined") {
++    return;
++  }
++
+   var clonePathData = function(pathData) {
+     return pathData.map( function(seg) {
+       return {type: seg.type, values: Array.prototype.slice.call(seg.values)}
