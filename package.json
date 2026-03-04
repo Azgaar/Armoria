@@ -37,7 +37,7 @@
     "puppeteer-core": "24.11.2"
   },
   "devDependencies": {
-    "@sveltejs/adapter-vercel": "^5.7.2",
+    "@sveltejs/adapter-vercel": "^6.3.3",
     "@sveltejs/kit": "^2.22.5",
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "@types/eslint": "^9.6.1",
