@@ -1,7 +1,7 @@
 import {read} from "$app/server";
 import COA from "$lib/components/object/COA.svelte";
 import {DEFAULT_FONTS} from "$lib/config/defaults";
-import {patterns, shields} from "$lib/data/dataModel";
+import {divisions, patterns, shields} from "$lib/data/dataModel";
 import * as stores from "$lib/data/stores";
 import {getSizeMod, getTemplate, semy} from "$lib/scripts/getters";
 import {parse} from "node-html-parser";
@@ -22,13 +22,13 @@ export async function render(coa, size, colors) {
   const {division, ordinaries = [], charges = [], inscriptions = [], shield} = coa;
   logCOAdetails(coa, shield, division, ordinaries, charges);
 
-  const shieldPath = shields[shield].path;
+  const shieldPath = shields.data[shield].path;
   const loadedCharges = await getCharges(coa, shieldPath);
   const loadedPatterns = getPatterns(coa);
   const loadedFonts = await getFonts(coa);
   const shieldClip = `<clipPath id="shield_${coa.seed}"><path d="${shieldPath}"/></clipPath>`;
   const divisionClip = division
-    ? `<clipPath id="division_${coa.seed}">${getTemplate(division.division, division.line)}</clipPath>`
+    ? `<clipPath id="division_${coa.seed}">${getTemplate(divisions.data[division.division], division.line)}</clipPath>`
     : "";
   const style = `<style>
     .secondary {fill: var(--secondary);}
