@@ -1,10 +1,12 @@
-import {read} from "$app/server";
 import COA from "$lib/components/object/COA.svelte";
-import {DEFAULT_FONTS} from "$lib/config/defaults";
+import {DEFAULT_COLORS, DEFAULT_FONTS} from "$lib/config/defaults";
 import {divisions, patterns, shields} from "$lib/data/dataModel";
 import * as stores from "$lib/data/stores";
 import {getSizeMod, getTemplate, semy} from "$lib/scripts/getters";
 import {parse} from "node-html-parser";
+import {BROWSER as browser} from "esm-env";
+
+const read = browser ? undefined : (await import("$app/server")).read;
 
 const charges = import.meta.glob("/static/charges/*.svg", {
   query: "?url",
@@ -18,9 +20,9 @@ const backlight = `<radialGradient id="backlight" cx="100%" cy="100%" r="150%">
   <stop stop-color="#000" stop-opacity="0" offset="1"/>
 </radialGradient>`;
 
-export async function render(coa, size, colors) {
+export async function render(coa, size, colors = DEFAULT_COLORS, logging = false) {
   const {division, ordinaries = [], charges = [], inscriptions = [], shield} = coa;
-  logCOAdetails(coa, shield, division, ordinaries, charges);
+  if (logging) logCOAdetails(coa, shield, division, ordinaries, charges);
 
   const shieldPath = shields.data[shield].path;
   const loadedCharges = await getCharges(coa, shieldPath);
@@ -40,11 +42,19 @@ export async function render(coa, size, colors) {
   stores.grad.set("backlight");
   stores.colors.set(colors);
 
-  const svg = COA.render({coa, height: size, width: size, i: "View"});
-  const root = parse(svg.html);
-  root.querySelector("defs").innerHTML =
-    `${shieldClip}${divisionClip}${loadedCharges}${loadedPatterns}${loadedFonts}${backlight}${style}`;
-  return root.outerHTML;
+  if (browser) {
+    const root = document.createElement("div");
+    new COA({target: root, props: {coa, height: size, width: size, i: "External"}});
+    root.querySelector("defs").innerHTML =
+      `${shieldClip}${divisionClip}${loadedCharges}${loadedPatterns}${loadedFonts}${backlight}${style}`;
+    return root.innerHTML;
+  } else {
+    const svg = COA.render({coa, height: size, width: size, i: "External"});
+    const root = parse(svg.html);
+    root.querySelector("defs").innerHTML =
+      `${shieldClip}${divisionClip}${loadedCharges}${loadedPatterns}${loadedFonts}${backlight}${style}`;
+    return root.outerHTML;
+  }
 
   function getPatterns(coa) {
     const isPattern = string => string.includes("-");
@@ -97,11 +107,29 @@ async function getCharges(coa, shieldPath) {
 }
 
 async function fetchCharge(charge) {
-  const url = charges[`/static/charges/${charge}.svg`];
-  const text = await read(url).text();
-  const root = parse(text);
-  const g = root.querySelector("g");
-  return g.outerHTML;
+  if (browser) {
+    const fetched = fetch(`./charges/${charge}.svg`)
+      .then((res) => {
+        if (res.ok) return res.text();
+        else throw new Error("Cannot fetch charge");
+      })
+      .then((text) => {
+        const html = document.createElement("html");
+        html.innerHTML = text;
+        const g = html.querySelector("g");
+        return g.outerHTML;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    return fetched;
+  } else {
+    const url = charges[`/static/charges/${charge}.svg`];
+    const text = await read(url).text();
+    const root = parse(text);
+    const g = root.querySelector("g");
+    return g.outerHTML;
+  }
 }
 
 async function getFonts(coa) {

@@ -13,15 +13,20 @@ export const createConfig = () => ({
 });
 
 // main generation routine
-export const generate = function (providedSeed) {
+export const generate = function (providedSeed, custom = {}) {
   const seed = providedSeed || Math.floor(Math.random() * 1e9);
   Math.random = aleaPRNG(seed);
 
   const config = createConfig();
-  const coa = {seed, t1: getTincture(config, "field")};
+  const customTincture = custom?.tincture();
+  if (customTincture) {
+    if (customTincture.includes("-")) config.usedPattern = customTincture;
+    else config.usedTinctures.push(customTincture);
+  }
+  const coa = {seed, t1: customTincture || getTincture(config, "field")};
 
   const addCharge = P(config.usedPattern ? 0.5 : 0.93); // 80% for charge
-  const linedOrdinary = (addCharge && P(0.3)) || P(0.5) ? rw(ordinaries.lined) : null;
+  const linedOrdinary = (addCharge && P(0.3)) || P(0.5) ? custom?.ordinary() || rw(ordinaries.lined) : null;
   config.ordinary =
     (!addCharge && P(0.65)) || P(0.3) ? (linedOrdinary ? linedOrdinary : rw(ordinaries.straight)) : null; // 36% for ordinary
 
@@ -36,7 +41,7 @@ export const generate = function (providedSeed) {
     ? P(0.7)
     : P(0.995); // 33% for division
 
-  const division = config.divisioned ? rw(divisions.variants) : null;
+  const division = config.divisioned ? custom?.division() || rw(divisions.variants) : null;
 
   if (division) {
     const t = getTincture(config, "division", config.usedTinctures, P(0.98) ? coa.t1 : null);
@@ -66,7 +71,7 @@ export const generate = function (providedSeed) {
   }
 
   if (addCharge) {
-    const charge = selectCharge(config.ordinary || config.divisioned ? charges.types : charges.single);
+    const charge = custom?.charge() || selectCharge(config.ordinary || config.divisioned ? charges.types : charges.single);
     const chargeData = charges.data[charge] || {};
 
     let p = "e";
@@ -170,6 +175,7 @@ export const generate = function (providedSeed) {
     coa.charges.forEach(c => defineChargeAttributes(config, division, c));
   }
 
+  custom?.finalize(coa, config);
   return coa;
 };
 

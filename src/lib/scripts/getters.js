@@ -1,7 +1,7 @@
 import {get} from "svelte/store";
 import {lines, patterns, shields} from "$lib/data/dataModel";
 import {colors, shield, uploaded} from "$lib/data/stores";
-import {browser} from "$app/environment";
+import {BROWSER as browser} from "esm-env";
 
 const colorsData = get(colors);
 const loadedCharges = {};
