@@ -59,7 +59,7 @@ async function send(format: string, svg: string) {
     const svgMinified = minify(svg);
     return new Response(svgMinified, {
       status: 200,
-      headers: {"Content-Type": "image/svg+xml"}
+      headers: {"Content-Type": "image/svg+xml", "Cache-Control": "public, max-age=3600"}
     });
   }
 
@@ -79,6 +79,6 @@ async function send(format: string, svg: string) {
   const buffer = await converter.convert(svg);
   return new Response(buffer, {
     status: 200,
-    headers: {"Content-Type": contentType, "Content-Length": String(buffer.length)}
+    headers: {"Content-Type": contentType, "Content-Length": String(buffer.length), "Cache-Control": "public, max-age=3600"}
   });
 }
