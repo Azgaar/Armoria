@@ -70,7 +70,7 @@
       "targe": "Targe",
       "targe2": "Targe 2",
       "pavise": "Pavois",
-      "wedged": "Dans le coin",
+      "wedged": "En coin",
       "embowed": "Ployé"
     },
     "banner": {
@@ -80,7 +80,7 @@
       "banner": "Bannière",
       "dovetail": "Queue d'aronde",
       "gonfalon": "Gonfanon",
-      "pennant": "Pennon"
+      "pennant": "Fanion"
     },
     "simple": {
       "round": "Rond",
@@ -796,7 +796,7 @@
     "inescutcheonTarge": "Écusson Allemand",
     "inescutcheonTarge2": "Écusson Allemand2",
     "inescutcheonPavise": "Écusson Pavois",
-    "inescutcheonWedged": "Écusson Dans le coin",
+    "inescutcheonWedged": "Écusson En coin",
     "inescutcheonEmbowed": "Écusson Ployé",
     "inescutcheonFlag": "Écusson Drapeau",
     "inescutcheonPennon": "Écusson Pennon",
@@ -804,7 +804,7 @@
     "inescutcheonBanner": "Écusson Bannière",
     "inescutcheonDovetail": "Écusson Queue d'aronde",
     "inescutcheonGonfalon": "Écusson Gonfanon",
-    "inescutcheonPennant": "Écusson Pennon",
+    "inescutcheonPennant": "Écusson Fanion",
     "inescutcheonRound": "Écusson Rond",
     "inescutcheonOval": "Écusson Ovale",
     "inescutcheonVesicaPiscis": "Écusson Vesica Piscis",
