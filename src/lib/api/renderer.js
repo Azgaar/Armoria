@@ -85,7 +85,7 @@ async function getCharges(coa, shieldPath) {
     uniqueCharges.map(async charge => {
       if (charge.slice(0, 12) === "inescutcheon") {
         const chargeId = charge.length === 12 ? charge + coa.shield[0].toUpperCase() + coa.shield.slice(1) : charge;
-        const path = charge.length > 12 ? shields[charge.slice(12, 13).toLowerCase() + charge.slice(13)].path : shieldPath;
+        const path = charge.length > 12 ? shields.data[charge.slice(12, 13).toLowerCase() + charge.slice(13)].path : shieldPath;
         return `<g id="${chargeId}"><path transform="translate(66 66) scale(.34)" d="${path}"/></g>`;
       }
 
