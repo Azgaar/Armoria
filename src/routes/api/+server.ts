@@ -26,7 +26,19 @@ export const GET: RequestHandler = async ({url}) => {
   coa.seed = seed;
   coa.shield ||= SHIELD_DEFAULT;
 
-  const svg = await render(coa, size, colors);
+  let svg;
+  try {
+    svg = await render(coa, size, colors);
+  } catch (err) {
+    console.error(err.message);
+    return new Response(
+      `<h1>Armoria API</h1><p>Error while rendering COA: ${err.message}.</p><p>COA object: ${JSON.stringify(coa)}</p>`,
+      {
+        status: 500,
+        headers: {"Content-Type": "text/html"}
+      }
+    );
+  }
   return send(format, svg);
 };
 
@@ -41,7 +53,7 @@ let jpegConverter, pngConverter;
 let options = {
   ignoreHTTPSErrors: true,
   headless: true,
-}
+};
 if (process.env.VERCEL) {
   options.executablePath = await chromium.executablePath("https://github.com/Sparticuz/chromium/releases/download/v138.0.1/chromium-v138.0.1-pack.x64.tar");
   const remove = [

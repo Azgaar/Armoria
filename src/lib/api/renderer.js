@@ -4,6 +4,7 @@ import {DEFAULT_FONTS} from "$lib/config/defaults";
 import {divisions, patterns, shields} from "$lib/data/dataModel";
 import * as stores from "$lib/data/stores";
 import {getSizeMod, getTemplate, semy} from "$lib/scripts/getters";
+import {capitalize} from "$lib/scripts/utils";
 import {parse} from "node-html-parser";
 
 const charges = import.meta.glob("/static/charges/*.svg", {
@@ -83,14 +84,21 @@ async function getCharges(coa, shieldPath) {
   const uniqueCharges = [...new Set(charges)];
   const fetchedCharges = await Promise.all(
     uniqueCharges.map(async charge => {
-      if (charge.slice(0, 12) === "inescutcheon") {
-        const chargeId = charge.length === 12 ? charge + coa.shield[0].toUpperCase() + coa.shield.slice(1) : charge;
-        const path = charge.length > 12 ? shields.data[charge.slice(12, 13).toLowerCase() + charge.slice(13)].path : shieldPath;
+      if (charge.startsWith("inescutcheon")) {
+        const shieldType = charge.slice(12).toLowerCase();
+        const chargeId = shieldType ? charge : charge + capitalize(coa.shield);
+        const path = shieldType ? shields.data[shieldType]?.path : shieldPath;
+        if (!path) {
+          throw new Error(`Cannot fetch charge ${charge}`);
+        }
         return `<g id="${chargeId}"><path transform="translate(66 66) scale(.34)" d="${path}"/></g>`;
       }
 
-      const fetched = await fetchCharge(charge);
-      return fetched || "";
+      try {
+        return await fetchCharge(charge);
+      } catch (err) {
+        throw new Error(`Cannot fetch charge ${charge}`);
+      }
     })
   );
   return fetchedCharges.join("");
