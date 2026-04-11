@@ -43,7 +43,7 @@ export async function render(coa, size, colors) {
   stores.grad.set("backlight");
   stores.colors.set(colors);
 
-  const svg = COA.render({coa, height: size, width: size, i: "View"});
+  const svg = COA.render({coa: {...coa, shield}, height: size, width: size, i: "View"});
   const root = parse(svg.html);
   root.querySelector("defs").innerHTML =
     `${shieldClip}${divisionClip}${loadedCharges}${loadedPatterns}${loadedFonts}${backlight}${style}`;
