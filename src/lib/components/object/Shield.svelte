@@ -17,7 +17,7 @@
   const {division, ordinaries = [], charges = [], inscriptions = []} = coa;
   const ordinariesRegular = ordinaries.filter(o => !o.above);
   const ordinariesAboveCharges = ordinaries.filter(o => o.above);
-  charges.forEach(({charge}) => addCharge(charge));
+  if (type !== "External") charges.forEach(({charge}) => addCharge(charge));
 
   $: shieldPath = shields.data[coa.shield || $shield].path;
   $: coaDiaper = type === "menuItem" ? null : coa.diaper || $diaper;
@@ -29,7 +29,7 @@
     if (!tincture) return null;
     if ($colors[tincture]) return $colors[tincture];
     if (tincture.includes("-")) {
-      addPattern(tincture);
+      if (type !== "External") addPattern(tincture);
     } else {
       console.warn(`Tincture ${tincture} not found, fallback to black`);
       return "#000000";

@@ -19,7 +19,7 @@ import {writable} from "svelte/store";
 import type {Tinctures} from "$lib/types/tinctures";
 import {shields} from "./shields";
 import {validateTinctures} from "./validators";
-import {browser} from "$app/environment";
+import {BROWSER as browser} from "esm-env";
 
 export const isTextReady = writable(false);
 

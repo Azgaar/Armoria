@@ -14,6 +14,7 @@
   export let height: string | number = "100%";
 
   const isEdit = i === "Edit";
+  const id = i === "External" ? coa.seed : `coa${i}`;
 
   function getViewBox(shield: string, zoom: number) {
     const box = shields.data[shield].box || DEFAULT_SHIELD_BOX;
@@ -29,7 +30,7 @@
 </script>
 
 <svg
-  id="coa{i}"
+  id="{id}"
   class="coa"
   {width}
   {height}

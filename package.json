@@ -11,7 +11,8 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "pkg": "svelte-package && vite -c vite.pkg.config.ts build && cp package.json dist/ && cp -r static/charges dist/"
   },
   "repository": {
     "type": "git",
@@ -39,6 +40,7 @@
   "devDependencies": {
     "@sveltejs/adapter-vercel": "^6.3.3",
     "@sveltejs/kit": "^2.22.5",
+    "@sveltejs/package": "^2.5.7",
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "@types/eslint": "^9.6.1",
     "eslint": "^9.31.0",
@@ -58,5 +60,15 @@
     "vite": "^5.0.3",
     "workbox-precaching": "^7.3.0"
   },
-  "type": "module"
+  "peerDependencies": {
+    "@sveltejs/kit": "^2.22.5",
+    "svelte": "^4.2.7"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./armoria.js",
+      "svelte": "./armoria.js"
+    }
+  }
 }
