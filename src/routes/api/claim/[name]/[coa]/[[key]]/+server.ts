@@ -48,8 +48,18 @@ export const GET: RequestHandler = async ({url, params}) => {
   const svg = await render(coa, size, colors);
   const link = `https://armoria.vercel.app/api/svg/${size}/${seed}`;
 
-  if (claim) await reclaim({name: seed, coa, key});
-  else await setClaim({name: seed, coa, key});
+  try {
+    if (claim) await reclaim({name: seed, coa, key});
+    else await setClaim({name: seed, coa, key});
+  } catch (err) {
+    return new Response(
+      `<h1>Armoria API</h1><p>Error while claiming: ${err.message}</p>`,
+      {
+        status: 500,
+        headers: {"Content-Type": "text/html"}
+      }
+    );
+  }
 
   console.log(`${seed} is ${claim ? "reclaimed" : "claimed"}. COA: ${coaString}. Key: ${key}`);
   return new Response(
