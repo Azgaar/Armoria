@@ -23,7 +23,7 @@ export function setClaim(claim: Claim) {
 }
 
 export function reclaim(claim: Claim) {
-  return claims.updateOne({name: claim.name}, {$set: {coa: claim.coa}});
+  return claims.updateOne({name: claim.name}, {coa: claim.coa});
 }
 
 export function unclaim(name: string) {

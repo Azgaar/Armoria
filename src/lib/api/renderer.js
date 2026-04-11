@@ -7,6 +7,8 @@ import {getSizeMod, getTemplate, semy} from "$lib/scripts/getters";
 import {capitalize} from "$lib/scripts/utils";
 import {parse} from "node-html-parser";
 
+const SHIELD_DEFAULT = "heater";
+
 const charges = import.meta.glob("/static/charges/*.svg", {
   query: "?url",
   import: "default",
@@ -20,7 +22,7 @@ const backlight = `<radialGradient id="backlight" cx="100%" cy="100%" r="150%">
 </radialGradient>`;
 
 export async function render(coa, size, colors) {
-  const {division, ordinaries = [], charges = [], inscriptions = [], shield} = coa;
+  const {division, ordinaries = [], charges = [], inscriptions = [], shield = SHIELD_DEFAULT} = coa;
   logCOAdetails(coa, shield, division, ordinaries, charges);
 
   const shieldPath = shields.data[shield].path;

@@ -11,7 +11,6 @@ import {createConverter as createPngConverter} from "convert-svg-to-png";
 
 const SIZE_DEFAULT = 500;
 const FORMAT_DEFAULT = "svg";
-const SHIELD_DEFAULT = "heater";
 
 export const GET: RequestHandler = async ({url}) => {
   const params = url.searchParams;
@@ -24,7 +23,6 @@ export const GET: RequestHandler = async ({url}) => {
 
   const coa = coaParam ? JSON.parse(coaParam) : await getCoa(seed);
   coa.seed = seed;
-  coa.shield ||= SHIELD_DEFAULT;
 
   let svg;
   try {

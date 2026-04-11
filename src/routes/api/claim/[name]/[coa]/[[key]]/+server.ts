@@ -40,12 +40,11 @@ export const GET: RequestHandler = async ({url, params}) => {
 
   const coaString = params.coa;
   const coa = JSON.parse(coaString);
-  coa.seed = seed;
 
   const query = url.searchParams;
   const size = Number(query.get("size")) || SIZE_DEFAULT;
   const colors = parseColors(query);
-  const svg = await render(coa, size, colors);
+  const svg = await render({...coa, seed}, size, colors);
   const link = `https://armoria.vercel.app/api/svg/${size}/${seed}`;
 
   if (claim) await reclaim({name: seed, coa, key});
