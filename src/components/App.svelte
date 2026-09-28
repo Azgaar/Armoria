@@ -106,7 +106,8 @@
 
     if (coaParam || seedParam) {
       if (from === "FMG") {
-        message.info("info.tipFromFmg", 10000);
+        const live = url.searchParams.has("session") && window.opener; // the map receives each edit
+        message.info(live ? "info.tipFromFmgLive" : "info.tipFromFmg", 10000);
       }
 
       $matrices[0] = [0];

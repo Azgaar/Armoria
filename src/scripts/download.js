@@ -59,6 +59,18 @@ export async function download(i, format = "png") {
   }
 }
 
+export async function getSvgForMap() {
+  const svg = document.getElementById("coaEdit");
+  if (!svg) throw new Error("No edited emblem is open");
+  const url = await getURL(svg, 500, 500);
+  try {
+    const response = await fetch(url);
+    return await response.text();
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
 async function getURL(svg, width, height) {
   const addedElements = {};
   const clone = svg.cloneNode(true); // clone svg
