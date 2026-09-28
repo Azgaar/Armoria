@@ -5,11 +5,17 @@
   import NavItem from "../../shared/NavItem.svelte";
   import Lock from "../../shared/Lock.svelte";
   import {shields, shieldTypes} from "data/dataModel";
-  import {shield, changes} from "data/stores";
+  import {shield, changes, state} from "data/stores";
 
   const changeShield = (value: string) => {
     shield.set(value);
     localStorage.setItem("shield", value);
+
+    // a shield chosen here wins over the edited coat of arms' own one, even one its link named: an undoable edit
+    if ($state.edit && $changes[0]) {
+      const coa = JSON.parse($changes[0] as string);
+      if (coa.shield !== value) changes.add(JSON.stringify({...coa, shield: value}));
+    }
   };
 
   const getShieldsInType = (type: string) => Object.keys(shields[type]);
