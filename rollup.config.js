@@ -75,12 +75,17 @@ export default {
         cacheId: "armoria-charges",
         cleanupOutdatedCaches: true,
         inlineWorkboxRuntime: true,
+        // a new worker takes over at once, so an update never waits for every Armoria tab to close
+        skipWaiting: true,
+        clientsClaim: true,
         runtimeCaching: [
           {
+            // the network first, so a deploy shows on the next load; the cache only offline or on a slow network
             urlPattern: /\.(js|css|html|json)$/,
-            handler: "StaleWhileRevalidate",
+            handler: "NetworkFirst",
             options: {
-              cacheName: "armoria-app"
+              cacheName: "armoria-app",
+              networkTimeoutSeconds: 3
             }
           }
         ]
