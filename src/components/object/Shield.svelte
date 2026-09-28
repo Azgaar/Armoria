@@ -5,7 +5,7 @@
   import Inscription from "./Inscription.svelte";
   import {shield, colors, grad, diaper} from "data/stores";
   import {divisions, shields} from "data/dataModel";
-  import {getTemplate, addPattern, addCharge} from "scripts/getters";
+  import {getTemplate, addPattern, addCharge, patternId} from "scripts/getters";
   import type {Coa} from "types/coa";
 
   export let coa: Coa;
@@ -28,13 +28,14 @@
   $: clr = (tincture: string) => {
     if (!tincture) return null;
     if ($colors[tincture]) return $colors[tincture];
+    if (/^#[\da-f]{3,8}$/i.test(tincture)) return tincture; // an exact colour, as the API accepts
     if (tincture.includes("-")) {
       addPattern(tincture);
     } else {
       console.warn(`Tincture ${tincture} not found, fallback to black`);
       return "#000000";
     }
-    return "url(#" + tincture + ")";
+    return "url(#" + patternId(tincture) + ")";
   };
 
   function getDiaperType(coaDiaper: string) {

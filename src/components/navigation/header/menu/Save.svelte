@@ -71,20 +71,42 @@
     return Object.fromEntries(Object.entries(palette).filter(([name, color]) => DEFAULT_COLORS[name] !== color));
   }
 
-  function scheduleSend(coa: string, colors: Record<string, string>) {
-    if (!coa) return;
-    const update = JSON.stringify({coa, colors});
-    if (sent === null) sent = update;
-    window.clearTimeout(timer);
-    if (update !== sent) timer = window.setTimeout(() => sendToMap(coa, colors, update), SEND_DELAY);
+  /** the blazon as the map should draw it: a tincture recoloured or added here becomes its hex colour */
+  function withShades(coa: string, shades: Record<string, string>) {
+    const shade = (tincture: string | undefined) => {
+      if (!tincture) return tincture;
+      const parts = tincture.split("-"); // a pattern names its tinctures second and third
+      if (parts.length === 1) return shades[tincture] ?? tincture;
+      return parts.map((part, i) => ((i === 1 || i === 2) && shades[part]) || part).join("-");
+    };
+    const blazon = JSON.parse(coa);
+    blazon.t1 = shade(blazon.t1);
+    if (blazon.division) blazon.division.t = shade(blazon.division.t);
+    for (const ordinary of blazon.ordinaries ?? []) {
+      ordinary.t = shade(ordinary.t);
+      if (ordinary.t2) ordinary.t2 = shade(ordinary.t2);
+    }
+    for (const charge of blazon.charges ?? []) {
+      charge.t = shade(charge.t);
+      if (charge.t2) charge.t2 = shade(charge.t2);
+      if (charge.t3) charge.t3 = shade(charge.t3);
+    }
+    return blazon;
   }
 
-  async function sendToMap(coa: string, colors: Record<string, string>, update: string) {
+  function scheduleSend(coa: string, colors: Record<string, string>) {
+    if (!coa) return;
+    const update = JSON.stringify(withShades(coa, colors));
+    if (sent === null) sent = update;
+    window.clearTimeout(timer);
+    if (update !== sent) timer = window.setTimeout(() => sendToMap(update), SEND_DELAY);
+  }
+
+  async function sendToMap(update: string) {
     if (!window.opener || window.opener.closed) return;
     try {
       const svg = await getSvgForMap();
-      const message = {type: "armoria:coa", version: 1, session, coa: JSON.parse(coa), colors, svg};
-      window.opener.postMessage(message, returnOrigin);
+      window.opener.postMessage({type: "armoria:coa", version: 1, session, coa: JSON.parse(update), svg}, returnOrigin);
       sent = update;
     } catch (error) {
       console.error(error);
