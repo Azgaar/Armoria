@@ -8,6 +8,7 @@
   import {locale} from "svelte-i18n";
   import Message from "./Message.svelte";
   import WindowEvents from "./WindowEvents.svelte";
+  import CoaSync from "./CoaSync.svelte";
   import Editor from "./editor/Editor.svelte";
   import About from "./navigation/About.svelte";
   import Fonts from "./navigation/Fonts.svelte";
@@ -169,6 +170,7 @@
   </div>
 {/if}
 <WindowEvents />
+<CoaSync />
 
 <style>
   div {
