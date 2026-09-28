@@ -37,6 +37,10 @@ To create an optimised version run `npm run build`.
 
 Armoria API is available as a separate project, see [the documentation](https://github.com/Azgaar/armoria-api#readme). The API allows to `GET` random or predefined vector and raster heraldic images of a given size.
 
+## Live editing from Fantasy Map Generator
+
+When Fantasy Map Generator opens an emblem for editing, Armoria receives `from=FMG`, a `session` token and `returnOrigin`. Every edit, undo and redo is then sent back to the map once editing pauses for half a second: Armoria posts `{type: "armoria:coa", version: 1, session, coa, svg}` to its opener at `returnOrigin`. `coa` is the edited blazon and `svg` is the complete SVG export, which the map uses when it cannot draw the blazon itself. The unchanged original is not sent, nor anything once the map tab is closed. The map accepts messages only from Armoria's origin with the live session token of that emblem. No message is sent when Armoria was opened directly.
+
 ## Alternatives
 
 While Armoria is focused on coat of arms generation and UI simplicity, there are some alternatives that cover heraldry more precisely.
