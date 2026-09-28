@@ -3,7 +3,6 @@ import {lines, patterns, shields} from "data/dataModel";
 import {colors, shield, uploaded} from "data/stores";
 
 const chargesGroup = document.getElementById("charges");
-const colorsData = get(colors);
 const loadedCharges = {};
 const customCharges = get(uploaded);
 
@@ -13,15 +12,19 @@ export const getTemplate = (obj, line) => {
   return obj.templateLined(linePath);
 };
 
-export const addPattern = patternId => {
-  if (!patternId) return console.error("No patternId");
-  const elem = document.getElementById(patternId);
+// a pattern's element id: its tincture string without the "#" of hex colours, which would break url(#id) links
+export const patternId = tincture => tincture.replaceAll("#", "");
 
-  const [pattern, t1, t2, size] = patternId.split("-");
-  const charge = semy(patternId);
+export const addPattern = tincture => {
+  if (!tincture) return console.error("No patternId");
+  const id = patternId(tincture);
+  const elem = document.getElementById(id);
+
+  const [pattern, t1, t2, size] = tincture.split("-");
+  const charge = semy(tincture);
   if (charge) addCharge(charge);
 
-  const html = patterns[charge ? "semy" : pattern](patternId, clr(t1), clr(t2), getSizeMod(size), charge);
+  const html = patterns[charge ? "semy" : pattern](id, clr(t1), clr(t2), getSizeMod(size), charge);
   if (elem?.outerHTML === html) return; // already added
   elem?.remove();
   document.getElementById("patterns").insertAdjacentHTML("beforeend", html);
@@ -101,8 +104,10 @@ export function updateCharge(charge) {
 }
 
 function clr(tincture) {
-  if (!colorsData[tincture]) throw new Error(`Tincture ${tincture} is not found`);
-  return colorsData[tincture];
+  if (/^#[\da-f]{3,8}$/i.test(tincture)) return tincture; // an exact colour, as the API accepts
+  const palette = get(colors);
+  if (!palette[tincture]) throw new Error(`Tincture ${tincture} is not found`);
+  return palette[tincture];
 }
 
 function getSizeMod(size) {
