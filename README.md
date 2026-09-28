@@ -33,6 +33,10 @@ Navigate to [localhost:5000](http://localhost:5000). You should see the app runn
 
 To create an optimised version run `npm run build`.
 
+## Links and the address bar
+
+While a coat of arms is edited, the `coa` URL parameter follows every change, so a reload or a shared address shows it as it is. The address, copied links, COA strings and JSON exports all carry the coat of arms as drawn here: with the shield it uses, and with every tincture recoloured or added in this browser written as its hex colour (`{"t1": "#0000ff"}`, or `vair-#0000ff-or` in a pattern), as the API accepts it. Default tinctures keep their names.
+
 ## API
 
 Armoria API is available as a separate project, see [the documentation](https://github.com/Azgaar/armoria-api#readme). The API allows to `GET` random or predefined vector and raster heraldic images of a given size.
