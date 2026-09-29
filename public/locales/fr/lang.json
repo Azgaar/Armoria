@@ -233,6 +233,7 @@
   },
   "info": {
     "tipFromFmg": "Configurez l'emblème, enregistrez-le au format SVG et rechargez le générateur de carte fantaisie",
+    "tipFromFmgLive": "Your changes show on the Fantasy Map Generator map as you edit",
     "tipEditControls": "Faites glisser pour bouger, maintenez la touche MAJ et faites glisser verticalement pour redimensionner, maintenez la touche CTRL et faites glisser horizontalement pour faire pivoter",
     "tipAddTincture": "Définissez les détails de la couleur et la probabilité puis cliquez sur 'Appliquer la couleur'",
     "restoredDefaults": "Les valeurs par défaut sont restaurées",
