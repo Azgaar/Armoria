@@ -233,6 +233,7 @@
   },
   "info": {
     "tipFromFmg": "Konfigurirajte amblem, spremite ga u SVG formatu i potom učitajte natrag u Fantasy Map Generator",
+    "tipFromFmgLive": "Your changes show on the Fantasy Map Generator map as you edit",
     "tipEditControls": "Povucite za pomicanje, držite SHIFT i povucite okomito za promjenu veličine, držite CONTROL i povucite vodoravno za rotaciju",
     "tipAddTincture": "Postavite detalje o boji i vjerojatnosti, a zatim kliknite na \"Primijeni boju\"",
     "restoredDefaults": "Vraćene su zadane vrijednosti",

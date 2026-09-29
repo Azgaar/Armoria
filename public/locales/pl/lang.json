@@ -233,6 +233,7 @@
   },
   "info": {
     "tipFromFmg": "Skonfiguruj herb, zapisz go w formacie SVG, a następnie załaduj z powrotem do Generatora Map Fantasy",
+    "tipFromFmgLive": "Your changes show on the Fantasy Map Generator map as you edit",
     "tipEditControls": "Przeciągnij, aby przesunąć, przytrzymaj SHIFT i przeciągnij pionowo, aby zmienić rozmiar, przytrzymaj CONTROL i przeciągnij poziomo, aby obracać",
     "tipAddTincture": "Ustaw szczegóły koloru i szansę wystąpienia, a następnie kliknij na 'Zastosuj kolor'",
     "restoredDefaults": "Przywrócono wartości domyślne",

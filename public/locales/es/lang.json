@@ -233,6 +233,7 @@
   },
   "info": {
     "tipFromFmg": "Configura el emblema, guárdalo en formato SVG y luego cárgalo de nuevo en Fantasy Map Generator",
+    "tipFromFmgLive": "Your changes show on the Fantasy Map Generator map as you edit",
     "tipEditControls": "Arrastra para mover, mantén presionado SHIFT y arrastra verticalmente para cambiar el tamaño, mantén presionado CONTROL y arrastra horizontalmente para rotar",
     "tipAddTincture": "Establece los detalles de color y probabilidad y haz clic en 'Aplicar color'",
     "restoredDefaults": "Los valores por defecto han sido restaurados",
