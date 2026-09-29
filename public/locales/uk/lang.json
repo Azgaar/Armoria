@@ -233,6 +233,7 @@
   },
   "info": {
     "tipFromFmg": "Налаштувати емблему, зберегти в форматі SVG і додати назад у Fantasy Map Generator",
+    "tipFromFmgLive": "Your changes show on the Fantasy Map Generator map as you edit",
     "tipEditControls": "Тягніть для переміщення, тримайте Shift і тягніть вертикально для зміни розміру, тримайте Control і тягніть горизонтально для обертання",
     "tipAddTincture": "Встановити деталі кольору і його імовірність, тоді натисніть «Застосувати колір»",
     "restoredDefaults": "Відновлено типові значення",
