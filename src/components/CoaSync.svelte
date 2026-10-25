@@ -2,7 +2,7 @@
   // @ts-check
   // Keeps the edited coat of arms outside this page current: the `coa` URL parameter, so a reload or a shared
   // link shows it as it is, and Fantasy Map Generator when it opened the emblem here
-  import {changes, colors, message, shield, state} from "data/stores";
+  import {changes, colors, shield, state} from "data/stores";
   import {getSvgForMap} from "scripts/download";
   import {resolveCoa} from "scripts/coa";
 
@@ -39,13 +39,13 @@
 
   async function sendToMap(coa: string) {
     if (!window.opener || window.opener.closed) return;
+    let svg = "";
     try {
-      const svg = await getSvgForMap();
-      window.opener.postMessage({type: "armoria:coa", version: 1, session, coa: JSON.parse(coa), svg}, returnOrigin);
-      sent = coa;
+      svg = await getSvgForMap();
     } catch (error) {
-      console.error(error);
-      message.error("Could not send the emblem to the map");
+      console.error(error); // the map still draws a coat of arms it knows; only its picture fallback is lost
     }
+    window.opener.postMessage({type: "armoria:coa", version: 1, session, coa: JSON.parse(coa), svg}, returnOrigin);
+    sent = coa;
   }
 </script>
