@@ -105,7 +105,7 @@ async function getURL(svg, width, height) {
     if (chargePattern) addPattern(chargePattern, d);
     const charge = el.getAttribute("charge");
     if (addedElements[charge]) return;
-    d.insertAdjacentHTML("beforeend", defs.getElementById(charge).outerHTML);
+    d.insertAdjacentHTML("beforeend", defs.getElementById(charge)?.outerHTML ?? ""); // a charge it cannot fetch stays blank
     addedElements[charge] = true;
   });
   clone.querySelectorAll(".ordinary").forEach(el => {
@@ -124,7 +124,7 @@ async function getURL(svg, width, height) {
     if (pattern.slice(0, 4) === "semy") {
       const charge = pattern.match(/semy_of_(.*?)-/)[1];
       if (!addedElements[charge]) {
-        d.insertAdjacentHTML("beforeend", document.getElementById(charge).outerHTML);
+        d.insertAdjacentHTML("beforeend", document.getElementById(charge)?.outerHTML ?? "");
         addedElements[charge] = true;
       }
     }
