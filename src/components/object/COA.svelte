@@ -2,7 +2,8 @@
   // @ts-check
   import {DEFAULT_ZOOM} from "config/defaults";
   import {DEFAULT_SHIELD_BOX, shields} from "data/shields";
-  import {border, borderWidth, shield} from "data/stores";
+  import {border, borderWidth, colors, shield} from "data/stores";
+  import {resolveCoa} from "scripts/coa";
   import Grid from "./../editor/Grid.svelte";
   import Positions from "./../editor/Positions.svelte";
   import Shield from "./Shield.svelte";
@@ -26,6 +27,7 @@
   }
 
   $: viewBox = getViewBox(coa.shield || $shield, coa.zoom || DEFAULT_ZOOM);
+  $: resolved = JSON.stringify(resolveCoa(JSON.stringify(coa), $colors, $shield)); // what a download keeps inside
 </script>
 
 <svg
@@ -34,6 +36,7 @@
   {width}
   {height}
   {viewBox}
+  data-coa={resolved}
   xmlns="http://www.w3.org/2000/svg"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:dc="http://purl.org/dc/elements/1.1/"

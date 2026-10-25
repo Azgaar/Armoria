@@ -1,5 +1,6 @@
 import {get} from "svelte/store";
 import {scale, grad, diaper, fonts} from "data/stores";
+import {coaMetadata, embedCoa} from "scripts/metadata";
 
 const isFirefox = navigator.userAgent.includes("Firefox");
 
@@ -43,7 +44,7 @@ export async function download(i, format = "png") {
       URL.revokeObjectURL(url);
       ctx.drawImage(img, (i % numberX) * width, Math.floor(i / numberX) * height, width, height);
       loaded++;
-      if (loaded === coas.length) drawCanvas(canvas, format);
+      if (loaded === coas.length) drawCanvas(canvas, format, coas.length === 1 ? coas[0].dataset.coa : null);
     };
   }
 
@@ -78,6 +79,8 @@ async function getURL(svg, width, height) {
   clone.setAttribute("height", height);
   clone.removeAttribute("class");
   clone.removeAttribute("id");
+  clone.removeAttribute("data-coa");
+  if (svg.dataset.coa) clone.prepend(coaMetadata(svg.dataset.coa));
   const d = clone.getElementsByTagName("defs")[0];
 
   // remove grid and positions if any
@@ -156,18 +159,22 @@ async function getURL(svg, width, height) {
   return url;
 }
 
-function drawCanvas(canvas, format) {
-  const link = document.createElement("a");
-  link.download = `armoria_${getTimestamp()}.${format}`;
+function drawCanvas(canvas, format, coa) {
+  canvas.toBlob(
+    async blob => {
+      const link = document.createElement("a");
+      link.download = `armoria_${getTimestamp()}.${format}`;
+      link.href = URL.createObjectURL(coa ? await embedCoa(blob, coa) : blob);
+      link.click();
 
-  const URL = canvas.toDataURL("image/" + format, 0.92);
-  link.href = URL;
-  link.click();
-
-  setTimeout(function () {
-    canvas.remove();
-    window.URL.revokeObjectURL(link.href);
-  }, 5000);
+      setTimeout(function () {
+        canvas.remove();
+        URL.revokeObjectURL(link.href);
+      }, 5000);
+    },
+    "image/" + format,
+    0.92
+  );
 }
 
 function getTimestamp() {
