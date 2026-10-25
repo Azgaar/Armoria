@@ -233,6 +233,7 @@
   },
   "info": {
     "tipFromFmg": "配置图案，将其保存为SVG格式，然后加载回“Fantasy Map Generator”",
+    "tipFromFmgLive": "Your changes show on the Fantasy Map Generator map as you edit",
     "tipEditControls": "拖动以将其移动，按住SHIFT键并垂直拖动可调整大小，按住CONTROL键并水平拖动可旋转",
     "tipAddTincture": "设置颜色详细信息和几率，然后单击“应用颜色”",
     "restoredDefaults": "已恢复为默认值",

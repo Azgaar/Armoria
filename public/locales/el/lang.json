@@ -233,6 +233,7 @@
   },
   "info": {
     "tipFromFmg": "Ρυθμίστε το έμβλημα, αποθηκεύστε το σε μορφή SVG και στη συνέχεια φορτώστε το μέσα στο Fantasy Map Generator",
+    "tipFromFmgLive": "Your changes show on the Fantasy Map Generator map as you edit",
     "tipEditControls": "Σύρετε για μετακίνηση, κρατήστε το SHIFT και σύρετε κάθετα για αλλαγή μεγέθους, κρατήστε το CONTROL και σύρετε οριζόντια για περιστροφή",
     "tipAddTincture": "Ορίστε λεπτομέρειες χρώματος και την ευκαιρία εμφάνισής του, και κάντε κλικ στο 'Εφαρμογή χρώματος'",
     "restoredDefaults": "Επαναφορά προεπιλεγμένων τιμών ολοκληρώθηκε",

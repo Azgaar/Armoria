@@ -233,6 +233,7 @@
   },
   "info": {
     "tipFromFmg": "Configura l'emblema, guarda'l en format SVG i després carrega-ho de nou en Fantasy Map Generator",
+    "tipFromFmgLive": "Your changes show on the Fantasy Map Generator map as you edit",
     "tipEditControls": "Arrossega per a moure, mantingues pressionat SHIFT i arrossega verticalment per a canviar la grandària, mantingues pressionat CONTROL i arrossega horitzontalment per a girar",
     "tipAddTincture": "Estableix els detalls de color i probabilitat i fes clic a 'Aplicar color'",
     "restoredDefaults": "Els valors per defecte han sigut restaurats",
