@@ -3,7 +3,7 @@ import COA from "$lib/components/object/COA.svelte";
 import {DEFAULT_FONTS} from "$lib/config/defaults";
 import {divisions, patterns, shields} from "$lib/data/dataModel";
 import * as stores from "$lib/data/stores";
-import {getSizeMod, getTemplate, semy} from "$lib/scripts/getters";
+import {getSizeMod, getTemplate, patternId, semy} from "$lib/scripts/getters";
 import {capitalize} from "$lib/scripts/utils";
 import {parse} from "node-html-parser";
 
@@ -64,8 +64,9 @@ export async function render(coa, size, colors) {
       .map(patternString => {
         const [pattern, t1, t2, size] = patternString.split("-");
         const charge = semy(patternString);
-        if (charge) return patterns.semy(patternString, clr(t1), clr(t2), getSizeMod(size), charge);
-        return patterns[pattern](patternString, clr(t1), clr(t2), getSizeMod(size), charge);
+        const id = patternId(patternString);
+        if (charge) return patterns.semy(id, clr(t1), clr(t2), getSizeMod(size), charge);
+        return patterns[pattern](id, clr(t1), clr(t2), getSizeMod(size), charge);
       })
       .join("");
   }

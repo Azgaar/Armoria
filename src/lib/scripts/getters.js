@@ -3,7 +3,6 @@ import {lines, patterns, shields} from "$lib/data/dataModel";
 import {colors, shield, uploaded} from "$lib/data/stores";
 import {browser} from "$app/environment";
 
-const colorsData = get(colors);
 const loadedCharges = {};
 const customCharges = get(uploaded);
 
@@ -13,16 +12,23 @@ export const getTemplate = (obj, line) => {
   return obj.templateLined(linePath);
 };
 
-export const addPattern = patternId => {
-  if (!patternId) return console.error("No patternId");
-  if (!browser) return;
-  const elem = document.getElementById(patternId);
+// a pattern's element id: its tincture string without the "#" of hex colours, which would break url(#id) links
+/** @param {string} tincture */
+export const patternId = tincture => tincture.replaceAll("#", "");
 
-  const [pattern, t1, t2, size] = patternId.split("-");
-  const charge = semy(patternId);
+/** @param {string} tincture */
+export const addPattern = tincture => {
+  if (!browser) return;
+  if (!tincture) return console.error("No patternId");
+  const id = patternId(tincture);
+  const elem = document.getElementById(id);
+
+  const [pattern, t1, t2, size] = tincture.split("-");
+  const charge = semy(tincture);
   if (charge) addCharge(charge);
 
-  const html = patterns[charge ? "semy" : pattern](patternId, clr(t1), clr(t2), getSizeMod(size), charge);
+  const patternName = /** @type {keyof typeof patterns} */ (charge ? "semy" : pattern);
+  const html = patterns[patternName](id, clr(t1), clr(t2), getSizeMod(size), charge);
   if (elem?.outerHTML === html) return; // already added
   elem?.remove();
   document.getElementById("patterns").insertAdjacentHTML("beforeend", html);
@@ -104,8 +110,10 @@ export function updateCharge(charge) {
 }
 
 function clr(tincture) {
-  if (!colorsData[tincture]) throw new Error(`Tincture ${tincture} is not found`);
-  return colorsData[tincture];
+  if (/^#[\da-f]{3,8}$/i.test(tincture)) return tincture; // an exact colour, as the API accepts
+  const palette = get(colors);
+  if (!palette[tincture]) throw new Error(`Tincture ${tincture} is not found`);
+  return palette[tincture];
 }
 
 export function getSizeMod(size) {
@@ -118,7 +126,7 @@ export function getSizeMod(size) {
 }
 
 function round(number, precision = 3) {
-  return Math.round(number * 10**precision) / 10**precision;
+  return Math.round(number * 10 ** precision) / 10 ** precision;
 }
 
 export function analyzePath(string) {
@@ -136,7 +144,9 @@ export function analyzePath(string) {
   }
 
   // Quadratic Bezier curve
-  match = string.match(/^M(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?) Q(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)$/);
+  match = string.match(
+    /^M(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?) Q(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)$/
+  );
   if (match) {
     const values = match.splice(1).map(x => Number(x));
     return {
@@ -156,8 +166,7 @@ export function analyzePath(string) {
 }
 
 export function buildPath(type, points) {
-  if (type === "line")
-    return `M${round(points[0].x)} ${round(points[0].y)} L${round(points[1].x)} ${round(points[1].y)}`;
+  if (type === "line") return `M${round(points[0].x)} ${round(points[0].y)} L${round(points[1].x)} ${round(points[1].y)}`;
   if (type === "curve")
     return `M${round(points[0].x)} ${round(points[0].y)} Q${round(points[2].x)} ${round(points[2].y)} ${round(points[1].x)} ${round(points[1].y)}`;
   return null;

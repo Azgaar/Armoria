@@ -5,7 +5,7 @@
   import Inscription from "./Inscription.svelte";
   import {shield, colors, grad, diaper} from "$lib/data/stores";
   import {divisions, shields} from "$lib/data/dataModel";
-  import {getTemplate, addPattern, addCharge} from "$lib/scripts/getters";
+  import {getTemplate, addPattern, addCharge, patternId} from "$lib/scripts/getters";
   import type {Coa} from "$lib/types/coa";
 
   export let coa: Coa;
@@ -28,13 +28,14 @@
   $: clr = (tincture: string) => {
     if (!tincture) return null;
     if ($colors[tincture]) return $colors[tincture];
+    if (/^#[\da-f]{3,8}$/i.test(tincture)) return tincture; // an exact colour, as the API accepts
     if (tincture.includes("-")) {
       addPattern(tincture);
     } else {
       console.warn(`Tincture ${tincture} not found, fallback to black`);
       return "#000000";
     }
-    return "url(#" + tincture + ")";
+    return "url(#" + patternId(tincture) + ")";
   };
 
   function getDiaperType(coaDiaper: string) {
@@ -141,15 +142,7 @@
       {/each}
 
       {#if diaperType === "division"}
-        <rect
-          class="diaper"
-          x="0"
-          y="0"
-          width="200"
-          height="200"
-          fill="url(#{coaDiaper})"
-          style="pointer-events: none"
-        />
+        <rect class="diaper" x="0" y="0" width="200" height="200" fill="url(#{coaDiaper})" style="pointer-events: none" />
       {/if}
 
       {#each charges as charge, i}
@@ -208,14 +201,7 @@
   {/each}
 </g>
 
-<path
-  class="grad"
-  d={shieldPath}
-  fill={overFill}
-  stroke={border}
-  stroke-width={borderWidth}
-  style="pointer-events: none"
-/>
+<path class="grad" d={shieldPath} fill={overFill} stroke={border} stroke-width={borderWidth} style="pointer-events: none" />
 
 {#each charges as charge, i}
   {#if charge.outside === "above"}
@@ -224,7 +210,7 @@
 {/each}
 
 {#each charges as charge, i}
-  {#if charge.outside === "above" && charge.layered || charge.outside === "around"}
+  {#if (charge.outside === "above" && charge.layered) || charge.outside === "around"}
     <Charge {coa} {charge} {i} t={clr(charge.t)} t2={clr(charge.t2)} t3={clr(charge.t3)} hideBackground={true} {type} />
   {/if}
 {/each}

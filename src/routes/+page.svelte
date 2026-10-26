@@ -1,7 +1,19 @@
 <script lang="ts">
   // @ts-check
   import {charges, shields} from "$lib/data/dataModel";
-  import {background, fonts, history, isTextReady, matrices, matrix, message, shield, size, state, uploaded} from "$lib/data/stores";
+  import {
+    background,
+    fonts,
+    history,
+    isTextReady,
+    matrices,
+    matrix,
+    message,
+    shield,
+    size,
+    state,
+    uploaded
+  } from "$lib/data/stores";
   import {registerCharge} from "$lib/data/charges";
   import "$lib/scripts/i18n";
   import {rw} from "$lib/scripts/utils";
@@ -19,6 +31,7 @@
   import UploadVector from "$lib/components/navigation/UploadVector.svelte";
   import Viewer from "$lib/components/navigation/Viewer.svelte";
   import Navbar from "$lib/components/navigation/header/Navbar.svelte";
+  import CoaSync from "$lib/components/CoaSync.svelte";
 
   let quantity: number;
   let width: number;
@@ -106,7 +119,8 @@
 
     if (coaParam || seedParam) {
       if (from === "FMG") {
-        message.info("info.tipFromFmg", 10000);
+        const live = url.searchParams.has("session") && window.opener; // the map receives each edit
+        message.info(live ? "info.tipFromFmgLive" : "info.tipFromFmg", 10000);
       }
 
       $matrices[0] = [0];
@@ -168,6 +182,7 @@
   </div>
 {/if}
 <WindowEvents />
+<CoaSync />
 
 <style>
   div {
