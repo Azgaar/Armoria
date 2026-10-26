@@ -233,6 +233,7 @@
   },
   "info": {
     "tipFromFmg": "Configureer embleem, sla deze op in SVG-formaat en laad deze dan terug naar de Fantasiekaart Generator",
+    "tipFromFmgLive": "Your changes show on the Fantasy Map Generator map as you edit",
     "tipEditControls": "Sleep om te verplaatsen, houd SHIFT ingedrukt en sleep verticaal om te herschalen, houd CONTROL ingedrukt en sleep horizontaal om te draaien",
     "tipAddTincture": "Stel kleurdetails en kans in en klik vervolgens op 'Kleur toepassen'",
     "restoredDefaults": "Standaardwaarden zijn hersteld",

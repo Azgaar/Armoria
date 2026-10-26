@@ -233,6 +233,7 @@
   },
   "info": {
     "tipFromFmg": "Embléma konfigurálása, mentse el SVG formátumban, és töltse be a Fantasy Map Generator-ba",
+    "tipFromFmgLive": "Your changes show on the Fantasy Map Generator map as you edit",
     "tipEditControls": "Húzás a mozgatáshoz, tartsa lenyomva a Shiftet és húzza függőlegesen a méret módosításához, tartsa a Ctrl-t és húzza vízszintesen az elforgatáshoz",
     "tipAddTincture": "Állítsa be a szín részleteit és esélyét, majd kattintson a 'Szín alkalmazása' gombra",
     "restoredDefaults": "Alapérték visszaállítva",

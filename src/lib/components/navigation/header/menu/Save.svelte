@@ -2,20 +2,19 @@
   // @ts-check
   import {t} from "svelte-i18n";
   import {download} from "$lib/scripts/download";
-  import {changes, history, matrices, matrix, message, state} from "$lib/data/stores";
+  import {resolveCoa} from "$lib/scripts/coa";
+  import {changes, colors, history, matrices, matrix, message, shield, state} from "$lib/data/stores";
   import NavButton from "../shared/NavButton.svelte";
   import NavItem from "../shared/NavItem.svelte";
 
+  // exports and links carry the coat of arms as drawn here: its shield and custom colours included
+  const resolved = (coa: string) => resolveCoa(coa, $colors, $shield);
+
   function exportJSON() {
     if ($state.edit) {
-      download([JSON.parse($changes[0])], "json");
+      download([resolved($changes[0])], "json");
     } else {
-      const coas = [];
-      for (const index of $matrices[$matrix]) {
-        const coa = {...$history[index]};
-        delete coa.seed;
-        coas.push(coa);
-      }
+      const coas = ($matrices[$matrix] as number[]).map(index => resolved(JSON.stringify($history[index])));
       download(coas, "json");
     }
   }
@@ -36,31 +35,37 @@
     );
   }
 
+  /** the edited coat of arms as a URL-safe string: hex colours' "#" would otherwise start a fragment */
+  const coaString = () => encodeURI(JSON.stringify(resolved($changes[0] as string))).replaceAll("#", "%23");
+
   function copyEditLink() {
-    const coa = ($changes[0] as string).replaceAll("#", "%23");
-    const url = location.origin + location.pathname + "?coa=" + coa;
+    const url = location.origin + location.pathname + "?coa=" + coaString();
     copyToClipboard(url, "success.copyEditLink");
   }
 
   function copyApiLink() {
-    const encoded = encodeURI($changes[0] as string);
     const API = "https://armoria.vercel.app/api";
-    const url = `${API}?size=500&format=png&coa=${encoded}`;
+    const url = `${API}?size=500&format=png&coa=${coaString()}`;
     copyToClipboard(url, "success.copyApiLink");
   }
 
   function copyCoaString() {
-    const encoded = encodeURI($changes[0] as string);
-    copyToClipboard(encoded, "success.copyCoaString");
+    copyToClipboard(coaString(), "success.copyCoaString");
   }
 </script>
 
 <div class="container">
   <NavItem value="save" label={$t(`menu.save`)} />
   <div class="dropdown level1">
-    <NavButton onclick={() => download(null, "svg")} tip={$t("tooltip.downloadSVG")} hotkey="Ctrl + S">{$t(`menu.downloadSVG`)}</NavButton>
-    <NavButton onclick={() => download(null, "png")} tip={$t("tooltip.downloadPNG")} hotkey="Ctrl + P">{$t(`menu.downloadPNG`)}</NavButton>
-    <NavButton onclick={() => download(null, "jpeg")} tip={$t("tooltip.downloadJPEG")} hotkey="Ctrl + J">{$t(`menu.downloadJPEG`)}</NavButton>
+    <NavButton onclick={() => download(null, "svg")} tip={$t("tooltip.downloadSVG")} hotkey="Ctrl + S"
+      >{$t(`menu.downloadSVG`)}</NavButton
+    >
+    <NavButton onclick={() => download(null, "png")} tip={$t("tooltip.downloadPNG")} hotkey="Ctrl + P"
+      >{$t(`menu.downloadPNG`)}</NavButton
+    >
+    <NavButton onclick={() => download(null, "jpeg")} tip={$t("tooltip.downloadJPEG")} hotkey="Ctrl + J"
+      >{$t(`menu.downloadJPEG`)}</NavButton
+    >
     <NavButton onclick={exportJSON} tip={$t("tooltip.exportJSON")}>{$t(`menu.exportJSON`)}</NavButton>
 
     {#if $state.edit}

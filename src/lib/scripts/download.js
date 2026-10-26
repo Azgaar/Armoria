@@ -1,5 +1,6 @@
 import {get} from "svelte/store";
 import {scale, grad, diaper, fonts} from "$lib/data/stores";
+import {coaMetadata, embedCoa} from "$lib/scripts/metadata";
 
 export async function download(i, format = "png") {
   if (format === "json") {
@@ -41,7 +42,7 @@ export async function download(i, format = "png") {
       URL.revokeObjectURL(url);
       ctx.drawImage(img, (i % numberX) * width, Math.floor(i / numberX) * height, width, height);
       loaded++;
-      if (loaded === coas.length) drawCanvas(canvas, format);
+      if (loaded === coas.length) drawCanvas(canvas, format, coas.length === 1 ? coas[0].getAttribute("data-coa") : null);
     };
   }
 
@@ -49,11 +50,23 @@ export async function download(i, format = "png") {
     const blob = new Blob([JSON.stringify(coas)], {type: "application/json"});
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
-    const name = coas.length === 1 && coas[0].name && coas[0].name.toLowerCase().replaceAll(/[^a-z]/g, "") || "armoria";
+    const name = (coas.length === 1 && coas[0].name && coas[0].name.toLowerCase().replaceAll(/[^a-z]/g, "")) || "armoria";
     link.download = `${name}_${getTimestamp()}.json`;
     link.href = url;
     link.click();
     window.setTimeout(() => window.URL.revokeObjectURL(url), 5000);
+  }
+}
+
+export async function getSvgForMap() {
+  const svg = document.getElementById("coaEdit");
+  if (!svg) throw new Error("No edited emblem is open");
+  const url = await getURL(svg, 500, 500);
+  try {
+    const response = await fetch(url);
+    return await response.text();
+  } finally {
+    URL.revokeObjectURL(url);
   }
 }
 
@@ -64,6 +77,8 @@ async function getURL(svg, width, height) {
   clone.setAttribute("height", height);
   clone.removeAttribute("class");
   clone.removeAttribute("id");
+  clone.removeAttribute("data-coa");
+  if (svg.dataset.coa) clone.prepend(coaMetadata(svg.dataset.coa));
   const d = clone.getElementsByTagName("defs")[0];
 
   // remove grid and positions if any
@@ -91,7 +106,7 @@ async function getURL(svg, width, height) {
     if (chargePattern) addPattern(chargePattern, d);
     const charge = el.getAttribute("charge");
     if (addedElements[charge]) return;
-    d.insertAdjacentHTML("beforeend", defs.getElementById(charge).outerHTML);
+    d.insertAdjacentHTML("beforeend", defs.getElementById(charge)?.outerHTML ?? ""); // a charge it cannot fetch stays blank
     addedElements[charge] = true;
   });
   clone.querySelectorAll(".ordinary").forEach(el => {
@@ -100,7 +115,12 @@ async function getURL(svg, width, height) {
   });
   const fieldPattern = clone.getElementsByClassName("field")[0].getAttribute("fill").split("(#")[1]?.split(")")[0];
   if (fieldPattern) addPattern(fieldPattern, d);
-  const divisionPattern = clone.getElementsByClassName("division")[0]?.querySelector("rect").getAttribute("fill").split("(#")[1]?.split(")")[0];
+  const divisionPattern = clone
+    .getElementsByClassName("division")[0]
+    ?.querySelector("rect")
+    .getAttribute("fill")
+    .split("(#")[1]
+    ?.split(")")[0];
   if (divisionPattern) addPattern(divisionPattern, d);
 
   function addPattern(pattern, d) {
@@ -110,7 +130,7 @@ async function getURL(svg, width, height) {
     if (pattern.slice(0, 4) === "semy") {
       const charge = pattern.match(/semy_of_(.*?)-/)[1];
       if (!addedElements[charge]) {
-        d.insertAdjacentHTML("beforeend", document.getElementById(charge).outerHTML);
+        d.insertAdjacentHTML("beforeend", document.getElementById(charge)?.outerHTML ?? "");
         addedElements[charge] = true;
       }
     }
@@ -142,18 +162,28 @@ async function getURL(svg, width, height) {
   return url;
 }
 
-function drawCanvas(canvas, format) {
-  const link = document.createElement("a");
-  link.download = `armoria_${getTimestamp()}.${format}`;
+/**
+ * @param {HTMLCanvasElement} canvas
+ * @param {string} format
+ * @param {string | null} coa
+ */
+function drawCanvas(canvas, format, coa) {
+  canvas.toBlob(
+    async blob => {
+      if (!blob) return;
+      const link = document.createElement("a");
+      link.download = `armoria_${getTimestamp()}.${format}`;
+      link.href = URL.createObjectURL(coa ? await embedCoa(blob, coa) : blob);
+      link.click();
 
-  const URL = canvas.toDataURL("image/" + format, 0.92);
-  link.href = URL;
-  link.click();
-
-  setTimeout(function () {
-    canvas.remove();
-    window.URL.revokeObjectURL(link.href);
-  }, 5000);
+      setTimeout(function () {
+        canvas.remove();
+        URL.revokeObjectURL(link.href);
+      }, 5000);
+    },
+    "image/" + format,
+    0.92
+  );
 }
 
 function getTimestamp() {
@@ -199,8 +229,7 @@ function getUsedWebFonts(svg) {
 
   for (const text of svg.querySelectorAll("text")) {
     const family = text.getAttribute("font-family");
-    if (family && allFonts[family]?.url)
-      usedFonts.add({family, url: allFonts[family].url});
+    if (family && allFonts[family]?.url) usedFonts.add({family, url: allFonts[family].url});
   }
   return Array.from(usedFonts);
 }
