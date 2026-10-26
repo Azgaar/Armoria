@@ -7,6 +7,8 @@
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
+    "test:discord": "node --experimental-strip-types --test --test-isolation=none tests/discord.test.mjs",
+    "discord:register": "node --env-file-if-exists=.env scripts/register-discord.mjs",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --check . && eslint .",
