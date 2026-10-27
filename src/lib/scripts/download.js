@@ -155,8 +155,9 @@ async function getURL(svg, width, height) {
   }
 
   const serialized = new XMLSerializer().serializeToString(clone);
-  const pretty = navigator.userAgent.includes("Firefox") ? serialized : prettify(serialized); // don't prettify in Firefox
-  const blob = new Blob([pretty], {type: "image/svg+xml;charset=utf-8"});
+  // Keep text nodes intact, including whitespace-only inscription lines. Export
+  // must not depend on optional browser XSLT support or XML pretty-printing.
+  const blob = new Blob([serialized], {type: "image/svg+xml;charset=utf-8"});
   const url = window.URL.createObjectURL(blob);
   window.setTimeout(() => window.URL.revokeObjectURL(url), 6000);
   return url;
@@ -196,31 +197,6 @@ function getTimestamp() {
   const minutes = formatTime(date.getMinutes());
   const seconds = formatTime(date.getSeconds());
   return [year, month, day, hour, minutes, seconds].join("-");
-}
-
-function prettify(source) {
-  const xmlDoc = new DOMParser().parseFromString(source, "image/svg+xml");
-  const xsltDoc = new DOMParser().parseFromString(
-    [
-      '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform">',
-      '  <xsl:strip-space elements="*"/>',
-      '  <xsl:template match="para[content-style][not(text())]">',
-      '    <xsl:value-of select="normalize-space(.)"/>',
-      "  </xsl:template>",
-      '  <xsl:template match="node()|@*">',
-      '    <xsl:copy><xsl:apply-templates select="node()|@*"/></xsl:copy>',
-      "  </xsl:template>",
-      '  <xsl:output indent="yes"/>',
-      "</xsl:stylesheet>"
-    ].join("\n"),
-    "application/xml"
-  );
-
-  const xsltProcessor = new XSLTProcessor();
-  xsltProcessor.importStylesheet(xsltDoc);
-  const resultDoc = xsltProcessor.transformToDocument(xmlDoc);
-  const resultXml = new XMLSerializer().serializeToString(resultDoc);
-  return resultXml;
 }
 
 function getUsedWebFonts(svg) {

@@ -17,7 +17,8 @@
     "postinstall": "patch-package",
     "test:claims": "svelte-kit sync && node --test --test-isolation=none tests/claims.test.mjs",
     "test:render-limits": "svelte-kit sync && node --test --test-isolation=none tests/render-limits.test.mjs",
-    "test:svg-upload": "node --test --test-isolation=none tests/svg-upload.test.mjs"
+    "test:svg-upload": "node --test --test-isolation=none tests/svg-upload.test.mjs",
+    "test:exports": "node --test --test-isolation=none tests/exports.test.mjs"
   },
   "repository": {
     "type": "git",

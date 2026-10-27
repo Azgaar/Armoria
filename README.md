@@ -147,3 +147,9 @@ All images are manually optimized by me.
 Run `npm run test:svg-upload` with Node 24 and Puppeteer's Chromium installed. To use a system browser, set `PUPPETEER_EXECUTABLE_PATH` to its executable; restricted CI containers can additionally set `PUPPETEER_NO_SANDBOX=1`. The tests start their own local Vite server and block external requests; no database or credentials are required.
 
 Custom SVG charges support static shapes, groups, transforms, secondary/tertiary colour classes, text, gradients, clipping/masks, and local fragment references. Supported inline presentation styles are retained. Scripts, HTML, animation, stylesheets, filters, and external resources are removed before preview, save, and rendering stored charges. Embedded PNG, JPEG, GIF, WebP, AVIF, and BMP images remain supported; SVG files should use the vector importer rather than the raster importer. Malformed SVG may be rejected, and unsupported artwork should be converted to paths or a raster image first.
+
+### Browser export checks
+
+Run `npm run test:exports` with Node 24 and Puppeteer's Chromium installed. The same `PUPPETEER_EXECUTABLE_PATH` and `PUPPETEER_NO_SANDBOX` options described above are supported. These browser tests disable `XSLTProcessor`, download and inspect SVG/PNG/JPEG files, check embedded COA metadata and inscription whitespace, and verify live SVG delivery to an FMG opener. External network requests are blocked.
+
+Browser exports use `XMLSerializer` directly. No XSLT or XML formatting step is required, and whitespace-only inscription lines are preserved.
