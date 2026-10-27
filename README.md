@@ -37,6 +37,12 @@ To create an optimised version run `npm run build`.
 
 While a coat of arms is edited, the `coa` URL parameter follows every change, so a reload or a shared address shows it as it is. The address, copied links, COA strings and JSON exports all carry the coat of arms as drawn here: with the shield it uses, and with every tincture recoloured or added in this browser written as its hex colour (`{"t1": "#0000ff"}`, or `vair-#0000ff-or` in a pattern), as the API accepts it. Default tinctures keep their names.
 
+Copied edit and API links encode the raw COA JSON using `URLSearchParams`, preserving `&`, `+`, `#`, `%`, punctuation, Unicode, and custom hex tinctures. The copied edit link contains only the COA query parameter; session parameters and fragments from the editor address are not shared.
+
+**Copy COA string** produces one percent-encoded JSON query value. It can be appended directly after `?coa=`. To read it as an object, use `JSON.parse(decodeURIComponent(copiedString))`. When constructing a link with `URLSearchParams`, pass `decodeURIComponent(copiedString)` to `searchParams.set("coa", ...)` so the already encoded value is not encoded a second time. A `coa` value returned by `searchParams.get("coa")` is already decoded and can be passed directly to `JSON.parse`.
+
+Run `npm run test:copied-links` with Puppeteer's Chromium installed, or set `PUPPETEER_EXECUTABLE_PATH` to a system browser. Restricted CI containers can also set `PUPPETEER_NO_SANDBOX=1`. The tests exercise the copy controls, capture clipboard writes without changing the system clipboard, and reopen an edit link in a fresh browser context. External network requests are blocked.
+
 ## API
 
 The API allows to `GET` random or predefined vector and raster heraldic images of a given size.
