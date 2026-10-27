@@ -8,6 +8,7 @@ import {capitalize} from "$lib/scripts/utils";
 import {parse} from "node-html-parser";
 import {createHash} from "node:crypto";
 import {escapeMarkup, InvalidCoaError} from "./responses";
+import {validateImageSize} from "./limits";
 import {validateCoa} from "./validation";
 
 const SHIELD_DEFAULT = "heater";
@@ -25,6 +26,7 @@ const backlight = `<radialGradient id="backlight" cx="100%" cy="100%" r="150%">
 </radialGradient>`;
 
 export async function render(coa, size, colors) {
+  validateImageSize(size);
   validateCoa(coa);
   // A seed selects the artwork; it must not become raw markup or an unsafe fragment identifier.
   coa = {
@@ -125,16 +127,16 @@ async function fetchCharge(charge) {
 async function getFonts(coa) {
   if (!coa.inscriptions) return "";
 
-  const fontSet = new Set();
+  const fontSet = new Map();
   coa.inscriptions.forEach(inscription => {
     if (!fontSet.has(inscription.font) && DEFAULT_FONTS[inscription.font]?.url) {
-      fontSet.add({family: inscription.font, url: DEFAULT_FONTS[inscription.font].url});
+      fontSet.set(inscription.font, {family: inscription.font, url: DEFAULT_FONTS[inscription.font].url});
     }
   });
 
   if (!fontSet.size) return "";
 
-  const dataURLfonts = await loadFontsAsDataURI(Array.from(fontSet));
+  const dataURLfonts = await loadFontsAsDataURI(Array.from(fontSet.values()));
   const fontFaces = dataURLfonts
     .map(({family, src}) => {
       return `@font-face {font-family: "${family}"; src: ${src};}`;

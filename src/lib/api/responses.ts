@@ -1,5 +1,14 @@
 export class InvalidCoaError extends Error {}
 
+export class RequestLimitError extends Error {
+  constructor(
+    message: string,
+    public status: 413 | 414
+  ) {
+    super(message);
+  }
+}
+
 /** Escape text and quoted attributes in the API's manually assembled HTML/SVG. */
 export function escapeMarkup(value: string): string {
   return value.replace(/[&<>"']/g, character => {
@@ -19,6 +28,7 @@ export function escapeMarkup(value: string): string {
 }
 
 export function apiError(error: unknown): Response {
+  if (error instanceof RequestLimitError) return jsonError(error.message, error.status);
   const invalid = error instanceof InvalidCoaError;
   if (!invalid) console.error("API request failed", error);
   return jsonError(invalid ? error.message : "Unable to process the request", invalid ? 400 : 500);

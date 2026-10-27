@@ -1,7 +1,7 @@
 import {getClaim, reclaim, setClaim, unclaim} from "$lib/api/claims";
 import {render} from "$lib/api/renderer";
 import {parseColors, parseSeed} from "$lib/api/utils";
-import {InvalidCoaError, jsonError} from "$lib/api/responses";
+import {InvalidCoaError, RequestLimitError, jsonError} from "$lib/api/responses";
 import {validateCoa} from "$lib/api/validation";
 import {hashClaimPassword, isProtected, mayMutateClaim} from "./claimPasswords";
 
@@ -102,6 +102,7 @@ export async function mutateClaim(request: Request, name: string, masterKey?: st
       claim ? 200 : 201
     );
   } catch (error) {
+    if (error instanceof RequestLimitError) return jsonError(error.message, error.status);
     if (error instanceof RequestError) return jsonError(error.message, error.status);
     if (error instanceof InvalidCoaError) return jsonError(error.message, 400);
     if (error && typeof error === "object" && "code" in error && error.code === 11000) {
