@@ -1,29 +1,24 @@
 import {getClaim} from "$lib/api/claims";
 import {render} from "$lib/api/renderer";
 import {generateSeed, parseColors, parseSeed} from "$lib/api/utils";
-import {apiError, jsonError} from "$lib/api/responses";
+import {apiError} from "$lib/api/responses";
 import {parseCoa} from "$lib/api/validation";
+import {validateImageRequest} from "$lib/api/limits";
 import {generate} from "$lib/scripts/generator";
 import {minify} from "minify-xml";
 import type {RequestHandler} from "./$types";
 import chromium from "@sparticuz/chromium-min";
-import puppeteer from "puppeteer-core";
 import {createConverter as createJpegConverter} from "convert-svg-to-jpeg";
 import {createConverter as createPngConverter} from "convert-svg-to-png";
 
-const SIZE_DEFAULT = 500;
-const FORMAT_DEFAULT = "svg";
-
 export const GET: RequestHandler = async ({url}) => {
-  const params = url.searchParams;
-  const format = params.get("format") || FORMAT_DEFAULT;
-  const size = Number(params.get("size")) || SIZE_DEFAULT;
-  const seedParam = params.get("seed");
-  const seed = seedParam ? parseSeed(seedParam) : generateSeed();
-  const colors = parseColors(params);
-  const coaParam = params.get("coa");
-
   try {
+    const {format, size} = validateImageRequest(url);
+    const params = url.searchParams;
+    const seedParam = params.get("seed");
+    const seed = seedParam ? parseSeed(seedParam) : generateSeed();
+    const colors = parseColors(params);
+    const coaParam = params.get("coa");
     const coa = coaParam !== null ? parseCoa(coaParam) : await getCoa(seed);
     const svg = await render({...coa, seed}, size, colors);
     return await send(format, svg);
@@ -40,18 +35,14 @@ async function getCoa(seed: string) {
 }
 
 let jpegConverter, pngConverter;
-let options = {
-  ignoreHTTPSErrors: true,
-  headless: true
-};
-if (process.env.VERCEL) {
-  options.executablePath = await chromium.executablePath(
+// Resolve/download Chromium only after validation and only for a raster request.
+async function launchOptions() {
+  if (!process.env.VERCEL) return {headless: true, ignoreHTTPSErrors: true, channel: "chrome" as const};
+  const executablePath = await chromium.executablePath(
     "https://github.com/Sparticuz/chromium/releases/download/v138.0.1/chromium-v138.0.1-pack.x64.tar"
   );
   const remove = ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"];
-  options.args = chromium.args.filter(v => !remove.includes(v));
-} else {
-  options.channel = "chrome";
+  return {headless: true, ignoreHTTPSErrors: true, executablePath, args: chromium.args.filter(value => !remove.includes(value))};
 }
 
 async function send(format: string, svg: string) {
@@ -65,15 +56,15 @@ async function send(format: string, svg: string) {
 
   let converter, contentType;
   if (format === "png") {
-    pngConverter ||= await createPngConverter({launch: options});
+    pngConverter ||= await createPngConverter({launch: await launchOptions()});
     converter = pngConverter;
     contentType = "image/png";
   } else if (format === "jpg" || format === "jpeg") {
-    jpegConverter ||= await createJpegConverter({launch: options});
+    jpegConverter ||= await createJpegConverter({launch: await launchOptions()});
     converter = jpegConverter;
     contentType = "image/jpeg";
   } else {
-    return jsonError("Invalid format", 400);
+    throw new Error("Unexpected image format");
   }
 
   const buffer = await converter.convert(svg);

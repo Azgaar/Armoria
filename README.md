@@ -47,6 +47,29 @@ Invalid COA JSON or unsupported COA elements return a JSON error with HTTP 400. 
 
 Run `npm run test:api` with Node 24 to check API error responses, SVG output escaping, and claim confirmations. The tests compile the actual routes and Svelte renderer, use local charge assets, and replace database access and raster conversion with test fixtures; they require no credentials or running services.
 
+### Image request limits
+
+`GET /api` accepts `format=svg` (the default), `png`, `jpg`, or `jpeg`. `size` is a square dimension from **1 to 4096 pixels**, defaulting to 500 only when omitted. Decimal integer strings and a lowercase legacy `px` suffix are accepted (`400`, `400px`); the legacy `/api/svg/400px/example` redirect also works. Empty, zero, negative, fractional, non-finite, hexadecimal, and exponential values are rejected rather than silently defaulted or clamped. Format names are lowercase; duplicate `format`, `size`, `seed`, or `coa` parameters are rejected.
+
+Limits apply to submitted, stored, and generated COAs, including COAs submitted to the claim endpoint:
+
+| Input | Limit |
+| --- | --- |
+| Encoded request URL | 64 KiB (hosting infrastructure may impose a lower limit) |
+| Seed | 200 characters, matching claim-name length |
+| COA JSON | 32 KiB UTF-8, checked before parsing and again after normalization |
+| Structure | Depth 8 (root at 0), 2048 values, 64 properties per object, 64 items per array |
+| Collections | 32 charges, 16 ordinaries, 16 inscriptions |
+| Charge positions | 64 bytes per position string, 256 total distinct positions across charges |
+| Fonts | 8 distinct inscription font names; repeated fonts are fetched once |
+| Text | 4096 UTF-8 bytes per generic string/path, 1024 per inscription, 256 per identifier/tincture/name, 128 per font/property name |
+
+Render-driving numeric fields must be finite numbers: zoom 0.1–1; charge/ordinary size 0.01–5, stretch −10–10, x/y −1000–1000, angle −360–360, stroke width 0–100; inscription size 1–100, spacing −10–100; shadow x/y −100–100 and blur 0–10. Gyronny is zero (disabled) or an even integer from 4–100. Nonzero compony ordinaries are rejected: that existing effect requires browser SVG geometry APIs and is not supported by the server renderer.
+
+Invalid formats, dimensions, numbers, or malformed COAs return inert JSON with **400**. Excessive payload/COA complexity returns **413**; an oversized URL returns **414**. Supplied values are not echoed. Image-parameter validation precedes generation, and COA validation precedes asset/font loading; Chromium setup occurs only for a validated raster request. Limits also run at the renderer boundary so stored claims cannot bypass them. These are per-request bounds, not traffic rate limits.
+
+Run `npm run test:render-limits` for allocation-free boundary and rejection tests, plus a deterministic sample of generated COAs. Raster converters and external services are replaced with fixtures; no large raster image is allocated.
+
 ### Claiming and releasing names
 
 Claim mutations use `POST /api/claims/{name}` to create/update a claim and `DELETE /api/claims/{name}` to release it. Send `Content-Type: application/json` and keep credentials in the request body, over HTTPS. The old GET claim/unclaim URLs return **410 Gone** without reading or changing claims; they are not redirected. Clients using those URLs must migrate before deployment. Image GET requests are unchanged.

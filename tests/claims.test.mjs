@@ -12,9 +12,9 @@ const mocks = {
   "$env/static/private": 'export const MONGO_ID = "test"; export const MONGO_PASS = "test";',
   "$env/dynamic/private": 'export const env = {MASTER_KEY: "master-secret"};',
   [root + "src/lib/api/renderer"]: `
-    export let fail = false;
-    export function setFail(value) { fail = value; }
-    export async function render() { if(fail) throw new Error("owner-secret wrong-secret master-secret"); return '<svg/>'; }
+    export let fail = false, calls = 0;
+    export function setFail(value) { fail = value; calls = 0; }
+    export async function render() { calls++; if(fail) throw new Error("owner-secret wrong-secret master-secret"); return '<svg/>'; }
   `,
   mongodb: `
     export const records = new Map();
@@ -276,4 +276,22 @@ test("legacy owner passwords can release a claim without a migration write", asy
     ["delete"]
   );
   assertSecretFreeLogs();
+});
+
+test("claim COA limits fail before rendering or persistence", async () => {
+  const cases = [
+    {t1: "or", charges: Array(33).fill({charge: "eagle", t: "gules", p: "e"})},
+    {t1: "or", metadata: "x".repeat(4097)},
+    {t1: "or", metadata: Array(9).fill("x".repeat(4000))}
+  ];
+  let nested = {};
+  for (let i = 0; i < 10; i++) nested = {nested};
+  cases.push({t1: "or", nested});
+  for (const coa of cases) await expectResponse(await request("POST", {coa}), 413);
+  await expectResponse(
+    await request("POST", {coa: {t1: "or", ordinaries: [{ordinary: "bordure", t: "gules", gyronny: 1e9}]}}),
+    400
+  );
+  assert.equal(renderer.calls, 0);
+  assert.equal(database.operations.length, 0);
 });
