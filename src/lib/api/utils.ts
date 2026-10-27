@@ -3,7 +3,10 @@ import {DEFAULT_COLORS} from "$lib/config/defaults";
 export const README_URL = "https://github.com/Azgaar/armoria#readme";
 
 export function parseColors(params: URLSearchParams) {
-  const getColor = (color: string) => (params.get(color) && params.get(color)?.length === 6 ? "#" + params.get(color) : null);
+  const getColor = (color: string) => {
+    const value = params.get(color);
+    return value && /^[0-9a-f]{6}$/i.test(value) ? "#" + value : null;
+  };
 
   return Object.keys(DEFAULT_COLORS).reduce(
     (colors, color) => {
