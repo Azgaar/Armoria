@@ -1,10 +1,10 @@
 import {get} from "svelte/store";
 import {lines, patterns, shields} from "$lib/data/dataModel";
 import {colors, shield, uploaded} from "$lib/data/stores";
+import {sanitizeSvg} from "$lib/scripts/sanitizeSvg";
 import {browser} from "$app/environment";
 
 const loadedCharges = {};
-const customCharges = get(uploaded);
 
 export const getTemplate = (obj, line) => {
   if (!line || line === "straight" || !obj.templateLined) return obj.template;
@@ -68,9 +68,9 @@ function fetchCharge(charge) {
   if (!browser) return;
   loadedCharges[charge] = true;
 
-  if (customCharges[charge]) {
-    const {type, data, content} = customCharges[charge];
-    document.getElementById("charges").insertAdjacentHTML("beforeend", content);
+  const customCharge = get(uploaded)[charge];
+  if (customCharge) {
+    document.getElementById("charges").insertAdjacentHTML("beforeend", sanitizeSvg(customCharge.content));
     return;
   }
 
