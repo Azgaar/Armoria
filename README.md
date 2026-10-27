@@ -47,6 +47,38 @@ Invalid COA JSON or unsupported COA elements return a JSON error with HTTP 400. 
 
 Run `npm run test:api` with Node 24 to check API error responses, SVG output escaping, and claim confirmations. The tests compile the actual routes and Svelte renderer, use local charge assets, and replace database access and raster conversion with test fixtures; they require no credentials or running services.
 
+### Claiming and releasing names
+
+Claim mutations use `POST /api/claims/{name}` to create/update a claim and `DELETE /api/claims/{name}` to release it. Send `Content-Type: application/json` and keep credentials in the request body, over HTTPS. The old GET claim/unclaim URLs return **410 Gone** without reading or changing claims; they are not redirected. Clients using those URLs must migrate before deployment. Image GET requests are unchanged.
+
+```js
+// Create a protected claim, or update it using its existing password.
+await fetch("https://armoria.vercel.app/api/claims/example", {
+  method: "POST",
+  headers: {"Content-Type": "application/json"},
+  body: JSON.stringify({coa: {t1: "or"}, key: claimPassword})
+});
+
+// Release the claim.
+await fetch("https://armoria.vercel.app/api/claims/example", {
+  method: "DELETE",
+  headers: {"Content-Type": "application/json"},
+  body: JSON.stringify({key: claimPassword})
+});
+```
+
+Creation returns 201; updates and deletions return 200. JSON responses contain status/name and, for POST, the public image URL and a `protected` flag. They never echo passwords, hashes, or submitted COA data and use `Cache-Control: no-store`. Invalid passwords return 403; missing claims on DELETE return 404; concurrent changes return 409 and require retrying. Names retain the existing lowercase normalization and cannot be numeric; the new endpoint limits names to 200 characters, passwords to 4096 UTF-8 bytes and JSON bodies to 64 KiB. Query parameters are not accepted.
+
+Omitting `key` (or passing an empty string) when creating a claim makes it **unprotected**: anyone may update or delete it. Updating an existing claim preserves its current protection and password; supplying a key does not turn an existing public claim into a protected one. This retains the legacy behavior.
+
+Administrators can update/delete existing claims using `Authorization: Bearer <MASTER_KEY>` instead of an owner password. Configure a nonempty `MASTER_KEY` in Vercel to enable this; absent/empty configuration grants no administrator access. The master key is no longer accepted as an owner password override and must not be used as a new claim's password. Administrator updates preserve the owner's credentials.
+
+New passwords use salted scrypt hashes (`N=131072`, `r=8`, `p=1`, 16-byte salt, 32-byte derived key), via Node's asynchronous crypto API. These parameters follow the [OWASP password storage guidance](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html). Existing plaintext passwords still authorize owners. On the next authorized POST, the original password is hashed and its plaintext field is removed atomically with the artwork update, including when an administrator performs the update. DELETE removes the whole record. Inactive legacy records remain plaintext until updated or deleted; this is a gradual migration, not a bulk database rewrite. Old credential URLs can still exist in historical logs and browser history.
+
+New records use deterministic MongoDB `_id` values to reject concurrent creation of the same normalized name. Legacy IDs remain unchanged. Updates/deletes match both the record ID and the credentials that were authorized, so a changed protection record causes a conflict. No index migration is required. Use an isolated database for preview deployments, and disable access to older deployments before migrating live records. Do not run the old mutation handlers alongside the new version: they cannot enforce hash-based protection. Roll back only to a version that understands `keyHash` or disables claim mutations.
+
+Run `npm run test:claims`, `npm run test:api` and `npm run test:discord` with Node 24. Claim tests use real password hashing and storage helpers with an in-memory MongoDB fixture; no database credentials or live claims are needed.
+
 ## Live editing from Fantasy Map Generator
 
 When Fantasy Map Generator opens an emblem for editing, Armoria receives `from=FMG`, a `session` token and `returnOrigin`. Every edit, undo, redo and tincture recolouring is then sent back to the map once editing pauses for half a second: Armoria posts `{type: "armoria:coa", version: 1, session, coa, svg}` to its opener at `returnOrigin`. `coa` is the edited blazon. A tincture recoloured or added here is sent as its hex colour, as the API accepts it (`{"t1": "#228833"}`, or `vair-#228833-or` in a pattern), so the map draws the shades shown in Armoria; default tinctures keep their names. `svg` is the complete SVG export, which the map uses when it cannot draw the blazon itself. The unchanged original is not sent, nor anything once the map tab is closed. The map accepts messages only from Armoria's origin with the live session token of that emblem. No message is sent when Armoria was opened directly.

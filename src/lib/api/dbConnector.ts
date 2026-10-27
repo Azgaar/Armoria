@@ -21,7 +21,7 @@ export class MongoDBConnector {
       this.collection = db.collection(this.collectionName);
       console.log("Connected to MongoDB");
     } catch (error) {
-      console.error("Error connecting to MongoDB:", error);
+      console.error("Error connecting to MongoDB");
       throw error;
     }
   }
@@ -31,7 +31,7 @@ export class MongoDBConnector {
       await this.client.close();
       console.log("Disconnected from MongoDB");
     } catch (error) {
-      console.error("Error disconnecting from MongoDB:", error);
+      console.error("Error disconnecting from MongoDB");
       throw error;
     }
   }
@@ -42,7 +42,7 @@ export class MongoDBConnector {
     try {
       return await this.collection.insertOne(document);
     } catch (error) {
-      console.error("Error inserting document:", error);
+      console.error("Error inserting document");
       throw error;
     }
   }
@@ -53,18 +53,21 @@ export class MongoDBConnector {
     try {
       return await this.collection.findOne(query);
     } catch (error) {
-      console.error("Error finding document:", error);
+      console.error("Error finding document");
       throw error;
     }
   }
 
-  async updateOne(filter: Document, update: Document): Promise<UpdateResult> {
+  async updateOne(filter: Document, update: Document, unset: string[] = []): Promise<UpdateResult> {
     if (!this.collection) throw new Error("Not connected to MongoDB");
 
     try {
-      return await this.collection.updateOne(filter, {$set: update});
+      return await this.collection.updateOne(filter, {
+        $set: update,
+        ...(unset.length ? {$unset: Object.fromEntries(unset.map(key => [key, ""]))} : {})
+      });
     } catch (error) {
-      console.error("Error updating document:", error);
+      console.error("Error updating document");
       throw error;
     }
   }
@@ -75,7 +78,7 @@ export class MongoDBConnector {
     try {
       return await this.collection.deleteOne(filter);
     } catch (error) {
-      console.error("Error deleting document:", error);
+      console.error("Error deleting document");
       throw error;
     }
   }
