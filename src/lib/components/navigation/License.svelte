@@ -3,12 +3,14 @@
   import {t, dictionary, locale} from "svelte-i18n";
   import {fade} from "svelte/transition";
   import {shield, state} from "$lib/data/stores";
-  import {link} from "$lib/scripts/utils";
+  import {attributionLink as link, attributionUrl, escapeHtml} from "$lib/scripts/attribution";
 
   const wetaShield = (shield: string) => ["noldor", "gondor", "easterling", "ironHills", "urukHai", "moriaOrc"].includes(shield);
 
   const coas = Array.from(document.querySelectorAll("svg.coa"));
-  const charges = coas.map(coa => Array.from(coa.querySelectorAll(".charge[charge]")).map(el => el.getAttribute("charge"))).flat();
+  const charges = coas
+    .map(coa => Array.from(coa.querySelectorAll(".charge[charge]")).map(el => el.getAttribute("charge")))
+    .flat();
 
   // translation-related constants
   const noLicenseData = $t("license.noLicenseData");
@@ -29,13 +31,13 @@
   const chargeData = [...new Set(charges)]
     .map(charge => {
       const el = document.getElementById(charge);
-      const licenseURL = el.getAttribute("license");
+      const licenseURL = el?.getAttribute("license");
       const licenseName = getLicenseName(licenseURL);
-      const sourceURL = el.getAttribute("source");
-      const author = el.getAttribute("author") || (sourceURL ? new URL(sourceURL).host : null);
+      const sourceURL = attributionUrl(el?.getAttribute("source"));
+      const author = el?.getAttribute("author") || (sourceURL ? new URL(sourceURL).host : null);
 
       const license = licenseURL && licenseName ? link(licenseURL, licenseName) : noLicenseData;
-      const source = sourceURL ? link(sourceURL, author) : author || noSourceData;
+      const source = sourceURL ? link(sourceURL, author || noSourceData) : escapeHtml(author || noSourceData);
 
       return {charge: translateSafely("charges", charge), license, source};
     })
@@ -45,7 +47,7 @@
   const charge = isLicenseSame ? chargeData[0] : null;
 
   // get mainly Creative Commons short names from license link
-  function getLicenseName(license: string) {
+  function getLicenseName(license: string | null | undefined) {
     if (!license) return null;
     if (license.includes("publicdomain")) return publicDomain;
     if (license.includes("by-nc-sa")) return "CC BY-NC-SA";

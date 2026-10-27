@@ -8,11 +8,12 @@
   import {updateCharge} from "$lib/scripts/getters";
   import {camelize} from "$lib/scripts/utils";
   import {tooltip} from "$lib/scripts/tooltip";
-  import {query} from "$lib/scripts/aliases";
+  import {parseUploadedSvg, sanitizeSvg} from "$lib/scripts/sanitizeSvg";
 
   let dragging = false;
   let selected = false;
-  let svg: string;
+  let svg = "";
+  let markup = "";
   let transform = {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0};
   let name: string;
   let category = "uploaded";
@@ -25,23 +26,24 @@
   const tinctureList = ["metals", "colours", "stains"].map(type => Object.keys($tinctures[type])).flat();
 
   $: updateTransform(transform);
+  $: svg = sanitizeSvg(markup);
 
   function updateTransform(transform: {[key: string]: number}) {
-    if (!svg) return; // on component load
+    if (!markup) return; // on component load
 
-    const el = document.createElement("html");
-    el.innerHTML = svg;
-    const g = el.querySelector("g");
+    const g = parseUploadedSvg(markup).querySelector("g");
+    if (!g) return;
     const transformString = Object.values(transform).join(" ");
     if (transformString === "1 0 0 1 0 0") g.removeAttribute("transform");
     else g.setAttribute("transform", "matrix(" + transformString + ")");
-    svg = g.outerHTML;
+    markup = g.outerHTML;
   }
 
   const onFile = (getFilesFunction: any) => (event: any) => {
     dragging = false;
     const files = getFilesFunction(event);
-    const file = files.length ? files[0] : [];
+    const file = files[0];
+    if (!file) return;
 
     if (!file.type.match(/text.*|svg.*/)) {
       message.error("error.notSvgOrText");
@@ -54,7 +56,7 @@
   };
 
   function getFilesFromDropEvent({dataTransfer: {files, items}}) {
-    return files.length ? [...files] : items.filter(({kind}) => kind === "file").map(({getAsFile}) => getAsFile());
+    return files.length ? [...files] : [...items].filter(({kind}) => kind === "file").map(({getAsFile}) => getAsFile());
   }
 
   function getFilesFromInputEvent({target}) {
@@ -67,24 +69,14 @@
     const reader = new FileReader();
     reader.onload = function (readerEvent) {
       const svgText = readerEvent.target.result as string;
-      const el = document.createElement("html");
-      el.innerHTML = svgText;
-
-      // remove sodipodi and inkscape attributes
-      el.querySelectorAll("*").forEach(el => {
-        const attributes = el.getAttributeNames();
-        attributes.forEach(attr => {
-          if (attr.includes("inkscape") || attr.includes("sodipodi")) el.removeAttribute(attr);
-        });
-      });
-
-      const g = el.querySelector("g");
+      const g = parseUploadedSvg(svgText).querySelector("g");
       if (!g) {
         message.error("error.incorrectSvg");
         selected = false;
         return;
       }
 
+      transform = {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0};
       const consolidated = g.transform.baseVal.consolidate();
       if (consolidated) {
         const {a, b, c, d, e, f} = consolidated.matrix;
@@ -92,7 +84,7 @@
         transform = Object.assign(transform, {a: fix(a), b: fix(b), c: fix(c), d: fix(d), e: fix(e), f: fix(f)});
       }
       g.removeAttribute("id");
-      svg = g.outerHTML;
+      markup = g.outerHTML;
     };
     reader.readAsText(file);
   }
@@ -108,13 +100,16 @@
       return;
     }
 
+    const image = parseUploadedSvg(markup).querySelector("g");
+    if (!image) {
+      message.error("error.incorrectSvg");
+      return;
+    }
+
     registerCharge(name, category, 5);
     const colors = svg.includes("tertiary") ? 3 : svg.includes("secondary") ? 2 : 1;
     charges.data[name] = {colors};
 
-    const el = document.createElement("html");
-    el.innerHTML = svg;
-    const image = el.querySelector("g");
     image.id = name;
 
     if (source) image.setAttribute("source", source);
@@ -125,7 +120,7 @@
       category,
       type: "vector",
       data: {colors},
-      content: image.outerHTML,
+      content: sanitizeSvg(image.outerHTML)
     };
     localStorage.setItem("uploaded", JSON.stringify($uploaded));
     updateCharge(name); // for the case where charge was previously not found
@@ -175,7 +170,7 @@
 
       <div>
         <div class="label">SVG Markup:</div>
-        <textarea rows="5" bind:value={svg}></textarea>
+        <textarea rows="5" bind:value={markup}></textarea>
       </div>
 
       <div class="inputs">

@@ -2,6 +2,7 @@
   // @ts-check
   import {t} from "svelte-i18n";
   import LicenseList from "./LicenseList.svelte";
+  import {sanitizeSvg} from "$lib/scripts/sanitizeSvg";
   import {state, message, shield, uploaded} from "$lib/data/stores";
   import {charges, DEFAULT_SHIELD_BOX, shields} from "$lib/data/dataModel";
   import {registerCharge} from "$lib/data/charges";
@@ -26,9 +27,10 @@
   const onFile = getFilesFunction => event => {
     dragging = false;
     const files = getFilesFunction(event);
-    const file = files.length ? files[0] : [];
+    const file = files[0];
+    if (!file) return;
 
-    if (!file.type.match(/image.*/)) {
+    if (!/^image\/(png|jpeg|gif|webp|avif|bmp)$/.test(file.type)) {
       message.error("error.notAnImage");
       return;
     }
@@ -81,7 +83,7 @@
     $uploaded[name] = {
       category,
       type: "raster",
-      content: image.outerHTML,
+      content: sanitizeSvg(image.outerHTML)
     };
     localStorage.setItem("uploaded", JSON.stringify($uploaded));
     updateCharge(name); // for the case where charge was previously not found
@@ -170,7 +172,11 @@
         <slot {dragging}>
           <div>Drag &amp; Drop image here or <b>browse</b></div>
         </slot>
-        <input type="file" accept="image/*" on:input={onFile(getFilesFromInputEvent)} />
+        <input
+          type="file"
+          accept="image/png,image/jpeg,image/gif,image/webp,image/avif,image/bmp"
+          on:input={onFile(getFilesFromInputEvent)}
+        />
       </label>
     {/if}
   </div>

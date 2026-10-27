@@ -16,7 +16,8 @@
     "format": "prettier --write .",
     "postinstall": "patch-package",
     "test:claims": "svelte-kit sync && node --test --test-isolation=none tests/claims.test.mjs",
-    "test:render-limits": "svelte-kit sync && node --test --test-isolation=none tests/render-limits.test.mjs"
+    "test:render-limits": "svelte-kit sync && node --test --test-isolation=none tests/render-limits.test.mjs",
+    "test:svg-upload": "node --test --test-isolation=none tests/svg-upload.test.mjs"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
     "@sparticuz/chromium-min": "138.0.1",
     "convert-svg-to-jpeg": "^0.7.1",
     "convert-svg-to-png": "^0.7.1",
+    "dompurify": "^3.4.17",
     "minify-xml": "^4.5.2",
     "mongodb": "^6.17.0",
     "node-html-parser": "^7.0.1",
