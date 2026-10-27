@@ -35,22 +35,27 @@
     );
   }
 
-  /** the edited coat of arms as a URL-safe string: hex colours' "#" would otherwise start a fragment */
-  const coaString = () => encodeURI(JSON.stringify(resolved($changes[0] as string))).replaceAll("#", "%23");
+  // Keep JSON unencoded until it is placed into a URL query or copied as a component.
+  const coaString = () => JSON.stringify(resolved($changes[0] as string));
 
   function copyEditLink() {
-    const url = location.origin + location.pathname + "?coa=" + coaString();
-    copyToClipboard(url, "success.copyEditLink");
+    const url = new URL(location.origin);
+    url.pathname = location.pathname;
+    url.searchParams.set("coa", coaString());
+    copyToClipboard(url.href, "success.copyEditLink");
   }
 
   function copyApiLink() {
-    const API = "https://armoria.vercel.app/api";
-    const url = `${API}?size=500&format=png&coa=${coaString()}`;
-    copyToClipboard(url, "success.copyApiLink");
+    const url = new URL("https://armoria.vercel.app/api");
+    url.searchParams.set("size", "500");
+    url.searchParams.set("format", "png");
+    url.searchParams.set("coa", coaString());
+    copyToClipboard(url.href, "success.copyApiLink");
   }
 
   function copyCoaString() {
-    copyToClipboard(coaString(), "success.copyCoaString");
+    // One percent-encoded query value; decodeURIComponent once to recover JSON.
+    copyToClipboard(encodeURIComponent(coaString()), "success.copyCoaString");
   }
 </script>
 
