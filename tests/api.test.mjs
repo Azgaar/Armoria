@@ -197,40 +197,11 @@ test("valid SVGs preserve charges, hex patterns, and escaped names and inscripti
   assert.ok(document.querySelector("textpath").text.includes(text));
 });
 
-test("claim and unclaim errors do not reflect names or parser/database errors", async () => {
-  const name = "<img/src=x/onerror=alert(1)>";
-  await expectError(await unclaim(claimEvent(name)), 400);
-  claims.records.set(name, {name, key: "secret", coa: {t1: "or"}});
-  await expectError(await claim(claimEvent(name)), 403);
-  await expectError(await unclaim(claimEvent(name)), 403);
-  await expectError(await claim(claimEvent("123")), 403);
-  await expectError(await claim(claimEvent("new-name", "{")), 400);
-  await expectError(await claim(claimEvent("new-name", {t1: "or", shield: "missing"})), 400);
-  assert.deepEqual(claims.mutations, []);
+test("legacy claim routes return inert retirement errors without database access", async () => {
   claims.fail();
-  await expectError(await claim(claimEvent("new-name")), 500);
-  await expectError(await unclaim(claimEvent(name)), 500);
-});
-
-test("successful claim pages escape name, password, COA text, and links", async () => {
-  const name = "<img/src=x/onerror=alert(1)>&name";
-  const key = '<img src=x onerror="alert(1)">&';
-  const coa = {t1: "or", name: '<script>alert("name")</script>&'};
-  const event = claimEvent(name, coa, key);
-  const response = await claim(event);
-  assert.equal(response.status, 200);
-  assert.match(response.headers.get("content-security-policy"), /sandbox/);
-  const document = expectInertMarkup(await response.text());
-  assert.equal(document.querySelector("h1 i").text, name);
-  const code = document.querySelectorAll("code");
-  assert.equal(code[0].text, key);
-  assert.equal(code[1].text, JSON.stringify(coa));
-  const link = new URL(document.querySelector("a").getAttribute("href"));
-  assert.equal(decodeURIComponent(link.pathname.split("/").at(-1)), name);
-  assert.deepEqual(claims.mutations, ["insert"]);
-
-  const removed = await unclaim(event);
-  assert.equal(removed.status, 200);
-  assert.equal(expectInertMarkup(await removed.text()).querySelector("h1 i").text, name);
-  assert.deepEqual(claims.mutations, ["insert", "delete"]);
+  for (const route of [claim, unclaim]) {
+    const response = await route(claimEvent("<img/src=x/onerror=alert(1)>", "{", "private-password"));
+    await expectError(response, 410);
+  }
+  assert.deepEqual(claims.mutations, []);
 });

@@ -34,7 +34,6 @@ export async function render(coa, size, colors) {
       .digest("hex")
   };
   const {division, ordinaries = [], charges = [], inscriptions = [], shield = SHIELD_DEFAULT} = coa;
-  logCOAdetails(coa, shield, division, ordinaries, charges);
 
   const shieldPath = shields.data[shield].path;
   const loadedCharges = await getCharges(coa, shieldPath);
@@ -155,12 +154,4 @@ async function loadFontsAsDataURI(fonts) {
   });
 
   return await Promise.all(promises);
-}
-
-function logCOAdetails(coa, shield, division, ordinaries, charges) {
-  console.log("---------------");
-  console.log("Field:", {t1: coa.t1, shield});
-  if (division) console.log("Division:", division);
-  if (ordinaries.length) ordinaries.forEach(ordinary => console.log("Ordinary:", ordinary));
-  if (charges.length) charges.forEach(charge => console.log("Charge:", charge));
 }

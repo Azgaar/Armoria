@@ -15,6 +15,7 @@
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
     "postinstall": "patch-package",
+    "test:claims": "svelte-kit sync && node --test --test-isolation=none tests/claims.test.mjs",
     "test:svg-upload": "node --test --test-isolation=none tests/svg-upload.test.mjs"
   },
   "repository": {
