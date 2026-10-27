@@ -6,6 +6,9 @@ import * as stores from "$lib/data/stores";
 import {getSizeMod, getTemplate, patternId, semy} from "$lib/scripts/getters";
 import {capitalize} from "$lib/scripts/utils";
 import {parse} from "node-html-parser";
+import {createHash} from "node:crypto";
+import {escapeMarkup, InvalidCoaError} from "./responses";
+import {validateCoa} from "./validation";
 
 const SHIELD_DEFAULT = "heater";
 
@@ -22,6 +25,14 @@ const backlight = `<radialGradient id="backlight" cx="100%" cy="100%" r="150%">
 </radialGradient>`;
 
 export async function render(coa, size, colors) {
+  validateCoa(coa);
+  // A seed selects the artwork; it must not become raw markup or an unsafe fragment identifier.
+  coa = {
+    ...coa,
+    seed: createHash("sha256")
+      .update(String(coa.seed ?? ""))
+      .digest("hex")
+  };
   const {division, ordinaries = [], charges = [], inscriptions = [], shield = SHIELD_DEFAULT} = coa;
   logCOAdetails(coa, shield, division, ordinaries, charges);
 
@@ -64,8 +75,8 @@ export async function render(coa, size, colors) {
       .map(patternString => {
         const [pattern, t1, t2, size] = patternString.split("-");
         const charge = semy(patternString);
-        const id = patternId(patternString);
-        if (charge) return patterns.semy(id, clr(t1), clr(t2), getSizeMod(size), charge);
+        const id = escapeMarkup(patternId(patternString));
+        if (charge) return patterns.semy(id, clr(t1), clr(t2), getSizeMod(size), escapeMarkup(charge));
         return patterns[pattern](id, clr(t1), clr(t2), getSizeMod(size), charge);
       })
       .join("");
@@ -73,9 +84,9 @@ export async function render(coa, size, colors) {
 
   // get color or link to pattern
   function clr(tincture) {
-    if (colors[tincture]) return colors[tincture];
-    if (tincture[0] === "#") return tincture;
-    return `url(#${tincture})`;
+    if (Object.hasOwn(colors, tincture)) return escapeMarkup(colors[tincture]);
+    if (tincture[0] === "#") return escapeMarkup(tincture);
+    return escapeMarkup(`url(#${tincture})`);
   }
 }
 
@@ -94,14 +105,10 @@ async function getCharges(coa, shieldPath) {
         if (!path) {
           throw new Error(`Cannot fetch charge ${charge}`);
         }
-        return `<g id="${chargeId}"><path transform="translate(66 66) scale(.34)" d="${path}"/></g>`;
+        return `<g id="${escapeMarkup(chargeId)}"><path transform="translate(66 66) scale(.34)" d="${path}"/></g>`;
       }
 
-      try {
-        return await fetchCharge(charge);
-      } catch (err) {
-        throw new Error(`Cannot fetch charge ${charge}`);
-      }
+      return await fetchCharge(charge);
     })
   );
   return fetchedCharges.join("");
@@ -109,6 +116,7 @@ async function getCharges(coa, shieldPath) {
 
 async function fetchCharge(charge) {
   const url = charges[`/static/charges/${charge}.svg`];
+  if (typeof url !== "string") throw new InvalidCoaError("Unknown COA charge");
   const text = await read(url).text();
   const root = parse(text);
   const g = root.querySelector("g");

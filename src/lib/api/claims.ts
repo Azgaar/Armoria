@@ -1,5 +1,6 @@
 import {MONGO_ID, MONGO_PASS} from "$env/static/private";
 import {MongoDBConnector} from "./dbConnector";
+import type {Coa} from "$lib/types/coa";
 
 const MONGO_URL = `mongodb+srv://${MONGO_ID}:${MONGO_PASS}@cluster0.auhmw.mongodb.net/armoria_api?retryWrites=true&w=majority`;
 const DB_NAME = "armoria_api";
@@ -10,7 +11,7 @@ await claims.connect();
 
 type Claim = {
   name: string;
-  coa: string;
+  coa: Coa;
   key?: string;
 };
 

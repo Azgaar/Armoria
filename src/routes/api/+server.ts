@@ -1,6 +1,8 @@
 import {getClaim} from "$lib/api/claims";
 import {render} from "$lib/api/renderer";
 import {generateSeed, parseColors, parseSeed} from "$lib/api/utils";
+import {apiError, jsonError} from "$lib/api/responses";
+import {parseCoa} from "$lib/api/validation";
 import {generate} from "$lib/scripts/generator";
 import {minify} from "minify-xml";
 import type {RequestHandler} from "./$types";
@@ -21,23 +23,13 @@ export const GET: RequestHandler = async ({url}) => {
   const colors = parseColors(params);
   const coaParam = params.get("coa");
 
-  const coa = coaParam ? JSON.parse(coaParam) : await getCoa(seed);
-  coa.seed = seed;
-
-  let svg;
   try {
-    svg = await render(coa, size, colors);
+    const coa = coaParam !== null ? parseCoa(coaParam) : await getCoa(seed);
+    const svg = await render({...coa, seed}, size, colors);
+    return await send(format, svg);
   } catch (err) {
-    console.error(err.message);
-    return new Response(
-      `<h1>Armoria API</h1><p>Error while rendering COA: ${err.message}.</p><p>COA object: ${JSON.stringify(coa)}</p>`,
-      {
-        status: 500,
-        headers: {"Content-Type": "text/html"}
-      }
-    );
+    return apiError(err);
   }
-  return send(format, svg);
 };
 
 async function getCoa(seed: string) {
@@ -50,15 +42,13 @@ async function getCoa(seed: string) {
 let jpegConverter, pngConverter;
 let options = {
   ignoreHTTPSErrors: true,
-  headless: true,
+  headless: true
 };
 if (process.env.VERCEL) {
-  options.executablePath = await chromium.executablePath("https://github.com/Sparticuz/chromium/releases/download/v138.0.1/chromium-v138.0.1-pack.x64.tar");
-  const remove = [
-    '--use-gl=angle',
-    '--use-angle=swiftshader',
-    '--enable-unsafe-swiftshader',
-  ];
+  options.executablePath = await chromium.executablePath(
+    "https://github.com/Sparticuz/chromium/releases/download/v138.0.1/chromium-v138.0.1-pack.x64.tar"
+  );
+  const remove = ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"];
   options.args = chromium.args.filter(v => !remove.includes(v));
 } else {
   options.channel = "chrome";
@@ -83,7 +73,7 @@ async function send(format: string, svg: string) {
     converter = jpegConverter;
     contentType = "image/jpeg";
   } else {
-    return new Response("Invalid format", {status: 400});
+    return jsonError("Invalid format", 400);
   }
 
   const buffer = await converter.convert(svg);
