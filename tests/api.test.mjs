@@ -203,3 +203,78 @@ test("legacy claim routes return inert retirement errors without database access
   }
   assert.deepEqual(claims.mutations, []);
 });
+
+function expectResolvedReferences(document) {
+  const ids = document.querySelectorAll("[id]").map(element => element.getAttribute("id"));
+  assert.equal(new Set(ids).size, ids.length, "definitions must not have duplicate IDs");
+  for (const element of document.querySelectorAll("*")) {
+    for (const [name, value] of Object.entries(element.attributes)) {
+      if (["href", "xlink:href"].includes(name) && value.startsWith("#"))
+        assert.ok(ids.includes(value.slice(1)), `Missing ${value}`);
+      for (const match of value.matchAll(/url\(#([^)]*)\)/g)) assert.ok(ids.includes(match[1]), `Missing ${match[1]}`);
+    }
+  }
+}
+
+test("generic and named inescutcheons use the effective shield and retain camel-case identifiers", async () => {
+  const {shields, charges} = await server.ssrLoadModule("/src/lib/data/dataModel.js");
+  const fixtures = [
+    {charge: "inescutcheon", shield: undefined, expected: "heater"},
+    ...Object.keys(shields.data).map(shield => ({charge: "inescutcheon", shield, expected: shield})),
+    ...Object.keys(charges.inescutcheon).map(charge => ({
+      charge,
+      shield: "heater",
+      expected: charge.slice(12, 13).toLowerCase() + charge.slice(13)
+    }))
+  ];
+  for (const {charge, shield, expected} of fixtures) {
+    const response = await image(imageEvent({t1: "or", ...(shield ? {shield} : {}), charges: [{charge, t: "gules", p: "e"}]}));
+    assert.equal(response.status, 200, `${charge} on ${shield}`);
+    const document = parse(await response.text());
+    const id = charge === "inescutcheon" ? "inescutcheon" + expected[0].toUpperCase() + expected.slice(1) : charge;
+    const path = document.querySelector(`#${id} path`);
+    assert.ok(path, id);
+    assert.equal(path.getAttribute("d"), shields.data[expected].path);
+    assert.equal(path.getAttribute("transform"), "translate(67 67) scale(.33)", "match browser geometry");
+    expectResolvedReferences(document);
+  }
+});
+
+test("patterns and their semy charges are collected from every supported tincture slot", async () => {
+  const fixture = {
+    t1: "semy_of_roundel-argent-azure",
+    division: {division: "perPale", t: "semy_of_mullet-or-azure"},
+    ordinaries: [{ordinary: "bordure", t: "semy_of_lozenge-gules-or", t2: "semy_of_annulet-azure-or", gyronny: 8}],
+    charges: [
+      {charge: "arbalest", t: "semy_of_crescent-or-gules", t2: "vair-#123456-or", t3: "semy_of_fleurDeLis-argent-gules", p: "e"}
+    ]
+  };
+  const response = await image(imageEvent(fixture));
+  assert.equal(response.status, 200);
+  const document = parse(await response.text());
+  for (const id of ["roundel", "mullet", "lozenge", "annulet", "crescent", "fleurDeLis", "arbalest"])
+    assert.ok(document.querySelector(`#${id}`), id);
+  assert.equal(document.querySelectorAll("pattern").length, 7);
+  expectResolvedReferences(document);
+});
+
+test("repeated semy dependencies and generic inescutcheons resolve once per SVG", async () => {
+  const pattern = "semy_of_inescutcheon-or-azure";
+  const response = await image(
+    imageEvent({
+      t1: pattern,
+      shield: "oldFrench",
+      division: {division: "perPale", t: pattern},
+      ordinaries: [{ordinary: "fess", t: "semy_of_inescutcheonOldFrench-gules-or"}],
+      charges: [
+        {charge: "inescutcheon", t: pattern, p: "e"},
+        {charge: "inescutcheonOldFrench", t: "or", p: "a"}
+      ]
+    })
+  );
+  assert.equal(response.status, 200);
+  const document = parse(await response.text());
+  assert.equal(document.querySelectorAll('[id="inescutcheonOldFrench"]').length, 1);
+  assert.equal(document.querySelectorAll("pattern").length, 2);
+  expectResolvedReferences(document);
+});

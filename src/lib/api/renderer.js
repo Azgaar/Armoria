@@ -31,15 +31,17 @@ export async function render(coa, size, colors) {
   // A seed selects the artwork; it must not become raw markup or an unsafe fragment identifier.
   coa = {
     ...coa,
+    shield: coa.shield ?? SHIELD_DEFAULT,
     seed: createHash("sha256")
       .update(String(coa.seed ?? ""))
       .digest("hex")
   };
-  const {division, ordinaries = [], charges = [], inscriptions = [], shield = SHIELD_DEFAULT} = coa;
+  const {division, shield} = coa;
+  const dependencies = collectDependencies(coa);
 
   const shieldPath = shields.data[shield].path;
-  const loadedCharges = await getCharges(coa, shieldPath);
-  const loadedPatterns = getPatterns(coa);
+  const loadedCharges = await getCharges(dependencies.charges);
+  const loadedPatterns = getPatterns();
   const loadedFonts = await getFonts(coa);
   const shieldClip = `<clipPath id="shield_${coa.seed}"><path d="${shieldPath}"/></clipPath>`;
   const divisionClip = division
@@ -55,29 +57,19 @@ export async function render(coa, size, colors) {
   stores.grad.set("backlight");
   stores.colors.set(colors);
 
-  const svg = COA.render({coa: {...coa, shield}, height: size, width: size, i: "View"});
+  const svg = COA.render({coa, height: size, width: size, i: "View"});
   const root = parse(svg.html);
   root.querySelector("defs").innerHTML =
     `${shieldClip}${divisionClip}${loadedCharges}${loadedPatterns}${loadedFonts}${backlight}${style}`;
   return root.outerHTML;
 
-  function getPatterns(coa) {
-    const isPattern = string => string.includes("-");
-    let patternsToAdd = [];
-    if (coa.t1.includes("-")) patternsToAdd.push(coa.t1); // add field pattern
-    if (coa.division && isPattern(coa.division.t)) patternsToAdd.push(coa.division.t); // add division pattern
-    if (coa.ordinaries)
-      coa.ordinaries.filter(ordinary => isPattern(ordinary.t)).forEach(ordinary => patternsToAdd.push(ordinary.t)); // add ordinaries pattern
-    if (coa.charges) coa.charges.filter(charge => isPattern(charge.t)).forEach(charge => patternsToAdd.push(charge.t)); // add charges pattern
-
-    if (!patternsToAdd.length) return "";
-
-    return [...new Set(patternsToAdd)]
+  function getPatterns() {
+    return [...dependencies.patterns]
       .map(patternString => {
         const [pattern, t1, t2, size] = patternString.split("-");
         const charge = semy(patternString);
         const id = escapeMarkup(patternId(patternString));
-        if (charge) return patterns.semy(id, clr(t1), clr(t2), getSizeMod(size), escapeMarkup(charge));
+        if (charge) return patterns.semy(id, clr(t1), clr(t2), getSizeMod(size), escapeMarkup(resolveChargeId(charge, shield)));
         return patterns[pattern](id, clr(t1), clr(t2), getSizeMod(size), charge);
       })
       .join("");
@@ -91,22 +83,44 @@ export async function render(coa, size, colors) {
   }
 }
 
-async function getCharges(coa, shieldPath) {
-  let charges = coa.charges ? coa.charges.map(charge => charge.charge) : []; // add charges
-  if (semy(coa.t1)) charges.push(semy(coa.t1)); // add field semy charge
-  if (semy(coa.division?.t)) charges.push(semy(coa.division.t)); // add division semy charge
+// A semy pattern depends on a charge definition, including when it is used in
+// secondary/tertiary fills. Resolve IDs before deduplication so generic and named
+// inescutcheons share a definition when they use the same shield.
+/** @param {string} charge @param {string} shield */
+function resolveChargeId(charge, shield) {
+  return charge === "inescutcheon" ? charge + capitalize(shield) : charge;
+}
 
-  const uniqueCharges = [...new Set(charges)];
+/** @param {import("$lib/types/coa").Coa & {shield: string}} coa */
+function collectDependencies(coa) {
+  const tinctures = [
+    coa.t1,
+    coa.division?.t,
+    ...(coa.ordinaries || []).flatMap(item => [item.t, item.t2]),
+    ...(coa.charges || []).flatMap(item => [item.t, item.t2, item.t3])
+  ];
+  /** @type {Set<string>} */
+  const patterns = new Set();
+  for (const tincture of tinctures) if (tincture?.includes("-")) patterns.add(tincture);
+  const charges = new Set((coa.charges || []).map(item => resolveChargeId(item.charge, coa.shield)));
+  for (const pattern of patterns) {
+    const charge = semy(pattern);
+    if (charge) charges.add(resolveChargeId(charge, coa.shield));
+  }
+  return {patterns, charges};
+}
+
+/** @param {Set<string>} charges */
+async function getCharges(charges) {
   const fetchedCharges = await Promise.all(
-    uniqueCharges.map(async charge => {
+    [...charges].map(async charge => {
       if (charge.startsWith("inescutcheon")) {
-        const shieldType = charge.slice(12).toLowerCase();
-        const chargeId = shieldType ? charge : charge + capitalize(coa.shield);
-        const path = shieldType ? shields.data[shieldType]?.path : shieldPath;
+        const shieldType = charge.slice(12, 13).toLowerCase() + charge.slice(13);
+        const path = shields.data[shieldType]?.path;
         if (!path) {
-          throw new Error(`Cannot fetch charge ${charge}`);
+          throw new InvalidCoaError("Unknown inescutcheon shield");
         }
-        return `<g id="${escapeMarkup(chargeId)}"><path transform="translate(66 66) scale(.34)" d="${path}"/></g>`;
+        return `<g id="${escapeMarkup(charge)}"><path transform="translate(67 67) scale(.33)" d="${path}"/></g>`;
       }
 
       return await fetchCharge(charge);

@@ -80,6 +80,10 @@ Render-driving numeric fields must be finite numbers: zoom 0.1–1; charge/ordin
 
 Invalid formats, dimensions, numbers, or malformed COAs return inert JSON with **400**. Excessive payload/COA complexity returns **413**; an oversized URL returns **414**. Supplied values are not echoed. Image-parameter validation precedes generation, and COA validation precedes asset/font loading; Chromium setup occurs only for a validated raster request. Limits also run at the renderer boundary so stored claims cannot bypass them. These are per-request bounds, not traffic rate limits.
 
+The API resolves generic inescutcheons against the effective shield (default `heater`) and preserves camel-case shield names. Pattern definitions include ordinary secondary tinctures and all three charge tinctures, along with any semy charge dependencies, without duplicate definitions. SVG/PNG/JPEG downloads and FMG exports also follow nested SVG references so secondary-color patterns remain visible outside the editor.
+
+Run `npm run test:pattern-rendering` with the Chromium options above to compare representative API SVGs with browser exports pixel for pixel and verify their internal references. It uses the real renderer and local assets, blocks external requests and requires no database credentials. `npm run test:api` also checks every built-in inescutcheon and all supported tincture slots.
+
 Run `npm run test:render-limits` for allocation-free boundary and rejection tests, plus a deterministic sample of generated COAs. Raster converters and external services are replaced with fixtures; no large raster image is allocated.
 
 ### Claiming and releasing names
