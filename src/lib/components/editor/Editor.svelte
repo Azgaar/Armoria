@@ -1,4 +1,5 @@
 <script>
+  import {settingsStorage} from "$lib/data/storage";
   import {tick} from "svelte";
   import {t, dictionary, locale} from "svelte-i18n";
   import {fade, fly, slide} from "svelte/transition";
@@ -45,8 +46,17 @@
   $: reroll(historyId); // on reroll
   $: update(menu, $uploaded); // on menu update and charge upload
   $: edit(coa); // on edit
-  $: localStorage.setItem("grid", $grid); // on grid change
-  $: localStorage.setItem("showGrid", $showGrid); // on grid change
+  // Persist changes, not recovered defaults during initial rendering.
+  let savedGrid = $grid;
+  let savedShowGrid = $showGrid;
+  $: if ($grid !== savedGrid) {
+    settingsStorage.setItem("grid", $grid);
+    savedGrid = $grid;
+  }
+  $: if ($showGrid !== savedShowGrid) {
+    settingsStorage.setItem("showGrid", $showGrid);
+    savedShowGrid = $showGrid;
+  }
 
   function reroll(historyId) {
     restoring = false;

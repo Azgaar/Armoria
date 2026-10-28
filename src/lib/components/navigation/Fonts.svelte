@@ -1,4 +1,5 @@
 <script lang="ts">
+  import {settingsStorage} from "$lib/data/storage";
   // @ts-check
   import {DEFAULT_FONTS} from "$lib/config/defaults";
   import {fonts, message, state} from "$lib/data/stores";
@@ -36,14 +37,14 @@
 
   function addFont(name, data) {
     $fonts[name] = data;
-    localStorage.setItem("fonts", JSON.stringify($fonts));
+    settingsStorage.setItem("fonts", JSON.stringify($fonts));
     message.info($t("success.fontAdded"));
     close();
   }
 
   function restoreDefaultFonts() {
     $fonts = DEFAULT_FONTS;
-    localStorage.removeItem("fonts");
+    settingsStorage.removeItem("fonts");
   }
 
   function close() {

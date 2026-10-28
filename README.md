@@ -33,6 +33,14 @@ Navigate to [localhost:5173](http://localhost:5173). You should see the app runn
 
 To create an optimised version run `npm run build`.
 
+## Saved settings recovery
+
+Saved settings are validated independently at startup. Missing or invalid values use defaults; valid zero values, including border width `0`, are preserved. Invalid entries in custom palettes, fonts and uploaded-charge maps do not discard valid entries. Recovery leaves the raw saved data untouched until the corresponding setting is edited or reset. A dismissible notice explains recovery or unavailable browser storage; failed reads/writes fall back to memory for the current tab, so editing can continue.
+
+Numeric settings accept finite values within these ranges: gallery size 80–400 (integer), border width 0–4, export scale 0.1–4, and grid spacing 1–50 (integer). Tincture probabilities must be integer weights from 0–1000, with at most 256 entries and a total of at most 10,000 per group. Required pools must have positive totals; empty optional pools are allowed only when disabled for every element. Legacy sampling caches are ignored. The existing per-key storage format is unchanged, so no schema migration is needed.
+
+Run `npm run test:settings` for parsing, validation and storage-failure checks, and `npm run test:settings-browser` for startup recovery, custom uploads, zero-width reloads and denied/quota-limited storage. The browser suite supports the Chromium options documented below and blocks external requests.
+
 ## Links and the address bar
 
 While a coat of arms is edited, the `coa` URL parameter follows every change, so a reload or a shared address shows it as it is. The address, copied links, COA strings and JSON exports all carry the coat of arms as drawn here: with the shield it uses, and with every tincture recoloured or added in this browser written as its hex colour (`{"t1": "#0000ff"}`, or `vair-#0000ff-or` in a pattern), as the API accepts it. Default tinctures keep their names.

@@ -236,6 +236,9 @@
     "coaLoaded": "COA is loaded"
   },
   "info": {
+    "settingsRecovered": "Some saved settings were invalid and were replaced with defaults for this session. Valid settings and uploaded charges were kept.",
+    "storageUnavailable": "Browser storage could not be accessed. You can keep editing, but changes may not persist after reloading.",
+    "dismissSettingsNotice": "Dismiss settings notice",
     "tipFromFmg": "Configure emblem, save it in SVG format and then load back to the Fantasy Map Generator",
     "tipFromFmgLive": "Your changes show on the Fantasy Map Generator map as you edit",
     "tipEditControls": "Drag to move, hold SHIFT and drag vertically to resize, hold CONTROL and drag horizontally to rotate",

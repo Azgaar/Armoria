@@ -1,4 +1,5 @@
 <script lang="ts">
+  import {settingsStorage} from "$lib/data/storage";
   // @ts-check
   import {t} from "svelte-i18n";
   import NavItem from "../../shared/NavItem.svelte";
@@ -9,19 +10,19 @@
 
   const restoreDefaultFontColor = () => {
     fontColor.set(DEFAULT_FONT_COLOR);
-    localStorage.removeItem("fontColor");
+    settingsStorage.removeItem("fontColor");
   };
 
   const getRandomColor = () => {
     const symbols = "0123456789ABCDEF";
     const color = "#" + [0, 0, 0, 0, 0, 0].map(() => symbols[Math.floor(Math.random() * 16)]).join("");
     fontColor.set(color);
-    localStorage.setItem("fontColor", color);
+    settingsStorage.setItem("fontColor", color);
   };
 
   const changeColor = (color: string) => {
     fontColor.set(color);
-    localStorage.setItem("fontColor", color);
+    settingsStorage.setItem("fontColor", color);
   };
 </script>
 

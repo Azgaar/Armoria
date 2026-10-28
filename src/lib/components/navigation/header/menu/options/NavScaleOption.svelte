@@ -1,4 +1,5 @@
 <script lang="ts">
+  import {settingsStorage} from "$lib/data/storage";
   // @ts-check
   import {t} from "svelte-i18n";
   import NavItem from "../../shared/NavItem.svelte";
@@ -7,7 +8,7 @@
 
   const handleInput = (value: number) => {
     scale.set(value);
-    localStorage.setItem("scale", String($scale));
+    settingsStorage.setItem("scale", String($scale));
   };
 </script>
 

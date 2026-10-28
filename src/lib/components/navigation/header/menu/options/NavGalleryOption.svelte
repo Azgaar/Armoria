@@ -1,4 +1,5 @@
 <script lang="ts">
+  import {settingsStorage} from "$lib/data/storage";
   // @ts-check
   import {t} from "svelte-i18n";
   import NavButton from "../../shared/NavButton.svelte";
@@ -11,7 +12,7 @@
     if (typeof value !== "number") return;
 
     size.set(value);
-    localStorage.setItem("size", String(value));
+    settingsStorage.setItem("size", String(value));
   };
 </script>
 

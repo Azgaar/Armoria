@@ -1,4 +1,5 @@
 <script lang="ts">
+  import {settingsStorage} from "$lib/data/storage";
   // @ts-check
   import {t, dictionary, locale} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
@@ -9,7 +10,11 @@
   export let t1: string = undefined;
   export let shield: string = undefined;
 
-  $: localStorage.setItem("colors", JSON.stringify($colors));
+  let savedColors = JSON.stringify($colors);
+  $: if (JSON.stringify($colors) !== savedColors) {
+    savedColors = JSON.stringify($colors);
+    settingsStorage.setItem("colors", savedColors);
+  }
   $: colorChanged = (tincture: string) => defaults[tincture] && $colors[tincture] !== defaults[tincture];
 
   $: tincturesData = ["metals", "colours", "stains"]

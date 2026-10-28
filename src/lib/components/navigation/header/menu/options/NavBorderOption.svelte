@@ -1,4 +1,5 @@
 <script lang="ts">
+  import {settingsStorage} from "$lib/data/storage";
   // @ts-check
   import {t} from "svelte-i18n";
   import NavItem from "../../shared/NavItem.svelte";
@@ -10,22 +11,22 @@
 
   const restoreDefaultBorder = () => {
     border.set(DEFAULT_BORDER);
-    localStorage.removeItem("border");
+    settingsStorage.removeItem("border");
   };
 
   const restoreDefaultBorderWidth = () => {
     borderWidth.set(DEFAULT_BORDER_WIDTH);
-    localStorage.removeItem("borderWidth");
+    settingsStorage.removeItem("borderWidth");
   };
 
   const changeWidth = (width: number) => {
     borderWidth.set(width);
-    localStorage.setItem("borderWidth", String(width));
+    settingsStorage.setItem("borderWidth", String(width));
   };
 
   const changeColor = (color: string) => {
     border.set(color);
-    localStorage.setItem("border", color);
+    settingsStorage.setItem("border", color);
   };
 </script>
 

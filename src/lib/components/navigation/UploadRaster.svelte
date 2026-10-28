@@ -1,4 +1,5 @@
 <script lang="ts">
+  import {settingsStorage} from "$lib/data/storage";
   // @ts-check
   import {t} from "svelte-i18n";
   import LicenseList from "./LicenseList.svelte";
@@ -85,7 +86,7 @@
       type: "raster",
       content: sanitizeSvg(image.outerHTML)
     };
-    localStorage.setItem("uploaded", JSON.stringify($uploaded));
+    settingsStorage.setItem("uploaded", JSON.stringify($uploaded));
     updateCharge(name); // for the case where charge was previously not found
 
     selected = false;

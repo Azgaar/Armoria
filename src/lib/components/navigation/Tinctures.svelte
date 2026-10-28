@@ -1,4 +1,5 @@
 <script lang="ts">
+  import {settingsStorage} from "$lib/data/storage";
   // @ts-check
   import {t} from "svelte-i18n";
   import {fade} from "svelte/transition";
@@ -31,7 +32,7 @@
   // don't lock options on load
   let loaded = [];
   function lock(key: string, value: unknown) {
-    if (loaded.includes(key)) localStorage.setItem(key, JSON.stringify(value));
+    if (loaded.includes(key)) settingsStorage.setItem(key, JSON.stringify(value));
     else loaded.push(key);
   }
 
@@ -115,8 +116,8 @@
   function restoreDefault() {
     $tinctures = JSON.parse(JSON.stringify(DEFAULT_TINCTURES));
     $colors = JSON.parse(JSON.stringify(DEFAULT_COLORS));
-    localStorage.removeItem("tinctures");
-    localStorage.removeItem("colors");
+    settingsStorage.removeItem("tinctures");
+    settingsStorage.removeItem("colors");
     loaded = [];
     message.info("info.restoredDefaults");
   }

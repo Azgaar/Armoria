@@ -1,4 +1,5 @@
 <script lang="ts">
+  import {settingsStorage} from "$lib/data/storage";
   // @ts-check
   import {t} from "svelte-i18n";
   import NavItem from "../../shared/NavItem.svelte";
@@ -9,19 +10,19 @@
 
   const restoreDefaultBackground = () => {
     background.set(DEFAULT_BACKGROUND);
-    localStorage.removeItem("background");
+    settingsStorage.removeItem("background");
   };
 
   const getRandomColor = () => {
     const symbols = "0123456789ABCDEF";
     const color = "#" + [0, 0, 0, 0, 0, 0].map(() => symbols[Math.floor(Math.random() * 16)]).join("");
     background.set(color);
-    localStorage.setItem("background", color);
+    settingsStorage.setItem("background", color);
   };
 
   const changeColor = (color: string) => {
     background.set(color);
-    localStorage.setItem("background", color);
+    settingsStorage.setItem("background", color);
   };
 </script>
 

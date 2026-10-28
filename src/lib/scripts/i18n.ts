@@ -1,3 +1,4 @@
+import {settingsStorage} from "$lib/data/storage";
 import {isTextReady} from "$lib/data/stores";
 import {init, register} from "svelte-i18n";
 import {fetcher} from "./utils";
@@ -19,7 +20,11 @@ const registerSupportedLocales = async () => {
       register(language, fetcher(`${localesPath}${language}${file}`));
     }
 
-    const storedLocale = localStorage.getItem("locale");
+    let storedLocale = settingsStorage.getItem("locale");
+    if (storedLocale && !languages.includes(storedLocale) && !languages.includes(storedLocale.split("-")[0])) {
+      settingsStorage.ignore("locale");
+      storedLocale = null;
+    }
     const preferredLocale = storedLocale || navigator.language;
     const shortLocale = preferredLocale.split("-")[0];
     const initialLocale =

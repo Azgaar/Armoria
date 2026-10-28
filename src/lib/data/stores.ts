@@ -1,29 +1,9 @@
-import {
-  DEFAULT_BACKGROUND,
-  DEFAULT_BORDER,
-  DEFAULT_BORDER_WIDTH,
-  DEFAULT_COLORS,
-  DEFAULT_DIAPER,
-  DEFAULT_FONT_COLOR,
-  DEFAULT_FONTS,
-  DEFAULT_GRADIENTS,
-  DEFAULT_GRID,
-  DEFAULT_SCALE,
-  DEFAULT_SHOW_GRID,
-  DEFAULT_SIZE,
-  DEFAULT_TINCTURES,
-  type Fonts
-} from "$lib/config/defaults";
-import {ra, rw} from "$lib/scripts/utils";
 import {writable} from "svelte/store";
-import type {Tinctures} from "$lib/types/tinctures";
-import {shields} from "./shields";
-import {validateTinctures} from "./validators";
-import {browser} from "$app/environment";
+import {readSavedSettings} from "./settings";
 
 export const isTextReady = writable(false);
 
-const options = defineInitialOptions();
+const options = readSavedSettings();
 export const size = writable(options.size);
 export const grad = writable(options.grad);
 export const diaper = writable(options.diaper);
@@ -121,53 +101,3 @@ const createChangesStore = () => {
   };
 };
 export const changes = createChangesStore();
-
-function defineInitialOptions() {
-  const stored = (key: string) => {
-    if (!browser) return null;
-    const value = localStorage.getItem(key);
-    if (value === "null") return null;
-    return value;
-  };
-
-  const storedObj = (key: string) => {
-    if (!browser) return null;
-    return localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : null;
-  };
-
-  const size = +stored("size") || DEFAULT_SIZE;
-  const diaper = stored("diaper") || DEFAULT_DIAPER;
-  const grad = stored("grad") || ra(DEFAULT_GRADIENTS);
-  const shield = stored("shield") || rw(shields[rw(shields.types)]);
-  const colors = storedObj("colors") || JSON.parse(JSON.stringify(DEFAULT_COLORS));
-  const fonts: Fonts = storedObj("fonts") || JSON.parse(JSON.stringify(DEFAULT_FONTS));
-  const border = stored("border") || DEFAULT_BORDER;
-  const borderWidth = +stored("borderWidth") || DEFAULT_BORDER_WIDTH;
-  const background = stored("background") || DEFAULT_BACKGROUND;
-  const fontColor = stored("fontColor") || DEFAULT_FONT_COLOR;
-  const scale = +stored("scale") || DEFAULT_SCALE;
-  const grid = +stored("grid") || DEFAULT_GRID;
-  const showGrid = storedObj("showGrid") || DEFAULT_SHOW_GRID;
-  const storedTinctures = storedObj("tinctures");
-  const areTincturesValid = storedTinctures ? validateTinctures(storedTinctures) : false;
-  const tinctures: Tinctures = areTincturesValid ? storedTinctures : JSON.parse(JSON.stringify(DEFAULT_TINCTURES));
-  const uploaded = storedObj("uploaded") || {};
-
-  return {
-    size,
-    diaper,
-    grad,
-    shield,
-    colors,
-    tinctures,
-    uploaded,
-    fonts,
-    border,
-    borderWidth,
-    background,
-    fontColor,
-    scale,
-    grid,
-    showGrid
-  };
-}
