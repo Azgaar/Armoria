@@ -67,9 +67,17 @@ Invalid COA JSON or unsupported COA elements return a JSON error with HTTP 400. 
 
 Run `npm run test:api` with Node 24 to check API error responses, SVG output escaping, and claim confirmations. The tests compile the actual routes and Svelte renderer, use local charge assets, and replace database access and raster conversion with test fixtures; they require no credentials or running services.
 
+### Legacy image URLs and query overrides
+
+`/api/:format/:size/[:seed]` redirects permanently (301) to `/api`, retaining query parameters and normalizing a legacy size such as `200px` to `200`. Path `format`, `size`, and (when present) `seed` take precedence over the same query parameters. When the path omits a seed, a query seed is retained; if both omit it, the API generates one. Duplicate core query parameters and oversized URLs are rejected before path values can replace them. Invalid effective dimensions or formats return the same JSON errors as `/api`.
+
+For example, `/api/svg/200px/123?gules=123456` redirects to `/api?gules=123456&format=svg&size=200&seed=123` and renders a 200×200 SVG with the requested gules colour. A `coa` query supplies explicit artwork instead of looking up or generating the seed. A `shield` query overrides the shield of valid inline, claimed or generated artwork; absent an override, the artwork's shield (or `heater` default) is used. Shield names are case-sensitive, including `oldFrench`, and unsupported/empty names return 400. Palette query values retain the canonical API's six-digit hex format without `#`. The original COA and stored claims are not modified by these overrides.
+
+`npm run test:api` follows the redirect into the real SVG renderer and checks final dimensions, field colour, shield geometry, COA text and precedence. `npm run test:render-limits` also verifies invalid shield overrides are rejected before database or rendering work.
+
 ### Image request limits
 
-`GET /api` accepts `format=svg` (the default), `png`, `jpg`, or `jpeg`. `size` is a square dimension from **1 to 4096 pixels**, defaulting to 500 only when omitted. Decimal integer strings and a lowercase legacy `px` suffix are accepted (`400`, `400px`); the legacy `/api/svg/400px/example` redirect also works. Empty, zero, negative, fractional, non-finite, hexadecimal, and exponential values are rejected rather than silently defaulted or clamped. Format names are lowercase; duplicate `format`, `size`, `seed`, or `coa` parameters are rejected.
+`GET /api` accepts `format=svg` (the default), `png`, `jpg`, or `jpeg`. `size` is a square dimension from **1 to 4096 pixels**, defaulting to 500 only when omitted. Decimal integer strings and a lowercase legacy `px` suffix are accepted (`400`, `400px`); the legacy `/api/svg/400px/example` redirect also works. Empty, zero, negative, fractional, non-finite, hexadecimal, and exponential values are rejected rather than silently defaulted or clamped. Format names are lowercase; duplicate `format`, `size`, `seed`, `coa`, or `shield` parameters are rejected.
 
 Limits apply to submitted, stored, and generated COAs, including COAs submitted to the claim endpoint:
 
