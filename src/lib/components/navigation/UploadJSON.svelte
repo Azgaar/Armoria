@@ -1,16 +1,20 @@
 <script lang="ts">
   // @ts-check
   import {t} from "svelte-i18n";
-  import {changes, history, matrices, matrix, message, state} from "$lib/data/stores";
+  import {changes, colors, fonts, history, matrices, matrix, message, state, uploaded} from "$lib/data/stores";
+
+  import {IMPORT_LIMITS, parseCoaImport} from "$lib/coa/validation";
+  import {RequestLimitError} from "$lib/coa/errors";
 
   let dragging = false;
 
   const onFile = (getFilesFunction: any) => (event: any) => {
     dragging = false;
     const files = getFilesFunction(event);
-    const file = files.length ? files[0] : [];
+    const file = files[0];
+    if (!file) return;
 
-    if (!file.type.match(/text|json/)) {
+    if (!file.type.match(/text|json/) && !/\.json$/i.test(file.name)) {
       message.error("error.notJsonOrText");
       return;
     }
@@ -18,24 +22,37 @@
     loadCOA(file);
   };
 
-  function getFilesFromDropEvent({dataTransfer: {files, items}}) {
-    return files.length ? [...files] : items.filter(({kind}) => kind === "file").map(({getAsFile}) => getAsFile());
+  function getFilesFromDropEvent(event: DragEvent) {
+    const transfer = event.dataTransfer;
+    if (!transfer) return [];
+    return transfer.files.length
+      ? Array.from(transfer.files)
+      : Array.from(transfer.items)
+          .filter(item => item.kind === "file")
+          .map(item => item.getAsFile())
+          .filter(Boolean);
   }
 
-  function getFilesFromInputEvent({target}) {
-    const files = target.files ? [...target.files] : [];
+  function getFilesFromInputEvent(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const files = Array.from(target.files || []);
     target.value = "";
     return files;
   }
 
   function loadCOA(file: Blob) {
+    if (file.size > IMPORT_LIMITS.bytes) {
+      message.error("error.coaImportTooLarge");
+      return;
+    }
     const reader = new FileReader();
+    reader.onerror = () => message.error("error.loadingCoa");
     reader.onload = function () {
       let coas;
       try {
-        coas = JSON.parse(this.result);
-      } catch(error) {
-        message.error("error.loadingCoa");
+        coas = parseCoaImport(String(this.result), {colors: $colors, fonts: $fonts, uploaded: $uploaded});
+      } catch (error) {
+        message.error(error instanceof RequestLimitError ? "error.coaImportTooLarge" : "error.invalidCoaImport");
         return;
       }
 
@@ -50,7 +67,7 @@
         }
         const gallery = $matrices[$matrix].length;
         $matrix++;
-        $matrices[$matrix] = Array.from({length: coas.length}, (_, i) => l + i++);
+        $matrices[$matrix] = Array.from({length: coas.length}, (_, i) => l + i);
         for (let i = coas.length; i < gallery; i++) {
           // Fill up with empty COAs
           $history[l + i] = {t1: "argent"};

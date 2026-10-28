@@ -83,7 +83,7 @@ export const message = createMessageStore();
 
 const createChangesStore = () => {
   const {subscribe, set, update} = writable(["", -1] as [string, number]);
-  let history = [];
+  let history: string[] = [];
   let position = -1;
 
   return {
@@ -94,12 +94,19 @@ const createChangesStore = () => {
       position = -1;
       set(["", -1]);
     },
-    add: (value: unknown) => {
+    add: (value: string) => {
       if (value === history[position]) return; // no change
       if (position < history.length - 1) history = history.slice(0, position + 1); // cut future history
       history.push(value);
       position += 1;
       set([history[position], position]);
+    },
+    // Restoring an imported/legacy entry can fill editor defaults. Keep that
+    // normalization in the same undo step, preserving any redo branch.
+    replace: (value: string) => {
+      if (position < 0 || value === history[position]) return;
+      history[position] = value;
+      set([value, position]);
     },
     undo: () =>
       update(() => {

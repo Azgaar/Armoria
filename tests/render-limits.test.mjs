@@ -162,8 +162,14 @@ test("malformed and oversized COAs never reach assets, fonts, or converters", as
     {t1: "or", inscriptions: Array(17).fill(inscription)},
     {t1: "or", inscriptions: [{...inscription, text: "x".repeat(1025)}]},
     {t1: "or", inscriptions: [{...inscription, path: "M".repeat(4097)}]},
-    {t1: "or", inscriptions: Array.from({length: 9}, (_, i) => ({...inscription, font: `font-${i}`}))},
-    {t1: "or", charges: Array(9).fill({...charge, p: "abcdefghijklmnopqrstuvwxyzABCDE"})},
+    {
+      t1: "or",
+      inscriptions: Array.from({length: 9}, (_, i) => ({
+        ...inscription,
+        font: ["Arial", "Georgia", "Verdana", "Impact", "Papyrus", "Garamond", "Copperplate", "Herculanum", "Cinzel"][i]
+      }))
+    },
+    {t1: "or", charges: Array(9).fill({...charge, p: "abcdefghijklmnopqyzABCDEFGHIJKL"})},
     {t1: "or", metadata: "x".repeat(4097)},
     {t1: "or", metadata: Array(65).fill(1)},
     {t1: "or", metadata: Object.fromEntries(Array.from({length: 65}, (_, i) => [i, 0]))},

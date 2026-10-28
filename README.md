@@ -41,6 +41,12 @@ Copied edit and API links encode the raw COA JSON using `URLSearchParams`, prese
 
 **Copy COA string** produces one percent-encoded JSON query value. It can be appended directly after `?coa=`. To read it as an object, use `JSON.parse(decodeURIComponent(copiedString))`. When constructing a link with `URLSearchParams`, pass `decodeURIComponent(copiedString)` to `searchParams.set("coa", ...)` so the already encoded value is not encoded a second time. A `coa` value returned by `searchParams.get("coa")` is already decoded and can be passed directly to `JSON.parse`.
 
+URL loading, JSON imports, claim saves and API rendering use a shared runtime COA validator. Invalid links show an error and open the normal gallery. JSON imports must contain a non-empty array of at most 64 COAs, with a 2 MiB file limit and the per-COA limits below. Every entry is checked before the gallery or editor changes; rejection preserves artwork and undo/redo history.
+
+The schema checks required tinctures, nested collections, supported identifiers, flags and numeric ranges. Legacy `0`/`1` flags are accepted; missing charge positions default to `e`, and missing inscription size/color/path default to `20`, `#000000` and `M-50 0 L50 0`. Missing shadow coordinates/blur default to zero and color to `#333333`. Browser imports can use locally registered charges, fonts and tinctures, and bounded compony effects; the API accepts built-in resources and continues to reject compony. A successful editor import occupies one undo step, including normalization.
+
+Run `npm run test:coa-validation` for shared-schema checks and `npm run test:coa-import` for browser URL, file/drop, export round-trip and undo/redo regressions. The browser suite uses the Chromium options below and blocks external requests.
+
 Run `npm run test:copied-links` with Puppeteer's Chromium installed, or set `PUPPETEER_EXECUTABLE_PATH` to a system browser. Restricted CI containers can also set `PUPPETEER_NO_SANDBOX=1`. The tests exercise the copy controls, capture clipboard writes without changing the system clipboard, and reopen an edit link in a fresh browser context. External network requests are blocked.
 
 ## API

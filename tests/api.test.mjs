@@ -166,11 +166,9 @@ test("seed markup cannot escape generated SVG identifiers", async () => {
   for (const id of ids) assert.ok(body.includes(`url(#${id})`));
 });
 
-test("raw pattern attributes are escaped and non-hex palette overrides are ignored", async () => {
+test("invalid pattern attributes are rejected and non-hex palette overrides are ignored", async () => {
   const response = await image(imageEvent({t1: 'vair-#123456" onload="alert(1)-or'}));
-  assert.equal(response.status, 200);
-  const document = expectInertMarkup(await response.text());
-  assert.equal(document.querySelectorAll("pattern").length, 1);
+  await expectError(response, 400);
 
   const recoloured = await image(imageEvent({t1: "chequy-gules-or"}, {gules: '"a><b?'}));
   assert.equal(recoloured.status, 200);

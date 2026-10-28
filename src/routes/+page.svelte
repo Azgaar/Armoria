@@ -3,6 +3,7 @@
   import {charges, shields} from "$lib/data/dataModel";
   import {
     background,
+    colors,
     fonts,
     history,
     isTextReady,
@@ -14,6 +15,8 @@
     state,
     uploaded
   } from "$lib/data/stores";
+  import {parseCoa} from "$lib/coa/validation";
+  import {RequestLimitError} from "$lib/coa/errors";
   import {registerCharge} from "$lib/data/charges";
   import "$lib/scripts/i18n";
   import {rw} from "$lib/scripts/utils";
@@ -107,12 +110,16 @@
     const seedParam = url.searchParams.get("seed");
     const from = url.searchParams.get("from");
 
-    if (!coaParam && !seedParam) return; // no predefined coa, regular flow (generate gallery)
+    if (coaParam === null && !seedParam) return; // no predefined coa, regular flow (generate gallery)
 
-    if (coaParam) {
-      // exact coa to render
-      if (!validateJSON(coaParam)) return;
-      $history.push(JSON.parse(coaParam));
+    if (coaParam !== null) {
+      try {
+        const coa = parseCoa(coaParam, {colors: $colors, fonts: $fonts, uploaded: $uploaded});
+        $history.push(coa);
+      } catch (error) {
+        message.error(error instanceof RequestLimitError ? "error.coaTooLarge" : "error.invalidCoa");
+        return;
+      }
     } else if (seedParam) {
       seed = seedParam;
     }
@@ -131,17 +138,6 @@
       } else {
         $state.edit = 1; // open in edit mode
       }
-    }
-  }
-
-  function validateJSON(text: string) {
-    try {
-      JSON.parse(text);
-      return true;
-    } catch (error) {
-      console.error(error);
-      message.error(error.message);
-      return false;
     }
   }
 
@@ -178,7 +174,7 @@
     {#if $state.tinctures}<Tinctures />{/if}
     {#if $state.fonts}<Fonts />{/if}
 
-    {#if $message && $isTextReady}<Message />{/if}
+    {#if $message && $isTextReady}{#key $message}<Message />{/key}{/if}
   </div>
 {/if}
 <WindowEvents />

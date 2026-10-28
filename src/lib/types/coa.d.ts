@@ -14,7 +14,7 @@ export interface Coa {
 interface Division {
   division: string;
   t: string;
-  line: string;
+  line?: string;
 }
 
 interface Charge {
@@ -30,9 +30,10 @@ interface Charge {
   y?: number;
   angle?: number;
   stroke?: string;
-  reversed?: true;
-  sinister?: true;
-  layered?: true;
+  strokeWidth?: number;
+  reversed?: boolean | 0 | 1;
+  sinister?: boolean | 0 | 1;
+  layered?: boolean | 0 | 1;
   outside?: Outside;
 }
 
@@ -47,8 +48,9 @@ interface Ordinary {
   x?: number;
   y?: number;
   angle?: number;
-  above?: true;
+  above?: boolean | 0 | 1;
   stroke?: string;
+  strokeWidth?: number;
   compony?: number;
   gyronny?: number;
 }
@@ -56,8 +58,8 @@ interface Ordinary {
 interface Inscription {
   text: string;
   font: string;
-  bold?: true;
-  italic?: true;
+  bold?: boolean | 0 | 1;
+  italic?: boolean | 0 | 1;
   size: number;
   spacing?: number;
   color: string;
@@ -74,14 +76,3 @@ interface Shadow {
 
 type Divided = "field" | "division" | "counter";
 type Outside = "above" | "below" | "around";
-
-interface Inscription {
-  text: string;
-  font: string;
-  size: number;
-  bold: true;
-  italic: true;
-  spacing: number;
-  color: string;
-  path: string;
-}

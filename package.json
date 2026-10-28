@@ -19,7 +19,9 @@
     "test:render-limits": "svelte-kit sync && node --test --test-isolation=none tests/render-limits.test.mjs",
     "test:svg-upload": "node --test --test-isolation=none tests/svg-upload.test.mjs",
     "test:exports": "node --test --test-isolation=none tests/exports.test.mjs",
-    "test:copied-links": "node --test --test-isolation=none tests/copied-links.test.mjs"
+    "test:copied-links": "node --test --test-isolation=none tests/copied-links.test.mjs",
+    "test:coa-validation": "svelte-kit sync && node --test --test-isolation=none tests/coa-validation.test.mjs",
+    "test:coa-import": "node --test --test-isolation=none tests/coa-import.test.mjs"
   },
   "repository": {
     "type": "git",

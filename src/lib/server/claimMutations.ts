@@ -2,7 +2,7 @@ import {getClaim, reclaim, setClaim, unclaim} from "$lib/api/claims";
 import {render} from "$lib/api/renderer";
 import {parseColors, parseSeed} from "$lib/api/utils";
 import {InvalidCoaError, RequestLimitError, jsonError} from "$lib/api/responses";
-import {validateCoa} from "$lib/api/validation";
+import {normalizeCoa} from "$lib/api/validation";
 import {hashClaimPassword, isProtected, mayMutateClaim} from "./claimPasswords";
 
 const MAX_BODY = 64 * 1024;
@@ -75,21 +75,21 @@ export async function mutateClaim(request: Request, name: string, masterKey?: st
       if (!result.deletedCount) return jsonError("The claim changed; retry the request", 409);
       return success({status: "unclaimed", name: seed});
     }
-    validateCoa(body.coa);
+    const coa = normalizeCoa(body.coa);
     // Keep the existing render validation, but do not echo submitted artwork or secrets.
-    await render({...body.coa, seed}, 1200, parseColors(new URLSearchParams()));
+    await render({...coa, seed}, 1200, parseColors(new URLSearchParams()));
     let protectedClaim: boolean;
     if (claim) {
       // Preserve the owner's password even for administrator updates. Upgrade
       // plaintext atomically with the artwork, removing the legacy key field.
       const keyHash = claim.keyHash ?? (claim.key ? await hashClaimPassword(claim.key) : undefined);
-      const result = await reclaim(claim, body.coa, keyHash);
+      const result = await reclaim(claim, coa, keyHash);
       if (!result.matchedCount) return jsonError("The claim changed; retry the request", 409);
       protectedClaim = isProtected(claim);
     } else {
       if (masterKey && key && key === masterKey) return jsonError("Use a claim-specific password", 400);
       const keyHash = key ? await hashClaimPassword(key) : undefined;
-      await setClaim({name: seed, coa: body.coa, ...(keyHash ? {keyHash} : {})});
+      await setClaim({name: seed, coa, ...(keyHash ? {keyHash} : {})});
       protectedClaim = !!keyHash;
     }
     return success(
