@@ -1,6 +1,4 @@
-import type {number} from "svelte-i18n";
-
-interface Tinctures {
+export interface Tinctures {
   field: TinctureTypeChances;
   division: TinctureTypeChances;
   charge: TinctureTypeChances;
@@ -10,13 +8,13 @@ interface Tinctures {
   patterns: ChancesObject;
 }
 
-interface TinctureTypeChances {
+export interface TinctureTypeChances {
   metals: number;
   colours: number;
   stains: number;
   patterns: number;
 }
 
-interface ChancesObject {
+export interface ChancesObject {
   [key: string]: number;
 }

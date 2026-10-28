@@ -1,4 +1,5 @@
 <script lang="ts">
+  import {settingsStorage} from "$lib/data/storage";
   // @ts-check
   import {t} from "svelte-i18n";
   import NavButton from "../../shared/NavButton.svelte";
@@ -9,7 +10,7 @@
 
   const changeShield = (value: string) => {
     shield.set(value);
-    localStorage.setItem("shield", value);
+    settingsStorage.setItem("shield", value);
 
     // a shield chosen here wins over the edited coat of arms' own one, even one its link named: an undoable edit
     if ($state.edit && $changes[0]) {

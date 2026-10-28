@@ -1,4 +1,5 @@
 <script lang="ts">
+  import {settingsStorage} from "$lib/data/storage";
   // @ts-check
   import {t, dictionary, locale} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
@@ -73,7 +74,7 @@
     unregisterCharge(charge, $uploaded[charge].category);
     update();
     delete $uploaded[charge];
-    localStorage.setItem("uploaded", JSON.stringify($uploaded));
+    settingsStorage.setItem("uploaded", JSON.stringify($uploaded));
     removeCharge(charge);
   }
 </script>

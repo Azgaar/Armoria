@@ -1,31 +1,45 @@
-import type {ChancesObject, Tinctures} from "$lib/types/tinctures";
+import {DEFAULT_COLORS, DEFAULT_TINCTURES} from "$lib/config/defaults";
+import type {Tinctures} from "$lib/types/tinctures";
 
-export const validateTinctures = (tinctures: Tinctures) => {
-  const mandatoryElements = ["field", "division", "charge"];
-  const mandatoryTypes = ["metals", "colours"];
-
-  try {
-    for (const element of mandatoryElements) {
-      if (!tinctures[element]) throw new Error(`Missing ${element}`);
-
-      for (const type of mandatoryTypes) {
-        if (!tinctures[element][type]) throw new Error(`Missing ${type} in ${element}`);
-      }
+/** Validate generator inputs before rw() constructs weighted arrays. */
+export function validateTinctures(value: unknown, colors: Record<string, string> = DEFAULT_COLORS): value is Tinctures {
+  const object = (value: unknown): value is Record<string, unknown> =>
+    !!value && typeof value === "object" && !Array.isArray(value);
+  if (!object(value)) return false;
+  const types = ["metals", "colours", "stains", "patterns"];
+  for (const group of ["field", "division", "charge", ...types]) {
+    const weights = value[group];
+    if (!object(weights)) return false;
+    const entries = Object.entries(weights).filter(([name]) => name !== "array");
+    if (entries.length > 256) return false;
+    let total = 0;
+    for (const [name, chance] of entries) {
+      if (
+        ["__proto__", "prototype", "constructor"].includes(name) ||
+        typeof chance !== "number" ||
+        !Number.isInteger(chance) ||
+        chance < 0 ||
+        chance > 1000
+      )
+        return false;
+      if (
+        ["field", "division", "charge"].includes(group)
+          ? !types.includes(name)
+          : group === "patterns"
+            ? !Object.hasOwn(DEFAULT_TINCTURES.patterns, name)
+            : !Object.hasOwn(colors, name)
+      )
+        return false;
+      total += chance;
     }
-
-    for (const type of mandatoryTypes) {
-      if (!tinctures[type]) throw new Error(`Missing ${type}`);
-
-      const keys = Object.keys(tinctures[type]);
-      if (keys.length < 2) throw new Error(`Type ${type} must have more than 2 tinctures`);
-
-      const totalChance = Object.values(tinctures[type] as ChancesObject).reduce((a, b) => a + b, 0);
-      if (totalChance < 1) throw new Error(`Total chance for type ${type} must be more that zero`);
+    if (total > 10000) return false;
+    if (total < 1) {
+      // Empty optional pools are usable only when no element can select them.
+      if (!["stains", "patterns"].includes(group)) return false;
+      if (["field", "division", "charge"].some(element => !object(value[element]) || value[element][group] !== 0)) return false;
     }
-
-    return true;
-  } catch (err) {
-    console.error("Invalid stored tinctures data, switching to defaults.", err.message, tinctures);
-    return false;
+    if (["metals", "colours"].includes(group) && entries.length < 2) return false;
+    if (["field", "division", "charge"].includes(group) && types.some(type => typeof weights[type] !== "number")) return false;
   }
-};
+  return Object.keys(value).every(key => ["field", "division", "charge", ...types].includes(key));
+}

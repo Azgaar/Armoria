@@ -1,15 +1,16 @@
 <script lang="ts">
+  import {settingsStorage} from "$lib/data/storage";
   // @ts-check
   import {t} from "svelte-i18n";
   import {tooltip} from "$lib/scripts/tooltip";
   export let key: string;
 
-  $: locked = localStorage.getItem(key);
+  $: locked = settingsStorage.getItem(key);
   $: tip = $t(`tooltip.locked`);
 
   function unlock(event: Event) {
     event.stopPropagation();
-    localStorage.removeItem(key);
+    settingsStorage.removeItem(key);
     locked = "";
   }
 </script>

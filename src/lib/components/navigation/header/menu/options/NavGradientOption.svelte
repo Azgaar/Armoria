@@ -1,4 +1,5 @@
 <script lang="ts">
+  import {settingsStorage} from "$lib/data/storage";
   // @ts-check
   import {t} from "svelte-i18n";
   import NavButton from "../../shared/NavButton.svelte";
@@ -9,7 +10,7 @@
 
   const changeGradient = (value: string) => {
     grad.set(value);
-    localStorage.setItem("grad", value);
+    settingsStorage.setItem("grad", value);
   };
 </script>
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import {settingsStorage, reportSettingsRecovery} from "$lib/data/storage";
   // @ts-check
   import {charges, shields} from "$lib/data/dataModel";
   import {
@@ -21,6 +22,7 @@
   import "$lib/scripts/i18n";
   import {rw} from "$lib/scripts/utils";
   import {locale} from "svelte-i18n";
+  import StorageNotice from "$lib/components/StorageNotice.svelte";
   import Message from "$lib/components/Message.svelte";
   import WindowEvents from "$lib/components/WindowEvents.svelte";
   import Editor from "$lib/components/editor/Editor.svelte";
@@ -68,7 +70,7 @@
       }
 
       // change shield if it's not locked (manually selected)
-      if (!localStorage.getItem("shield")) {
+      if (!settingsStorage.getItem("shield")) {
         $shield = rw(shields[rw(shields.types)]);
       }
     }
@@ -87,8 +89,12 @@
   function loadFonts() {
     Object.entries($fonts).forEach(([name, {url}]) => {
       if (url) {
-        const font = new FontFace(name, `url(${url})`);
-        document.fonts.add(font);
+        try {
+          const font = new FontFace(name, `url(${JSON.stringify(url)})`);
+          document.fonts.add(font);
+        } catch {
+          reportSettingsRecovery();
+        }
       }
     });
   }
@@ -177,6 +183,7 @@
     {#if $message && $isTextReady}{#key $message}<Message />{/key}{/if}
   </div>
 {/if}
+{#if $isTextReady}<StorageNotice />{/if}
 <WindowEvents />
 <CoaSync />
 

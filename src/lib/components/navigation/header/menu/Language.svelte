@@ -1,4 +1,5 @@
 <script lang="ts">
+  import {settingsStorage} from "$lib/data/storage";
   // @ts-check
   import {locale, locales, t} from "svelte-i18n";
   import {capitalize} from "$lib/scripts/utils";
@@ -7,7 +8,7 @@
 
   const changeLanguage = (newLocale: string) => () => {
     locale.set(newLocale);
-    localStorage.setItem("locale", newLocale);
+    settingsStorage.setItem("locale", newLocale);
   };
 
   const getLocaleName = (locale: string) => {

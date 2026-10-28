@@ -25,8 +25,8 @@
   $: overFill = !$grad || $grad === "no" ? "none" : `url(#${$grad})`;
 
   // get color or link to pattern
-  $: clr = (tincture: string) => {
-    if (!tincture) return null;
+  $: clr = (tincture?: string) => {
+    if (!tincture) return "";
     if ($colors[tincture]) return $colors[tincture];
     if (/^#[\da-f]{3,8}$/i.test(tincture)) return tincture; // an exact colour, as the API accepts
     if (tincture.includes("-")) {
