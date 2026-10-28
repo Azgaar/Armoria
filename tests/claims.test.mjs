@@ -295,3 +295,13 @@ test("claim COA limits fail before rendering or persistence", async () => {
   assert.equal(renderer.calls, 0);
   assert.equal(database.operations.length, 0);
 });
+
+test("claim saves share import validation and persist normalized legacy data", async () => {
+  for (const coa of [{}, null, {t1: "or", charges: {}}, {t1: "or", charges: [{charge: "missing", t: "or"}]}]) {
+    await expectResponse(await request("POST", {coa}), 400);
+  }
+  assert.equal(renderer.calls, 0);
+  assert.equal(database.operations.length, 0);
+  await expectResponse(await request("POST", {coa: {t1: "or", charges: [{charge: "eagle", t: "gules", sinister: 1}]}}), 201);
+  assert.deepEqual(database.records.get("example").coa.charges[0], {charge: "eagle", t: "gules", sinister: true, p: "e"});
+});

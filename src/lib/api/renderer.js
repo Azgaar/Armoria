@@ -9,7 +9,7 @@ import {parse} from "node-html-parser";
 import {createHash} from "node:crypto";
 import {escapeMarkup, InvalidCoaError} from "./responses";
 import {validateImageSize} from "./limits";
-import {validateCoa} from "./validation";
+import {normalizeCoa} from "./validation";
 
 const SHIELD_DEFAULT = "heater";
 
@@ -27,7 +27,7 @@ const backlight = `<radialGradient id="backlight" cx="100%" cy="100%" r="150%">
 
 export async function render(coa, size, colors) {
   validateImageSize(size);
-  validateCoa(coa);
+  coa = normalizeCoa(coa);
   // A seed selects the artwork; it must not become raw markup or an unsafe fragment identifier.
   coa = {
     ...coa,

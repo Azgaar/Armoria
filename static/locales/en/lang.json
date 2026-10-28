@@ -219,7 +219,11 @@
     "emptyFontURL": "URL is empty!",
     "loadingFont": "Font cannot be loaded!",
     "notJsonOrText": "File must be text or JSON!",
-    "loadingCoa": "COA cannot be loaded!"
+    "loadingCoa": "COA cannot be loaded!",
+    "invalidCoa": "Cannot load this coat of arms. Check its fields, supported elements and numeric values.",
+    "invalidCoaImport": "Cannot import this file. Use a non-empty JSON array of valid coats of arms. Your artwork has not changed.",
+    "coaTooLarge": "This coat of arms exceeds the size or complexity limits. Reduce its elements or text and try again.",
+    "coaImportTooLarge": "Import exceeds the size or complexity limits (64 coats of arms, 2 MiB total, 32 KiB each). Your artwork has not changed."
   },
   "success": {
     "copyEditLink": "Coat of arms link is copied to your clipboard",

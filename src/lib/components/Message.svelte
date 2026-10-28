@@ -7,12 +7,13 @@
 
   const {text, type, timeout} = $message;
 
-  onMount(async () => {
+  onMount(() => {
     const textOnMount = $message.text;
 
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       if ($message?.text === textOnMount) message.clear();
     }, timeout);
+    return () => clearTimeout(timer);
   });
 </script>
 

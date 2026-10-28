@@ -1,131 +1,13 @@
-import {divisions, lines, ordinaries, patterns, shields} from "$lib/data/dataModel";
 import type {Coa} from "$lib/types/coa";
-import {API_LIMITS, limitText, validateCoaComplexity} from "./limits";
-import {InvalidCoaError, RequestLimitError} from "./responses";
+import * as shared from "$lib/coa/validation";
 
-function object(value: unknown): asserts value is Record<string, unknown> {
-  if (!value || typeof value !== "object" || Array.isArray(value)) throw new InvalidCoaError("Invalid COA object");
+// The API uses the same schema, with no local browser resources or DOM-only effects.
+export function validateCoa(value: unknown): void {
+  shared.validateCoa(value, {api: true});
 }
-
-function string(value: unknown, max = 256): asserts value is string {
-  if (typeof value !== "string") throw new InvalidCoaError("Invalid COA text field");
-  limitText(value, max, "COA text is too long");
+export function normalizeCoa(value: unknown): Coa {
+  return shared.normalizeCoa(value, {api: true});
 }
-
-function identifier(value: unknown, supported: object): void {
-  string(value);
-  if (!Object.hasOwn(supported, value)) throw new InvalidCoaError("Unknown COA element");
-}
-
-function tincture(value: unknown): void {
-  string(value);
-  if (!value) throw new InvalidCoaError("Missing COA tincture");
-  if (!value.includes("-")) return;
-  const [pattern, first, second] = value.split("-");
-  if (!first || !second) throw new InvalidCoaError("Invalid COA pattern");
-  if (/^semy_of_[a-zA-Z][a-zA-Z0-9]*$/.test(pattern)) return;
-  identifier(pattern, patterns);
-  if (pattern === "semy") throw new InvalidCoaError("Invalid COA pattern");
-}
-
-function line(item: Record<string, unknown>): void {
-  if (item.line !== undefined && item.line !== "straight") identifier(item.line, lines.data);
-}
-
-function numeric(item: Record<string, unknown>, field: string, min: number, max: number) {
-  const value = item[field];
-  if (value === undefined) return;
-  if (typeof value !== "number" || !Number.isFinite(value) || value < min || value > max) {
-    throw new InvalidCoaError("COA number is outside its supported range");
-  }
-}
-
-function transform(item: Record<string, unknown>) {
-  numeric(item, "size", 0.01, 5);
-  numeric(item, "stretch", -10, 10);
-  numeric(item, "x", -1000, 1000);
-  numeric(item, "y", -1000, 1000);
-  numeric(item, "angle", -360, 360);
-  numeric(item, "strokeWidth", 0, 100);
-}
-
-/** Check the shapes consumed by the renderer; messages must never include supplied values. */
-export function validateCoa(value: unknown): asserts value is Coa {
-  object(value);
-  validateCoaComplexity(value);
-  tincture(value.t1);
-  numeric(value, "zoom", 0.1, 1);
-  if (value.shield !== undefined) identifier(value.shield, shields.data);
-  if (value.name !== undefined) string(value.name);
-
-  if (value.division !== undefined) {
-    object(value.division);
-    identifier(value.division.division, divisions.data);
-    tincture(value.division.t);
-    line(value.division);
-  }
-
-  let positions = 0;
-  const fonts = new Set<string>();
-  for (const field of ["ordinaries", "charges", "inscriptions"] as const) {
-    const items = value[field];
-    if (items === undefined) continue;
-    if (!Array.isArray(items)) throw new InvalidCoaError("Invalid COA collection");
-    if (items.length > API_LIMITS[field]) throw new RequestLimitError("Too many COA elements", 413);
-    for (const item of items) {
-      object(item);
-      if (field === "inscriptions") {
-        string(item.text, 1024);
-        string(item.font, 128);
-        string(item.path, 4096);
-        fonts.add(item.font);
-        if (fonts.size > API_LIMITS.fonts) throw new RequestLimitError("Too many COA fonts", 413);
-        numeric(item, "size", 1, 100);
-        numeric(item, "spacing", -10, 100);
-        if (item.shadow !== undefined) {
-          object(item.shadow);
-          numeric(item.shadow, "x", -100, 100);
-          numeric(item.shadow, "y", -100, 100);
-          numeric(item.shadow, "blur", 0, 10);
-        }
-        continue;
-      }
-      transform(item);
-      tincture(item.t);
-      if (item.t2 !== undefined) tincture(item.t2);
-      if (item.t3 !== undefined) tincture(item.t3);
-      if (field === "ordinaries") {
-        identifier(item.ordinary, ordinaries.data);
-        line(item);
-        numeric(item, "gyronny", 0, 100);
-        if (item.gyronny && (!Number.isInteger(item.gyronny) || Number(item.gyronny) < 4 || Number(item.gyronny) % 2)) {
-          throw new InvalidCoaError("Gyronny must be zero or an even integer from 4 to 100");
-        }
-        // This legacy effect uses document/SVG geometry APIs unavailable in SSR.
-        // Reject it before asset loading instead of attempting its unbounded dash loop.
-        if (item.compony !== undefined && item.compony !== 0) {
-          throw new InvalidCoaError("Compony ordinaries are not supported by the API renderer");
-        }
-      } else {
-        string(item.charge);
-        if (item.p !== undefined) {
-          string(item.p, 64);
-          positions += new Set(item.p).size;
-          if (positions > API_LIMITS.positions) throw new RequestLimitError("Too many COA charge positions", 413);
-        }
-      }
-    }
-  }
-}
-
 export function parseCoa(text: string): Coa {
-  limitText(text, API_LIMITS.coaBytes, "COA payload is too large");
-  let value: unknown;
-  try {
-    value = JSON.parse(text);
-  } catch {
-    throw new InvalidCoaError("Invalid COA JSON");
-  }
-  validateCoa(value);
-  return value;
+  return shared.parseCoa(text, {api: true});
 }

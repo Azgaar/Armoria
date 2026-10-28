@@ -33,6 +33,7 @@
   export let historyId, seed;
 
   let menu = {};
+  let restoring = false;
   let section = {field: 0, division: 0, ordinary: [], charge: [], inscription: []};
   const isLandscape = innerWidth > innerHeight;
 
@@ -48,6 +49,7 @@
   $: localStorage.setItem("showGrid", $showGrid); // on grid change
 
   function reroll(historyId) {
+    restoring = false;
     coa = $history[historyId] || generate(seed || undefined);
     if (!$history[historyId]) $history.push(coa);
     changes.reset();
@@ -55,7 +57,10 @@
   }
 
   function edit(coa) {
-    changes.add(JSON.stringify(coa));
+    const value = JSON.stringify(coa);
+    if (restoring) changes.replace(value);
+    else changes.add(value);
+    restoring = false;
   }
 
   const toggleSection = (name, index) => async () => {
@@ -194,6 +199,7 @@
 
   function restore() {
     if (!changes.length()) return;
+    restoring = true;
     coa = JSON.parse($changes[0]);
     defineMenuState();
   }

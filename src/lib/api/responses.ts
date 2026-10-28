@@ -1,13 +1,5 @@
-export class InvalidCoaError extends Error {}
-
-export class RequestLimitError extends Error {
-  constructor(
-    message: string,
-    public status: 413 | 414
-  ) {
-    super(message);
-  }
-}
+import {InvalidCoaError, RequestLimitError} from "$lib/coa/errors";
+export {InvalidCoaError, RequestLimitError} from "$lib/coa/errors";
 
 /** Escape text and quoted attributes in the API's manually assembled HTML/SVG. */
 export function escapeMarkup(value: string): string {
