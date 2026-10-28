@@ -13,14 +13,14 @@ import {createConverter as createPngConverter} from "convert-svg-to-png";
 
 export const GET: RequestHandler = async ({url}) => {
   try {
-    const {format, size} = validateImageRequest(url);
+    const {format, size, shield} = validateImageRequest(url);
     const params = url.searchParams;
     const seedParam = params.get("seed");
     const seed = seedParam ? parseSeed(seedParam) : generateSeed();
     const colors = parseColors(params);
     const coaParam = params.get("coa");
     const coa = coaParam !== null ? parseCoa(coaParam) : await getCoa(seed);
-    const svg = await render({...coa, seed}, size, colors);
+    const svg = await render({...coa, ...(shield !== null ? {shield} : {}), seed}, size, colors);
     return await send(format, svg);
   } catch (err) {
     return apiError(err);

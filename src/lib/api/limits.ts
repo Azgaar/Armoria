@@ -1,5 +1,6 @@
 import {InvalidCoaError, RequestLimitError} from "./responses";
 import {COA_LIMITS, limitText} from "$lib/coa/limits";
+import {shields} from "$lib/data/shields";
 export {limitText, validateCoaComplexity} from "$lib/coa/limits";
 
 export const API_LIMITS = {...COA_LIMITS, imageSize: 4096, urlBytes: 64 * 1024} as const;
@@ -19,16 +20,22 @@ export function parseImageSize(value: string | null): number {
   return size;
 }
 
-export function validateImageRequest(url: URL) {
+export function validateImageQuery(url: URL): void {
   limitText(url.href, API_LIMITS.urlBytes, "Request URL is too long", 414);
-  const params = url.searchParams;
-  for (const name of ["format", "size", "seed", "coa"]) {
-    if (params.getAll(name).length > 1) throw new InvalidCoaError("Duplicate image parameter");
+  for (const name of ["format", "size", "seed", "coa", "shield"]) {
+    if (url.searchParams.getAll(name).length > 1) throw new InvalidCoaError("Duplicate image parameter");
   }
+}
+
+export function validateImageRequest(url: URL) {
+  validateImageQuery(url);
+  const params = url.searchParams;
   const format = params.get("format") ?? "svg";
   if (!["svg", "png", "jpg", "jpeg"].includes(format)) throw new InvalidCoaError("Invalid format");
   const size = parseImageSize(params.get("size"));
   const seed = params.get("seed");
   if (seed !== null && seed.length > 200) throw new RequestLimitError("Seed is too long", 413);
-  return {format, size};
+  const shield = params.get("shield");
+  if (shield !== null && !Object.hasOwn(shields.data, shield)) throw new InvalidCoaError("Unknown shield");
+  return {format, size, shield};
 }

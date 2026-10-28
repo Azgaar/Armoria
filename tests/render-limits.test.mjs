@@ -141,7 +141,7 @@ test("invalid dimensions fail before generation, database, assets, fonts, or con
 
 test("formats, duplicate parameters, and URL size are rejected before rendering work", async () => {
   for (const format of ["", "gif", "SVG", "<script>"]) await expectError(await image(event({format})), 400);
-  for (const name of ["format", "size", "seed", "coa"]) {
+  for (const name of ["format", "size", "seed", "coa", "shield"]) {
     const input = event();
     input.url.searchParams.append(name, "1");
     input.url.searchParams.append(name, "2");
@@ -149,6 +149,12 @@ test("formats, duplicate parameters, and URL size are rejected before rendering 
   }
   await expectError(await image(event({unused: "x".repeat(limits.API_LIMITS.urlBytes)})), 414);
   await expectError(await image(event({seed: "a".repeat(201)})), 413);
+  noWork();
+});
+
+test("invalid shield overrides fail before claim lookup, generation, assets or conversion", async () => {
+  for (const shield of ["", "missing", "__proto__", "constructor", "<script>"])
+    await expectError(await image(event({format: "png", seed: "claimed-name", shield})), 400);
   noWork();
 });
 
