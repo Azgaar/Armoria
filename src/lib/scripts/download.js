@@ -1,5 +1,5 @@
 import {get} from "svelte/store";
-import {scale, grad, diaper, fonts} from "$lib/data/stores";
+import {scale, fonts} from "$lib/data/stores";
 import {coaMetadata, embedCoa} from "$lib/scripts/metadata";
 
 export async function download(i, format = "png") {
@@ -71,7 +71,6 @@ export async function getSvgForMap() {
 }
 
 async function getURL(svg, width, height) {
-  const addedElements = {};
   const clone = svg.cloneNode(true); // clone svg
   clone.setAttribute("width", width);
   clone.setAttribute("height", height);
@@ -97,44 +96,32 @@ async function getURL(svg, width, height) {
     el.remove();
   });
 
-  const gr = get(grad),
-    di = get(diaper);
-  if (gr && gr !== "no") d.insertAdjacentHTML("beforeend", defs.getElementById(gr).outerHTML);
-  if (di && di !== "no") d.insertAdjacentHTML("beforeend", defs.getElementById(di).outerHTML);
-  clone.querySelectorAll(".charge[charge]").forEach(el => {
-    const chargePattern = el.getAttribute("fill").split("(#")[1]?.split(")")[0];
-    if (chargePattern) addPattern(chargePattern, d);
-    const charge = el.getAttribute("charge");
-    if (addedElements[charge]) return;
-    d.insertAdjacentHTML("beforeend", defs.getElementById(charge)?.outerHTML ?? ""); // a charge it cannot fetch stays blank
-    addedElements[charge] = true;
-  });
-  clone.querySelectorAll(".ordinary").forEach(el => {
-    const ordinaryPattern = el.getAttribute("fill").split("(#")[1]?.split(")")[0];
-    if (ordinaryPattern) addPattern(ordinaryPattern, d);
-  });
-  const fieldPattern = clone.getElementsByClassName("field")[0].getAttribute("fill").split("(#")[1]?.split(")")[0];
-  if (fieldPattern) addPattern(fieldPattern, d);
-  const divisionPattern = clone
-    .getElementsByClassName("division")[0]
-    ?.querySelector("rect")
-    .getAttribute("fill")
-    .split("(#")[1]
-    ?.split(")")[0];
-  if (divisionPattern) addPattern(divisionPattern, d);
+  // Follow actual SVG references, including CSS-variable fills and dependencies
+  // inside semy patterns. Each definition is copied once, even through cycles.
+  const addedElements = new Set([...clone.querySelectorAll("[id]")].map(element => element.id));
+  const definitions = document.getElementById("defs");
+  addReferences(clone);
 
-  function addPattern(pattern, d) {
-    if (addedElements[pattern]) return;
-    d.insertAdjacentHTML("beforeend", document.getElementById(pattern).outerHTML);
-
-    if (pattern.slice(0, 4) === "semy") {
-      const charge = pattern.match(/semy_of_(.*?)-/)[1];
-      if (!addedElements[charge]) {
-        d.insertAdjacentHTML("beforeend", document.getElementById(charge)?.outerHTML ?? "");
-        addedElements[charge] = true;
+  /** @param {Element} root */
+  function addReferences(root) {
+    for (const element of [root, ...root.querySelectorAll("*")]) {
+      for (const attribute of element.attributes) {
+        if (attribute.localName === "href" && attribute.value.startsWith("#")) addDefinition(attribute.value.slice(1));
+        for (const match of attribute.value.matchAll(/url\(#([^)]*)\)/g)) addDefinition(match[1]);
       }
     }
-    addedElements[pattern] = true;
+  }
+
+  /** @param {string} id */
+  function addDefinition(id) {
+    if (addedElements.has(id)) return;
+    addedElements.add(id);
+    const source = document.getElementById(id);
+    if (!source || !definitions?.contains(source)) return; // unavailable charges stay blank
+    const definition = /** @type {Element} */ (source.cloneNode(true));
+    for (const child of definition.querySelectorAll("[id]")) addedElements.add(child.id);
+    d.appendChild(definition);
+    addReferences(definition);
   }
 
   // load needed web fonts

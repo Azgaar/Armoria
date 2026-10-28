@@ -21,7 +21,8 @@
     "test:exports": "node --test --test-isolation=none tests/exports.test.mjs",
     "test:copied-links": "node --test --test-isolation=none tests/copied-links.test.mjs",
     "test:coa-validation": "svelte-kit sync && node --test --test-isolation=none tests/coa-validation.test.mjs",
-    "test:coa-import": "node --test --test-isolation=none tests/coa-import.test.mjs"
+    "test:coa-import": "node --test --test-isolation=none tests/coa-import.test.mjs",
+    "test:pattern-rendering": "node --test --test-isolation=none tests/pattern-rendering.test.mjs"
   },
   "repository": {
     "type": "git",
