@@ -8,35 +8,35 @@
   import {camelize} from "$lib/scripts/utils";
   import {tooltip} from "$lib/scripts/tooltip";
   import {DEFAULT_COLORS, DEFAULT_TINCTURES} from "$lib/config/defaults";
-  import type {ChancesObject} from "$lib/types/tinctures";
+  import type {ChancesObject, Tinctures, TinctureTypeChances} from "$lib/types/tinctures";
 
-  const addLine = {show: false, name: "", type: "colours", color: "#96C8FA", chance: 3};
+  const addLine = {show: false, name: "", type: "colours" as "metals" | "colours" | "stains", color: "#96C8FA", chance: 3};
   const mandatoryTypes = ["metals", "colours"];
 
   // remove stored weighted array
-  for (const key in $tinctures) {
-    delete $tinctures[key].array;
-  }
+  for (const weights of Object.values($tinctures)) Reflect.deleteProperty(weights, "array");
 
+  const elements = ["field", "division", "charge"] as const;
+  const tinctureTypes = ["metals", "colours", "stains", "patterns"] as const;
   const types = ["metals", "colours", "stains"] as const;
   $: tData = types.map(type => Object.keys($tinctures[type]).map(tincture => ({t: tincture, type}))).flat();
 
   $: lock("tinctures", $tinctures);
   $: lock("colors", $colors);
 
-  $: getTotalChance = (type: string) => {
+  $: getTotalChance = (type: keyof Tinctures) => {
     const chances = Object.values($tinctures[type] as ChancesObject);
     return chances.reduce((a, b) => a + b, 0);
   };
 
   // don't lock options on load
-  let loaded = [];
+  let loaded: string[] = [];
   function lock(key: string, value: unknown) {
     if (loaded.includes(key)) settingsStorage.setItem(key, JSON.stringify(value));
     else loaded.push(key);
   }
 
-  function changeElementChance(element: string, type: string, event: Event) {
+  function changeElementChance(element: "field" | "division" | "charge", type: keyof TinctureTypeChances, event: Event) {
     const target = event.target as HTMLInputElement;
     const newValue = +target.value;
     const min = +target.min;
@@ -55,7 +55,7 @@
     $tinctures[element][type] = newValue;
   }
 
-  function changeTinctureChance(type: string, tinctureName: string, event: Event) {
+  function changeTinctureChance(type: "metals" | "colours" | "stains", tinctureName: string, event: Event) {
     const target = event.target as HTMLInputElement;
     const newValue = +target.value;
 
@@ -78,7 +78,7 @@
     $tinctures[type][tinctureName] = newValue;
   }
 
-  function removeTincture(tinctureName: string, type: string) {
+  function removeTincture(tinctureName: string, type: "metals" | "colours" | "stains") {
     delete $tinctures[type][tinctureName];
     $tinctures = $tinctures;
     delete $colors[tinctureName];
@@ -142,10 +142,10 @@
         </tr>
       </thead>
       <tbody>
-        {#each ["field", "division", "charge"] as element (element)}
+        {#each elements as element (element)}
           <tr>
             <td>{$t(`tinctures.${element}`)}</td>
-            {#each Object.keys($tinctures[element]) as type (type)}
+            {#each tinctureTypes as type (type)}
               <td>
                 <input
                   type="number"

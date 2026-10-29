@@ -7,7 +7,7 @@
   interface IElement {
     showStroke: boolean;
     stroke: string;
-    strokeWidth: number;
+    strokeWidth?: number;
     ordinary?: string;
   }
 

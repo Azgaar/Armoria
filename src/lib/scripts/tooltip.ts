@@ -23,7 +23,7 @@ export const tooltip = (element: HTMLElement | SVGSVGElement) => {
 
     if (isTouchAvailable && gesture) text = `${text}. ${translate("tooltip.gesture")}: ${gesture}`;
     if (!isTouchAvailable && hotkey) text = `${text}. ${translate("tooltip.hotkey")}: ${hotkey}`;
-    div.textContent = text;
+    div.textContent = text || "";
     div.className = "tooltip";
     document.body.appendChild(div);
 

@@ -3,7 +3,7 @@
   import {tooltip} from "$lib/scripts/tooltip";
 
   export let icon: string;
-  export let tip: string = undefined;
+  export let tip: string | undefined = undefined;
   export let onclick: () => void;
 
   const handleClick = (event: Event) => {

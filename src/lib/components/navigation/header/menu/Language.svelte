@@ -13,7 +13,7 @@
 
   const getLocaleName = (locale: string) => {
     const languageName = new Intl.DisplayNames([locale], {type: "language"});
-    return capitalize(languageName.of(locale));
+    return capitalize(languageName.of(locale) || locale);
   };
 </script>
 

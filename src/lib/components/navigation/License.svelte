@@ -9,7 +9,7 @@
 
   const coas = Array.from(document.querySelectorAll("svg.coa"));
   const charges = coas
-    .map(coa => Array.from(coa.querySelectorAll(".charge[charge]")).map(el => el.getAttribute("charge")))
+    .map(coa => Array.from(coa.querySelectorAll(".charge[charge]")).map(el => el.getAttribute("charge") || ""))
     .flat();
 
   // translation-related constants
@@ -24,7 +24,8 @@
   const fontAwesome = link("https://fontawesome.com/license/free", "Font Awesome");
 
   const translateSafely = (group: string, key: string) => {
-    const isInDictionary = $dictionary?.[$locale]?.[group]?.[key];
+    const messages = $dictionary[$locale || ""]?.[group];
+    const isInDictionary = messages && typeof messages === "object" && !Array.isArray(messages) && key in messages;
     return isInDictionary ? $t(`${group}.${key}`) : key;
   };
 
@@ -72,7 +73,7 @@
       <h2>{$t("license.currentCoas")}</h2>
     {/if}
 
-    {#if isLicenseSame}
+    {#if isLicenseSame && charge}
       <h3>{chargeData.length > 1 ? $t("license.charges") : charge.charge}: {@html charge.license}, {@html charge.source}</h3>
     {:else}
       <div class="chargesList">

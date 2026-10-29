@@ -2,23 +2,35 @@ import {get} from "svelte/store";
 import {changes, grid, shield} from "$lib/data/stores";
 import {shields} from "$lib/data/dataModel";
 
+/** @typedef {{x?: number, y?: number, size?: number, stretch?: number, angle?: number, p?: string, sinister?: boolean | 0 | 1, reversed?: boolean | 0 | 1}} Transformable */
+/**
+ * @template {Transformable} T
+ * @param {MouseEvent} event
+ * @param {T} charge
+ * @param {import("$lib/types/coa").Coa} coa
+ * @param {{move: boolean, resize: boolean, rotate: boolean, onMove?: (event: MouseEvent, charge: T) => void, onEnd?: (charge: T) => void}} [options]
+ */
 export function drag(
   event,
   charge,
   coa,
   options = {move: true, resize: true, rotate: true, onMove: undefined, onEnd: undefined}
 ) {
-  const el = event.currentTarget;
+  const target = event.currentTarget;
+  if (!(target instanceof SVGElement)) return;
+  const el = target;
+  const svg = el.closest("svg");
+  if (!svg) return;
   const x0 = event.x;
   const y0 = event.y;
 
-  const sizeAdj = el.closest("svg").clientWidth / 200;
+  const sizeAdj = svg.clientWidth / 200;
   document.addEventListener("mouseup", stopDragging, {once: true});
 
   const {x = 0, y = 0, size = 1} = charge;
   const gridSize = get(grid);
   const positionElements = el.querySelectorAll("use");
-  const positions = shields.data[get(shield)].positions || shields.data.spanish.positions;
+  const positions = shields.data[get(shield)].positions || shields.data.spanish.positions || {};
 
   if (options.resize && event.shiftKey) {
     document.addEventListener("mousemove", resize);
@@ -31,6 +43,7 @@ export function drag(
     document.body.style.cursor = "move";
   }
 
+  /** @param {MouseEvent} event */
   function move(event) {
     const dx = x + (event.x - x0) / sizeAdj;
     const dy = y + (event.y - y0) / sizeAdj;
@@ -42,6 +55,7 @@ export function drag(
     if (options.onMove) options.onMove(event, charge);
   }
 
+  /** @param {MouseEvent} event */
   function resize(event) {
     const dy = y + (event.y - y0) / sizeAdj;
     charge.size = round(size + dy / -100);
@@ -53,6 +67,7 @@ export function drag(
     }
   }
 
+  /** @param {MouseEvent} event */
   function rotate(event) {
     const cx = x + 100;
     const cy = y + 100;
@@ -68,6 +83,7 @@ export function drag(
     setGroupTransform(el, charge);
   }
 
+  /** @param {Element} el @param {Transformable} charge */
   function setGroupTransform(el, charge) {
     const tr = transform(charge);
 
@@ -75,8 +91,9 @@ export function drag(
     else el.removeAttribute("transform");
   }
 
+  /** @param {Transformable} charge */
   function setElementTransform(charge) {
-    const validPositions = [...new Set(charge.p)].filter(p => positions[p]);
+    const validPositions = [...new Set(charge.p || "")].filter(p => positions[p]);
     validPositions.forEach((p, i) => {
       const element = positionElements[i];
       if (element) {
@@ -98,10 +115,12 @@ export function drag(
   }
 }
 
+/** @param {number} n */
 function round(n) {
   return Math.round(n * 100) / 100;
 }
 
+/** @param {Transformable} charge */
 export function transform(charge) {
   let {x = 0, y = 0, angle = 0, size = 1, stretch = 0, p} = charge;
   if (p) {
@@ -120,28 +139,29 @@ export function transform(charge) {
   let transform = "";
   if (x || y) transform += `translate(${x} ${y})`;
   if (angle) transform += ` rotate(${angle} ${sx * 100} ${sy * 100})`;
-  if (sx !== 1 || sy !== 1) transform += (sx === sy ? ` scale(${sx})` : ` scale(${sx} ${sy})`);
+  if (sx !== 1 || sy !== 1) transform += sx === sy ? ` scale(${sx})` : ` scale(${sx} ${sy})`;
 
   return transform ? transform.trim() : null;
 }
 
+/** @param {Transformable} charge @param {string} p @param {string} shield */
 export function getElTransform(charge, p, shield) {
-  const positions = shields.data[shield].positions || shields.data.spanish.positions;
+  const positions = shields.data[shield].positions || shields.data.spanish.positions || {};
   const sizeModifier = shields.data[shield].size || 1;
 
   const size = round((charge.size || 1) * sizeModifier);
-  const stretch = charge.stretch;
+  const stretch = charge.stretch || 0;
   let sx = charge.sinister ? -size : size;
   let sy = charge.reversed ? -size : size;
-  if (charge.stretch < 0) sx = round(sx * (1 - charge.stretch));
-  else if (charge.stretch > 0) sy = round(sy * (1 + charge.stretch));
+  if (stretch < 0) sx = round(sx * (1 - stretch));
+  else if (stretch > 0) sy = round(sy * (1 + stretch));
   let [x, y] = positions[p];
   x = round(x - 100 * (sx - 1));
   y = round(y - 100 * (sy - 1));
 
   let transform = "";
   if (x || y) transform += `translate(${x} ${y})`;
-  if (sx !== 1 || sy !== 1) transform += (sx === sy ? ` scale(${sx})` : ` scale(${sx} ${sy})`);
+  if (sx !== 1 || sy !== 1) transform += sx === sy ? ` scale(${sx})` : ` scale(${sx} ${sy})`;
 
   return transform ? transform.trim() : null;
 }

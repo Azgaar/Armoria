@@ -28,7 +28,7 @@
   };
   const division = rw(divisionVariants);
 
-  const paths = {
+  const paths: Record<string, string[]> = {
     perPale: ["M100,25 v175", "M100,0 v200 h100 v-200 Z"],
     perFess: ["M27.5,100 h145", "M0,100 h200 v100 h-200 Z"],
     perBend: ["M0,0 l200,200", "M0,0 l200,200 h-200 Z"],

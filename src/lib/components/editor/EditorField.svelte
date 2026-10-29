@@ -6,8 +6,8 @@
   import EditorTincture from "./EditorTincture.svelte";
   import EditorType from "./EditorType.svelte";
 
-  export let field;
-  export let shield: string = undefined;
+  export let field: import("$lib/types/editor").Field;
+  export let shield: string | undefined = undefined;
 </script>
 
 <div class="subsection">

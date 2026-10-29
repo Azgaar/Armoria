@@ -1,11 +1,19 @@
-<script>
+<script lang="ts">
+  import type {Coa, Charge, Ordinary, Inscription} from "$lib/types/coa";
+  import type {
+    Field,
+    EditorMenu,
+    EditorCharge as ChargeMenu,
+    EditorOrdinary as OrdinaryMenu,
+    EditorInscription as InscriptionMenu
+  } from "$lib/types/editor";
   import {settingsStorage} from "$lib/data/storage";
   import {tick} from "svelte";
   import {t, dictionary, locale} from "svelte-i18n";
   import {fade, fly, slide} from "svelte/transition";
   import {DEFAULT_ZOOM} from "$lib/config/defaults";
   import {changes, grid, history, isTextReady, message, shield, showGrid, state, tinctures, uploaded} from "$lib/data/stores";
-  import {charges, divisions, ordinaries, shields} from "$lib/data/dataModel";
+  import {charges, chargeSets, divisions, ordinaries, shields, shieldSets} from "$lib/data/dataModel";
   import {createConfig, generate, getTincture} from "$lib/scripts/generator";
   import {highlight, lowlight} from "$lib/scripts/highlight";
   import {P, ra, rw} from "$lib/scripts/utils";
@@ -31,17 +39,26 @@
   import EditorStriped from "./EditorStriped.svelte";
   import EditorStroke from "./EditorStroke.svelte";
   import EditorTincture from "./EditorTincture.svelte";
-  export let historyId, seed;
+  export let historyId: number;
+  export let seed: string | number | undefined;
 
-  let menu = {};
   let restoring = false;
-  let section = {field: 0, division: 0, ordinary: [], charge: [], inscription: []};
+  let section = {
+    shield: false,
+    general: false,
+    field: false,
+    division: false,
+    ordinary: [] as boolean[],
+    charge: [] as boolean[],
+    inscription: [] as boolean[]
+  };
   const isLandscape = innerWidth > innerHeight;
 
   $state.transform = null;
   $state.positions = null;
 
   let coa = $history[historyId] || generate(seed || undefined); // on load
+  let menu: EditorMenu;
   $: restore($changes); // on undo/redo
   $: reroll(historyId); // on reroll
   $: update(menu, $uploaded); // on menu update and charge upload
@@ -58,23 +75,23 @@
     savedShowGrid = $showGrid;
   }
 
-  function reroll(historyId) {
+  function reroll(historyId: number) {
     restoring = false;
     coa = $history[historyId] || generate(seed || undefined);
     if (!$history[historyId]) $history.push(coa);
     changes.reset();
-    defineMenuState();
+    menu = defineMenuState();
   }
 
-  function edit(coa) {
+  function edit(coa: Coa) {
     const value = JSON.stringify(coa);
     if (restoring) changes.replace(value);
     else changes.add(value);
     restoring = false;
   }
 
-  const toggleSection = (name, index) => async () => {
-    if (index !== undefined) {
+  const toggleSection = (name: keyof typeof section, index?: number) => async () => {
+    if (index !== undefined && (name === "ordinary" || name === "charge" || name === "inscription")) {
       section[name][index] = !section[name][index];
       /* When a section is shown, the COA highlighting disappears due to a reactivity issue
          that should be fixed in Svelte 5 (see https://github.com/sveltejs/svelte/issues/8551)
@@ -82,17 +99,17 @@
       */
       await tick();
       highlight("shield", name, index)();
-    } else {
+    } else if (name === "shield" || name === "general" || name === "field" || name === "division") {
       section[name] = !section[name];
     }
   };
 
   // get coa from menu on menu change
-  function update() {
+  function update(_menu: EditorMenu, _uploaded: unknown) {
     // remove seed reference as it would be confusing
     delete coa.seed;
 
-    function getTinctureFromField(field) {
+    function getTinctureFromField(field: Field) {
       if (field.type === "tincture") return field.t1;
       const type = field.type === "semy" ? "semy_of_" + field.charge : field.pattern;
       const attributes = [type, field.t1, field.t2];
@@ -122,14 +139,13 @@
 
     // division attributes changed
     if (menu.division.division && menu.division.division !== "no") {
-      coa.division = {division: menu.division.division};
+      coa.division = {division: menu.division.division, t: getTinctureFromField(menu.division)};
       if (divisions.data[menu.division.division].templateLined) coa.division.line = menu.division.line;
       coa.division.t = getTinctureFromField(menu.division);
-    }
-    else {
+    } else {
       delete coa.division;
-      menu.charges.forEach(c => c.divided = "");
-      menu.ordinaries.forEach(o => o.divided = "");
+      menu.charges.forEach(c => (c.divided = ""));
+      menu.ordinaries.forEach(o => (o.divided = ""));
     }
 
     // ordinary attributes changed
@@ -140,7 +156,7 @@
         } else {
           delete o.t2;
         }
-        const item = {ordinary: o.ordinary, t: getTinctureFromField(o.field)};
+        const item: Ordinary = {ordinary: o.ordinary, t: getTinctureFromField(o.field)};
         if (ordinaries.lined[o.ordinary]) item.line = o.line;
         if (coa.division && o.divided) item.divided = o.divided;
         if (o.showStroke) item.stroke = o.stroke;
@@ -167,12 +183,12 @@
     if (menu.charges.length) {
       coa.charges = menu.charges.map(c => {
         updateFields(c);
-        const item = {charge: c.charge, t: getTinctureFromField(c.field1), p: c.p, size: c.size};
-        if (charges.data[c.charge]?.colors > 1 && c.field2) {
+        const item: Charge = {charge: c.charge, t: getTinctureFromField(c.field1), p: c.p, size: c.size};
+        if ((charges.data[c.charge]?.colors || 1) > 1 && c.field2) {
           const t2 = getTinctureFromField(c.field2);
           if (t2 !== item.t) item.t2 = t2;
         }
-        if (charges.data[c.charge]?.colors > 2 && c.field3) {
+        if ((charges.data[c.charge]?.colors || 1) > 2 && c.field3) {
           const t3 = getTinctureFromField(c.field3);
           if (t3 !== item.t) item.t3 = t3;
         }
@@ -196,7 +212,7 @@
     // inscriptions attributes changed
     if (menu.inscriptions.length) {
       coa.inscriptions = menu.inscriptions.map(i => {
-        const item = {text: i.text, font: i.font, size: i.size, path: i.path};
+        const item: Inscription = {text: i.text, font: i.font, size: i.size, path: i.path};
         if (i.bold) item.bold = 1;
         if (i.italic) item.italic = 1;
         if (i.color !== "#000000") item.color = i.color;
@@ -207,14 +223,14 @@
     } else delete coa.inscriptions;
   }
 
-  function restore() {
+  function restore(_changes: [string, number]) {
     if (!changes.length()) return;
     restoring = true;
     coa = JSON.parse($changes[0]);
-    defineMenuState();
+    menu = defineMenuState();
   }
 
-  function getField(fieldStr) {
+  function getField(fieldStr: string): Field {
     const type = isSemy(fieldStr) ? "semy" : isPattern(fieldStr) ? "pattern" : "tincture";
     let t1,
       t2,
@@ -243,7 +259,7 @@
     return {type, t1, t2, pattern, charge, category, size};
   }
 
-  function updateFields(charge) {
+  function updateFields(charge: ChargeMenu) {
     const colors = charges.data[charge.charge]?.colors || 1;
     if (colors === 1) {
       delete charge.field2;
@@ -258,33 +274,15 @@
   }
 
   // define initial menu state
-  function defineMenuState() {
-    // Shield
-    menu.shield = coa.shield;
-
-    // Name
-    menu.name = coa.name;
-
-    // Zoom
-    menu.zoom = coa.zoom || DEFAULT_ZOOM;
-
-    // Field
-    menu.field = getField(coa.t1);
-
-    // Division
-    if (coa.division) {
-      menu.division = getField(coa.division.t);
-      menu.division.division = coa.division.division;
-      menu.division.line = coa.division.line || "straight";
-    }
-    else {
-      menu.division = getField(selectSecondTincture(menu.field.t1));
-      menu.division.division = "no";
-      menu.division.line = "straight";
-    }
-
+  function defineMenuState(): EditorMenu {
+    const field = getField(coa.t1);
+    const division = {
+      ...getField(coa.division?.t || selectSecondTincture(field.t1)),
+      division: coa.division?.division || "no",
+      line: coa.division?.line || "straight"
+    };
     // Ordinaries
-    menu.ordinaries = getOrdinaries();
+
     function getOrdinaries() {
       if (!coa.ordinaries) return [];
 
@@ -301,12 +299,29 @@
         const y = o.y || 0;
         const angle = o.angle || 0;
         const divided = o.divided || "";
-        const above = o.above || false;
+        const above = Boolean(o.above);
         const striped = o.compony ? "compony" : o.gyronny ? "gyronny" : "";
         const componySize = o.compony || 0;
         const gyronnyNumber = o.gyronny || 0;
         if (angle) $state.transform = `rotate(${angle})`;
-        const ordinaryObj = {ordinary, field, line, showStroke, stroke, strokeWidth, size, stretch, x, y, angle, divided, above, striped, componySize, gyronnyNumber};
+        const ordinaryObj: OrdinaryMenu = {
+          ordinary,
+          field,
+          line,
+          showStroke,
+          stroke,
+          strokeWidth,
+          size,
+          stretch,
+          x,
+          y,
+          angle,
+          divided,
+          above,
+          striped,
+          componySize,
+          gyronnyNumber
+        };
         if (t2) ordinaryObj.t2 = t2;
         return ordinaryObj;
       });
@@ -315,25 +330,25 @@
     }
 
     // Charges
-    menu.charges = getCharges();
+
     function getCharges() {
       if (!coa.charges) return [];
       return coa.charges.map(c => {
-        const {charge, t, t2, t3, p, size} = c;
+        const {charge, t, t2, t3, p, size = 1} = c;
         const type = getChargeCategory(charge);
         const showStroke = c.stroke !== "none";
         const stroke = showStroke && c.stroke ? c.stroke : "#000000";
         const divided = c.divided || "";
-        const sinister = c.sinister || false;
-        const reversed = c.reversed || false;
-        const layered = c.layered || false;
+        const sinister = Boolean(c.sinister);
+        const reversed = Boolean(c.reversed);
+        const layered = Boolean(c.layered);
         const outside = c.outside || "";
         const stretch = c.stretch || 0;
         const x = c.x || 0;
         const y = c.y || 0;
         const angle = c.angle || 0;
         if (angle) $state.transform = `rotate(${angle})`;
-        const chargeObj = {
+        const chargeObj: ChargeMenu = {
           charge,
           type,
           showStroke,
@@ -351,20 +366,20 @@
           y,
           angle
         };
-        if (charges.data[charge]?.colors > 1) chargeObj.field2 = getField(t2 || t);
-        if (charges.data[charge]?.colors > 2) chargeObj.field3 = getField(t3 || t);
+        if ((charges.data[charge]?.colors || 1) > 1) chargeObj.field2 = getField(t2 || t);
+        if ((charges.data[charge]?.colors || 1) > 2) chargeObj.field3 = getField(t3 || t);
         return chargeObj;
       });
     }
 
     // Inscriptions
-    menu.inscriptions = getInscriptions();
+
     function getInscriptions() {
       if (!coa.inscriptions) return [];
       const inscriptions = coa.inscriptions.map(i => {
         const {text, font, size, shadow} = i;
-        const bold = i.bold || false;
-        const italic = i.italic || false;
+        const bold = Boolean(i.bold);
+        const italic = Boolean(i.italic);
         const color = i.color || "#000000";
         const spacing = i.spacing || 0;
         const path = i.path || "M-50 0 L50 0";
@@ -374,32 +389,41 @@
       return inscriptions;
     }
 
-    return menu;
+    return {
+      shield: coa.shield,
+      name: coa.name,
+      zoom: coa.zoom || DEFAULT_ZOOM,
+      field,
+      division,
+      ordinaries: getOrdinaries(),
+      charges: getCharges(),
+      inscriptions: getInscriptions()
+    };
   }
 
-  function isPattern(string) {
+  function isPattern(string: string) {
     return string?.includes("-");
   }
 
-  function isSemy(string) {
+  function isSemy(string: string) {
     return string?.slice(0, 4) === "semy";
   }
 
-  function getSemyCharge(array) {
+  function getSemyCharge(array: string[]) {
     return array[0].split("_of_")[1];
   }
 
-  function getChargeCategory(charge) {
+  function getChargeCategory(charge: string) {
     if (charge === "inescutcheon") return charge;
-    const type = Object.keys(charges.types).find(type => charges[type][charge] !== undefined);
+    const type = Object.keys(charges.types).find(type => chargeSets[type][charge] !== undefined);
     return type || "uploaded";
   }
 
-  function getShieldType(shield) {
-    return Object.keys(shields.types).find(type => shields[type][shield] !== undefined);
+  function getShieldType(shield: string) {
+    return Object.keys(shields.types).find(type => shieldSets[type][shield] !== undefined);
   }
 
-  function selectSecondTincture(t1) {
+  function selectSecondTincture(t1: string) {
     const metal = t1 === "argent" || t1 === "or";
     return rw(metal ? $tinctures.colours : $tinctures.metals);
   }
@@ -412,7 +436,11 @@
     const ordinariesList = Object.keys(ordinaries.lined).concat(Object.keys(ordinaries.straight));
     const ordinary = ra(ordinariesList);
     const t = selectChargeTincture();
-    const o = {
+    const o: OrdinaryMenu = {
+      stretch: 0,
+      striped: "",
+      componySize: 0,
+      gyronnyNumber: 0,
       ordinary,
       field: getField(t),
       showStroke: false,
@@ -431,9 +459,10 @@
 
   function addCharge() {
     const type = rw(charges.single);
-    const charge = rw(charges[type]);
+    const charge = rw(chargeSets[type]);
     const t = selectChargeTincture();
-    const c = {
+    const c: ChargeMenu = {
+      stretch: 0,
       charge,
       field1: getField(t),
       p: "e",
@@ -450,13 +479,13 @@
       divided: "",
       outside: ""
     };
-    if (charges.data[charge]?.colors > 1) c.field2 = getField(P(0.25) ? selectChargeTincture() : t);
-    if (charges.data[charge]?.colors > 2) c.field3 = getField(P(0.5) ? selectChargeTincture() : t);
+    if ((charges.data[charge]?.colors || 1) > 1) c.field2 = getField(P(0.25) ? selectChargeTincture() : t);
+    if ((charges.data[charge]?.colors || 1) > 2) c.field3 = getField(P(0.5) ? selectChargeTincture() : t);
     menu.charges = [...menu.charges, c];
   }
 
   function addInscription() {
-    const i = {
+    const i: InscriptionMenu = {
       text: "Armoria",
       font: "Cinzel",
       size: 20,
@@ -473,13 +502,14 @@
     if (!$message) message.info("info.tipEditControls");
   }
 
-  function isRaster(charge) {
+  function isRaster(charge: string) {
     const el = document.getElementById(charge);
     return el ? el.tagName === "image" : false;
   }
 
-  $: translateSafely = (group, key) => {
-    const isInDictionary = $dictionary?.[$locale]?.[group]?.[key];
+  $: translateSafely = (group: string, key: string) => {
+    const messages = $dictionary[$locale || ""]?.[group];
+    const isInDictionary = messages && typeof messages === "object" && !Array.isArray(messages) && key in messages;
     return isInDictionary ? $t(`${group}.${key}`) : key;
   };
 </script>
@@ -557,7 +587,7 @@
           />
         </div>
 
-        {#if divisions.data[coa.division?.division]?.templateLined}
+        {#if divisions.data[coa.division?.division || ""]?.templateLined}
           <div class="subsection">
             <EditorLine
               bind:line={menu.division.line}
@@ -587,10 +617,7 @@
         on:mouseleave={lowlight("shield", "ordinary", i)}
       >
         {#if $isTextReady}
-          {$t("editor.ordinary")}{menu.ordinaries.length > 1 ? ` ${i + 1}` : ""}: {translateSafely(
-            "ordinaries",
-            o.ordinary
-          )}
+          {$t("editor.ordinary")}{menu.ordinaries.length > 1 ? ` ${i + 1}` : ""}: {translateSafely("ordinaries", o.ordinary)}
           {#if o.above}
             <i>[{$t("editor.aboveCharges")}]</i>
           {/if}
@@ -662,10 +689,7 @@
         on:mouseleave={lowlight("shield", "charge", i)}
       >
         {#if $isTextReady}
-          {$t("tinctures.charge")}{menu.charges.length > 1 ? ` ${i + 1}` : ""}: {translateSafely(
-            "charges",
-            charge.charge
-          )}
+          {$t("tinctures.charge")}{menu.charges.length > 1 ? ` ${i + 1}` : ""}: {translateSafely("charges", charge.charge)}
           {#if charge.outside === "above"}
             <i>[{$t("editor.aboveShield")}]</i>
           {:else if charge.outside === "below"}
@@ -692,13 +716,13 @@
               t4={charge.field3?.t1}
               sinister={charge.sinister}
               reversed={charge.reversed}
-              division={coa.division}
+              division={Boolean(coa.division)}
               shield={coa.shield}
             />
           </div>
 
           {#if !isRaster(charge.charge) && charge.divided !== "counter"}
-            {#if charges.data[charge.charge]?.colors > 1}
+            {#if charge.field2 && (charges.data[charge.charge]?.colors || 1) > 1}
               <div class="subsection">{$t("editor.primary")}:</div>
               <div class="subsection">
                 <EditorField bind:field={charge.field1} shield={coa.shield} />
@@ -707,7 +731,7 @@
               <div class="subsection">
                 <EditorField bind:field={charge.field2} shield={coa.shield} />
               </div>
-              {#if charges.data[charge.charge]?.colors > 2}
+              {#if charge.field3 && (charges.data[charge.charge]?.colors || 1) > 2}
                 <div class="subsection">{$t("editor.tertiary")}:</div>
                 <div class="subsection">
                   <EditorField bind:field={charge.field3} shield={coa.shield} />
@@ -865,7 +889,11 @@
   }
 
   :global(.section.highlighted) {
-    text-shadow: 1px 0 4px yellow, 0 1px 4px yellow, -1px 0 4px yellow, 0 -1px 4px yellow;
+    text-shadow:
+      1px 0 4px yellow,
+      0 1px 4px yellow,
+      -1px 0 4px yellow,
+      0 -1px 4px yellow;
   }
 
   :global(.section > span) {
@@ -982,7 +1010,8 @@
   }
 
   @keyframes -global-disable-pointer-events {
-    0%, 99% {
+    0%,
+    99% {
       pointer-events: none;
     }
   }

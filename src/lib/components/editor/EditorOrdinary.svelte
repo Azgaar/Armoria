@@ -8,7 +8,7 @@
   export let line: string;
   export let t1: string;
   export let t2: string;
-  export let shield: string = undefined;
+  export let shield: string | undefined = undefined;
 
   const ordinariesList = Object.keys(ordinaries.lined).concat(Object.keys(ordinaries.straight));
   $: coas = ordinariesList.map(ordinary => ({coa: {t1, shield, ordinaries: [{ordinary, line, t: t2}]}, ordinaryName: ordinary}));

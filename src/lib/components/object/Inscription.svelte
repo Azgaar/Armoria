@@ -17,7 +17,7 @@
   $: isSelected = $state.selectedPath === i;
   $: lines = inscription.text.split("|");
 
-  const addInscriptionDrag = (event: Event) => {
+  const addInscriptionDrag = (event: MouseEvent) => {
     if (type !== "Edit") return;
     if (pathData.type == "custom") return; // not supported
 
@@ -25,7 +25,7 @@
     $state.pathChangeMode = -1;
     drag(event, {x: 0, y: 0}, coa, {move: true, resize: false, rotate: false, onEnd});
 
-    function onEnd(element) {
+    function onEnd(element: {x: number; y: number}) {
       pathData.points.forEach(p => {
         p.x += element.x;
         p.y += element.y;
@@ -34,14 +34,14 @@
     }
   };
 
-  const addPointDrag = (point: {index: number; x: number; y: number}) => (event: Event) => {
+  const addPointDrag = (point: {index: number; x: number; y: number}) => (event: MouseEvent) => {
     if (type !== "Edit") return;
     $state.selectedPath = i;
 
     $state.pathChangeMode = point.index;
     drag(event, point, coa, {move: true, resize: false, rotate: false, onMove});
 
-    function onMove(event, element) {
+    function onMove(event: MouseEvent, element: {index: number; x: number; y: number}) {
       pathData.points[element.index] = element;
       inscription.path = buildPath(pathData.type, pathData.points);
     }

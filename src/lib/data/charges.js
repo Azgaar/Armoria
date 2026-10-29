@@ -1,3 +1,4 @@
+/** @type {Record<string, import("$lib/types/data").ChargeData>} */
 const chargeData = {
   agnusDei: {
     colors: 2,
@@ -914,7 +915,7 @@ const chargeData = {
 };
 
 export const charges = {
-  types: {
+  types: /** @type {Record<string, number>} */ ({
     conventional: 33, // 40 charges
     crosses: 13, // 30 charges
     beasts: 7, // 41 charges
@@ -937,8 +938,8 @@ export const charges = {
     inescutcheon: 3, // 43 charges
     ornaments: 0, // 9 charges
     uploaded: 0
-  },
-  single: {
+  }),
+  single: /** @type {Record<string, number>} */ ({
     conventional: 10,
     crosses: 8,
     beasts: 7,
@@ -959,12 +960,12 @@ export const charges = {
     tools: 3,
     miscellaneous: 5,
     inescutcheon: 1
-  },
-  semy: {
+  }),
+  semy: /** @type {Record<string, number>} */ ({
     conventional: 4,
     crosses: 1
-  },
-  conventional: {
+  }),
+  conventional: /** @type {Record<string, number>} */ ({
     annulet: 4,
     billet: 5,
     carreau: 1,
@@ -1005,8 +1006,8 @@ export const charges = {
     trefle: 2,
     triangle: 3,
     trianglePierced: 1
-  },
-  crosses: {
+  }),
+  crosses: /** @type {Record<string, number>} */ ({
     crossHummetty: 15,
     crossVoided: 1,
     crossPattee: 2,
@@ -1047,8 +1048,8 @@ export const charges = {
     crossTau: 1,
     crossSantiago: 1,
     crossAnkh: 1
-  },
-  beasts: {
+  }),
+  beasts: /** @type {Record<string, number>} */ ({
     agnusDei: 1,
     badgerStatant: 1,
     bearPassant: 1,
@@ -1091,8 +1092,8 @@ export const charges = {
     wolfPassant: 1,
     wolfRampant: 1,
     wolfStatant: 1
-  },
-  beastHeads: {
+  }),
+  beastHeads: /** @type {Record<string, number>} */ ({
     boarHeadErased: 1,
     bullHeadCaboshed: 1,
     deerHeadCaboshed: 1,
@@ -1103,8 +1104,8 @@ export const charges = {
     lionHeadErased: 2,
     ramHeadErased: 1,
     wolfHeadErased: 2
-  },
-  birds: {
+  }),
+  birds: /** @type {Record<string, number>} */ ({
     cock: 3,
     dove: 2,
     doveDisplayed: 1,
@@ -1122,15 +1123,15 @@ export const charges = {
     swallow: 1,
     swan: 2,
     swanErased: 1
-  },
-  reptiles: {
+  }),
+  reptiles: /** @type {Record<string, number>} */ ({
     crocodile: 1,
     frog: 1,
     lizard: 1,
     ouroboros: 1,
     snake: 1
-  },
-  bugs: {
+  }),
+  bugs: /** @type {Record<string, number>} */ ({
     ant: 1,
     bee: 1,
     butterfly: 1,
@@ -1141,19 +1142,19 @@ export const charges = {
     scorpion: 1,
     spider: 1,
     wasp: 1
-  },
-  fishes: {
+  }),
+  fishes: /** @type {Record<string, number>} */ ({
     pike: 1,
     plaice: 1,
     salmon: 1
-  },
-  molluscs: {
+  }),
+  molluscs: /** @type {Record<string, number>} */ ({
     escallop: 4,
     kraken: 1,
     polypus: 1,
     snail: 1
-  },
-  plants: {
+  }),
+  plants: /** @type {Record<string, number>} */ ({
     apple: 1,
     cinquefoil: 1,
     earOfWheat: 1,
@@ -1172,8 +1173,8 @@ export const charges = {
     tree: 1,
     trefoil: 1,
     wheatStalk: 1
-  },
-  fantastic: {
+  }),
+  fantastic: /** @type {Record<string, number>} */ ({
     angel: 3,
     basilisk: 1,
     centaur: 1,
@@ -1189,8 +1190,8 @@ export const charges = {
     unicornRampant: 1,
     wyvern: 1,
     wyvernWithWingsDisplayed: 1
-  },
-  agriculture: {
+  }),
+  agriculture: /** @type {Record<string, number>} */ ({
     garb: 2,
     millstone: 1,
     plough: 1,
@@ -1199,8 +1200,8 @@ export const charges = {
     scythe: 1,
     scythe2: 1,
     sickle: 1
-  },
-  arms: {
+  }),
+  arms: /** @type {Record<string, number>} */ ({
     arbalest: 1,
     arbalest2: 1,
     arrow: 1,
@@ -1235,8 +1236,8 @@ export const charges = {
     spear: 1,
     sword: 4,
     trident: 1
-  },
-  bodyparts: {
+  }),
+  bodyparts: /** @type {Record<string, number>} */ ({
     armEmbowedHoldingSabre: 1,
     armEmbowedVambraced: 1,
     armEmbowedVambracedHoldingSword: 1,
@@ -1249,15 +1250,15 @@ export const charges = {
     skeleton: 2,
     skull: 2,
     skull2: 1
-  },
-  people: {
+  }),
+  people: /** @type {Record<string, number>} */ ({
     archer: 1,
     cavalier: 3,
     cossack: 1,
     hermit: 1,
     monk: 1
-  },
-  architecture: {
+  }),
+  architecture: /** @type {Record<string, number>} */ ({
     bridge: 1,
     bridge2: 1,
     castle: 2,
@@ -1270,8 +1271,8 @@ export const charges = {
     portcullis: 1,
     tower: 2,
     windmill: 1
-  },
-  seafaring: {
+  }),
+  seafaring: /** @type {Record<string, number>} */ ({
     anchor: 6,
     armillarySphere: 1,
     boat: 2,
@@ -1281,8 +1282,8 @@ export const charges = {
     lymphad: 2,
     raft: 1,
     shipWheel: 1
-  },
-  tools: {
+  }),
+  tools: /** @type {Record<string, number>} */ ({
     anvil: 2,
     drawingCompass: 2,
     fan: 1,
@@ -1298,8 +1299,8 @@ export const charges = {
     scissors2: 1,
     shears: 1,
     trowel: 1
-  },
-  miscellaneous: {
+  }),
+  miscellaneous: /** @type {Record<string, number>} */ ({
     amphora: 1,
     attire: 2,
     banner: 2,
@@ -1345,8 +1346,8 @@ export const charges = {
     wheel: 3,
     wing: 2,
     wingSword: 1
-  },
-  inescutcheon: {
+  }),
+  inescutcheon: /** @type {Record<string, number>} */ ({
     inescutcheonHeater: 1,
     inescutcheonSpanish: 1,
     inescutcheonFrench: 1,
@@ -1392,8 +1393,8 @@ export const charges = {
     inescutcheonIronHills: 1,
     inescutcheonUrukHai: 1,
     inescutcheonMoriaOrc: 1
-  },
-  ornaments: {
+  }),
+  ornaments: /** @type {Record<string, number>} */ ({
     mantle: 0,
     ribbon1: 3,
     ribbon2: 2,
@@ -1403,31 +1404,38 @@ export const charges = {
     ribbon6: 1,
     ribbon7: 1,
     ribbon8: 1
-  },
-  uploaded: {},
+  }),
+  uploaded: /** @type {Record<string, number>} */ ({}),
   data: chargeData
 };
 
+const {data: metadata, ...weightTables} = charges;
+/** @type {Record<string, Record<string, number>>} */
+export const chargeSets = weightTables;
+
+/** @param {string} name @param {string} category @param {number} chance */
 export function registerCharge(name, category, chance) {
   if (!charges.types[category]) {
     charges.types[category] = 6;
-    delete charges.types.array;
+    Reflect.deleteProperty(charges.types, "array");
   }
   if (!charges.single[category]) {
     charges.single[category] = 6;
-    delete charges.single.array;
+    Reflect.deleteProperty(charges.single, "array");
   }
-  charges[category][name] = chance;
-  delete charges[category].array;
+  chargeSets[category] ||= {};
+  chargeSets[category][name] = chance;
+  Reflect.deleteProperty(chargeSets[category], "array");
 }
 
+/** @param {string} name @param {string} category */
 export function unregisterCharge(name, category) {
-  delete charges[category][name];
-  delete charges[category].array;
-  if (Object.keys(charges[category]).length === 0) {
+  delete chargeSets[category][name];
+  Reflect.deleteProperty(chargeSets[category], "array");
+  if (Object.keys(chargeSets[category]).length === 0) {
     charges.types[category] = 0;
-    delete charges.types.array;
+    Reflect.deleteProperty(charges.types, "array");
     charges.single[category] = 0;
-    delete charges.single.array;
+    Reflect.deleteProperty(charges.single, "array");
   }
 }

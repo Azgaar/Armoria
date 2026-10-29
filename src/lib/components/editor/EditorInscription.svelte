@@ -4,7 +4,7 @@
   import {fonts, state} from "$lib/data/stores";
   import {tooltip} from "$lib/scripts/tooltip";
   import Switch from "./Switch.svelte";
-  import type {Inscription} from "$lib/types/coa";
+  import type {EditorInscription as Inscription} from "$lib/types/editor";
 
   export let inscription: Inscription;
 </script>

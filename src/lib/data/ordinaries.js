@@ -1,3 +1,4 @@
+/** @type {{lined: Record<string, number>, straight: Record<string, number>, data: Record<string, import("$lib/types/data").Template>}} */
 export const ordinaries = {
   lined: {
     pale: 7,

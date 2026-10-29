@@ -4,11 +4,11 @@
   import {tooltip} from "$lib/scripts/tooltip";
   import NavLabel from "./NavLabel.svelte";
 
-  export let value: string = undefined;
-  export let label: string = undefined;
-  export let tip: string = undefined;
-  export let gesture: string = undefined;
-  export let hotkey: string = undefined;
+  export let value: string | undefined = undefined;
+  export let label: string | undefined = undefined;
+  export let tip: string | undefined = undefined;
+  export let gesture: string | undefined = undefined;
+  export let hotkey: string | undefined = undefined;
   export let disabled: boolean = false;
   export let selected: boolean = false;
   export let flutter: boolean = false;

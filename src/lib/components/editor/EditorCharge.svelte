@@ -3,7 +3,7 @@
   // @ts-check
   import {t, dictionary, locale} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
-  import {charges} from "$lib/data/dataModel";
+  import {charges, chargeSets} from "$lib/data/dataModel";
   import {unregisterCharge} from "$lib/data/charges";
   import {uploaded} from "$lib/data/stores";
   import {removeCharge} from "$lib/scripts/getters";
@@ -16,27 +16,26 @@
   export let t2: string;
   export let t3: string | undefined = undefined;
   export let t4: string | undefined = undefined;
-  export let size = null;
-  export let sinister = null;
-  export let reversed = null;
+  export let size: string | null = null;
+  export let sinister = false;
+  export let reversed = false;
   export let division = false;
-  export let shield: string = undefined;
+  export let shield: string | undefined = undefined;
 
-  let chargesData = [];
+  let chargesData: (import("$lib/types/coa").Coa & {charge: string})[] = [];
   let query: string;
   let queryOld: string;
 
   const categories = Object.keys(charges.types);
-  const allCharges = categories.map(category => Object.keys(charges[category])).flat();
+  const allCharges = categories.map(category => Object.keys(chargeSets[category])).flat();
   $: allChargesTranslated = allCharges.map(charge => $t(`charges.${charge}`));
 
-  // @ts-ignore
-  $: update(category, t1, t2, t3, t4, size, sinister, reversed, shield);
+  $: update({category, t1, t2, t3, t4, size, sinister, reversed, shield});
   $: filterCharges(query);
 
-  function update() {
-    const chargeList = Object.keys(charges[category]);
-    chargesData = chargeList.map(charge => ({charge, shield, t1, charges: getCharge(charge)}));
+  function update(preview = {category, t1, t2, t3, t4, size, sinister, reversed, shield}) {
+    const chargeList = Object.keys(chargeSets[preview.category]);
+    chargesData = chargeList.map(charge => ({charge, shield: preview.shield, t1: preview.t1, charges: getCharge(charge)}));
   }
 
   function filterCharges(query: string) {
@@ -59,7 +58,8 @@
   }
 
   const translateSafely = (group: string, key: string) => {
-    const isInDictionary = $dictionary?.[$locale]?.[group]?.[key];
+    const messages = $dictionary[$locale || ""]?.[group];
+    const isInDictionary = messages && typeof messages === "object" && !Array.isArray(messages) && key in messages;
     return isInDictionary ? $t(`${group}.${key}`) : key;
   };
 
@@ -96,11 +96,11 @@
         <EditorItem {coa} tip={getTip(coa.charge)} />
       </div>
       {#if $uploaded[coa.charge]}
-      <div class="controls">
-        <svg class="remove" on:click={() => removeUploaded(coa.charge)} data-tooltip={$t("tooltip.removeUploaded")} use:tooltip>
-          <use href="#remove-icon" />
-        </svg>
-      </div>
+        <div class="controls">
+          <svg class="remove" on:click={() => removeUploaded(coa.charge)} data-tooltip={$t("tooltip.removeUploaded")} use:tooltip>
+            <use href="#remove-icon" />
+          </svg>
+        </div>
       {/if}
     </div>
   {/each}

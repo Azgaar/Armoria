@@ -1,7 +1,7 @@
 import * as defaults from "$lib/config/defaults";
 import {diapers, gradients} from "$lib/config/options";
-import {charges} from "$lib/data/dataModel";
-import {shields} from "./shields";
+import {charges, chargeSets} from "$lib/data/dataModel";
+import {shields, shieldSets} from "./shields";
 import {ra, rw} from "$lib/scripts/utils";
 import {settingsStorage, reportSettingsRecovery} from "./storage";
 import {validateTinctures} from "./validators";
@@ -101,9 +101,9 @@ export interface UploadedCharge {
 const builtInCharges = new Set(
   Object.keys(charges.types)
     .filter(category => category !== "uploaded")
-    .flatMap(category => Object.keys(charges[category as keyof typeof charges]))
+    .flatMap(category => Object.keys(chargeSets[category]))
 );
-const positions = new Set(Object.keys(shields.data.spanish.positions));
+const positions = new Set(Object.keys(shields.data.spanish.positions || {}));
 function uploads(raw: string, colors: Record<string, string>): Record<string, UploadedCharge> {
   const value: unknown = JSON.parse(raw);
   if (!object(value)) return invalid();
@@ -172,7 +172,7 @@ export function readSavedSettings() {
     diaper: read("diaper", choice(diapers), () => defaults.DEFAULT_DIAPER),
     grad: read("grad", choice(gradients), () => ra(defaults.DEFAULT_GRADIENTS)),
     shield: read("shield", choice(Object.keys(shields.data)), () =>
-      rw(shields[rw(shields.types) as keyof typeof shields] as Record<string, number>)
+      rw(shieldSets[rw(shields.types)])
     ),
     colors,
     fonts: read("fonts", fonts, () => clone(defaults.DEFAULT_FONTS)),

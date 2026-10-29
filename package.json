@@ -24,7 +24,9 @@
     "test:coa-import": "node --test --test-isolation=none tests/coa-import.test.mjs",
     "test:pattern-rendering": "node --test --test-isolation=none tests/pattern-rendering.test.mjs",
     "test:settings": "node --test --test-isolation=none tests/settings.test.mjs",
-    "test:settings-browser": "node --test --test-isolation=none tests/settings-browser.test.mjs"
+    "test:settings-browser": "node --test --test-isolation=none tests/settings-browser.test.mjs",
+    "test:generation": "node --test --test-isolation=none tests/generation.test.mjs",
+    "test:files": "node --test --test-isolation=none tests/files.test.mjs"
   },
   "repository": {
     "type": "git",

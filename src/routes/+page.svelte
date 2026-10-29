@@ -1,7 +1,7 @@
 <script lang="ts">
   import {settingsStorage, reportSettingsRecovery} from "$lib/data/storage";
   // @ts-check
-  import {charges, shields} from "$lib/data/dataModel";
+  import {charges, shields, shieldSets} from "$lib/data/dataModel";
   import {
     background,
     colors,
@@ -41,8 +41,8 @@
   let quantity: number;
   let width: number;
   let height: number;
-  let gallery = [];
-  let seed: string = undefined;
+  let gallery: number[] = [];
+  let seed: string | undefined = undefined;
   let coaSize = 200;
 
   $locale = "en"; // fallback locale
@@ -71,7 +71,7 @@
 
       // change shield if it's not locked (manually selected)
       if (!settingsStorage.getItem("shield")) {
-        $shield = rw(shields[rw(shields.types)]);
+        $shield = rw(shieldSets[rw(shields.types)]);
       }
     }
 
@@ -111,7 +111,7 @@
   function checkLoadParameters() {
     const url = new URL(window.location.href);
     const viewParam = url.searchParams.get("view") === "1";
-    const sizeParam = +url.searchParams.get("size");
+    const sizeParam = Number(url.searchParams.get("size"));
     const coaParam = url.searchParams.get("coa");
     const seedParam = url.searchParams.get("seed");
     const from = url.searchParams.get("from");

@@ -1,9 +1,10 @@
-import {charges, divisions, lines, ordinaries, patternSize, positions} from "$lib/data/dataModel";
+import {charges, chargeSets, divisions, lines, ordinaries, patternSize, positions} from "$lib/data/dataModel";
 import {tinctures} from "$lib/data/stores";
 import {get} from "svelte/store";
 import {aleaPRNG} from "./alea";
 import {P, rw} from "./utils";
 
+/** @returns {import("$lib/types/generator").GenerationConfig} */
 export const createConfig = () => ({
   usedPattern: null,
   usedTinctures: [],
@@ -13,50 +14,47 @@ export const createConfig = () => ({
 });
 
 // main generation routine
+/** @param {string | number} [providedSeed] @returns {import("$lib/types/coa").Coa} */
 export const generate = function (providedSeed) {
   const seed = providedSeed || Math.floor(Math.random() * 1e9);
   Math.random = aleaPRNG(seed);
 
   const config = createConfig();
+  /** @type {import("$lib/types/coa").Coa} */
   const coa = {seed, t1: getTincture(config, "field")};
 
   const addCharge = P(config.usedPattern ? 0.5 : 0.93); // 80% for charge
   const linedOrdinary = (addCharge && P(0.3)) || P(0.5) ? rw(ordinaries.lined) : null;
-  config.ordinary =
-    (!addCharge && P(0.65)) || P(0.3) ? (linedOrdinary ? linedOrdinary : rw(ordinaries.straight)) : null; // 36% for ordinary
+  config.ordinary = (!addCharge && P(0.65)) || P(0.3) ? (linedOrdinary ? linedOrdinary : rw(ordinaries.straight)) : null; // 36% for ordinary
 
-  const rareDivided = ["chief", "terrace", "chevron", "quarter", "flaunches"].includes(config.ordinary);
+  const rareDivided = ["chief", "terrace", "chevron", "quarter", "flaunches"].includes(config.ordinary || "");
   config.divisioned = rareDivided
     ? P(0.03)
     : addCharge && config.ordinary
-    ? P(0.03)
-    : addCharge
-    ? P(0.3)
-    : config.ordinary
-    ? P(0.7)
-    : P(0.995); // 33% for division
+      ? P(0.03)
+      : addCharge
+        ? P(0.3)
+        : config.ordinary
+          ? P(0.7)
+          : P(0.995); // 33% for division
 
   const division = config.divisioned ? rw(divisions.variants) : null;
 
   if (division) {
     const t = getTincture(config, "division", config.usedTinctures, P(0.98) ? coa.t1 : null);
     coa.division = {division, t};
-    if (divisions.data[division].templateLined)
-      coa.division.line = config.usedPattern || (config.ordinary && P(0.7)) ? "straight" : rw(divisions.data[division].line || lines.variants);
+    if (divisions.data[division || ""].templateLined)
+      coa.division.line =
+        config.usedPattern || (config.ordinary && P(0.7))
+          ? "straight"
+          : rw(divisions.data[division || ""].line || lines.variants);
   }
 
   if (config.ordinary) {
     const t = getTincture(config, "charge", config.usedTinctures, coa.t1);
     coa.ordinaries = [{ordinary: config.ordinary, t}];
     if (linedOrdinary) coa.ordinaries[0].line = config.usedPattern || (division && P(0.7)) ? "straight" : rw(lines.variants);
-    if (
-      division &&
-      !addCharge &&
-      !config.usedPattern &&
-      P(0.5) &&
-      config.ordinary !== "bordure" &&
-      config.ordinary !== "orle"
-    ) {
+    if (division && !addCharge && !config.usedPattern && P(0.5) && config.ordinary !== "bordure" && config.ordinary !== "orle") {
       if (P(0.8)) coa.ordinaries[0].divided = "counter";
       // 40%
       else if (P(0.6)) coa.ordinaries[0].divided = "field";
@@ -72,7 +70,7 @@ export const generate = function (providedSeed) {
     let p = "e";
     let t = "gules";
 
-    const ordinaryData = ordinaries.data[config.ordinary];
+    const ordinaryData = ordinaries.data[config.ordinary || ""];
     const tOrdinary = coa.ordinaries ? coa.ordinaries[0].t : null;
 
     if (ordinaryData?.positionsOn && P(0.8)) {
@@ -82,16 +80,11 @@ export const generate = function (providedSeed) {
     } else if (ordinaryData?.positionsOff && P(0.95)) {
       // place charge out of ordinary (use tincture of ordinary type)
       p = rw(ordinaryData.positionsOff);
-      t = !config.usedPattern && P(0.3) ? tOrdinary : getTincture(config, "charge", config.usedTinctures, coa.t1);
-    } else if (divisions.data[division]?.positions) {
+      t = !config.usedPattern && P(0.3) ? tOrdinary || coa.t1 : getTincture(config, "charge", config.usedTinctures, coa.t1);
+    } else if (divisions.data[division || ""]?.positions) {
       // place charge in fields made by division
-      p = rw(divisions.data[division].positions);
-      t = getTincture(
-        config,
-        "charge",
-        tOrdinary ? config.usedTinctures.concat(tOrdinary) : config.usedTinctures,
-        coa.t1
-      );
+      p = rw(divisions.data[division || ""].positions || {e: 1});
+      t = getTincture(config, "charge", tOrdinary ? config.usedTinctures.concat(tOrdinary || []) : config.usedTinctures, coa.t1);
     } else if (chargeData.positions) {
       // place charge-suitable position
       p = rw(chargeData.positions);
@@ -99,11 +92,12 @@ export const generate = function (providedSeed) {
     } else {
       // place in standard position (use new tincture)
       p = config.usedPattern ? "e" : charges.conventional[charge] ? rw(positions.conventional) : rw(positions.complex);
-      t = getTincture(config, "charge", config.usedTinctures.concat(tOrdinary), coa.t1);
+      t = getTincture(config, "charge", config.usedTinctures.concat(tOrdinary || []), coa.t1);
     }
 
     if (chargeData.natural && chargeData.natural !== t && chargeData.natural !== tOrdinary) t = chargeData.natural;
 
+    /** @type {import("$lib/types/coa").Charge} */
     const item = {charge: charge, t, p};
     const colors = chargeData.colors || 1;
     if (colors > 1) item.t2 = P(0.25) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
@@ -122,18 +116,12 @@ export const generate = function (providedSeed) {
       const t2 = getTincture(config, "charge", [], t);
       coa.charges.push({charge, t: t2, p, size: 0.5});
     } else if (division && !config.ordinary) {
-      const allowCounter = !config.usedPattern && (!coa.line || coa.line === "straight");
-
-      // dimidiation: second charge at division basic positions
-      if (P(0.3) && ["perPale", "perFess"].includes(division) && coa.line === "straight") {
-        coa.charges[0].divided = "field";
-        if (P(0.95)) {
-          const p2 = p === "e" || P(0.5) ? "e" : rw(divisions.data[division].positions);
-          const charge = selectCharge(charges.single);
-          const t = getTincture(config, "charge", config.usedTinctures, coa.division.t);
-          coa.charges.push({charge, t, p: p2, divided: "division"});
-        }
-      } else if (allowCounter && P(0.4)) coa.charges[0].divided = "counter";
+      // Preserve seeded output: the legacy generator checked a top-level coa.line,
+      // which it never set. Counterchanging was allowed for every division line;
+      // dimidiation never ran, but its probability check consumed one RNG draw.
+      const allowCounter = !config.usedPattern;
+      P(0.3);
+      if (allowCounter && P(0.4)) coa.charges[0].divided = "counter";
       // counterchanged, 40%
       else if (["perPale", "perFess", "perBend", "perBendSinister"].includes(division) && P(0.8)) {
         // place 2 charges in division standard positions
@@ -141,14 +129,14 @@ export const generate = function (providedSeed) {
           division === "perPale"
             ? ["p", "q"]
             : division === "perFess"
-            ? ["k", "n"]
-            : division === "perBend"
-            ? ["l", "m"]
-            : ["j", "o"]; // perBendSinister
+              ? ["k", "n"]
+              : division === "perBend"
+                ? ["l", "m"]
+                : ["j", "o"]; // perBendSinister
         coa.charges[0].p = p1;
 
         const charge = selectCharge(charges.single);
-        const t = getTincture(config, "charge", config.usedTinctures, coa.division.t);
+        const t = getTincture(config, "charge", config.usedTinctures, coa.division?.t);
         coa.charges.push({charge, t, p: p2});
       } else if (["perCross", "perSaltire"].includes(division) && P(0.5)) {
         // place 4 charges in division standard positions
@@ -156,10 +144,10 @@ export const generate = function (providedSeed) {
         coa.charges[0].p = p1;
 
         const c2 = selectCharge(charges.single);
-        const t2 = getTincture(config, "charge", [], coa.division.t);
+        const t2 = getTincture(config, "charge", [], coa.division?.t);
 
         const c3 = selectCharge(charges.single);
-        const t3 = getTincture(config, "charge", [], coa.division.t);
+        const t3 = getTincture(config, "charge", [], coa.division?.t);
 
         const c4 = selectCharge(charges.single);
         const t4 = getTincture(config, "charge", [], coa.t1);
@@ -173,6 +161,7 @@ export const generate = function (providedSeed) {
   return coa;
 };
 
+/** @param {string} p @param {string | null} [o] @param {string | null} [d] */
 export const getSize = (p, o = null, d = null) => {
   if (p === "e" && (o === "bordure" || o === "orle")) return 1.1;
   if (p === "e") return 1.5;
@@ -187,6 +176,7 @@ export const getSize = (p, o = null, d = null) => {
   return 0.7; // 1, 2
 };
 
+/** @param {import("$lib/types/generator").GenerationConfig} config @param {string | null} division @param {import("$lib/types/coa").Charge} c */
 function defineChargeAttributes(config, division, c) {
   // define size
   c.size = (c.size || 1) * getSize(c.p, config.ordinary, division);
@@ -199,11 +189,13 @@ function defineChargeAttributes(config, division, c) {
   if (P(0.02) && charges.data[c.charge]?.reversed) c.reversed = 1;
 }
 
+/** @param {Record<string, number>} set */
 function selectCharge(set) {
   const type = rw(set);
-  return type === "inescutcheon" ? "inescutcheon" : rw(charges[type]);
+  return type === "inescutcheon" ? "inescutcheon" : rw(chargeSets[type]);
 }
 
+/** @param {import("$lib/types/generator").GenerationConfig} config @param {string} tincture */
 function replaceTincture(config, tincture) {
   const type = getType(config, tincture);
   const typeTinctures = config.tData[type];
@@ -220,14 +212,16 @@ function replaceTincture(config, tincture) {
   return rw(candidateTinctures, false);
 }
 
+/** @param {import("$lib/types/generator").GenerationConfig} config @param {string} t */
 function getType(config, t) {
   const tincture = getBaseTincture(t);
   if (Object.keys(config.tData.metals).includes(tincture)) return "metals";
   if (Object.keys(config.tData.colours).includes(tincture)) return "colours";
   if (Object.keys(config.tData.stains).includes(tincture)) return "stains";
-  throw new Error("Unknown tincture type", t);
+  throw new Error(`Unknown tincture type: ${t}`);
 }
 
+/** @param {import("$lib/types/generator").GenerationConfig} config @param {string} patternName @param {"field" | "division" | "charge"} element */
 function definePattern(config, patternName, element) {
   let t1 = null;
   let t2 = null;
@@ -321,10 +315,12 @@ function definePattern(config, patternName, element) {
   return `${patternName}-${t1}-${t2}${sizeString}`;
 }
 
+/** @param {string} tincture */
 function getBaseTincture(tincture) {
   return tincture.includes("-") ? tincture.split("-")[1] : tincture;
 }
 
+/** @param {Record<string, number>} typeTinctures @param {string[]} usedTinctures */
 function excludeTinctures(typeTinctures, usedTinctures) {
   const unusedTinctures = {...typeTinctures};
   usedTinctures.forEach(usedTincture => {
@@ -336,8 +332,9 @@ function excludeTinctures(typeTinctures, usedTinctures) {
 }
 
 // select tincture: element type (field, division, charge), used field tinctures, field type to follow RoT
+/** @param {import("$lib/types/generator").GenerationConfig} config @param {"field" | "division" | "charge"} element @param {string[]} [fields] @param {string | null} [RoT] */
 export function getTincture(config, element, fields = [], RoT) {
-  let type = rw(config.tData[element]); // random type
+  let type = /** @type {keyof import("$lib/types/tinctures").TinctureTypeChances} */ (rw(config.tData[element])); // random type
 
   if (type === "patterns") {
     const patternName = rw(config.tData[type]);

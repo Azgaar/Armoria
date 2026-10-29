@@ -1,3 +1,4 @@
+import type {Coa} from "$lib/types/coa";
 import {writable} from "svelte/store";
 import {readSavedSettings} from "./settings";
 
@@ -20,10 +21,12 @@ export const grid = writable(options.grid);
 export const showGrid = writable(options.showGrid);
 export const uploaded = writable(options.uploaded);
 
-export const history = writable([]);
-export const matrices = writable([]);
+export const history = writable<Coa[]>([]);
+export const matrices = writable<number[][]>([]);
 export const matrix = writable(0);
 export const state = writable({
+  transform: null as string | null,
+  positions: null as string | null | 0,
   edit: 0,
   about: 0,
   license: 0,
@@ -42,7 +45,7 @@ export const state = writable({
 export const iconedNav = writable(false);
 
 const createMessageStore = () => {
-  const {subscribe, set} = writable(null);
+  const {subscribe, set} = writable<{type: "success" | "info" | "error"; text: string; timeout: number} | null>(null);
   const defaultTimeout = 5000;
 
   return {

@@ -7,15 +7,8 @@
   import {getSize} from "$lib/scripts/generator";
   import {tooltip} from "$lib/scripts/tooltip";
 
-  interface ICharge {
-    angle: number;
-    size: number;
-    p: string;
-    sinister: boolean;
-    reversed: boolean;
-  }
-
-  export let charge: ICharge;
+  import type {EditorCharge} from "$lib/types/editor";
+  export let charge: EditorCharge;
 
   function showPositions() {
     $state.transform = `rotate(${charge.angle || 0}) translate(${charge.x || 0}, ${charge.y || 0})`;

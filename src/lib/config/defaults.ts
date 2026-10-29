@@ -11,7 +11,7 @@ export const DEFAULT_ZOOM = 1;
 export const DEFAULT_GRID = 1;
 export const DEFAULT_SHOW_GRID = false;
 
-export const DEFAULT_COLORS = {
+export const DEFAULT_COLORS: Record<string, string> = {
   argent: "#fafafa",
   or: "#ffe066",
   gules: "#d7374a",

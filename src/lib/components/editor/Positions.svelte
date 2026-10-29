@@ -7,9 +7,9 @@
   export let shield: string;
 
   // on shield change
-  $: points = Object.entries(shields.data[shield].positions || shields.data.spanish.positions);
+  $: points = Object.entries(shields.data[shield].positions || shields.data.spanish.positions || {});
 
-  function getClass(p) {
+  function getClass(p: string) {
     if ("abcdefghi".includes(p)) return "green";
     if ("ABCDEFGHIJKL".includes(p)) return "red";
     if ("zy".includes(p)) return "yellow";

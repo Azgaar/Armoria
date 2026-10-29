@@ -5,12 +5,12 @@
   import NavButton from "../shared/NavButton.svelte";
 
   let installable = false;
-  let promptEvent = null;
+  let promptEvent: BeforeInstallPromptEvent | null = null;
 
   function install() {
     installable = false;
-    promptEvent.prompt();
-    promptEvent.userChoice.then(() => {
+    promptEvent?.prompt();
+    promptEvent?.userChoice.then(() => {
       promptEvent = null;
     });
   }

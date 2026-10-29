@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import {state, matrix, changes, history, message} from "$lib/data/stores";
   import {download} from "$lib/scripts/download";
   import {checkForIconedNav} from "$lib/scripts/navbar";
@@ -28,7 +28,7 @@
     message.clear();
   }
 
-  const keybinding = {
+  const keybinding: Record<string, (ctrl: boolean) => unknown> = {
     Backspace: () => $matrix > 0 && matrix.set($matrix - 1), // Rollback
     Enter: () => matrix.set(($matrix += 1)), // Reroll
     KeyZ: changes.undo,
@@ -36,31 +36,32 @@
     KeyS: ctrl => ctrl && download(null, "svg"),
     KeyP: ctrl => ctrl && download(null, "png"),
     KeyJ: ctrl => ctrl && download(null, "jpeg"),
-    F1: () => state.set({...$state, about: !$state.about}),
+    F1: () => state.set({...$state, about: Number(!$state.about)}),
     Escape: close // Close all windows
   };
 
   // keyboard shortcuts
-  function handleKeydown(event) {
+  function handleKeydown(event: KeyboardEvent) {
     const action = /^[a-z]$/i.test(event.key) ?
       keybinding["Key" + event.key.toUpperCase()] : // for latin keyboards (including non-QWERTY)
       keybinding[event.code]; // for non-latin keyboards
     if (!action) return;
 
-    const active = document.activeElement.tagName;
+    const active = document.activeElement?.tagName;
     if (active === "INPUT" || active === "SELECT" || active === "TEXTAREA") return;
 
     event.preventDefault();
     action(event.ctrlKey);
   }
 
-  function handleTouchStart(event) {
+  function handleTouchStart(event: TouchEvent) {
     const {screenX, screenY} = event.changedTouches[0];
     touch.startX = screenX;
     touch.startY = screenY;
   }
 
-  function handleTouchEnd(event) {
+  function handleTouchEnd(event: TouchEvent) {
+    if (!(event.target instanceof Node)) return;
     const menu = document.getElementById("menu");
     const navbar = document.getElementById("navbar");
     if (menu?.contains(event.target)) return; // cancel touch event if start area is menu

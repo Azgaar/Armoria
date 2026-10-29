@@ -21,7 +21,7 @@
 
   $: shieldPath = shields.data[coa.shield || $shield].path;
   $: coaDiaper = type === "menuItem" ? null : coa.diaper || $diaper;
-  $: diaperType = getDiaperType(coaDiaper);
+  $: diaperType = getDiaperType(coaDiaper || "");
   $: overFill = !$grad || $grad === "no" ? "none" : `url(#${$grad})`;
 
   // get color or link to pattern

@@ -9,16 +9,15 @@ export function ra<T>(array: T[]) {
 }
 
 // return random value from weighted array
-export function rw(object: {[key: string]: number}, save = true) {
-  if (object.array) {
-    return ra(object.array as unknown as string[]);
-  }
+export function rw<K extends string>(object: Record<K, number>, save = true): K {
+  const cached: unknown = Reflect.get(object, "array");
+  if (Array.isArray(cached)) return ra(cached) as K;
 
-  const array: string[] = [];
+  const array: K[] = [];
 
   for (const key in object) {
     for (let i = 0; i < object[key]; i++) {
-      array.push(key);
+      array.push(key as K);
     }
   }
 

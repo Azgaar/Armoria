@@ -1,6 +1,6 @@
-export {charges} from "./charges";
+export {charges, chargeSets} from "./charges";
 export {ordinaries} from "./ordinaries";
-export {DEFAULT_SHIELD_BOX, shields, shieldTypes} from "./shields";
+export {DEFAULT_SHIELD_BOX, shields, shieldTypes, shieldSets} from "./shields";
 
 export const positionsSelect = [
   "a",
@@ -64,6 +64,7 @@ export const positions = {
   inescutcheon: {e: 4, jln: 1}
 };
 
+/** @type {{variants: Record<string, number>, data: Record<string, string>}} */
 export const lines = {
   variants: {
     straight: 50,
@@ -138,6 +139,7 @@ export const lines = {
   }
 };
 
+/** @type {Record<string, import("$lib/types/data").Pattern>} */
 export const patterns = {
   semy: (p, c1, c2, size, chargeId) => `<pattern id="${p}" width="${size * 25}" height="${size * 25}" viewBox="0 0 200 200" patternUnits="userSpaceOnUse" stroke="#000"><rect width="200" height="200" fill="${c1}" stroke="none"/><g fill="${c2}"><use transform="translate(-100 -50)" href="#${chargeId}"/><use transform="translate(100 -50)" href="#${chargeId}"/><use transform="translate(0 50)" href="#${chargeId}"/></g></pattern>`,
   vair: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 25}" height="${size * 50}" viewBox="0 0 25 50" patternUnits="userSpaceOnUse" stroke="#000" stroke-width=".2"><rect width="25" height="25" fill="${c1}" stroke="none"/><path d="m12.5,0 l6.25,6.25 v12.5 l6.25,6.25 h-25 l6.25,-6.25 v-12.5 z" fill="${c2}"/><rect x="0" y="25" width="25" height="25" fill="${c2}" stroke="none"/><path d="m25,25 l-6.25,6.25 v12.5 l-6.25,6.25 l-6.25,-6.25 v-12.5 l-6.25,-6.25 z" fill="${c1}"/><path d="M0 50 h25" fill="none"/></pattern>`,
@@ -172,6 +174,7 @@ export const patterns = {
   honeycombed: (p, c1, c2, size) => `<pattern id="${p}" width="${size * 28.6}" height="${size * 49.028}" viewBox="0 0 70 120" patternUnits="userSpaceOnUse"><rect width="70" height="120" fill="${c1}"/><path d="M 70,0 V 20 L 35,40 m 35,80 V 100 L 35,80 M 0,120 V 100 L 35,80 V 40 L 0,20 V 0" stroke="${c2}" fill="none" stroke-width="3"/></pattern>`
 }
 
+/** @type {{variants: Record<string, number>, data: Record<string, import("$lib/types/data").Template>}} */
 export const divisions = {
   variants: {
     perPale: 25,

@@ -1,11 +1,12 @@
 <script lang="ts">
+  import {getFilesFromDropEvent, getFilesFromInputEvent} from "$lib/scripts/files";
   import {settingsStorage} from "$lib/data/storage";
   // @ts-check
   import {t} from "svelte-i18n";
   import LicenseList from "./LicenseList.svelte";
   import {sanitizeSvg} from "$lib/scripts/sanitizeSvg";
   import {state, message, shield, uploaded} from "$lib/data/stores";
-  import {charges, DEFAULT_SHIELD_BOX, shields} from "$lib/data/dataModel";
+  import {charges, chargeSets, DEFAULT_SHIELD_BOX, shields} from "$lib/data/dataModel";
   import {registerCharge} from "$lib/data/charges";
   import {updateCharge} from "$lib/scripts/getters";
   import {tooltip} from "$lib/scripts/tooltip";
@@ -25,7 +26,7 @@
   let license: string;
   let author: string;
 
-  const onFile = getFilesFunction => event => {
+  const onFile = <E extends Event>(getFilesFunction: (event: E) => File[]) => (event: E) => {
     dragging = false;
     const files = getFilesFunction(event);
     const file = files[0];
@@ -42,29 +43,19 @@
     loadImage(file);
   };
 
-  function getFilesFromDropEvent({dataTransfer: {files, items}}) {
-    return files.length ? [...files] : items.filter(({kind}) => kind === "file").map(({getAsFile}) => getAsFile());
-  }
-
-  function getFilesFromInputEvent({target}) {
-    const files = target.files ? [...target.files] : [];
-    target.value = "";
-    return files;
-  }
-
   function loadImage(file: Blob) {
     const reader = new FileReader();
-    reader.onload = function (readerEvent) {
-      const dataURL = readerEvent.target.result as string;
-      const image = document.getElementById("rasterUpload").querySelector("svg image");
-      image.setAttribute("href", dataURL);
+    reader.onload = function () {
+      const dataURL = String(reader.result || "");
+      const image = document.getElementById("rasterUpload")?.querySelector("svg image");
+      image?.setAttribute("href", dataURL);
     };
     reader.readAsDataURL(file);
   }
 
   function addCharge() {
     const allCharges = Object.keys(charges.types)
-      .map(type => Object.keys(charges[type]))
+      .map(type => Object.keys(chargeSets[type]))
       .flat();
     name = camelize(name);
 
@@ -73,9 +64,10 @@
       return;
     }
 
+    const sourceImage = query("#rasterUpload svg image");
+    if (!sourceImage) return;
+    const image = sourceImage.cloneNode(true) as Element;
     registerCharge(name, category, 5);
-
-    const image = query("#rasterUpload svg image").cloneNode(true) as Element;
     image.id = name;
     if (source) image.setAttribute("source", source);
     if (license) image.setAttribute("license", license);

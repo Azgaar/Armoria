@@ -5,10 +5,10 @@
   import {t} from "svelte-i18n";
   import {message} from "$lib/data/stores";
 
-  const {text, type, timeout} = $message;
+  const {text, type, timeout} = $message || {text: "", type: "info", timeout: 0};
 
   onMount(() => {
-    const textOnMount = $message.text;
+    const textOnMount = $message?.text;
 
     const timer = setTimeout(() => {
       if ($message?.text === textOnMount) message.clear();

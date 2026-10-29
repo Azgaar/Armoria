@@ -1,10 +1,11 @@
 <script lang="ts">
+  import {getFilesFromDropEvent, getFilesFromInputEvent} from "$lib/scripts/files";
   import {settingsStorage} from "$lib/data/storage";
   // @ts-check
   import {t} from "svelte-i18n";
   import LicenseList from "./LicenseList.svelte";
   import {state, colors, tinctures, message, shield, uploaded} from "$lib/data/stores";
-  import {charges, DEFAULT_SHIELD_BOX, shields} from "$lib/data/dataModel";
+  import {charges, chargeSets, DEFAULT_SHIELD_BOX, shields} from "$lib/data/dataModel";
   import {registerCharge} from "$lib/data/charges";
   import {updateCharge} from "$lib/scripts/getters";
   import {camelize} from "$lib/scripts/utils";
@@ -24,7 +25,7 @@
   let license: string;
   let author: string;
 
-  const tinctureList = ["metals", "colours", "stains"].map(type => Object.keys($tinctures[type])).flat();
+  const tinctureList = (["metals", "colours", "stains"] as const).map(type => Object.keys($tinctures[type])).flat();
 
   $: updateTransform(transform);
   $: svg = sanitizeSvg(markup);
@@ -40,7 +41,7 @@
     markup = g.outerHTML;
   }
 
-  const onFile = (getFilesFunction: any) => (event: any) => {
+  const onFile = <E extends Event>(getFilesFunction: (event: E) => File[]) => (event: E) => {
     dragging = false;
     const files = getFilesFunction(event);
     const file = files[0];
@@ -56,20 +57,10 @@
     loadImage(file);
   };
 
-  function getFilesFromDropEvent({dataTransfer: {files, items}}) {
-    return files.length ? [...files] : [...items].filter(({kind}) => kind === "file").map(({getAsFile}) => getAsFile());
-  }
-
-  function getFilesFromInputEvent({target}) {
-    const files = target.files ? [...target.files] : [];
-    target.value = "";
-    return files;
-  }
-
   function loadImage(file: Blob) {
     const reader = new FileReader();
-    reader.onload = function (readerEvent) {
-      const svgText = readerEvent.target.result as string;
+    reader.onload = function () {
+      const svgText = String(reader.result || "");
       const g = parseUploadedSvg(svgText).querySelector("g");
       if (!g) {
         message.error("error.incorrectSvg");
@@ -81,7 +72,7 @@
       const consolidated = g.transform.baseVal.consolidate();
       if (consolidated) {
         const {a, b, c, d, e, f} = consolidated.matrix;
-        const fix = n => +n.toFixed(4);
+        const fix = (n: number) => +n.toFixed(4);
         transform = Object.assign(transform, {a: fix(a), b: fix(b), c: fix(c), d: fix(d), e: fix(e), f: fix(f)});
       }
       g.removeAttribute("id");
@@ -92,7 +83,7 @@
 
   function addCharge() {
     const allCharges = Object.keys(charges.types)
-      .map(type => Object.keys(charges[type]))
+      .map(type => Object.keys(chargeSets[type]))
       .flat();
     name = camelize(name);
 

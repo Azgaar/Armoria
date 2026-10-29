@@ -8,7 +8,7 @@
   export let t1: string;
   export let t2: string;
   export let size: string;
-  export let shield: string = undefined;
+  export let shield: string | undefined = undefined;
 
   const patterns = Object.keys(DEFAULT_TINCTURES.patterns).filter(pattern => pattern !== "semy");
 
@@ -16,7 +16,7 @@
   const usedPatterns = new Set();
   document.querySelectorAll("[fill]").forEach(function(elem) {
     const fill = elem.getAttribute("fill");
-    const match = fill.match(/url\(#(.+)\)/);
+    const match = fill?.match(/url\(#(.+)\)/);
     if (match) usedPatterns.add(match[1]);
   });
   document.querySelectorAll("#patterns pattern").forEach(function(elem) {

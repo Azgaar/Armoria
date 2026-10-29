@@ -4,9 +4,9 @@
   import {iconedNav} from "$lib/data/stores";
   import NavLabel from "./NavLabel.svelte";
 
-  export let value: string = undefined;
-  export let label: string = undefined;
-  export let tip: string = undefined;
+  export let value: string | undefined = undefined;
+  export let label: string | undefined = undefined;
+  export let tip: string | undefined = undefined;
   export let wide: boolean = false;
 </script>
 

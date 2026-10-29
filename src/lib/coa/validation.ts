@@ -1,4 +1,4 @@
-import {charges, divisions, lines, ordinaries, patterns, patternSize, shields} from "$lib/data/dataModel";
+import {charges, chargeSets, divisions, lines, ordinaries, patterns, patternSize, shields} from "$lib/data/dataModel";
 import {DEFAULT_COLORS, DEFAULT_FONTS} from "$lib/config/defaults";
 import {diapers} from "$lib/config/options";
 import type {Coa} from "$lib/types/coa";
@@ -29,10 +29,10 @@ export interface CoaOptions {
 
 const builtInCharges = new Set([
   "inescutcheon",
-  ...Object.keys(charges.types).flatMap(category => Object.keys(charges[category as keyof typeof charges]))
+  ...Object.keys(charges.types).flatMap(category => Object.keys(chargeSets[category]))
 ]);
 const positions = new Set(
-  Object.values(shields.data).flatMap(shield => Object.keys("positions" in shield ? shield.positions : {}))
+  Object.values(shields.data).flatMap(shield => Object.keys(shield.positions || {}))
 );
 const hex = /^#(?:[a-f\d]{3,4}|[a-f\d]{6}|[a-f\d]{8})$/i;
 

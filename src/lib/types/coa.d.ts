@@ -62,7 +62,7 @@ interface Inscription {
   italic?: boolean | 0 | 1;
   size: number;
   spacing?: number;
-  color: string;
+  color?: string;
   path: string;
   shadow?: Shadow;
 }

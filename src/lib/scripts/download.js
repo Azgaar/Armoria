@@ -2,12 +2,17 @@ import {get} from "svelte/store";
 import {scale, fonts} from "$lib/data/stores";
 import {coaMetadata, embedCoa} from "$lib/scripts/metadata";
 
+/** @param {string | number | null | import("$lib/types/coa").Coa[]} i @param {string} [format] */
 export async function download(i, format = "png") {
   if (format === "json") {
+    if (!Array.isArray(i)) throw new Error("JSON downloads require a list of coats of arms");
     return downloadJSON(i);
   }
 
-  const coas = i || i === 0 ? [document.getElementById("coa" + i)] : document.querySelectorAll("svg.coa");
+  const coas = [...(i || i === 0 ? [document.getElementById("coa" + i)] : document.querySelectorAll("svg.coa"))].filter(
+    element => element instanceof SVGSVGElement
+  );
+  if (!coas.length) throw new Error("No coats of arms to download");
   let {width, height} = coas[0].getBoundingClientRect();
   const numberX = coas.length > 1 ? Math.floor(window.innerWidth / width) : 1;
   const numberY = coas.length > 1 ? Math.ceil(coas.length / numberX) : 1;
@@ -17,7 +22,9 @@ export async function download(i, format = "png") {
   height = Math.round(height * scaleValue);
 
   const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
+  const context = canvas.getContext("2d");
+  if (!context) throw new Error("Canvas rendering is unavailable");
+  const ctx = context;
   canvas.width = width * numberX;
   canvas.height = height * numberY;
 
@@ -27,6 +34,7 @@ export async function download(i, format = "png") {
     format === "svg" ? downloadVector(url) : downloadRaster(url, i);
   });
 
+  /** @param {string} url */
   function downloadVector(url) {
     const link = document.createElement("a");
     link.download = `armoria_${getTimestamp()}.svg`;
@@ -35,6 +43,7 @@ export async function download(i, format = "png") {
     window.setTimeout(() => window.URL.revokeObjectURL(url), 5000);
   }
 
+  /** @param {string} url @param {number} i */
   function downloadRaster(url, i) {
     const img = new Image();
     img.src = url;
@@ -46,6 +55,7 @@ export async function download(i, format = "png") {
     };
   }
 
+  /** @param {import("$lib/types/coa").Coa[]} coas */
   function downloadJSON(coas) {
     const blob = new Blob([JSON.stringify(coas)], {type: "application/json"});
     const url = window.URL.createObjectURL(blob);
@@ -60,7 +70,7 @@ export async function download(i, format = "png") {
 
 export async function getSvgForMap() {
   const svg = document.getElementById("coaEdit");
-  if (!svg) throw new Error("No edited emblem is open");
+  if (!(svg instanceof SVGSVGElement)) throw new Error("No edited emblem is open");
   const url = await getURL(svg, 500, 500);
   try {
     const response = await fetch(url);
@@ -70,10 +80,11 @@ export async function getSvgForMap() {
   }
 }
 
+/** @param {SVGSVGElement} svg @param {number} width @param {number} height */
 async function getURL(svg, width, height) {
-  const clone = svg.cloneNode(true); // clone svg
-  clone.setAttribute("width", width);
-  clone.setAttribute("height", height);
+  const clone = /** @type {SVGSVGElement} */ (svg.cloneNode(true)); // clone svg
+  clone.setAttribute("width", String(width));
+  clone.setAttribute("height", String(height));
   clone.removeAttribute("class");
   clone.removeAttribute("id");
   clone.removeAttribute("data-coa");
@@ -81,9 +92,9 @@ async function getURL(svg, width, height) {
   const d = clone.getElementsByTagName("defs")[0];
 
   // remove grid and positions if any
-  const grid = clone.getElementById("grid");
-  const gridPattern = clone.getElementById("gridPattern");
-  const positions = clone.getElementById("positions");
+  const grid = clone.querySelector("#grid");
+  const gridPattern = clone.querySelector("#gridPattern");
+  const positions = clone.querySelector("#positions");
   if (grid) grid.remove();
   if (gridPattern) gridPattern.remove();
   if (positions) positions.remove();
@@ -138,7 +149,7 @@ async function getURL(svg, width, height) {
     const style = document.createElement("style");
     style.setAttribute("type", "text/css");
     style.innerHTML = fontFaces;
-    clone.querySelector("defs").appendChild(style);
+    d.appendChild(style);
   }
 
   const serialized = new XMLSerializer().serializeToString(clone);
@@ -175,7 +186,7 @@ function drawCanvas(canvas, format, coa) {
 }
 
 function getTimestamp() {
-  const formatTime = time => (time < 10 ? "0" + time : time);
+  const formatTime = (/** @type {number} */ time) => (time < 10 ? "0" + time : time);
   const date = new Date();
   const year = date.getFullYear();
   const month = formatTime(date.getMonth() + 1);
@@ -186,17 +197,21 @@ function getTimestamp() {
   return [year, month, day, hour, minutes, seconds].join("-");
 }
 
+/** @param {SVGSVGElement} svg */
 function getUsedWebFonts(svg) {
+  /** @type {Set<{family: string, url: string}>} */
   const usedFonts = new Set();
   const allFonts = get(fonts);
 
   for (const text of svg.querySelectorAll("text")) {
     const family = text.getAttribute("font-family");
-    if (family && allFonts[family]?.url) usedFonts.add({family, url: allFonts[family].url});
+    const url = family && allFonts[family]?.url;
+    if (family && url) usedFonts.add({family, url});
   }
   return Array.from(usedFonts);
 }
 
+/** @param {Blob} blob */
 function readBlobAsDataURL(blob) {
   return new Promise(function (resolve, reject) {
     const reader = new FileReader();
@@ -206,6 +221,7 @@ function readBlobAsDataURL(blob) {
   });
 }
 
+/** @param {{family: string, url: string}[]} fonts */
 async function loadFontsAsDataURI(fonts) {
   const promises = fonts.map(async font => {
     const resp = await fetch(font.url);

@@ -1,5 +1,7 @@
 export const DEFAULT_SHIELD_BOX = "0 0 200 200";
 
+import type {ShieldData} from "$lib/types/data";
+
 export const shields = {
   types: {basic: 10, regional: 2, historical: 1, specific: 1, banner: 1, simple: 2, middleEarth: 0, fantasy: 1},
   basic: {heater: 12, spanish: 6, french: 1},
@@ -1627,7 +1629,10 @@ export const shields = {
         H: [0, 87]
       }
     }
-  }
+  } as Record<string, ShieldData>
 };
 
 export const shieldTypes = Object.keys(shields.types);
+
+const {data: shieldData, types: shieldWeights, ...sets} = shields;
+export const shieldSets: Record<string, Record<string, number>> = sets;

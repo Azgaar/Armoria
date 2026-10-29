@@ -2,7 +2,7 @@
   // @ts-check
   import {t} from "svelte-i18n";
 
-  export let license;
+  export let license: string;
 </script>
 
 <select bind:value={license} style="width: 10em">

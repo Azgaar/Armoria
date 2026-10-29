@@ -2,27 +2,28 @@
   // @ts-check
   import {t} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
-  import {shields, shieldTypes} from "$lib/data/dataModel";
+  import {shieldSets, shieldTypes} from "$lib/data/dataModel";
   import {shield as defaultShield} from "$lib/data/stores";
 
-  export let shield: string = undefined;
+  export let shield: string | undefined = undefined;
   export let t1: string;
 
-  let shieldsData = [];
+  let shieldsData: (import("$lib/types/coa").Coa & {shield: string})[] = [];
   let query: string;
   let queryOld: string;
   let type = getShieldType(shield || $defaultShield);
 
-  const allShields = shieldTypes.map(type => Object.keys(shields[type])).flat();
-  $: allShieldsTranslated = shieldTypes.map(type => Object.keys(shields[type]).map(shield => $t(`shield.${type}.${shield}`))).flat();
+  const allShields = shieldTypes.map(type => Object.keys(shieldSets[type || "basic"])).flat();
+  $: allShieldsTranslated = shieldTypes
+    .map(type => Object.keys(shieldSets[type || "basic"]).map(shield => $t(`shield.${type}.${shield}`)))
+    .flat();
 
-  // @ts-ignore
-  $: update(type, t1);
+  $: update({type, t1});
   $: filterShields(query);
 
-  function update() {
-    const shieldList = Object.keys(shields[type]);
-    shieldsData = shieldList.map(shield => ({shield, t1}));
+  function update(preview = {type, t1}) {
+    const shieldList = Object.keys(shieldSets[preview.type || "basic"]);
+    shieldsData = shieldList.map(shield => ({shield, t1: preview.t1}));
   }
 
   function filterShields(query: string) {
@@ -41,7 +42,7 @@
   }
 
   function getShieldType(name: string) {
-    return shieldTypes.find(type => shields[type][name] !== undefined);
+    return shieldTypes.find(type => shieldSets[type || "basic"][name] !== undefined);
   }
 
   function getTip(name: string) {

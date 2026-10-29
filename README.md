@@ -33,6 +33,24 @@ Navigate to [localhost:5173](http://localhost:5173). You should see the app runn
 
 To create an optimised version run `npm run build`.
 
+### Type checking
+
+Use Node 24 and the committed lockfile. From a clean checkout of `sveltekit`:
+
+```sh
+PUPPETEER_SKIP_DOWNLOAD=true npm ci
+cp .env.example .env
+npm run check
+```
+
+The Mongo values in `.env.example` are non-secret placeholders for SvelteKit's generated `$env/static/private` exports. The checker does not connect to MongoDB or need administrator/Discord credentials. Keep your existing `.env` if already configured. `PUPPETEER_SKIP_DOWNLOAD` skips Chromium, which is unnecessary for checking; browser regressions can use `PUPPETEER_EXECUTABLE_PATH` as described below.
+
+`npm run check` synchronizes SvelteKit's generated types and checks all application JavaScript, TypeScript and Svelte components with `strict` and `checkJs` enabled. The `Svelte and TypeScript check` workflow runs it for pull requests and pushes to `sveltekit`, using the same placeholders without repository secrets. Type errors fail the check; compiler warnings remain visible.
+
+The accessibility warning backlog is tracked separately from this type baseline. Existing click-only editor sections, thumbnails, close icons and toolbar actions need native buttons or links, keyboard activation and visible focus. Drag-only artwork/path handles need keyboard alternatives through the editor's numeric controls and explicit semantics. Upload drop zones already have file inputs; any eventual drag-event warning exception must be local and explain that alternative. The current 92 warnings comprise 42 missing keyboard handlers, 42 roles on click targets, four SVG artwork/handle roles, three drop-zone roles and one navigation-list interaction. Do not silence these categories globally or treat the passing type check as an accessibility audit. No new warning suppressions are part of this baseline. Run `npm run test:generation` and `npm run test:files` for the seed compatibility, weighted-table and upload-extraction regressions.
+
+A production build still initializes the existing database module during SvelteKit's server analysis, so placeholder credentials are sufficient for checking, not for `npm run build`.
+
 ## Saved settings recovery
 
 Saved settings are validated independently at startup. Missing or invalid values use defaults; valid zero values, including border width `0`, are preserved. Invalid entries in custom palettes, fonts and uploaded-charge maps do not discard valid entries. Recovery leaves the raw saved data untouched until the corresponding setting is edited or reset. A dismissible notice explains recovery or unavailable browser storage; failed reads/writes fall back to memory for the current tab, so editing can continue.

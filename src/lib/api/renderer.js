@@ -25,15 +25,16 @@ const backlight = `<radialGradient id="backlight" cx="100%" cy="100%" r="150%">
   <stop stop-color="#000" stop-opacity="0" offset="1"/>
 </radialGradient>`;
 
-export async function render(coa, size, colors) {
+/** @param {unknown} input @param {number} size @param {Record<string, string>} colors */
+export async function render(input, size, colors) {
   validateImageSize(size);
-  coa = normalizeCoa(coa);
+  const normalized = normalizeCoa(input);
   // A seed selects the artwork; it must not become raw markup or an unsafe fragment identifier.
-  coa = {
-    ...coa,
-    shield: coa.shield ?? SHIELD_DEFAULT,
+  const coa = {
+    ...normalized,
+    shield: normalized.shield ?? SHIELD_DEFAULT,
     seed: createHash("sha256")
-      .update(String(coa.seed ?? ""))
+      .update(String(normalized.seed ?? ""))
       .digest("hex")
   };
   const {division, shield} = coa;
@@ -57,10 +58,17 @@ export async function render(coa, size, colors) {
   stores.grad.set("backlight");
   stores.colors.set(colors);
 
-  const svg = COA.render({coa, height: size, width: size, i: "View"});
+  // Svelte 4's checker models the browser constructor; the SSR compiler supplies render.
+  const component = /** @type {unknown} */ (COA);
+  const serverComponent =
+    /** @type {{render(props: {coa: import("$lib/types/coa").Coa, height: number, width: number, i: string}): {html: string}}} */ (
+      component
+    );
+  const svg = serverComponent.render({coa, height: size, width: size, i: "View"});
   const root = parse(svg.html);
-  root.querySelector("defs").innerHTML =
-    `${shieldClip}${divisionClip}${loadedCharges}${loadedPatterns}${loadedFonts}${backlight}${style}`;
+  const defs = root.querySelector("defs");
+  if (!defs) throw new Error("Rendered COA has no definitions element");
+  defs.innerHTML = `${shieldClip}${divisionClip}${loadedCharges}${loadedPatterns}${loadedFonts}${backlight}${style}`;
   return root.outerHTML;
 
   function getPatterns() {
@@ -76,6 +84,7 @@ export async function render(coa, size, colors) {
   }
 
   // get color or link to pattern
+  /** @param {string} tincture */
   function clr(tincture) {
     if (Object.hasOwn(colors, tincture)) return escapeMarkup(colors[tincture]);
     if (tincture[0] === "#") return escapeMarkup(tincture);
@@ -129,22 +138,27 @@ async function getCharges(charges) {
   return fetchedCharges.join("");
 }
 
+/** @param {string} charge */
 async function fetchCharge(charge) {
   const url = charges[`/static/charges/${charge}.svg`];
   if (typeof url !== "string") throw new InvalidCoaError("Unknown COA charge");
   const text = await read(url).text();
   const root = parse(text);
   const g = root.querySelector("g");
+  if (!g) throw new Error(`Charge ${charge} has no SVG group`);
   return g.outerHTML;
 }
 
+/** @param {import("$lib/types/coa").Coa} coa */
 async function getFonts(coa) {
   if (!coa.inscriptions) return "";
 
+  /** @type {Map<string, {family: string, url: string}>} */
   const fontSet = new Map();
   coa.inscriptions.forEach(inscription => {
-    if (!fontSet.has(inscription.font) && DEFAULT_FONTS[inscription.font]?.url) {
-      fontSet.set(inscription.font, {family: inscription.font, url: DEFAULT_FONTS[inscription.font].url});
+    const url = DEFAULT_FONTS[inscription.font]?.url;
+    if (!fontSet.has(inscription.font) && url) {
+      fontSet.set(inscription.font, {family: inscription.font, url});
     }
   });
 
@@ -160,6 +174,7 @@ async function getFonts(coa) {
   return `<style type="text/css">${fontFaces}</style>`;
 }
 
+/** @param {{family: string, url: string}[]} fonts */
 async function loadFontsAsDataURI(fonts) {
   const promises = fonts.map(async font => {
     const resp = await fetch(font.url);

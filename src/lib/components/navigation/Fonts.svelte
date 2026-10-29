@@ -35,7 +35,7 @@
     }
   }
 
-  function addFont(name, data) {
+  function addFont(name: string, data: {url?: string}) {
     $fonts[name] = data;
     settingsStorage.setItem("fonts", JSON.stringify($fonts));
     message.info($t("success.fontAdded"));

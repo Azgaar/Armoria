@@ -3,7 +3,7 @@
   import {t} from "svelte-i18n";
   import {tooltip} from "$lib/scripts/tooltip";
 
-  export let name: string = undefined;
+  export let name: string | undefined = undefined;
   export let zoom: number;
 </script>
 

@@ -11,20 +11,22 @@ Redistribution and use in source and binary forms, with or without modification,
 3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ///////////////////////////////////////////////////////////////////////////////////////////////////*/
-export function aleaPRNG() {
+/** @param {...(string | number)} seeds */
+export function aleaPRNG(...seeds) {
   return (function (args) {
     "use strict";
 
     const version = "aleaPRNG 1.1.0";
 
-    var s0,
-      s1,
-      s2,
-      c,
+    var s0 = 0,
+      s1 = 0,
+      s2 = 0,
+      c = 0,
       uinta = new Uint32Array(3),
-      initialArgs,
+      initialArgs = args,
       mashver = "";
     /* private: initializes generator with specified seed */
+    /** @param {(string | number)[]} _internalSeed */
     function _initState(_internalSeed) {
       var mash = Mash();
 
@@ -53,16 +55,15 @@ export function aleaPRNG() {
       }
 
       mashver = mash.version;
-
-      mash = null;
     }
 
     /* private: dependent string hash function */
     function Mash() {
       var n = 4022871197; // 0xefc8249d
 
-      var mash = function (data) {
-        data = data.toString();
+      /** @param {string | number} value */
+      var mash = function (value) {
+        const data = value.toString();
 
         // cache the length
         for (var i = 0, l = data.length; i < l; i++) {
@@ -85,8 +86,9 @@ export function aleaPRNG() {
     }
 
     /* private: check if number is integer */
+    /** @param {number} _int */
     function _isInteger(_int) {
-      return parseInt(_int, 10) === _int;
+      return parseInt(String(_int), 10) === _int;
     }
 
     /* public: return a 32-bit fraction in the range [0, 1]
@@ -112,6 +114,7 @@ export function aleaPRNG() {
     };
 
     /* public: advance the generator the specified amount of cycles */
+    /** @param {number} [_run] */
     random.cycle = function (_run) {
       _run = typeof _run === "undefined" ? 1 : +_run;
       if (_run < 1) {
@@ -182,5 +185,5 @@ export function aleaPRNG() {
     _initState(args);
 
     return random;
-  })(Array.prototype.slice.call(arguments));
+  })(seeds);
 }

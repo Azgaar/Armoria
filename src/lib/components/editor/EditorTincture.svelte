@@ -7,8 +7,8 @@
   import {tooltip} from "$lib/scripts/tooltip";
   import {DEFAULT_COLORS as defaults} from "$lib/config/defaults";
 
-  export let t1: string = undefined;
-  export let shield: string = undefined;
+  export let t1: string | undefined = undefined;
+  export let shield: string | undefined = undefined;
 
   let savedColors = JSON.stringify($colors);
   $: if (JSON.stringify($colors) !== savedColors) {
@@ -17,10 +17,10 @@
   }
   $: colorChanged = (tincture: string) => defaults[tincture] && $colors[tincture] !== defaults[tincture];
 
-  $: tincturesData = ["metals", "colours", "stains"]
+  $: tincturesData = (["metals", "colours", "stains"] as const)
     .map(type =>
       Object.keys($tinctures[type]).map(tincture => {
-        const tinctureName = $dictionary[$locale]?.tinctures?.[tincture] ? $t(`tinctures.${tincture}`) : tincture;
+        const tinctureName = $t(`tinctures.${tincture}`, {default: tincture});
         const typeName = $t(`editor.${type.slice(0, -1)}`);
         return {coa: {t1: tincture, shield}, tip: `${typeName}: ${tinctureName}`};
       })
@@ -31,8 +31,11 @@
     t1 = tincture;
   };
 
-  function openColorInput() {
-    this.previousElementSibling?.click();
+  function openColorInput(event: MouseEvent) {
+    const target = event.currentTarget;
+    if (!(target instanceof Element)) return;
+    const input = target.previousElementSibling;
+    if (input instanceof HTMLInputElement) input.click();
   }
 
   function restoreColor(tincture: string) {

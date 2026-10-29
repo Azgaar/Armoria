@@ -5,11 +5,11 @@
   import {lines} from "$lib/data/dataModel";
 
   export let line: string;
-  export let division = null;
-  export let ordinary = null;
+  export let division: string | null = null;
+  export let ordinary: string | null = null;
   export let t1: string;
   export let t2: string;
-  export let shield: string = undefined;
+  export let shield: string | undefined = undefined;
 
   const lineList = Object.keys(lines.variants);
 

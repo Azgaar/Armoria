@@ -4,7 +4,8 @@
   import {tooltip} from "$lib/scripts/tooltip";
   import Switch from "./Switch.svelte";
 
-  export let shadow;
+  import type {Shadow} from "$lib/types/coa";
+  export let shadow: Shadow | undefined;
 
   let showShadow = !!shadow;
 
@@ -12,7 +13,7 @@
     if (showShadow && !shadow) {
       shadow = {x: 1, y: 1, blur: 0, color: "#333333"};
     } else if (!showShadow) {
-      shadow = null;
+      shadow = undefined;
     }
   }
 </script>
@@ -22,7 +23,7 @@
   <Switch bind:checked={showShadow} />
 </span>
 
-{#if showShadow}
+{#if shadow}
   <span data-tooltip={$t("tooltip.shift")} use:tooltip>
     <span>{$t("editor.shift")}:</span>
     <input type="number" min="-100" max="100" bind:value={shadow.x} />

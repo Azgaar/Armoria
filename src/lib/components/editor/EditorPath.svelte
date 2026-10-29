@@ -8,25 +8,26 @@
 
   export let path: string;
 
-  let pathData;
+  let pathData: ReturnType<typeof analyzePath>;
   let pathType: string;
   let mode: number;
 
   $: updatePath(path);
   $: updateMode(path, $state.pathChangeMode);
 
-  function updatePath() {
+  function updatePath(_path: string) {
     pathData = analyzePath(path);
     pathType = pathData.type;
   }
 
-  function updateMode() {
+  function updateMode(_path: string, _mode: number) {
     mode = $state.pathChangeMode;
     if ((pathType === "line" && mode === 2) || mode === undefined) mode = -1;
   }
 
   function changePathType(e: Event) {
-    pathData.type = e.target.value;
+    if (!(e.currentTarget instanceof HTMLSelectElement)) return;
+    pathData.type = e.currentTarget.value;
     if (pathData.type == "line") {
       if (pathType === "curve") {
         if (mode === 2) $state.pathChangeMode = -1;
@@ -49,7 +50,7 @@
     }
   }
 
-  function changeShift(obj) {
+  function changeShift(obj: {x?: number; y?: number}) {
     if (mode != -1) {
       if (obj.x !== undefined) pathData.points[mode].x = obj.x;
       if (obj.y !== undefined) pathData.points[mode].y = obj.y;
@@ -73,14 +74,14 @@
     <option value="custom">{$t("editor.inscriptions.custom")}</option>
   </select>
   {#if pathData.type === "custom"}
-    <input type="text" value={path} on:blur={e => (path = e.target.value)} />
+    <input type="text" value={path} on:blur={e => (path = e.currentTarget.value)} />
   {/if}
 </span>
 
 {#if pathData.type !== "custom"}
   <span data-tooltip={$t("tooltip.shift")} use:tooltip>
     <span>{$t("editor.shift")}:</span>
-    <select value={mode.toString()} on:change={e => ($state.pathChangeMode = parseInt(e.target.value))}>
+    <select value={mode.toString()} on:change={e => ($state.pathChangeMode = parseInt(e.currentTarget.value))}>
       <option value="-1">{$t("editor.inscriptions.all")}</option>
       <option value="0">{$t("editor.inscriptions.start")}</option>
       <option value="1">{$t("editor.inscriptions.end")}</option>
@@ -94,7 +95,7 @@
       max="100"
       step={$grid}
       value={pathData.points[mode == -1 ? 0 : mode].x}
-      on:change={e => changeShift({x: e.target.value})}
+      on:change={e => changeShift({x: e.currentTarget.valueAsNumber})}
     />
     <input
       type="number"
@@ -102,7 +103,7 @@
       max="100"
       step={$grid}
       value={pathData.points[mode == -1 ? 0 : mode].y}
-      on:change={e => changeShift({y: e.target.value})}
+      on:change={e => changeShift({y: e.currentTarget.valueAsNumber})}
     />
   </span>
 {/if}

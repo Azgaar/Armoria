@@ -1,14 +1,20 @@
-<script>
+<script lang="ts">
+  import type {Coa, Ordinary} from "$lib/types/coa";
   import "path-data-polyfill";
   import {ordinaries, shields} from "$lib/data/dataModel";
   import {shield} from "$lib/data/stores";
   import {drag, transform} from "$lib/scripts/drag";
   import {getTemplate} from "$lib/scripts/getters";
   import {highlight, lowlight} from "$lib/scripts/highlight";
-  export let coa, ordinary, i, shieldPath, t, type;
-  export let t2 = undefined;
+  export let coa: Coa;
+  export let ordinary: Ordinary;
+  export let i: number;
+  export let shieldPath: string;
+  export let t: string;
+  export let type: string;
+  export let t2: string | undefined = undefined;
 
-  let stroke, width, transf;
+  let stroke: string, width: number, transf: string | undefined;
   $: {
     stroke = ordinary.stroke || "none";
     if (ordinary.ordinary === "bordure") {
@@ -21,17 +27,17 @@
     }
   }
 
-  function addDrag(event) {
+  function addDrag(event: MouseEvent) {
     if (type !== "Edit") return;
     drag(event, ordinary, coa);
   }
 
-  const gyronny = Math.round(ordinary.gyronny / 2) * 2;
+  const gyronny = Math.round((ordinary.gyronny || 0) / 2) * 2;
   const angle = 2 * Math.PI / gyronny;
-  let dashes;
+  let dashes: number[];
   $: {
     dashes = [0];
-    if (ordinary.compony > 0) {
+    if (ordinary.compony && ordinary.compony > 0) {
       const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
       p.setAttribute("d", shieldPath);
       const data = p.getPathData();
@@ -58,7 +64,7 @@
           numDashes = Math.round(segLen / ordinary.compony / 2) * 2;
         }
         const dashLen = segLen / numDashes;
-        dashes.push(dashes.pop() + dashLen);
+        dashes.push((dashes.pop() || 0) + dashLen);
         while (--numDashes > 0) {
           dashes.push(dashLen);
         }

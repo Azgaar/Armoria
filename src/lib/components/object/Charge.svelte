@@ -22,7 +22,7 @@
   $: coaShield = coa.shield || $shield;
 
   $: {
-    const positions = shields.data[coaShield].positions || shields.data.spanish.positions;
+    const positions = shields.data[coaShield].positions || shields.data.spanish.positions || {};
     validPositions = [...new Set(charge.p)].filter(p => positions[p]);
   }
 
@@ -32,7 +32,7 @@
     if (chargeId === "inescutcheon") chargeId = "inescutcheon" + coaShield.charAt(0).toUpperCase() + coaShield.slice(1);
   }
 
-  function addDrag(event: Event) {
+  function addDrag(event: MouseEvent) {
     if (type !== "Edit") return;
     drag(event, charge, coa);
   }

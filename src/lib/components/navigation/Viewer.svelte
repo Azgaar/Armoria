@@ -11,7 +11,7 @@
     if (searchParams.has("noedit")) return;
     const URL = window.location.href.replace("view=1", "view=0");
     const win = window.open(URL, "_blank");
-    win.focus();
+    win?.focus();
   }
 </script>
 

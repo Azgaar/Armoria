@@ -5,7 +5,7 @@
   import NavButton from "../../shared/NavButton.svelte";
   import NavItem from "../../shared/NavItem.svelte";
   import Lock from "../../shared/Lock.svelte";
-  import {shields, shieldTypes} from "$lib/data/shields";
+  import {shields, shieldSets, shieldTypes} from "$lib/data/shields";
   import {shield, changes, state} from "$lib/data/stores";
 
   const changeShield = (value: string) => {
@@ -19,7 +19,7 @@
     }
   };
 
-  const getShieldsInType = (type: string) => Object.keys(shields[type]);
+  const getShieldsInType = (type: string) => Object.keys(shieldSets[type]);
 </script>
 
 <div class="container">
