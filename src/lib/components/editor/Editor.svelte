@@ -57,7 +57,7 @@
   $state.transform = null;
   $state.positions = null;
 
-  let coa = $history[historyId] || generate(seed || undefined); // on load
+  let coa = $history[historyId] || generate(seed || undefined, $tinctures); // on load
   let menu: EditorMenu;
   $: restore($changes); // on undo/redo
   $: reroll(historyId); // on reroll
@@ -77,7 +77,7 @@
 
   function reroll(historyId: number) {
     restoring = false;
-    coa = $history[historyId] || generate(seed || undefined);
+    coa = $history[historyId] || generate(seed || undefined, $tinctures);
     if (!$history[historyId]) $history.push(coa);
     changes.reset();
     menu = defineMenuState();
@@ -429,7 +429,7 @@
   }
 
   function selectChargeTincture() {
-    return getTincture(createConfig(), "charge", [], coa.t1);
+    return getTincture(createConfig($tinctures), "charge", [], coa.t1);
   }
 
   function addOrdinary() {

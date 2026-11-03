@@ -1,8 +1,7 @@
 import {read} from "$app/server";
 import COA from "$lib/components/object/COA.svelte";
-import {DEFAULT_FONTS} from "$lib/config/defaults";
+import {DEFAULT_FONTS, DEFAULT_DIAPER, DEFAULT_BORDER, DEFAULT_BORDER_WIDTH} from "$lib/config/defaults";
 import {divisions, patterns, shields} from "$lib/data/dataModel";
-import * as stores from "$lib/data/stores";
 import {getSizeMod, getTemplate, patternId, semy} from "$lib/scripts/getters";
 import {capitalize} from "$lib/scripts/utils";
 import {parse} from "node-html-parser";
@@ -27,6 +26,8 @@ const backlight = `<radialGradient id="backlight" cx="100%" cy="100%" r="150%">
 
 /** @param {unknown} input @param {number} size @param {Record<string, string>} colors */
 export async function render(input, size, colors) {
+  // Snapshot caller-owned settings before asset/font awaits.
+  colors = {...colors};
   validateImageSize(size);
   const normalized = normalizeCoa(input);
   // A seed selects the artwork; it must not become raw markup or an unsafe fragment identifier.
@@ -55,16 +56,23 @@ export async function render(input, size, colors) {
     .background {display: var(--background)}
   </style>`;
 
-  stores.grad.set("backlight");
-  stores.colors.set(colors);
+  /** @type {import("$lib/types/render").RenderOptions} */
+  const renderOptions = {
+    colors,
+    shield: SHIELD_DEFAULT,
+    gradient: "backlight",
+    diaper: DEFAULT_DIAPER,
+    border: DEFAULT_BORDER,
+    borderWidth: DEFAULT_BORDER_WIDTH
+  };
 
   // Svelte 4's checker models the browser constructor; the SSR compiler supplies render.
   const component = /** @type {unknown} */ (COA);
   const serverComponent =
-    /** @type {{render(props: {coa: import("$lib/types/coa").Coa, height: number, width: number, i: string}): {html: string}}} */ (
+    /** @type {{render(props: {coa: import("$lib/types/coa").Coa, height: number, width: number, i: string, renderOptions: import("$lib/types/render").RenderOptions}): {html: string}}} */ (
       component
     );
-  const svg = serverComponent.render({coa, height: size, width: size, i: "View"});
+  const svg = serverComponent.render({coa, height: size, width: size, i: "View", renderOptions});
   const root = parse(svg.html);
   const defs = root.querySelector("defs");
   if (!defs) throw new Error("Rendered COA has no definitions element");

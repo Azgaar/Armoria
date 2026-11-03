@@ -14,7 +14,7 @@
   export let type: string;
 
   let pathData = analyzePath(inscription.path);
-  $: isSelected = $state.selectedPath === i;
+  $: isSelected = type === "Edit" && $state.selectedPath === i;
   $: lines = inscription.text.split("|");
 
   const addInscriptionDrag = (event: MouseEvent) => {

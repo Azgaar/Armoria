@@ -31,7 +31,21 @@ const mocks = {
     import {readFileSync} from 'node:fs';
     export let unavailable = false;
     export function setUnavailable(value) { unavailable = value; }
+    let nextGate;
+    export function deferNextRead() {
+      let release, started;
+      const ready = new Promise(resolve => release = resolve);
+      const entered = new Promise(resolve => started = resolve);
+      nextGate = {ready, started};
+      return {release, entered};
+    }
     export function read(url) {
+      const gate = nextGate;
+      nextGate = undefined;
+      if (gate) {
+        gate.started();
+        return {text: async () => {await gate.ready; return readFileSync(${JSON.stringify(root)} + url.replace(/^\\//, ''), 'utf8');}};
+      }
       if (unavailable) throw new Error('<script>private asset failure</script>');
       return new Response(readFileSync(${JSON.stringify(root)} + url.replace(/^\\//, '')));
     }
@@ -417,4 +431,86 @@ test("legacy redirects reject duplicates and unsafe request sizes before path va
   for (const shield of ["", "missing", "__proto__", "constructor", "<script>"])
     await expectError(await legacyImage(legacyEvent({query: {shield}})), 400);
   await expectError(await image(imageEvent({t1: "or"}, {shield: "missing"})), 400);
+});
+
+test("server rendering never publishes request palettes or gradients to editor stores", async () => {
+  const {get} = await import("svelte/store");
+  const stores = await server.ssrLoadModule("/src/lib/data/stores.ts");
+  const palette = get(stores.colors);
+  const gradient = get(stores.grad);
+  const updates = [];
+  const unsubscribe = stores.colors.subscribe(value => updates.push(value));
+  try {
+    const response = await image(imageEvent({t1: "or"}, {or: "123456"}));
+    assert.equal(response.status, 200);
+    assert.match(await response.text(), /fill="#123456"/);
+    assert.equal(get(stores.colors), palette);
+    assert.equal(get(stores.grad), gradient);
+    assert.equal(updates.length, 1, "only the subscription's initial value is observed");
+  } finally {
+    unsubscribe();
+    stores.colors.set(palette);
+    stores.grad.set(gradient);
+  }
+});
+
+test("interleaved renders own their palette across asset awaits and ignore editor settings", async () => {
+  const {get} = await import("svelte/store");
+  const stores = await server.ssrLoadModule("/src/lib/data/stores.ts");
+  const {render} = await server.ssrLoadModule("/src/lib/api/renderer.js");
+  const {DEFAULT_COLORS} = await server.ssrLoadModule("/src/lib/config/defaults.ts");
+  const keys = ["colors", "grad", "border", "borderWidth", "shield", "diaper", "state"];
+  const previous = keys.map(key => get(stores[key]));
+  const random = Math.random;
+  const coa = {
+    t1: "chequy-or-azure",
+    shield: "heater",
+    seed: "isolated-render",
+    charges: [{charge: "eagle", t: "gules", p: "e"}],
+    inscriptions: [{text: "Isolation", font: "Arial", path: "M-50 0 L50 0", size: 12, color: "#000000"}]
+  };
+  const a = {...DEFAULT_COLORS, or: "#123456", azure: "#654321", gules: "#aabbcc"};
+  const b = {...DEFAULT_COLORS, or: "#abcdef", azure: "#fedcba", gules: "#112233"};
+  let gate;
+  try {
+    const expectedA = await render(coa, 200, a);
+    const expectedB = await render({...coa, seed: "second-render"}, 200, b);
+    stores.colors.set({...DEFAULT_COLORS, or: "#000001"});
+    stores.grad.set("no");
+    stores.border.set("#000002");
+    stores.borderWidth.set(7);
+    stores.shield.set("round");
+    stores.diaper.set("test-editor-diaper");
+    stores.state.update(value => ({...value, selectedPath: 0}));
+    const sentinel = keys.map(key => get(stores[key]));
+    const notifications = [];
+    const unsubscribe = stores.colors.subscribe(value => notifications.push(value));
+    try {
+      gate = assets.deferNextRead();
+      const palette = {...a};
+      const pendingA = render(coa, 200, palette);
+      await gate.entered;
+      // Caller and editor mutations while assets are pending must not affect the snapshot.
+      palette.or = "#000003";
+      const actualB = await render({...coa, seed: "second-render"}, 200, b);
+      gate.release();
+      assert.equal(await pendingA, expectedA);
+      assert.equal(actualB, expectedB);
+      assert.equal(await render(coa, 200, a), expectedA);
+      assert.deepEqual(
+        keys.map(key => get(stores[key])),
+        sentinel
+      );
+      assert.equal(notifications.length, 1);
+      assert.equal(Math.random, random);
+      assert.match(expectedA, /#123456/);
+      assert.match(expectedB, /#abcdef/);
+      assert.doesNotMatch(expectedA, /class="points"/);
+    } finally {
+      unsubscribe();
+    }
+  } finally {
+    gate?.release();
+    keys.forEach((key, i) => stores[key].set(previous[i]));
+  }
 });
