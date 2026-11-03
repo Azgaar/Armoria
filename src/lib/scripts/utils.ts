@@ -4,14 +4,14 @@ export const forEach = (selector: string, callback: (element: Element) => void):
   });
 };
 
-export function ra<T>(array: T[]) {
-  return array[Math.floor(Math.random() * array.length)];
+export function ra<T>(array: T[], random: () => number = Math.random) {
+  return array[Math.floor(random() * array.length)];
 }
 
 // return random value from weighted array
-export function rw<K extends string>(object: Record<K, number>, save = true): K {
+export function rw<K extends string>(object: Record<K, number>, save = true, random: () => number = Math.random): K {
   const cached: unknown = Reflect.get(object, "array");
-  if (Array.isArray(cached)) return ra(cached) as K;
+  if (Array.isArray(cached)) return ra(cached, random) as K;
 
   const array: K[] = [];
 
@@ -30,11 +30,11 @@ export function rw<K extends string>(object: Record<K, number>, save = true): K 
     });
   }
 
-  return ra(array);
+  return ra(array, random);
 }
 
-export function P(probability: number) {
-  return Math.random() < probability;
+export function P(probability: number, random: () => number = Math.random) {
+  return random() < probability;
 }
 
 export function camelize(str: string) {
@@ -63,3 +63,11 @@ export const minmax = (value: number, min: number, max: number) => {
 export const fetcher = (url: string) => () => {
   return fetch(url).then(result => result.json());
 };
+
+/** Bind random choices to one generation without replacing process-global randomness. */
+export function randomChoices(random: () => number) {
+  return {
+    P: (probability: number) => P(probability, random),
+    rw: <K extends string>(object: Record<K, number>, save = true) => rw(object, save, random)
+  };
+}

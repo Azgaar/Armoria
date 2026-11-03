@@ -2,13 +2,16 @@
   // @ts-check
   import {DEFAULT_ZOOM} from "$lib/config/defaults";
   import {DEFAULT_SHIELD_BOX, shields} from "$lib/data/shields";
-  import {border, borderWidth, colors, shield} from "$lib/data/stores";
+  import {border, borderWidth, colors, shield, grad, diaper} from "$lib/data/stores";
   import {resolveCoa} from "$lib/scripts/coa";
   import Grid from "./../editor/Grid.svelte";
   import Positions from "./../editor/Positions.svelte";
   import Shield from "./Shield.svelte";
   import type {Coa} from "$lib/types/coa";
 
+  import type {RenderOptions} from "$lib/types/render";
+
+  export let renderOptions: RenderOptions | undefined = undefined;
   export let coa: Coa;
   export let i: string | number;
   export let width: string | number = "100%";
@@ -26,8 +29,10 @@
     return `${x} ${y} ${w} ${h}`;
   }
 
-  $: viewBox = getViewBox(coa.shield || $shield, coa.zoom || DEFAULT_ZOOM);
-  $: resolved = JSON.stringify(resolveCoa(JSON.stringify(coa), $colors, $shield)); // what a download keeps inside
+  $: palette = renderOptions?.colors ?? $colors;
+  $: defaultShield = renderOptions?.shield ?? $shield;
+  $: viewBox = getViewBox(coa.shield || defaultShield, coa.zoom || DEFAULT_ZOOM);
+  $: resolved = JSON.stringify(resolveCoa(JSON.stringify(coa), palette, defaultShield)); // what a download keeps inside
 </script>
 
 <svg
@@ -41,9 +46,18 @@
   xmlns:dc="http://purl.org/dc/elements/1.1/"
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 >
-  <Shield {coa} border={$border} borderWidth={$borderWidth} type={String(i)} />
+  <Shield
+    {coa}
+    {palette}
+    {defaultShield}
+    gradient={renderOptions?.gradient ?? $grad}
+    diaper={renderOptions?.diaper ?? $diaper}
+    border={renderOptions?.border ?? $border}
+    borderWidth={renderOptions?.borderWidth ?? $borderWidth}
+    type={String(i)}
+  />
   {#if isEdit}
     <Grid />
-    <Positions shield={coa.shield || $shield} />
+    <Positions shield={coa.shield || defaultShield} />
   {/if}
 </svg>

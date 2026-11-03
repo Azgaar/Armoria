@@ -3,11 +3,14 @@
   import Ordinary from "./Ordinary.svelte";
   import Charge from "./Charge.svelte";
   import Inscription from "./Inscription.svelte";
-  import {shield, colors, grad, diaper} from "$lib/data/stores";
   import {divisions, shields} from "$lib/data/dataModel";
   import {getTemplate, addPattern, addCharge, patternId} from "$lib/scripts/getters";
   import type {Coa} from "$lib/types/coa";
 
+  export let palette: Record<string, string>;
+  export let defaultShield: string;
+  export let gradient: string;
+  export let diaper: string;
   export let coa: Coa;
   export let border: string;
   export let borderWidth: number;
@@ -19,15 +22,15 @@
   const ordinariesAboveCharges = ordinaries.filter(o => o.above);
   charges.forEach(({charge}) => addCharge(charge));
 
-  $: shieldPath = shields.data[coa.shield || $shield].path;
-  $: coaDiaper = type === "menuItem" ? null : coa.diaper || $diaper;
+  $: shieldPath = shields.data[coa.shield || defaultShield].path;
+  $: coaDiaper = type === "menuItem" ? null : coa.diaper || diaper;
   $: diaperType = getDiaperType(coaDiaper || "");
-  $: overFill = !$grad || $grad === "no" ? "none" : `url(#${$grad})`;
+  $: overFill = !gradient || gradient === "no" ? "none" : `url(#${gradient})`;
 
   // get color or link to pattern
   $: clr = (tincture?: string) => {
     if (!tincture) return "";
-    if ($colors[tincture]) return $colors[tincture];
+    if (palette[tincture]) return palette[tincture];
     if (/^#[\da-f]{3,8}$/i.test(tincture)) return tincture; // an exact colour, as the API accepts
     if (tincture.includes("-")) {
       addPattern(tincture);

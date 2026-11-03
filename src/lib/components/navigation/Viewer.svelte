@@ -1,10 +1,10 @@
 <script>
   import COA from "./../object/COA.svelte";
-  import {history} from "$lib/data//stores";
+  import {history, tinctures} from "$lib/data//stores";
   import {generate} from "$lib/scripts/generator";
   export let c, seed, coaSize;
 
-  let coa = $history[c] || generate(seed || undefined); // on load
+  let coa = $history[c] || generate(seed || undefined, $tinctures); // on load
 
   function edit() {
     const searchParams = new URLSearchParams(window.location.search);

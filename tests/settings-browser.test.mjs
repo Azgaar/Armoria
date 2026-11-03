@@ -197,3 +197,19 @@ test(
   },
   {timeout: 60000}
 );
+
+test("saved generation weights still apply in gallery, editor and viewer", async t => {
+  const {DEFAULT_TINCTURES} = await import("../src/lib/config/defaults.ts");
+  const tinctures = structuredClone(DEFAULT_TINCTURES);
+  tinctures.field = {metals: 1, colours: 0, stains: 0, patterns: 0};
+  tinctures.metals = {argent: 0, or: 1};
+  const page = await session(t, {tinctures: JSON.stringify(tinctures)});
+  const gallery = await snapshot(page);
+  assert.ok(gallery.history.length > 1);
+  assert.ok(gallery.history.every(coa => coa.t1 === "or"));
+  for (const view of ["0", "1"]) {
+    await page.goto(origin + "/?seed=987&view=" + view, {waitUntil: "networkidle0"});
+    await page.waitForSelector(view === "1" ? "#coaView .field" : "#coaEdit .field");
+    assert.equal(await page.$eval("svg.coa .field", node => node.getAttribute("fill")), "#ffe066");
+  }
+});

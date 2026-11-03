@@ -1,6 +1,6 @@
 <script lang="ts">
   // @ts-check
-  import {fontColor, history, matrices, matrix, state} from "$lib/data/stores";
+  import {fontColor, tinctures, history, matrices, matrix, state} from "$lib/data/stores";
   import {download} from "$lib/scripts/download";
   import {generate} from "$lib/scripts/generator";
   import {minmax} from "$lib/scripts/utils";
@@ -14,7 +14,7 @@
   $: fontSize = minmax(width / 20, 6, 12);
 
   $: coas = gallery.map(c => {
-    if (!$history[c]) $history[c] = generate();
+    if (!$history[c]) $history[c] = generate(undefined, $tinctures);
     return $history[c];
   });
 

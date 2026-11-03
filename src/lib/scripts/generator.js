@@ -1,25 +1,24 @@
 import {charges, chargeSets, divisions, lines, ordinaries, patternSize, positions} from "$lib/data/dataModel";
-import {tinctures} from "$lib/data/stores";
-import {get} from "svelte/store";
+import {DEFAULT_TINCTURES} from "$lib/config/defaults";
 import {aleaPRNG} from "./alea";
-import {P, rw} from "./utils";
+import {randomChoices} from "./utils";
 
-/** @returns {import("$lib/types/generator").GenerationConfig} */
-export const createConfig = () => ({
+/** @param {import("$lib/types/tinctures").Tinctures} [tData] @param {() => number} [random] @returns {import("$lib/types/generator").GenerationConfig} */
+export const createConfig = (tData = DEFAULT_TINCTURES, random = Math.random) => ({
+  random,
   usedPattern: null,
   usedTinctures: [],
-  tData: get(tinctures),
+  tData,
   divisioned: null,
   ordinary: null
 });
 
 // main generation routine
-/** @param {string | number} [providedSeed] @returns {import("$lib/types/coa").Coa} */
-export const generate = function (providedSeed) {
+/** @param {string | number} [providedSeed] @param {import("$lib/types/tinctures").Tinctures} [tData] @returns {import("$lib/types/coa").Coa} */
+export const generate = function (providedSeed, tData = DEFAULT_TINCTURES) {
   const seed = providedSeed || Math.floor(Math.random() * 1e9);
-  Math.random = aleaPRNG(seed);
-
-  const config = createConfig();
+  const config = createConfig(tData, aleaPRNG(seed));
+  const {P, rw} = randomChoices(config.random);
   /** @type {import("$lib/types/coa").Coa} */
   const coa = {seed, t1: getTincture(config, "field")};
 
@@ -64,7 +63,7 @@ export const generate = function (providedSeed) {
   }
 
   if (addCharge) {
-    const charge = selectCharge(config.ordinary || config.divisioned ? charges.types : charges.single);
+    const charge = selectCharge(config, config.ordinary || config.divisioned ? charges.types : charges.single);
     const chargeData = charges.data[charge] || {};
 
     let p = "e";
@@ -107,12 +106,12 @@ export const generate = function (providedSeed) {
     if (p === "ABCDEFGHIKL" && P(0.95)) {
       // add central charge if charge is in bordure
       coa.charges[0].charge = rw(charges.conventional);
-      const charge = selectCharge(charges.single);
+      const charge = selectCharge(config, charges.single);
       const t = getTincture(config, "charge", config.usedTinctures, coa.t1);
       coa.charges.push({charge, t, p: "e"});
     } else if (P(0.8) && charge === "inescutcheon") {
       // add charge to inescutcheon
-      const charge = selectCharge(charges.types);
+      const charge = selectCharge(config, charges.types);
       const t2 = getTincture(config, "charge", [], t);
       coa.charges.push({charge, t: t2, p, size: 0.5});
     } else if (division && !config.ordinary) {
@@ -135,7 +134,7 @@ export const generate = function (providedSeed) {
                 : ["j", "o"]; // perBendSinister
         coa.charges[0].p = p1;
 
-        const charge = selectCharge(charges.single);
+        const charge = selectCharge(config, charges.single);
         const t = getTincture(config, "charge", config.usedTinctures, coa.division?.t);
         coa.charges.push({charge, t, p: p2});
       } else if (["perCross", "perSaltire"].includes(division) && P(0.5)) {
@@ -143,13 +142,13 @@ export const generate = function (providedSeed) {
         const [p1, p2, p3, p4] = division === "perCross" ? ["j", "l", "m", "o"] : ["b", "d", "f", "h"];
         coa.charges[0].p = p1;
 
-        const c2 = selectCharge(charges.single);
+        const c2 = selectCharge(config, charges.single);
         const t2 = getTincture(config, "charge", [], coa.division?.t);
 
-        const c3 = selectCharge(charges.single);
+        const c3 = selectCharge(config, charges.single);
         const t3 = getTincture(config, "charge", [], coa.division?.t);
 
-        const c4 = selectCharge(charges.single);
+        const c4 = selectCharge(config, charges.single);
         const t4 = getTincture(config, "charge", [], coa.t1);
         coa.charges.push({charge: c2, t: t2, p: p2}, {charge: c3, t: t3, p: p3}, {charge: c4, t: t4, p: p4});
       } else if (allowCounter && p.length > 1) coa.charges[0].divided = "counter"; // counterchanged, 40%
@@ -178,6 +177,7 @@ export const getSize = (p, o = null, d = null) => {
 
 /** @param {import("$lib/types/generator").GenerationConfig} config @param {string | null} division @param {import("$lib/types/coa").Charge} c */
 function defineChargeAttributes(config, division, c) {
+  const {P} = randomChoices(config.random);
   // define size
   c.size = (c.size || 1) * getSize(c.p, config.ordinary, division);
 
@@ -189,14 +189,16 @@ function defineChargeAttributes(config, division, c) {
   if (P(0.02) && charges.data[c.charge]?.reversed) c.reversed = 1;
 }
 
-/** @param {Record<string, number>} set */
-function selectCharge(set) {
+/** @param {import("$lib/types/generator").GenerationConfig} config @param {Record<string, number>} set */
+function selectCharge(config, set) {
+  const {rw} = randomChoices(config.random);
   const type = rw(set);
   return type === "inescutcheon" ? "inescutcheon" : rw(chargeSets[type]);
 }
 
 /** @param {import("$lib/types/generator").GenerationConfig} config @param {string} tincture */
 function replaceTincture(config, tincture) {
+  const {rw} = randomChoices(config.random);
   const type = getType(config, tincture);
   const typeTinctures = config.tData[type];
 
@@ -223,6 +225,7 @@ function getType(config, t) {
 
 /** @param {import("$lib/types/generator").GenerationConfig} config @param {string} patternName @param {"field" | "division" | "charge"} element */
 function definePattern(config, patternName, element) {
+  const {P, rw} = randomChoices(config.random);
   let t1 = null;
   let t2 = null;
 
@@ -294,7 +297,7 @@ function definePattern(config, patternName, element) {
       t1 = "or";
       t2 = "sable";
     }
-  } else if (patternName === "semy") patternName += "_of_" + selectCharge(charges.semy);
+  } else if (patternName === "semy") patternName += "_of_" + selectCharge(config, charges.semy);
 
   if (!t1 || !t2) {
     const startWithMetal = P(0.7);
@@ -334,6 +337,7 @@ function excludeTinctures(typeTinctures, usedTinctures) {
 // select tincture: element type (field, division, charge), used field tinctures, field type to follow RoT
 /** @param {import("$lib/types/generator").GenerationConfig} config @param {"field" | "division" | "charge"} element @param {string[]} [fields] @param {string | null} [RoT] */
 export function getTincture(config, element, fields = [], RoT) {
+  const {rw} = randomChoices(config.random);
   let type = /** @type {keyof import("$lib/types/tinctures").TinctureTypeChances} */ (rw(config.tData[element])); // random type
 
   if (type === "patterns") {

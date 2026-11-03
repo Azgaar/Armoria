@@ -2,6 +2,7 @@
   // @ts-check
   import {DEFAULT_SHIELD_BOX} from "$lib/data/dataModel";
   import {tooltip} from "$lib/scripts/tooltip";
+  import {colors, shield, grad, diaper} from "$lib/data/stores";
   import Shield from "./../object/Shield.svelte";
 
   export let coa: any;
@@ -9,5 +10,14 @@
 </script>
 
 <svg class="menuItem" width="100%" height="100%" viewBox={DEFAULT_SHIELD_BOX} data-tooltip={tip} use:tooltip>
-  <Shield {coa} border="#333" borderWidth={2} type="menuItem" />
+  <Shield
+    {coa}
+    palette={$colors}
+    defaultShield={$shield}
+    gradient={$grad}
+    diaper={$diaper}
+    border="#333"
+    borderWidth={2}
+    type="menuItem"
+  />
 </svg>
