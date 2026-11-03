@@ -64,6 +64,8 @@ after(async () => {
 });
 
 const fixtures = [
+  {name: "procedural seed 123", proceduralSeed: "123"},
+  {name: "procedural seed 987", proceduralSeed: "987"},
   {name: "default inescutcheon", t1: "or", charges: [{charge: "inescutcheon", t: "gules", p: "e"}]},
   {name: "camel-case inescutcheon", t1: "or", shield: "heater", charges: [{charge: "inescutcheonOldFrench", t: "azure", p: "e"}]},
   {
@@ -83,7 +85,8 @@ const fixtures = [
 ];
 for (const fixture of fixtures)
   test(`API matches the browser: ${fixture.name}`, async () => {
-    await page.goto(`${origin}/?${new URLSearchParams({coa: JSON.stringify(fixture)})}`, {waitUntil: "networkidle0"});
+    const query = fixture.proceduralSeed ? {seed: fixture.proceduralSeed} : {coa: JSON.stringify(fixture)};
+    await page.goto(`${origin}/?${new URLSearchParams(query)}`, {waitUntil: "networkidle0"});
     await page.waitForSelector("#coaEdit");
     await page.waitForFunction(() =>
       [...document.querySelectorAll("#coaEdit use, #patterns use")].every(use =>
@@ -94,7 +97,14 @@ for (const fixture of fixtures)
       const {getSvgForMap} = await import("/src/lib/scripts/download.js");
       return {svg: await getSvgForMap(), coa: JSON.parse(document.querySelector("#coaEdit").dataset.coa)};
     });
-    const apiSVG = await render(source.coa, 500, palette);
+    let apiCoa = source.coa;
+    if (fixture.proceduralSeed) {
+      const {generate} = await rendererServer.ssrLoadModule("/src/lib/scripts/generator.js");
+      // The editor may omit redundant t2/t3 values equal to the primary fill.
+      // Compare actual pixels against the independently generated server COA.
+      apiCoa = generate(fixture.proceduralSeed);
+    }
+    const apiSVG = await render(apiCoa, 500, palette);
     const result = await page.evaluate(
       async ({apiSVG, browserSVG}) => {
         const rasterize = async svg => {

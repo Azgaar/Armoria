@@ -5,6 +5,7 @@
   import {changes, colors, shield, state} from "$lib/data/stores";
   import {getSvgForMap} from "$lib/scripts/download";
   import {resolveCoa} from "$lib/scripts/coa";
+  import {onDestroy} from "svelte";
   import {afterNavigate, replaceState} from "$app/navigation";
   import {page} from "$app/stores";
 
@@ -15,6 +16,7 @@
   const SEND_DELAY = 500;
   let sent: string | null = null; // the coat of arms the map shows; the first one is the emblem as it came
   let timer: number;
+  let revision = 0;
   let routerReady = false;
   afterNavigate(() => {
     routerReady = true;
@@ -22,7 +24,12 @@
 
   $: current = $state.edit && $changes[0] ? JSON.stringify(resolveCoa($changes[0] as string, $colors, $shield)) : null;
   $: if (routerReady) syncUrl(current, $state.edit || $state.view);
-  $: if (session && returnOrigin && current) scheduleSend(current);
+  $: if (session && returnOrigin) scheduleSend(current);
+
+  onDestroy(() => {
+    revision++;
+    window.clearTimeout(timer);
+  });
 
   /** the URL names the coat of arms being edited, and none once the gallery is back */
   function syncUrl(coa: string | null, open: number) {
@@ -37,13 +44,16 @@
     if (url.href !== location.href) replaceState(url, $page.state);
   }
 
-  function scheduleSend(coa: string) {
-    if (sent === null) sent = coa;
+  function scheduleSend(coa: string | null) {
+    // Invalidate in-flight exports even when undo returns to the already-sent
+    // original or the editor closes, neither of which requires a new message.
+    const version = ++revision;
+    if (sent === null && coa) sent = coa;
     window.clearTimeout(timer);
-    if (coa !== sent) timer = window.setTimeout(() => sendToMap(coa), SEND_DELAY);
+    if (coa && coa !== sent) timer = window.setTimeout(() => sendToMap(coa, version), SEND_DELAY);
   }
 
-  async function sendToMap(coa: string) {
+  async function sendToMap(coa: string, version: number) {
     if (!window.opener || window.opener.closed) return;
     let svg = "";
     try {
@@ -51,6 +61,8 @@
     } catch (error) {
       console.error(error); // the map still draws a coat of arms it knows; only its picture fallback is lost
     }
+    // Asset/font export can finish after newer edits, undo or the map closing.
+    if (version !== revision || !window.opener || window.opener.closed) return;
     window.opener.postMessage({type: "armoria:coa", version: 1, session, coa: JSON.parse(coa), svg}, returnOrigin);
     sent = coa;
   }
