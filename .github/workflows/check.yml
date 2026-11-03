@@ -19,6 +19,7 @@ jobs:
     timeout-minutes: 20
     env:
       PUPPETEER_SKIP_DOWNLOAD: "true"
+      PUPPETEER_CACHE_DIR: ${{ runner.temp }}/puppeteer
       PUPPETEER_NO_SANDBOX: "1"
     steps:
       - uses: actions/checkout@v4
@@ -28,7 +29,10 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Install test browser and Linux dependencies
-        run: npx puppeteer browsers install chrome --install-deps
+        run: >-
+          sudo env "PUPPETEER_CACHE_DIR=$PUPPETEER_CACHE_DIR" "$(command -v node)"
+          node_modules/puppeteer/lib/cjs/puppeteer/node/cli.js
+          browsers install chrome --install-deps
       - run: npm run check
       - name: API, claims, Discord and domain regressions
         run: npm run test:services

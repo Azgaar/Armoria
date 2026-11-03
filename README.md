@@ -41,13 +41,13 @@ Use Node 24 (declared in `.node-version`) and `npm ci`. No service credentials a
 
 ```sh
 PUPPETEER_SKIP_DOWNLOAD=true npm ci
-npx puppeteer browsers install chrome --install-deps
+npx puppeteer browsers install chrome
 npm run check
 npm test
 npm run build
 ```
 
-The browser installation command downloads Puppeteer's matching Chrome and installs its Linux dependencies; on other supported systems omit `--install-deps`. To use an existing Chromium installation instead, set `PUPPETEER_EXECUTABLE_PATH`. Restricted Linux containers may also require `PUPPETEER_NO_SANDBOX=1`; CI sets this only for its isolated test browser. `npm run test:services` runs API, claim/password, Discord, validation, settings, generation, file and lazy-database regressions. `npm run test:browser` runs SVG uploads, SVG/PNG/JPEG exports, copied links, imports/undo, rendering parity and saved-settings browser tests. `npm test` runs both groups sequentially so browser suites do not contend for shared development-server build caches. Individual `test:*` commands remain available below.
+The browser installation command downloads Puppeteer's matching Chrome. On Linux, install any missing system libraries first; Puppeteer's `--install-deps` option requires root privileges. CI runs that installation through `sudo`, with an explicit shared browser cache, then runs all tests as the normal runner user. To use an existing Chromium installation instead, set `PUPPETEER_EXECUTABLE_PATH`. Restricted Linux containers may also require `PUPPETEER_NO_SANDBOX=1`; CI sets this only for its isolated test browser. `npm run test:services` runs API, claim/password, Discord, validation, settings, generation, file and lazy-database regressions. `npm run test:browser` runs SVG uploads, SVG/PNG/JPEG exports, copied links, imports/undo, rendering parity and saved-settings browser tests. `npm test` runs both groups sequentially so browser suites do not contend for shared development-server build caches. Individual `test:*` commands remain available below.
 
 The SvelteKit validation workflow runs this check, complete regression suite and production build on pull requests and pushes to `sveltekit`, using `npm ci` and the declared Node version. It needs no repository secrets, database or Discord registration. Service tests use fake external services and browser tests use local assets and block external requests. Keep real credentials out of test environments.
 
