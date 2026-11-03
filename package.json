@@ -26,7 +26,8 @@
     "test:settings": "node --test --test-isolation=none tests/settings.test.mjs",
     "test:settings-browser": "node --test --test-isolation=none tests/settings-browser.test.mjs",
     "test:generation": "node --test --test-isolation=none tests/generation.test.mjs",
-    "test:files": "node --test --test-isolation=none tests/files.test.mjs"
+    "test:files": "node --test --test-isolation=none tests/files.test.mjs",
+    "test:database-startup": "svelte-kit sync && node --test --test-isolation=none tests/database-startup.test.mjs"
   },
   "repository": {
     "type": "git",

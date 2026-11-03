@@ -5,6 +5,8 @@ import {InvalidCoaError, RequestLimitError, jsonError} from "$lib/api/responses"
 import {normalizeCoa} from "$lib/api/validation";
 import {hashClaimPassword, isProtected, mayMutateClaim} from "./claimPasswords";
 
+import {ClaimsUnavailableError} from "$lib/api/claimErrors";
+
 const MAX_BODY = 64 * 1024;
 class RequestError extends Error {
   constructor(
@@ -102,6 +104,7 @@ export async function mutateClaim(request: Request, name: string, masterKey?: st
       claim ? 200 : 201
     );
   } catch (error) {
+    if (error instanceof ClaimsUnavailableError) return jsonError(error.message, 503);
     if (error instanceof RequestLimitError) return jsonError(error.message, error.status);
     if (error instanceof RequestError) return jsonError(error.message, error.status);
     if (error instanceof InvalidCoaError) return jsonError(error.message, 400);

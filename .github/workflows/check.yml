@@ -14,8 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PUPPETEER_SKIP_DOWNLOAD: "true"
-      MONGO_ID: check
-      MONGO_PASS: check
       MASTER_KEY: ""
     steps:
       - uses: actions/checkout@v4
@@ -25,4 +23,5 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
-      - run: npm run test:generation && npm run test:files
+      - run: npm run test:generation && npm run test:files && npm run test:database-startup
+      - run: npm run build

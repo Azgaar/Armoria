@@ -11,7 +11,7 @@ export class MongoDBConnector {
     this.uri = uri;
     this.dbName = dbName;
     this.collectionName = collectionName;
-    this.client = new MongoClient(this.uri);
+    this.client = new MongoClient(this.uri, {serverSelectionTimeoutMS: 5000, connectTimeoutMS: 5000, timeoutMS: 10000});
   }
 
   async connect(): Promise<void> {
