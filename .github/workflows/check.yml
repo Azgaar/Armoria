@@ -56,3 +56,5 @@ jobs:
         run: npm run test:browser
       - name: Production build without service credentials
         run: npm run build
+      - name: Production service-worker update and offline regression
+        run: npm run test:production

@@ -22,7 +22,12 @@
     {/each}
   </select>
 
-  <button on:click={() => ($state.fonts = 1)} data-tooltip={$t("tooltip.inscriptions.addFont")} use:tooltip>
+  <button
+    aria-label={$t("tooltip.inscriptions.addFont")}
+    on:click={() => ($state.fonts = 1)}
+    data-tooltip={$t("tooltip.inscriptions.addFont")}
+    use:tooltip
+  >
     <svg class="icon">
       <use href="#plus-icon" />
     </svg>

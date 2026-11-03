@@ -1,4 +1,5 @@
 import {read} from "$app/server";
+import {render as renderComponent} from "svelte/server";
 import COA from "$lib/components/object/COA.svelte";
 import {DEFAULT_FONTS, DEFAULT_DIAPER, DEFAULT_BORDER, DEFAULT_BORDER_WIDTH} from "$lib/config/defaults";
 import {divisions, patterns, shields} from "$lib/data/dataModel";
@@ -13,7 +14,7 @@ import {normalizeCoa} from "./validation";
 const SHIELD_DEFAULT = "heater";
 
 const charges = import.meta.glob("/static/charges/*.svg", {
-  query: "?url",
+  query: "?url&no-inline",
   import: "default",
   eager: true
 });
@@ -66,14 +67,8 @@ export async function render(input, size, colors) {
     borderWidth: DEFAULT_BORDER_WIDTH
   };
 
-  // Svelte 4's checker models the browser constructor; the SSR compiler supplies render.
-  const component = /** @type {unknown} */ (COA);
-  const serverComponent =
-    /** @type {{render(props: {coa: import("$lib/types/coa").Coa, height: number, width: number, i: string, renderOptions: import("$lib/types/render").RenderOptions}): {html: string}}} */ (
-      component
-    );
-  const svg = serverComponent.render({coa, height: size, width: size, i: "View", renderOptions});
-  const root = parse(svg.html);
+  const svg = renderComponent(COA, {props: {coa, height: size, width: size, i: "View", renderOptions}});
+  const root = parse(svg.body);
   const defs = root.querySelector("defs");
   if (!defs) throw new Error("Rendered COA has no definitions element");
   defs.innerHTML = `${shieldClip}${divisionClip}${loadedCharges}${loadedPatterns}${loadedFonts}${backlight}${style}`;
@@ -150,7 +145,8 @@ async function getCharges(charges) {
 async function fetchCharge(charge) {
   const url = charges[`/static/charges/${charge}.svg`];
   if (typeof url !== "string") throw new InvalidCoaError("Unknown COA charge");
-  const text = await read(url).text();
+  // Vite adds an asset-control query in development; Kit reads the file path.
+  const text = await read(url.split("?")[0]).text();
   const root = parse(text);
   const g = root.querySelector("g");
   if (!g) throw new Error(`Charge ${charge} has no SVG group`);

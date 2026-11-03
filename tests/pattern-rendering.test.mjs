@@ -31,7 +31,7 @@ before(
               return `import {readFileSync} from 'node:fs'; export function read(url) {return new Response(readFileSync(${JSON.stringify(root)} + url.replace(/^\\//, '')));}`;
           }
         },
-        svelte({configFile: false, preprocess: vitePreprocess(), hot: false})
+        svelte({configFile: false, preprocess: vitePreprocess()})
       ]
     });
     ({render} = await rendererServer.ssrLoadModule("/src/lib/api/renderer.js"));

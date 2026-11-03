@@ -69,7 +69,7 @@ async function session(t, saved = {}, failure = "") {
 async function snapshot(page) {
   return page.evaluate(async () => {
     const s = await import("/src/lib/data/stores.ts");
-    const {get} = await import("/node_modules/svelte/src/runtime/store/index.js");
+    const {get} = await import("/src/lib/testing/browser-runtime.ts");
     return Object.fromEntries(
       ["borderWidth", "colors", "uploaded", "grid", "showGrid", "history", "state", "isTextReady"].map(key => [key, get(s[key])])
     );

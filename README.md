@@ -33,6 +33,30 @@ Navigate to [localhost:5173](http://localhost:5173). You should see the app runn
 
 To create an optimised version run `npm run build`.
 
+### Toolchain modernization
+
+The first #237 upgrade uses the following mutually compatible pinned framework/rendering versions. Node 24 is declared in `.node-version` and `package.json`, and the Vercel adapter explicitly emits `nodejs24.x` functions.
+
+| Package | Version |
+| --- | --- |
+| Svelte | 5.57.3 |
+| SvelteKit | 2.70.3 |
+| Vite / Svelte plugin | 8.3.5 / 7.3.1 |
+| Vercel adapter | 6.3.4 |
+| TypeScript | 6.0.3 |
+| Puppeteer / puppeteer-core | 24.43.1 |
+| Server Chromium package | 148.0.0 |
+
+The browser and API renderer share the existing components in Svelte 5 legacy mode. The API now uses `render` from `svelte/server`; assets explicitly remain file URLs for Kit's server asset reader. Test helpers import public Svelte/store APIs rather than internal runtime paths. Existing event/accessibility warning filters use the renamed Svelte 5 codes; the 92 accessibility warnings remain visible in `npm run check`.
+
+Puppeteer 24.43.1 targets Chrome 148; the server Chromium package and download URL use the matching major. Keep Puppeteer and puppeteer-core identical, and verify the pinned browser revision before changing Chromium. The converters still declare Puppeteer 24 compatibility. Both patch-package patches remain: `path-data-polyfill` needs its browser-global guard when imported by SSR, and `convert-svg-core` retains the existing browser-page workaround. Their latest released versions remain unchanged, so no equivalent upstream fix has been established. Real PNG/JPEG/JPG API tests exercise the patched converter and verify dimensions and palette pixels against SVG output, closing every converter afterward.
+
+After `npm run build`, run `npm run test:production` for the service-worker update/offline regression against the actual production preview. CI runs this after the normal tests and build. Browser launch overrides work as documented below; no service credentials are required. A proxy changes only local deployment markers in HTML/worker scripts to exercise worker replacement, fresh online HTML and the latest cached offline view.
+
+The dependency audit still reports 35 advisories (4 low, 18 moderate, 13 high), including the retained Puppeteer/converter graph and older framework/tooling majors. These are not resolved by this first step; track their replacements and verification under #237 rather than using `npm audit fix --force`.
+
+The SvelteKit 3 migration remains a separate #237 step: its removal of `$app/stores`, configuration/API changes and `#lib` migration require another review boundary. Component-by-component runes migration can then proceed without mixing it with this compiler/renderer upgrade. Guidance: [Svelte 5 migration](https://svelte.dev/docs/svelte/v5-migration-guide), [SvelteKit 3 migration](https://svelte.dev/docs/kit/migrating-to-sveltekit-3), [Vite 8 migration](https://vite.dev/guide/migration), [Vite supported releases](https://vite.dev/releases).
+
 ### Branches, deployment and validation
 
 The public Vercel app at https://armoria.vercel.app uses `sveltekit`, including the editor, image/claims API and Discord endpoint. The repository default branch remains `master`: it contains the legacy Rollup app and publishes `public` to `gh-pages` through its own master-only workflow. Keep changes to the Vercel application on `sveltekit`; do not use the legacy Pages deploy command for this branch. The open migration PR #188 tracks the branch transition.
@@ -45,6 +69,7 @@ npx puppeteer browsers install chrome
 npm run check
 npm test
 npm run build
+npm run test:production
 ```
 
 The browser installation command downloads Puppeteer's matching Chrome. On Linux, install any missing system libraries first; Puppeteer's `--install-deps` option requires root privileges. CI runs that installation through `sudo`, with an explicit shared browser cache, then runs all tests as the normal runner user. To use an existing Chromium installation instead, set `PUPPETEER_EXECUTABLE_PATH`. Restricted Linux containers may also require `PUPPETEER_NO_SANDBOX=1`; CI sets this only for its isolated test browser. `npm run test:services` runs API, claim/password, Discord, validation, settings, generation, file and lazy-database regressions. `npm run test:browser` runs SVG uploads, SVG/PNG/JPEG exports, copied links, imports/undo, rendering parity and saved-settings browser tests. `npm test` runs both groups sequentially so browser suites do not contend for shared development-server build caches. Individual `test:*` commands remain available below.

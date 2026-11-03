@@ -77,7 +77,7 @@ async function edit(editor, name, t1) {
       const {changes} = await import("/src/lib/data/stores.ts");
       const coa = JSON.parse(document.querySelector("#coaEdit").dataset.coa);
       changes.add(JSON.stringify({...coa, name, t1}));
-      await (await import("/node_modules/svelte/src/runtime/index.js")).tick();
+      await (await import("/src/lib/testing/browser-runtime.ts")).tick();
     },
     {name, t1}
   );
@@ -86,7 +86,7 @@ async function history(editor, direction) {
   await editor.evaluate(async direction => {
     const {changes} = await import("/src/lib/data/stores.ts");
     changes[direction]();
-    await (await import("/node_modules/svelte/src/runtime/index.js")).tick();
+    await (await import("/src/lib/testing/browser-runtime.ts")).tick();
   }, direction);
 }
 async function pending(editor, count) {
@@ -158,7 +158,7 @@ test("undo to the original and leaving the editor cancel pending sends", {timeou
   await editor.evaluate(async () => {
     const {state} = await import("/src/lib/data/stores.ts");
     state.update(value => ({...value, edit: 0}));
-    await (await import("/node_modules/svelte/src/runtime/index.js")).tick();
+    await (await import("/src/lib/testing/browser-runtime.ts")).tick();
   });
   await release(editor, 1);
   assert.deepEqual(await messages(opener), []);
