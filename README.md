@@ -71,6 +71,23 @@ MongoDB credentials are optional. Checking and building do not connect to MongoD
 
 The accessibility warning backlog is tracked separately from this type baseline. Existing click-only editor sections, thumbnails, close icons and toolbar actions need native buttons or links, keyboard activation and visible focus. Drag-only artwork/path handles need keyboard alternatives through the editor's numeric controls and explicit semantics. Upload drop zones already have file inputs; any eventual drag-event warning exception must be local and explain that alternative. The current 92 warnings comprise 42 missing keyboard handlers, 42 roles on click targets, four SVG artwork/handle roles, three drop-zone roles and one navigation-list interaction. Do not silence these categories globally or treat the passing type check as an accessibility audit. No new warning suppressions are part of this baseline. Run `npm run test:generation` and `npm run test:files` for the seed compatibility, weighted-table and upload-extraction regressions.
 
+### Regression coverage
+
+`npm test` runs the service and browser groups used by PR CI. All fixtures are local: claim tests use fake database records, Discord tests mock registration, browser tests block external requests, and image API tests replace raster converters with bounded fixtures. No suite needs production credentials or sends Discord messages.
+
+| Behavior                                                                                                                                             | Commands                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| Image inputs, dimensions/formats, palettes, inescutcheons, semy/pattern dependencies and legacy routes                                               | `test:api`, `test:render-limits`, `test:coa-validation`     |
+| Harmless markup/SVG security fixtures and claim authentication/mutations                                                                             | `test:api`, `test:svg-upload`, `test:claims`                |
+| Real editor change → undo/redo → copied link → reload; malformed/atomic imports                                                                      | `test:copied-links`, `test:coa-import`                      |
+| Uploaded artwork, denied/quota-limited storage and custom generation settings                                                                        | `test:svg-upload`, `test:settings`, `test:settings-browser` |
+| SVG/PNG/JPEG downloads, metadata and FMG fallback SVG                                                                                                | `test:exports`                                              |
+| Rapid edits/undo during paused exports, out-of-order completion, export failure/recovery, unavailable charges, editor exit and closed/direct openers | `test:fmg-sync`                                             |
+| API/browser pixel parity for fixed seeds and representative inescutcheon/pattern artwork                                                             | `test:pattern-rendering`                                    |
+| Seed compatibility, independent request state and database-free startup                                                                              | `test:generation`, `test:api`, `test:database-startup`      |
+
+FMG synchronization waits for editing to pause for 500 ms. Each change invalidates older pending exports, including undo to the already-sent original and leaving the editor. Only a current export can send a message; the opener is checked again after asynchronous work. A failed current SVG export still sends the blazon with an empty fallback, and subsequent edits can recover. The controlled browser tests pause blob reads after real SVG snapshots and release them out of order, then compare message blazons with embedded SVG metadata.
+
 ### Generation and render isolation
 
 `generate(seed, tinctures?)` owns an Alea random stream and preserves the existing seeded artwork; it never replaces `Math.random`. Omitting a seed draws a new seed from ambient randomness, then uses the private stream. The domain generator defaults to built-in tincture weights. Gallery, editor and viewer pass their current browser weights explicitly. `createConfig(tinctures?, random?)` and the random-choice helpers also accept an explicit random source for independent or reentrant use.

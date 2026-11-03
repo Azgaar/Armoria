@@ -29,8 +29,9 @@
     "test:files": "node --test --test-isolation=none tests/files.test.mjs",
     "test:database-startup": "svelte-kit sync && node --test --test-isolation=none tests/database-startup.test.mjs",
     "test:services": "npm run test:discord && npm run test:api && npm run test:claims && npm run test:render-limits && npm run test:coa-validation && npm run test:settings && npm run test:generation && npm run test:files && npm run test:database-startup",
-    "test:browser": "npm run test:svg-upload && npm run test:exports && npm run test:copied-links && npm run test:coa-import && npm run test:pattern-rendering && npm run test:settings-browser",
-    "test": "npm run test:services && npm run test:browser"
+    "test:browser": "npm run test:svg-upload && npm run test:exports && npm run test:copied-links && npm run test:coa-import && npm run test:pattern-rendering && npm run test:settings-browser && npm run test:fmg-sync",
+    "test": "npm run test:services && npm run test:browser",
+    "test:fmg-sync": "node --test --test-isolation=none tests/fmg-sync.test.mjs"
   },
   "repository": {
     "type": "git",

@@ -128,3 +128,39 @@ test("reopening the copied edit link in a fresh browser context preserves artwor
     await context.close();
   }
 });
+
+test("UI edits, undo/redo, copied links and reload preserve the same coat of arms", async () => {
+  const name = "Edited & shared + 100% # 東京";
+  await page.evaluate(() =>
+    [...document.querySelectorAll(".section")].find(item => item.textContent.trim() === "General").click()
+  );
+  await page.waitForFunction(
+    name => [...document.querySelectorAll('input[type="text"]')].some(input => input.value === name),
+    {},
+    special
+  );
+  await page.evaluate(
+    ({before, name}) => {
+      const input = [...document.querySelectorAll('input[type="text"]')].find(input => input.value === before);
+      input.value = name;
+      input.dispatchEvent(new Event("input", {bubbles: true}));
+      input.blur();
+    },
+    {before: special, name}
+  );
+  const waitName = name =>
+    page.waitForFunction(name => JSON.parse(new URL(location.href).searchParams.get("coa")).name === name, {}, name);
+  await waitName(name);
+  await page.keyboard.press("z");
+  await waitName(special);
+  await page.keyboard.press("x");
+  await waitName(name);
+  const shared = new URL(await copy("Copy edit link"));
+  const snapshot = JSON.parse(shared.searchParams.get("coa"));
+  assert.deepEqual(snapshot, {...expected, name});
+  assert.deepEqual(JSON.parse(new URL(page.url()).searchParams.get("coa")), snapshot);
+  await page.reload({waitUntil: "networkidle0"});
+  await page.waitForSelector("#coaEdit textPath");
+  assert.deepEqual(await page.$eval("#coaEdit", svg => JSON.parse(svg.dataset.coa)), snapshot);
+  assert.deepEqual(errors, []);
+});
