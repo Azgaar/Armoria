@@ -19,7 +19,7 @@ jobs:
     timeout-minutes: 20
     env:
       PUPPETEER_SKIP_DOWNLOAD: "true"
-      PUPPETEER_CACHE_DIR: ${{ runner.temp }}/puppeteer
+      PUPPETEER_CACHE_DIR: ${{ github.workspace }}/node_modules/.cache/puppeteer
       PUPPETEER_NO_SANDBOX: "1"
     steps:
       - uses: actions/checkout@v4
