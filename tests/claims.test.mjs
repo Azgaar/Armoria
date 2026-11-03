@@ -9,8 +9,7 @@ let server, routes, database, passwords, env, renderer, connector;
 const secrets = ["owner-secret", "wrong-secret", "master-secret"];
 const mocks = {
   "$app/environment": "export const browser = false;",
-  "$env/static/private": 'export const MONGO_ID = "test"; export const MONGO_PASS = "test";',
-  "$env/dynamic/private": 'export const env = {MASTER_KEY: "master-secret"};',
+  "$env/dynamic/private": 'export const env = {MASTER_KEY: "master-secret", MONGO_ID: "test", MONGO_PASS: "test"};',
   [root + "src/lib/api/renderer"]: `
     export let fail = false, calls = 0;
     export function setFail(value) { fail = value; calls = 0; }
@@ -235,8 +234,8 @@ test("invalid JSON, credentials, COAs, and oversized bodies cannot mutate record
 
 test("database and renderer errors never expose credentials through logs or responses", async () => {
   database.setFail(true);
-  await expectResponse(await request("POST", {coa: {t1: "or"}, key: "owner-secret"}), 500);
-  await expectResponse(await request("DELETE", {key: "wrong-secret"}), 500);
+  await expectResponse(await request("POST", {coa: {t1: "or"}, key: "owner-secret"}), 503);
+  await expectResponse(await request("DELETE", {key: "wrong-secret"}), 503);
   database.setFail(false);
   renderer.setFail(true);
   await expectResponse(await request("POST", {coa: {t1: "or"}, key: "owner-secret"}), 500);

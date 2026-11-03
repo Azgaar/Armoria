@@ -1,22 +1,51 @@
-import {MONGO_ID, MONGO_PASS} from "$env/static/private";
+import {env} from "$env/dynamic/private";
+import {ClaimsUnavailableError} from "./claimErrors";
 import {MongoDBConnector} from "./dbConnector";
 import type {Coa} from "$lib/types/coa";
 import type {ClaimProtection} from "$lib/server/claimPasswords";
 
-const MONGO_URL = `mongodb+srv://${MONGO_ID}:${MONGO_PASS}@cluster0.auhmw.mongodb.net/armoria_api?retryWrites=true&w=majority`;
-const claims = new MongoDBConnector(MONGO_URL, "armoria_api", "claims");
-await claims.connect();
+let connection: Promise<MongoDBConnector> | undefined;
+
+// Imports and database-independent requests must never initialize MongoDB.
+function getClaims(): Promise<MongoDBConnector> {
+  if (connection) return connection;
+  const {MONGO_ID, MONGO_PASS} = env;
+  if (!MONGO_ID || !MONGO_PASS) return Promise.reject(new ClaimsUnavailableError());
+  const uri = `mongodb+srv://${encodeURIComponent(MONGO_ID)}:${encodeURIComponent(MONGO_PASS)}@cluster0.auhmw.mongodb.net/armoria_api?retryWrites=true&w=majority`;
+  const claims = new MongoDBConnector(uri, "armoria_api", "claims");
+  connection = claims
+    .connect()
+    .then(() => claims)
+    .catch(async () => {
+      await claims.disconnect().catch(() => {});
+      connection = undefined;
+      throw new ClaimsUnavailableError();
+    });
+  return connection;
+}
+
+async function withClaims<T>(operation: (claims: MongoDBConnector) => Promise<T>): Promise<T> {
+  const claims = await getClaims();
+  try {
+    return await operation(claims);
+  } catch (error) {
+    // Preserve duplicate-key conflicts for the mutation handler; hide all other
+    // driver errors, which can contain connection details or submitted records.
+    if (error && typeof error === "object" && "code" in error && error.code === 11000) throw error;
+    throw new ClaimsUnavailableError();
+  }
+}
 
 export type Claim = ClaimProtection & {name: string; coa: Coa; _id?: unknown};
 
 export async function getClaim(name: string): Promise<Claim | null> {
-  return (await claims.findOne({name})) as Claim | null;
+  return (await withClaims(claims => claims.findOne({name}))) as Claim | null;
 }
 
 export function setClaim(claim: Omit<Claim, "key" | "_id">) {
   // MongoDB's existing unique _id index arbitrates concurrent creation without
   // requiring an index migration on the legacy collection.
-  return claims.insertOne({...claim, _id: `claim:${claim.name}`});
+  return withClaims(claims => claims.insertOne({...claim, _id: `claim:${claim.name}`}));
 }
 
 function authorizedVersion(claim: Claim) {
@@ -29,9 +58,9 @@ function authorizedVersion(claim: Claim) {
 }
 
 export function reclaim(previous: Claim, coa: Coa, keyHash?: string) {
-  return claims.updateOne(authorizedVersion(previous), {coa, ...(keyHash ? {keyHash} : {})}, ["key"]);
+  return withClaims(claims => claims.updateOne(authorizedVersion(previous), {coa, ...(keyHash ? {keyHash} : {})}, ["key"]));
 }
 
 export function unclaim(previous: Claim) {
-  return claims.deleteOne(authorizedVersion(previous));
+  return withClaims(claims => claims.deleteOne(authorizedVersion(previous)));
 }

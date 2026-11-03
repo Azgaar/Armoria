@@ -43,13 +43,19 @@ cp .env.example .env
 npm run check
 ```
 
-The Mongo values in `.env.example` are non-secret placeholders for SvelteKit's generated `$env/static/private` exports. The checker does not connect to MongoDB or need administrator/Discord credentials. Keep your existing `.env` if already configured. `PUPPETEER_SKIP_DOWNLOAD` skips Chromium, which is unnecessary for checking; browser regressions can use `PUPPETEER_EXECUTABLE_PATH` as described below.
+MongoDB credentials are optional. Checking and building do not connect to MongoDB or need administrator/Discord credentials. Keep your existing `.env` if already configured. `PUPPETEER_SKIP_DOWNLOAD` skips Chromium, which is unnecessary for checking; browser regressions can use `PUPPETEER_EXECUTABLE_PATH` as described below.
 
-`npm run check` synchronizes SvelteKit's generated types and checks all application JavaScript, TypeScript and Svelte components with `strict` and `checkJs` enabled. The `Svelte and TypeScript check` workflow runs it for pull requests and pushes to `sveltekit`, using the same placeholders without repository secrets. Type errors fail the check; compiler warnings remain visible.
+`npm run check` synchronizes SvelteKit's generated types and checks all application JavaScript, TypeScript and Svelte components with `strict` and `checkJs` enabled. The `Svelte and TypeScript check` workflow runs it for pull requests and pushes to `sveltekit`, without repository secrets. Type errors fail the check; compiler warnings remain visible.
 
 The accessibility warning backlog is tracked separately from this type baseline. Existing click-only editor sections, thumbnails, close icons and toolbar actions need native buttons or links, keyboard activation and visible focus. Drag-only artwork/path handles need keyboard alternatives through the editor's numeric controls and explicit semantics. Upload drop zones already have file inputs; any eventual drag-event warning exception must be local and explain that alternative. The current 92 warnings comprise 42 missing keyboard handlers, 42 roles on click targets, four SVG artwork/handle roles, three drop-zone roles and one navigation-list interaction. Do not silence these categories globally or treat the passing type check as an accessibility audit. No new warning suppressions are part of this baseline. Run `npm run test:generation` and `npm run test:files` for the seed compatibility, weighted-table and upload-extraction regressions.
 
-A production build still initializes the existing database module during SvelteKit's server analysis, so placeholder credentials are sufficient for checking, not for `npm run build`.
+### Optional claims database
+
+Builds and module imports never connect to MongoDB. Explicit `coa` requests and numeric/random procedural seeds work without database configuration. Set both `MONGO_ID` and `MONGO_PASS` at server runtime to enable named claims using the existing Atlas cluster/database; credentials are URI-encoded. A nonnumeric seed looks up a claim before generating its fallback, so it requires the database too. An absent claim still generates normally, but missing configuration or an unavailable database returns safe, non-cacheable 503 JSON for named image requests and claim mutations instead of silently generating replacement artwork.
+
+The first claim-dependent request connects lazily; concurrent requests share that attempt and successful requests reuse the client. Server selection and connection establishment each have a 5-second timeout; database operations have a 10-second timeout. A failed initial connection is closed and can be retried by a later request. The driver handles reconnection after an established connection loses service. Neither credentials nor driver error objects are returned to callers.
+
+Run `npm run test:database-startup` for actual image/mutation route checks with a fake MongoDB driver: no startup connection, credential-free procedural/inline rendering, shared connection attempts, recovery and outage responses. PR CI runs these regressions and a production build without MongoDB credentials.
 
 ## Saved settings recovery
 

@@ -1,4 +1,5 @@
 import {InvalidCoaError, RequestLimitError} from "$lib/coa/errors";
+import {ClaimsUnavailableError} from "./claimErrors";
 export {InvalidCoaError, RequestLimitError} from "$lib/coa/errors";
 
 /** Escape text and quoted attributes in the API's manually assembled HTML/SVG. */
@@ -20,6 +21,7 @@ export function escapeMarkup(value: string): string {
 }
 
 export function apiError(error: unknown): Response {
+  if (error instanceof ClaimsUnavailableError) return jsonError(error.message, 503);
   if (error instanceof RequestLimitError) return jsonError(error.message, error.status);
   const invalid = error instanceof InvalidCoaError;
   if (!invalid) console.error("API request failed", error);
