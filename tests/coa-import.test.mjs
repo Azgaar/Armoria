@@ -41,7 +41,7 @@ async function open(coa) {
 async function snapshot() {
   return page.evaluate(async () => {
     const s = await import("/src/lib/data/stores.ts");
-    const {get} = await import("/node_modules/svelte/src/runtime/store/index.js");
+    const {get} = await import("/src/lib/testing/browser-runtime.ts");
     return {
       history: get(s.history),
       matrices: get(s.matrices),
@@ -86,7 +86,7 @@ async function upload(text, type = "application/json", drop = false) {
 async function undoRedo(action) {
   await page.evaluate(async action => {
     const {changes} = await import("/src/lib/data/stores.ts");
-    const {tick} = await import("/node_modules/svelte/src/runtime/index.js");
+    const {tick} = await import("/src/lib/testing/browser-runtime.ts");
     changes[action]();
     await tick();
   }, action);

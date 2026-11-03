@@ -77,7 +77,7 @@ before(async () => {
           if (id.startsWith("\0test:")) return mocks[id.slice(6)];
         }
       },
-      svelte({configFile: false, preprocess: vitePreprocess(), hot: false})
+      svelte({configFile: false, preprocess: vitePreprocess()})
     ]
   });
   image = (await server.ssrLoadModule("/src/routes/api/+server.ts")).GET;

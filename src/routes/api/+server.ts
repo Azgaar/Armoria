@@ -39,7 +39,7 @@ let jpegConverter, pngConverter;
 async function launchOptions() {
   if (!process.env.VERCEL) return {headless: true, ignoreHTTPSErrors: true, channel: "chrome" as const};
   const executablePath = await chromium.executablePath(
-    "https://github.com/Sparticuz/chromium/releases/download/v138.0.1/chromium-v138.0.1-pack.x64.tar"
+    "https://github.com/Sparticuz/chromium/releases/download/v148.0.0/chromium-v148.0.0-pack.x64.tar"
   );
   const remove = ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"];
   return {headless: true, ignoreHTTPSErrors: true, executablePath, args: chromium.args.filter(value => !remove.includes(value))};

@@ -29,9 +29,11 @@
     "test:files": "node --test --test-isolation=none tests/files.test.mjs",
     "test:database-startup": "svelte-kit sync && node --test --test-isolation=none tests/database-startup.test.mjs",
     "test:services": "npm run test:discord && npm run test:api && npm run test:claims && npm run test:render-limits && npm run test:coa-validation && npm run test:settings && npm run test:generation && npm run test:files && npm run test:database-startup",
-    "test:browser": "npm run test:svg-upload && npm run test:exports && npm run test:copied-links && npm run test:coa-import && npm run test:pattern-rendering && npm run test:settings-browser && npm run test:fmg-sync",
+    "test:browser": "npm run test:svg-upload && npm run test:exports && npm run test:copied-links && npm run test:coa-import && npm run test:pattern-rendering && npm run test:settings-browser && npm run test:fmg-sync && npm run test:api-raster",
     "test": "npm run test:services && npm run test:browser",
-    "test:fmg-sync": "node --test --test-isolation=none tests/fmg-sync.test.mjs"
+    "test:fmg-sync": "node --test --test-isolation=none tests/fmg-sync.test.mjs",
+    "test:api-raster": "svelte-kit sync && node --test --test-isolation=none tests/api-raster.test.mjs",
+    "test:production": "node --test --test-isolation=none tests/service-worker.test.mjs"
   },
   "repository": {
     "type": "git",
@@ -47,7 +49,7 @@
     "url": "https://github.com/Azgaar/Armoria/issues"
   },
   "dependencies": {
-    "@sparticuz/chromium-min": "138.0.1",
+    "@sparticuz/chromium-min": "148.0.0",
     "convert-svg-to-jpeg": "^0.7.1",
     "convert-svg-to-png": "^0.7.1",
     "dompurify": "^3.4.17",
@@ -55,12 +57,12 @@
     "mongodb": "^6.17.0",
     "node-html-parser": "^7.0.1",
     "path-data-polyfill": "^1.0.10",
-    "puppeteer-core": "24.11.2"
+    "puppeteer-core": "24.43.1"
   },
   "devDependencies": {
-    "@sveltejs/adapter-vercel": "^6.3.3",
-    "@sveltejs/kit": "^2.22.5",
-    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "@sveltejs/adapter-vercel": "6.3.4",
+    "@sveltejs/kit": "2.70.3",
+    "@sveltejs/vite-plugin-svelte": "7.3.1",
     "@types/eslint": "^9.6.1",
     "eslint": "^9.31.0",
     "eslint-config-prettier": "^10.1.5",
@@ -69,18 +71,21 @@
     "patch-package": "^8.0.1",
     "prettier": "^3.6.2",
     "prettier-plugin-svelte": "^3.4.0",
-    "puppeteer": "24.11.2",
-    "svelte": "^4.2.7",
+    "puppeteer": "24.43.1",
+    "svelte": "5.57.3",
     "svelte-check": "^4.2.2",
     "svelte-i18n": "^4.0.1",
     "tslib": "^2.8.1",
-    "typescript": "^5.8.3",
+    "typescript": "6.0.3",
     "typescript-eslint": "^8.36.0",
-    "vite": "^5.0.3",
+    "vite": "8.3.5",
     "workbox-core": "^7.3.0",
     "workbox-precaching": "^7.3.0",
     "workbox-routing": "^7.3.0",
     "workbox-strategies": "^7.3.0"
   },
-  "type": "module"
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  }
 }
