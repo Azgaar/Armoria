@@ -33,6 +33,28 @@ Navigate to [localhost:5173](http://localhost:5173). You should see the app runn
 
 To create an optimised version run `npm run build`.
 
+### Branches, deployment and validation
+
+The public Vercel app at https://armoria.vercel.app uses `sveltekit`, including the editor, image/claims API and Discord endpoint. The repository default branch remains `master`: it contains the legacy Rollup app and publishes `public` to `gh-pages` through its own master-only workflow. Keep changes to the Vercel application on `sveltekit`; do not use the legacy Pages deploy command for this branch. The open migration PR #188 tracks the branch transition.
+
+Use Node 24 (declared in `.node-version`) and `npm ci`. No service credentials are needed for validation:
+
+```sh
+PUPPETEER_SKIP_DOWNLOAD=true npm ci
+npx puppeteer browsers install chrome
+npm run check
+npm test
+npm run build
+```
+
+The browser installation command downloads Puppeteer's matching Chrome. On Linux, install any missing system libraries first; Puppeteer's `--install-deps` option requires root privileges. CI runs that installation through `sudo`, with an explicit shared browser cache, then runs all tests as the normal runner user. To use an existing Chromium installation instead, set `PUPPETEER_EXECUTABLE_PATH`. Restricted Linux containers may also require `PUPPETEER_NO_SANDBOX=1`; CI sets this only for its isolated test browser. `npm run test:services` runs API, claim/password, Discord, validation, settings, generation, file and lazy-database regressions. `npm run test:browser` runs SVG uploads, SVG/PNG/JPEG exports, copied links, imports/undo, rendering parity and saved-settings browser tests. `npm test` runs both groups sequentially so browser suites do not contend for shared development-server build caches. Individual `test:*` commands remain available below.
+
+The SvelteKit validation workflow runs this check, complete regression suite and production build on pull requests and pushes to `sveltekit`, using `npm ci` and the declared Node version. It needs no repository secrets, database or Discord registration. Service tests use fake external services and browser tests use local assets and block external requests. Keep real credentials out of test environments.
+
+Vercel's existing Git integration deploys upstream `sveltekit` commits. No environment variables are required for a basic build or procedural/explicit-COA image rendering. Runtime claims optionally require both `MONGO_ID` and `MONGO_PASS`; `MASTER_KEY` enables claim administrator access. `DISCORD_PUBLIC_KEY` enables signed Discord interactions; `ARMORIA_API_URL` optionally changes their image URL. Local command registration uses `DISCORD_APPLICATION_ID`, `DISCORD_BOT_TOKEN` and optionally `DISCORD_GUILD_ID`, and is never run in CI or a deployment build. See `.env.example` and the feature sections below.
+
+After merging, inspect the upstream merge commit's Vercel deployment and compare the public domain's HTML/hashed assets with its successful deployment URL before closing the issue and updating #238. A fork preview may require maintainer authorization even when a later upstream deployment succeeds. GitHub currently labels these Vercel deployments Preview although the public domain serves them; the private domain/branch configuration remains unverified. This workflow validates the app and does not change hosting configuration. Because `sveltekit` is not the default branch, completed issues must be closed explicitly after verification.
+
 ### Type checking
 
 Use Node 24 and the committed lockfile. From a clean checkout of `sveltekit`:

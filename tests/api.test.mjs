@@ -38,9 +38,9 @@ const mocks = {
   `,
   "@sparticuz/chromium-min": 'export default {args: [], executablePath: async () => "unused-test-browser"};',
   "convert-svg-to-png":
-    'export async function createConverter() { return {convert: async () => {throw new Error("private conversion failure");}}; }',
+    'export let calls = 0; export async function createConverter() { return {convert: async () => {calls++; throw new Error("private conversion failure");}}; }',
   "convert-svg-to-jpeg":
-    'export async function createConverter() { return {convert: async () => {throw new Error("private conversion failure");}}; }'
+    'export let calls = 0; export async function createConverter() { return {convert: async () => {calls++; throw new Error("private conversion failure");}}; }'
 };
 
 before(async () => {
@@ -48,6 +48,7 @@ before(async () => {
     root,
     configFile: false,
     logLevel: "silent",
+    ssr: {noExternal: ["@sparticuz/chromium-min", "convert-svg-to-png", "convert-svg-to-jpeg"]},
     server: {middlewareMode: true, hmr: false, watch: null},
     optimizeDeps: {noDiscovery: true, include: []},
     resolve: {alias: {$lib: root + "src/lib"}},
@@ -146,7 +147,10 @@ test("unexpected database, asset, and conversion failures return generic 500 JSO
   assets.setUnavailable(true);
   await expectError(await image(imageEvent({t1: "or", charges: [{charge: "eagle", t: "gules", p: "e"}]})), 500);
   assets.setUnavailable(false);
+  const png = await server.ssrLoadModule("convert-svg-to-png");
+  const previousCalls = png.calls;
   await expectError(await image(imageEvent({t1: "or"}, {format: "png"})), 500);
+  assert.equal(png.calls, previousCalls + 1, "the converter fixture must handle raster failures without launching Chrome");
 });
 
 test("seed markup cannot escape generated SVG identifiers", async () => {

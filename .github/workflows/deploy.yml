@@ -1,4 +1,6 @@
-name: Build and Deploy
+# Legacy Rollup app only. Changes to this file on sveltekit do not alter master.
+# Vercel builds/deploys sveltekit; see check.yml for its validation workflow.
+name: Legacy GitHub Pages deployment
 on:
   push:
     branches:

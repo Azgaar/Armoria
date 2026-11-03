@@ -1,4 +1,4 @@
-name: Svelte and TypeScript check
+name: SvelteKit validation
 
 on:
   pull_request:
@@ -9,19 +9,50 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: sveltekit-validation-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     env:
       PUPPETEER_SKIP_DOWNLOAD: "true"
-      MASTER_KEY: ""
+      PUPPETEER_CACHE_DIR: ${{ github.workspace }}/node_modules/.cache/puppeteer
+      PUPPETEER_NO_SANDBOX: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version-file: .node-version
           cache: npm
       - run: npm ci
+      - name: Install test browser and Linux dependencies
+        run: >-
+          sudo env "PUPPETEER_CACHE_DIR=$PUPPETEER_CACHE_DIR" "$(command -v node)"
+          node_modules/puppeteer/lib/cjs/puppeteer/node/cli.js
+          browsers install chrome --install-deps
       - run: npm run check
-      - run: npm run test:generation && npm run test:files && npm run test:database-startup
-      - run: npm run build
+      - run: npm run test:discord
+        timeout-minutes: 3
+      - run: npm run test:api
+        timeout-minutes: 3
+      - run: npm run test:claims
+        timeout-minutes: 3
+      - run: npm run test:render-limits
+        timeout-minutes: 3
+      - run: npm run test:coa-validation
+        timeout-minutes: 3
+      - run: npm run test:settings
+        timeout-minutes: 3
+      - run: npm run test:generation
+        timeout-minutes: 3
+      - run: npm run test:files
+        timeout-minutes: 3
+      - run: npm run test:database-startup
+        timeout-minutes: 3
+      - name: Editor, upload, export and rendering regressions
+        run: npm run test:browser
+      - name: Production build without service credentials
+        run: npm run build
