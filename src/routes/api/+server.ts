@@ -7,9 +7,7 @@ import {validateImageRequest} from "#lib/api/limits.ts";
 import {generate} from "#lib/scripts/generator.js";
 import {minify} from "minify-xml";
 import type {RequestHandler} from "./$types";
-import chromium from "@sparticuz/chromium-min";
-import {createConverter as createJpegConverter} from "convert-svg-to-jpeg";
-import {createConverter as createPngConverter} from "convert-svg-to-png";
+import {rasterizer} from "#lib/api/raster.ts";
 
 export const GET: RequestHandler = async ({url}) => {
   try {
@@ -21,7 +19,7 @@ export const GET: RequestHandler = async ({url}) => {
     const coaParam = params.get("coa");
     const coa = coaParam !== null ? parseCoa(coaParam) : await getCoa(seed);
     const svg = await render({...coa, ...(shield !== null ? {shield} : {}), seed}, size, colors);
-    return await send(format, svg);
+    return await send(format, svg, size);
   } catch (err) {
     return apiError(err);
   }
@@ -34,18 +32,7 @@ async function getCoa(seed: string) {
   return claimed?.coa || generate(seed);
 }
 
-let jpegConverter, pngConverter;
-// Resolve/download Chromium only after validation and only for a raster request.
-async function launchOptions() {
-  if (!process.env.VERCEL) return {headless: true, ignoreHTTPSErrors: true, channel: "chrome" as const};
-  const executablePath = await chromium.executablePath(
-    "https://github.com/Sparticuz/chromium/releases/download/v148.0.0/chromium-v148.0.0-pack.x64.tar"
-  );
-  const remove = ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"];
-  return {headless: true, ignoreHTTPSErrors: true, executablePath, args: chromium.args.filter(value => !remove.includes(value))};
-}
-
-async function send(format: string, svg: string) {
+async function send(format: string, svg: string, size: number) {
   if (format === "svg") {
     const svgMinified = minify(svg);
     return new Response(svgMinified, {
@@ -54,20 +41,10 @@ async function send(format: string, svg: string) {
     });
   }
 
-  let converter, contentType;
-  if (format === "png") {
-    pngConverter ||= await createPngConverter({launch: await launchOptions()});
-    converter = pngConverter;
-    contentType = "image/png";
-  } else if (format === "jpg" || format === "jpeg") {
-    jpegConverter ||= await createJpegConverter({launch: await launchOptions()});
-    converter = jpegConverter;
-    contentType = "image/jpeg";
-  } else {
-    throw new Error("Unexpected image format");
-  }
-
-  const buffer = await converter.convert(svg);
+  if (format !== "png" && format !== "jpg" && format !== "jpeg") throw new Error("Unexpected image format");
+  const rasterFormat = format === "png" ? "png" : "jpeg";
+  const buffer = await rasterizer.convert(svg, size, rasterFormat);
+  const contentType = `image/${rasterFormat}`;
   return new Response(buffer, {
     status: 200,
     headers: {"Content-Type": contentType, "Content-Length": String(buffer.length), "Cache-Control": "public, max-age=60"}

@@ -31,7 +31,7 @@ jobs:
       - name: Install test browser and Linux dependencies
         run: >-
           sudo env "PUPPETEER_CACHE_DIR=$PUPPETEER_CACHE_DIR" "$(command -v node)"
-          node_modules/puppeteer/lib/cjs/puppeteer/node/cli.js
+          node_modules/puppeteer/lib/puppeteer/node/cli.js
           browsers install chrome --install-deps
       - run: npm run check
       - run: npm run test:discord
@@ -51,6 +51,8 @@ jobs:
       - run: npm run test:files
         timeout-minutes: 3
       - run: npm run test:database-startup
+        timeout-minutes: 3
+      - run: npm run test:raster-lifecycle
         timeout-minutes: 3
       - name: Editor, upload, export and rendering regressions
         run: npm run test:browser

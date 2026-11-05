@@ -1,15 +1,16 @@
 import assert from "node:assert/strict";
 import {after, before, test} from "node:test";
+import {readFile} from "node:fs/promises";
 import {fileURLToPath} from "node:url";
 import {createServer} from "vite";
 import {svelte, vitePreprocess} from "@sveltejs/vite-plugin-svelte";
-import {createConverter as png} from "convert-svg-to-png";
-import {createConverter as jpeg} from "convert-svg-to-jpeg";
 import puppeteer from "puppeteer";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-let server, browser, page, image;
-const converters = [];
+let server, browser, page, image, rasterizer, chromium;
+const rasterBrowsers = [],
+  launchOptions = [];
+const previousVercel = process.env.VERCEL;
 const launch = {
   headless: true,
   executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || puppeteer.executablePath(),
@@ -19,18 +20,22 @@ const mocks = {
   "$app/env": "export const browser = false;",
   "$app/server": `import {readFileSync} from 'node:fs'; export function read(url) {return new Response(readFileSync(${JSON.stringify(root)} + url.replace(/^\\//, '')));}`,
   [root + "src/lib/api/claims.ts"]: `export async function getClaim() {throw new Error('Unexpected database lookup');}`,
-  "@sparticuz/chromium-min": 'export default {args: [], executablePath: async () => "unused-server-browser"};',
-  "convert-svg-to-png": 'export const createConverter = () => globalThis.armoriaRasterFixture("png");',
-  "convert-svg-to-jpeg": 'export const createConverter = () => globalThis.armoriaRasterFixture("jpeg");'
+  "@sparticuz/chromium-min": `export const downloads = []; export default {
+    args: ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--server-argument"],
+    executablePath: async url => {downloads.push(url); return "unused-server-browser";}
+  };`,
+  "puppeteer-core": "export default {launch: options => globalThis.armoriaRasterLaunch(options)};"
 };
 before(
   async () => {
-    // Keep the real route, renderer and converters; override only their browser
-    // launch location and external services. Never download a server browser or query claims.
-    globalThis.armoriaRasterFixture = async format => {
-      const converter = await (format === "png" ? png : jpeg)({launch});
-      converters.push(converter);
-      return converter;
+    // Keep the real route, renderer and rasterizer; replace only the launch location.
+    process.env.VERCEL = "1";
+    globalThis.armoriaRasterLaunch = async options => {
+      launchOptions.push(options);
+      const {channel, ...base} = options;
+      const browser = await puppeteer.launch({...base, ...launch});
+      rasterBrowsers.push(browser);
+      return browser;
     };
     server = await createServer({
       root,
@@ -39,7 +44,7 @@ before(
       server: {middlewareMode: true, hmr: false, watch: null},
       optimizeDeps: {noDiscovery: true, include: []},
       resolve: {alias: {"#lib": root + "src/lib"}},
-      ssr: {noExternal: ["@sparticuz/chromium-min", "convert-svg-to-png", "convert-svg-to-jpeg"]},
+      ssr: {noExternal: ["@sparticuz/chromium-min", "puppeteer-core"]},
       plugins: [
         {
           name: "real-raster-services",
@@ -55,6 +60,11 @@ before(
       ]
     });
     image = (await server.ssrLoadModule("/src/routes/api/+server.ts")).GET;
+    ({rasterizer} = await server.ssrLoadModule(root + "src/lib/api/raster.ts"));
+    chromium = await server.ssrLoadModule("@sparticuz/chromium-min");
+    assert.equal(chromium.downloads.length, 0, "module import must not resolve/download Chromium");
+    await request("svg");
+    assert.equal(chromium.downloads.length, 0, "SVG requests must not resolve/download Chromium");
     browser = await puppeteer.launch(launch);
     page = await browser.newPage();
     await page.setRequestInterception(true);
@@ -63,14 +73,16 @@ before(
   {timeout: 60000}
 );
 after(async () => {
-  await Promise.all(converters.map(converter => converter.close()));
+  await rasterizer?.close();
   await browser?.close();
   await server?.close();
-  delete globalThis.armoriaRasterFixture;
+  delete globalThis.armoriaRasterLaunch;
+  if (previousVercel === undefined) delete process.env.VERCEL;
+  else process.env.VERCEL = previousVercel;
 });
-async function request(format, or = "123456") {
+async function request(format, or = "123456", {size = 200, coa = {t1: "or", shield: "heater"}} = {}) {
   const url = new URL("https://example.test/api");
-  url.search = new URLSearchParams({format, size: "200", seed: "123", or, coa: JSON.stringify({t1: "or", shield: "heater"})});
+  url.search = new URLSearchParams({format, size: String(size), seed: "123", or, coa: JSON.stringify(coa)});
   const response = await image({url});
   assert.equal(response.status, 200);
   return response;
@@ -120,3 +132,99 @@ for (const format of ["png", "jpeg", "jpg"]) {
     }
   );
 }
+
+async function inspectPixels(bytes, mime, size = 200) {
+  return page.evaluate(
+    async ({base64, mime, size}) => {
+      const blob = await (await fetch(`data:${mime};base64,${base64}`)).blob();
+      const url = URL.createObjectURL(blob);
+      try {
+        const image = new Image();
+        image.src = url;
+        await image.decode();
+        const canvas = document.createElement("canvas");
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(image, 0, 0);
+        return {width: image.width, height: image.height, pixels: [...ctx.getImageData(0, 0, size, size).data]};
+      } finally {
+        URL.revokeObjectURL(url);
+      }
+    },
+    {base64: Buffer.from(bytes).toString("base64"), mime, size}
+  );
+}
+
+test("the production launch path pins Chromium 153 and CDP and reuses its browser", async () => {
+  assert.equal(launchOptions.length, 1);
+  assert.deepEqual(chromium.downloads, [
+    "https://github.com/Sparticuz/chromium/releases/download/v153.0.0/chromium-v153.0.0-pack.x64.tar"
+  ]);
+  assert.equal(launchOptions[0].headless, "shell");
+  assert.equal(launchOptions[0].protocol, "cdp");
+  assert.deepEqual(launchOptions[0].args, ["--server-argument"]);
+  assert.equal((await rasterBrowsers[0].pages()).length, 1, "only the initial blank page remains after conversions");
+});
+
+test("concurrent real requests retain independent dimensions and palettes without retained pages", {timeout: 30000}, async () => {
+  const requests = [
+    {size: 80, color: "123456", format: "png"},
+    {size: 120, color: "abcdef", format: "jpeg"},
+    {size: 160, color: "ff8800", format: "png"}
+  ];
+  const outputs = await Promise.all(
+    requests.map(async spec => {
+      const response = await request(spec.format, spec.color, {size: spec.size});
+      const bytes = Buffer.from(await response.arrayBuffer());
+      assert.equal(Number(response.headers.get("content-length")), bytes.length);
+      assert.equal(response.headers.get("cache-control"), "public, max-age=60");
+      return bytes;
+    })
+  );
+  for (let i = 0; i < requests.length; i++) {
+    const spec = requests[i];
+    const actual = await inspectPixels(outputs[i], "image/" + spec.format, spec.size);
+    const reference = await request("svg", spec.color, {size: spec.size});
+    const expected = await inspectPixels(await reference.arrayBuffer(), "image/svg+xml", spec.size);
+    assert.equal(actual.width, spec.size);
+    assert.equal(actual.height, spec.size);
+    const center = 4 * ((spec.size / 2) * spec.size + spec.size / 2);
+    for (let channel = 0; channel < 3; channel++)
+      assert.ok(Math.abs(actual.pixels[center + channel] - expected.pixels[center + channel]) <= (spec.format === "png" ? 0 : 5));
+  }
+  assert.equal(launchOptions.length, 1);
+  assert.equal((await rasterBrowsers[0].pages()).length, 1);
+});
+
+test("charged and patterned raster artwork retains SVG geometry, dependencies and transparency", {timeout: 30000}, async () => {
+  const coa = {
+    t1: "vair-or-azure",
+    shield: "oldFrench",
+    charges: [{charge: "roundel", t: "gules", t2: "vair-or-vert", p: "e"}],
+    ordinaries: [{ordinary: "bordure", t: "gules"}]
+  };
+  const png = await request("png", "123456", {coa});
+  const svg = await request("svg", "123456", {coa});
+  const actual = await inspectPixels(await png.arrayBuffer(), "image/png");
+  const expected = await inspectPixels(await svg.arrayBuffer(), "image/svg+xml");
+  assert.deepEqual(actual.pixels, expected.pixels);
+  assert.equal(actual.pixels[3], 0, "PNG retains transparency outside the shield");
+  const jpeg = await request("jpeg", "123456", {coa});
+  const opaque = await inspectPixels(await jpeg.arrayBuffer(), "image/jpeg");
+  assert.ok(
+    opaque.pixels.slice(0, 3).every(channel => channel >= 250),
+    "JPEG retains a white background"
+  );
+});
+
+test("embedded WOFF2 fonts render without network access and affect inscription pixels", {timeout: 30000}, async () => {
+  const font = (await readFile(new URL("./fixtures/fonts/almendra-sc.woff2", import.meta.url))).toString("base64");
+  const svg = embedded =>
+    `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200">${embedded ? `<style>@font-face{font-family:Fixture;src:url(data:font/woff2;base64,${font})}</style>` : ""}<rect width="200" height="200" fill="white"/><text x="5" y="100" font-size="30" font-family="Fixture,serif">Armoria AV</text></svg>`;
+  const actual = await inspectPixels(await rasterizer.convert(svg(true), 200, "png"), "image/png");
+  const fallback = await inspectPixels(await rasterizer.convert(svg(false), 200, "png"), "image/png");
+  const differences = actual.pixels.filter((value, i) => value !== fallback.pixels[i]).length;
+  assert.ok(differences > 100, "the embedded face must load, rather than silently rendering the fallback font");
+  assert.equal((await rasterBrowsers[0].pages()).length, 1);
+});

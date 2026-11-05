@@ -5,7 +5,7 @@ import {createServer} from "vite";
 import {svelte, vitePreprocess} from "@sveltejs/vite-plugin-svelte";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-let server, image, claims, generator, assets, png, jpeg, chromium, limits, validation, renderer;
+let server, image, claims, generator, assets, raster, limits, validation, renderer;
 const previousVercel = process.env.VERCEL;
 const mocks = {
   "$app/env": "export const browser = false;",
@@ -26,19 +26,14 @@ const mocks = {
     export function reset() { calls = 0; }
     export function read(url) { calls++; return new Response(readFileSync(${JSON.stringify(root)} + url.replace(/^\\//, ''))); }
   `,
-  "@sparticuz/chromium-min": `
-    export let calls = 0;
-    export function reset() { calls = 0; }
-    export default {args:[], async executablePath() { calls++; return 'unused-browser'; }};
-  `
-};
-for (const format of ["png", "jpeg"]) {
-  mocks[`convert-svg-to-${format}`] = `
+  [root + "src/lib/api/raster.ts"]: `
     export const inputs = [];
     export function reset() { inputs.length = 0; }
-    export async function createConverter() { return {convert: async svg => { inputs.push(svg); return Buffer.from('test-image'); }}; }
-  `;
-}
+    export const rasterizer = {async convert(svg, size, format) {
+      inputs.push({svg, size, format}); return Buffer.from('test-image');
+    }};
+  `
+};
 
 before(async () => {
   process.env.VERCEL = "1";
@@ -48,7 +43,6 @@ before(async () => {
     logLevel: "silent",
     server: {middlewareMode: true, hmr: false, watch: null},
     optimizeDeps: {noDiscovery: true, include: []},
-    ssr: {noExternal: ["@sparticuz/chromium-min", "convert-svg-to-png", "convert-svg-to-jpeg"]},
     resolve: {alias: {"#lib": root + "src/lib"}},
     plugins: [
       {
@@ -68,13 +62,11 @@ before(async () => {
   claims = await server.ssrLoadModule(root + "src/lib/api/claims.ts");
   generator = await server.ssrLoadModule(root + "src/lib/scripts/generator.js");
   assets = await server.ssrLoadModule("$app/server");
-  png = await server.ssrLoadModule("convert-svg-to-png");
-  jpeg = await server.ssrLoadModule("convert-svg-to-jpeg");
-  chromium = await server.ssrLoadModule("@sparticuz/chromium-min");
+  raster = await server.ssrLoadModule(root + "src/lib/api/raster.ts");
   limits = await server.ssrLoadModule("/src/lib/api/limits.ts");
   validation = await server.ssrLoadModule("/src/lib/api/validation.ts");
   renderer = await server.ssrLoadModule("/src/lib/api/renderer.js");
-  assert.equal(chromium.calls, 0, "module import must not download Chromium");
+  assert.equal(raster.inputs.length, 0, "module import must not rasterize");
 });
 after(async () => {
   if (previousVercel === undefined) delete process.env.VERCEL;
@@ -82,7 +74,7 @@ after(async () => {
   await server?.close();
 });
 beforeEach(t => {
-  for (const mock of [claims, generator, assets, png, jpeg, chromium]) mock.reset();
+  for (const mock of [claims, generator, assets, raster]) mock.reset();
   t.mock.method(globalThis, "fetch", async () => new Response(Buffer.from("font-fixture")));
   t.mock.method(console, "error", () => {});
 });
@@ -107,8 +99,7 @@ function noWork({lookup = false} = {}) {
   if (!lookup) assert.equal(claims.calls, 0);
   assert.equal(assets.calls, 0);
   assert.equal(fetch.mock.calls.length, 0);
-  assert.equal(chromium.calls, 0);
-  assert.equal(png.inputs.length + jpeg.inputs.length, 0);
+  assert.equal(raster.inputs.length, 0);
 }
 const charge = {charge: "eagle", t: "gules", p: "e"};
 const inscription = {text: "safe", font: "Arial", path: "M0 0L100 0", size: 12};
@@ -228,7 +219,6 @@ test("valid SVG dimensions include boundaries, defaults, and the legacy lowercas
     assert.match(svg, new RegExp(`width="${expected}"`));
     assert.match(svg, new RegExp(`height="${expected}"`));
   }
-  assert.equal(chromium.calls, 0);
 });
 
 test("accepted raster requests pass bounded dimensions to mocked converters without allocating images", async () => {
@@ -237,9 +227,15 @@ test("accepted raster requests pass bounded dimensions to mocked converters with
     assert.equal(response.status, 200);
     assert.equal(response.headers.get("content-type"), format === "png" ? "image/png" : "image/jpeg");
   }
-  assert.equal(png.inputs.length, 1);
-  assert.equal(jpeg.inputs.length, 2);
-  for (const svg of [...png.inputs, ...jpeg.inputs]) assert.match(svg, /width="4096" height="4096"/);
+  assert.deepEqual(
+    raster.inputs.map(({size, format}) => ({size, format})),
+    [
+      {size: 4096, format: "png"},
+      {size: 4096, format: "jpeg"},
+      {size: 4096, format: "jpeg"}
+    ]
+  );
+  for (const {svg} of raster.inputs) assert.match(svg, /width="4096" height="4096"/);
 });
 
 test("collection boundaries and normal editor controls remain valid", async () => {

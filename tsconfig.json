@@ -9,7 +9,8 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "types": ["$app/types", "node"]
   },
   "include": ["src", "*.ts", "*.js"],
   "exclude": ["src/service-worker"]

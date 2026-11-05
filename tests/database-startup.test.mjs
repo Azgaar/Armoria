@@ -33,11 +33,8 @@ const mocks = {
       return new Response(readFileSync(${JSON.stringify(root)} + url.replace(/^\\//, '')));
     }
   `,
-  "@sparticuz/chromium-min": 'export default {args: [], executablePath: async () => "unused-test-browser"};',
-  "convert-svg-to-png":
-    'export async function createConverter() { return {convert: async () => {throw new Error("private conversion failure");}}; }',
-  "convert-svg-to-jpeg":
-    'export async function createConverter() { return {convert: async () => {throw new Error("private conversion failure");}}; }'
+  [root + "src/lib/api/raster.ts"]:
+    `export const rasterizer = {async convert() {throw new Error("private conversion failure");}};`
 };
 
 before(async () => {
