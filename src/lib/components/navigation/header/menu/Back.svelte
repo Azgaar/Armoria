@@ -1,6 +1,6 @@
 <script>
   import {t} from "svelte-i18n";
-  import {changes, state, history} from "$lib/data/stores";
+  import {changes, state, history} from "#lib/data/stores.ts";
   import NavButton from "../shared/NavButton.svelte";
 
   const exitEdit = () => {

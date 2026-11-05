@@ -17,16 +17,16 @@ before(
       logLevel: "silent",
       server: {middlewareMode: true, hmr: false, watch: null},
       optimizeDeps: {noDiscovery: true, include: []},
-      resolve: {alias: {$lib: root + "src/lib"}},
+      resolve: {alias: {"#lib": root + "src/lib"}},
       plugins: [
         {
           name: "renderer-assets",
           enforce: "pre",
           resolveId(id) {
-            if (["$app/server", "$app/environment"].includes(id)) return "\0" + id;
+            if (["$app/server", "$app/env"].includes(id)) return "\0" + id;
           },
           load(id) {
-            if (id === "\0$app/environment") return "export const browser = false;";
+            if (id === "\0$app/env") return "export const browser = false;";
             if (id === "\0$app/server")
               return `import {readFileSync} from 'node:fs'; export function read(url) {return new Response(readFileSync(${JSON.stringify(root)} + url.replace(/^\\//, '')));}`;
           }

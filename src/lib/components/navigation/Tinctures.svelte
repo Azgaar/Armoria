@@ -1,14 +1,14 @@
 <script lang="ts">
-  import {settingsStorage} from "$lib/data/storage";
+  import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
   import {t} from "svelte-i18n";
   import {fade} from "svelte/transition";
   import {flip} from "svelte/animate";
-  import {colors, tinctures, state, message} from "$lib/data/stores";
-  import {camelize} from "$lib/scripts/utils";
-  import {tooltip} from "$lib/scripts/tooltip";
-  import {DEFAULT_COLORS, DEFAULT_TINCTURES} from "$lib/config/defaults";
-  import type {ChancesObject, Tinctures, TinctureTypeChances} from "$lib/types/tinctures";
+  import {colors, tinctures, state, message} from "#lib/data/stores.ts";
+  import {camelize} from "#lib/scripts/utils.ts";
+  import {tooltip} from "#lib/scripts/tooltip.ts";
+  import {DEFAULT_COLORS, DEFAULT_TINCTURES} from "#lib/config/defaults.ts";
+  import type {ChancesObject, Tinctures, TinctureTypeChances} from "#lib/types/tinctures.js";
 
   const addLine = {show: false, name: "", type: "colours" as "metals" | "colours" | "stains", color: "#96C8FA", chance: 3};
   const mandatoryTypes = ["metals", "colours"];

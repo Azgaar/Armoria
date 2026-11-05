@@ -2,8 +2,8 @@
   // @ts-check
   import {t, dictionary, locale} from "svelte-i18n";
   import {fade} from "svelte/transition";
-  import {shield, state} from "$lib/data/stores";
-  import {attributionLink as link, attributionUrl, escapeHtml} from "$lib/scripts/attribution";
+  import {shield, state} from "#lib/data/stores.ts";
+  import {attributionLink as link, attributionUrl, escapeHtml} from "#lib/scripts/attribution.ts";
 
   const wetaShield = (shield: string) => ["noldor", "gondor", "easterling", "ironHills", "urukHai", "moriaOrc"].includes(shield);
 

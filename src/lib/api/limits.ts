@@ -1,7 +1,7 @@
 import {InvalidCoaError, RequestLimitError} from "./responses";
-import {COA_LIMITS, limitText} from "$lib/coa/limits";
-import {shields} from "$lib/data/shields";
-export {limitText, validateCoaComplexity} from "$lib/coa/limits";
+import {COA_LIMITS, limitText} from "#lib/coa/limits.ts";
+import {shields} from "#lib/data/shields.ts";
+export {limitText, validateCoaComplexity} from "#lib/coa/limits.ts";
 
 export const API_LIMITS = {...COA_LIMITS, imageSize: 4096, urlBytes: 64 * 1024} as const;
 

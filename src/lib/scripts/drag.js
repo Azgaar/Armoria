@@ -1,13 +1,13 @@
 import {get} from "svelte/store";
-import {changes, grid, shield} from "$lib/data/stores";
-import {shields} from "$lib/data/dataModel";
+import {changes, grid, shield} from "#lib/data/stores.ts";
+import {shields} from "#lib/data/dataModel.js";
 
 /** @typedef {{x?: number, y?: number, size?: number, stretch?: number, angle?: number, p?: string, sinister?: boolean | 0 | 1, reversed?: boolean | 0 | 1}} Transformable */
 /**
  * @template {Transformable} T
  * @param {MouseEvent} event
  * @param {T} charge
- * @param {import("$lib/types/coa").Coa} coa
+ * @param {import("#lib/types/coa.js").Coa} coa
  * @param {{move: boolean, resize: boolean, rotate: boolean, onMove?: (event: MouseEvent, charge: T) => void, onEnd?: (charge: T) => void}} [options]
  */
 export function drag(

@@ -1,13 +1,13 @@
 import {get} from "svelte/store";
-import {lines, patterns, shields} from "$lib/data/dataModel";
-import {colors, shield, uploaded} from "$lib/data/stores";
-import {sanitizeSvg} from "$lib/scripts/sanitizeSvg";
-import {browser} from "$app/environment";
+import {lines, patterns, shields} from "#lib/data/dataModel.js";
+import {colors, shield, uploaded} from "#lib/data/stores.ts";
+import {sanitizeSvg} from "#lib/scripts/sanitizeSvg.ts";
+import {browser} from "$app/env";
 
 /** @type {Record<string, boolean>} */
 const loadedCharges = {};
 
-/** @param {import("$lib/types/data").Template} obj @param {string} [line] */
+/** @param {import("#lib/types/data.js").Template} obj @param {string} [line] */
 export const getTemplate = (obj, line) => {
   if (!line || line === "straight" || !obj.templateLined) return obj.template || "";
   const linePath = lines.data[line];

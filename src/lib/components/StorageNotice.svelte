@@ -1,6 +1,6 @@
 <script lang="ts">
   import {t} from "svelte-i18n";
-  import {storageStatus} from "$lib/data/storage";
+  import {storageStatus} from "#lib/data/storage.ts";
 
   let dismissed = false;
 </script>

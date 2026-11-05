@@ -1,6 +1,6 @@
-import {InvalidCoaError, RequestLimitError} from "$lib/coa/errors";
+import {InvalidCoaError, RequestLimitError} from "#lib/coa/errors.ts";
 import {ClaimsUnavailableError} from "./claimErrors";
-export {InvalidCoaError, RequestLimitError} from "$lib/coa/errors";
+export {InvalidCoaError, RequestLimitError} from "#lib/coa/errors.ts";
 
 /** Escape text and quoted attributes in the API's manually assembled HTML/SVG. */
 export function escapeMarkup(value: string): string {

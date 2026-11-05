@@ -1,17 +1,17 @@
 <script lang="ts">
-  import {getFilesFromDropEvent, getFilesFromInputEvent} from "$lib/scripts/files";
-  import {settingsStorage} from "$lib/data/storage";
+  import {getFilesFromDropEvent, getFilesFromInputEvent} from "#lib/scripts/files.ts";
+  import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
   import {t} from "svelte-i18n";
   import LicenseList from "./LicenseList.svelte";
-  import {sanitizeSvg} from "$lib/scripts/sanitizeSvg";
-  import {state, message, shield, uploaded} from "$lib/data/stores";
-  import {charges, chargeSets, DEFAULT_SHIELD_BOX, shields} from "$lib/data/dataModel";
-  import {registerCharge} from "$lib/data/charges";
-  import {updateCharge} from "$lib/scripts/getters";
-  import {tooltip} from "$lib/scripts/tooltip";
-  import {camelize} from "$lib/scripts/utils";
-  import {query} from "$lib/scripts/aliases";
+  import {sanitizeSvg} from "#lib/scripts/sanitizeSvg.ts";
+  import {state, message, shield, uploaded} from "#lib/data/stores.ts";
+  import {charges, chargeSets, DEFAULT_SHIELD_BOX, shields} from "#lib/data/dataModel.js";
+  import {registerCharge} from "#lib/data/charges.js";
+  import {updateCharge} from "#lib/scripts/getters.js";
+  import {tooltip} from "#lib/scripts/tooltip.ts";
+  import {camelize} from "#lib/scripts/utils.ts";
+  import {query} from "#lib/scripts/aliases.ts";
 
   let dragging = false;
   let selected = false;

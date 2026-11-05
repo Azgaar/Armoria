@@ -6,7 +6,7 @@
   import EditorTincture from "./EditorTincture.svelte";
   import EditorType from "./EditorType.svelte";
 
-  export let field: import("$lib/types/editor").Field;
+  export let field: import("#lib/types/editor.js").Field;
   export let shield: string | undefined = undefined;
 </script>
 

@@ -1,12 +1,12 @@
 <script lang="ts">
-  import {settingsStorage} from "$lib/data/storage";
+  import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
   import {t} from "svelte-i18n";
   import NavButton from "../../shared/NavButton.svelte";
   import NavItem from "../../shared/NavItem.svelte";
   import Lock from "../../shared/Lock.svelte";
-  import {shields, shieldSets, shieldTypes} from "$lib/data/shields";
-  import {shield, changes, state} from "$lib/data/stores";
+  import {shields, shieldSets, shieldTypes} from "#lib/data/shields.ts";
+  import {shield, changes, state} from "#lib/data/stores.ts";
 
   const changeShield = (value: string) => {
     shield.set(value);

@@ -2,7 +2,7 @@
   // @ts-check
   import {t} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
-  import {divisions} from "$lib/data/dataModel";
+  import {divisions} from "#lib/data/dataModel.js";
   export let division: string;
   export let t1: string;
   export let t2: string;

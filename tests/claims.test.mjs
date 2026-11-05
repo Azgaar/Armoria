@@ -8,9 +8,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 let server, routes, database, passwords, env, renderer, connector;
 const secrets = ["owner-secret", "wrong-secret", "master-secret"];
 const mocks = {
-  "$app/environment": "export const browser = false;",
-  "$env/dynamic/private": 'export const env = {MASTER_KEY: "master-secret", MONGO_ID: "test", MONGO_PASS: "test"};',
-  [root + "src/lib/api/renderer"]: `
+  "$app/env": "export const browser = false;",
+  [root + "src/lib/server/env.ts"]: 'export const env = {MASTER_KEY: "master-secret", MONGO_ID: "test", MONGO_PASS: "test"};',
+  [root + "src/lib/api/renderer.js"]: `
     export let fail = false, calls = 0;
     export function setFail(value) { fail = value; calls = 0; }
     export async function render() { calls++; if(fail) throw new Error("owner-secret wrong-secret master-secret"); return '<svg/>'; }
@@ -63,7 +63,7 @@ before(async () => {
     ssr: {noExternal: ["mongodb"]},
     server: {middlewareMode: true, hmr: false, watch: null},
     optimizeDeps: {noDiscovery: true, include: []},
-    resolve: {alias: {$lib: root + "src/lib"}},
+    resolve: {alias: {"#lib": root + "src/lib"}},
     plugins: [
       {
         name: "claims-test-services",
@@ -80,8 +80,8 @@ before(async () => {
   routes = await server.ssrLoadModule("/src/routes/api/claims/[name]/+server.ts");
   database = await server.ssrLoadModule("mongodb");
   passwords = await server.ssrLoadModule("/src/lib/server/claimPasswords.ts");
-  ({env} = await server.ssrLoadModule("$env/dynamic/private"));
-  renderer = await server.ssrLoadModule(root + "src/lib/api/renderer");
+  ({env} = await server.ssrLoadModule(root + "src/lib/server/env.ts"));
+  renderer = await server.ssrLoadModule(root + "src/lib/api/renderer.js");
   connector = await server.ssrLoadModule("/src/lib/api/dbConnector.ts");
 });
 after(async () => server?.close());

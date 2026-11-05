@@ -1,9 +1,9 @@
 <script lang="ts">
-  import {settingsStorage} from "$lib/data/storage";
+  import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
-  import {DEFAULT_FONTS} from "$lib/config/defaults";
-  import {fonts, message, state} from "$lib/data/stores";
-  import {markdown} from "$lib/scripts/i18n";
+  import {DEFAULT_FONTS} from "#lib/config/defaults.ts";
+  import {fonts, message, state} from "#lib/data/stores.ts";
+  import {markdown} from "#lib/scripts/i18n.ts";
   import {t} from "svelte-i18n";
   import {fade, fly} from "svelte/transition";
 

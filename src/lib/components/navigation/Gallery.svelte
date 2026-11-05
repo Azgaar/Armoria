@@ -1,9 +1,9 @@
 <script lang="ts">
   // @ts-check
-  import {fontColor, tinctures, history, matrices, matrix, state} from "$lib/data/stores";
-  import {download} from "$lib/scripts/download";
-  import {generate} from "$lib/scripts/generator";
-  import {minmax} from "$lib/scripts/utils";
+  import {fontColor, tinctures, history, matrices, matrix, state} from "#lib/data/stores.ts";
+  import {download} from "#lib/scripts/download.js";
+  import {generate} from "#lib/scripts/generator.js";
+  import {minmax} from "#lib/scripts/utils.ts";
   import {fade} from "svelte/transition";
   import COA from "./../object/COA.svelte";
 

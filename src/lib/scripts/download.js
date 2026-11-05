@@ -1,8 +1,8 @@
 import {get} from "svelte/store";
-import {scale, fonts} from "$lib/data/stores";
-import {coaMetadata, embedCoa} from "$lib/scripts/metadata";
+import {scale, fonts} from "#lib/data/stores.ts";
+import {coaMetadata, embedCoa} from "#lib/scripts/metadata.ts";
 
-/** @param {string | number | null | import("$lib/types/coa").Coa[]} i @param {string} [format] */
+/** @param {string | number | null | import("#lib/types/coa.js").Coa[]} i @param {string} [format] */
 export async function download(i, format = "png") {
   if (format === "json") {
     if (!Array.isArray(i)) throw new Error("JSON downloads require a list of coats of arms");
@@ -55,7 +55,7 @@ export async function download(i, format = "png") {
     };
   }
 
-  /** @param {import("$lib/types/coa").Coa[]} coas */
+  /** @param {import("#lib/types/coa.js").Coa[]} coas */
   function downloadJSON(coas) {
     const blob = new Blob([JSON.stringify(coas)], {type: "application/json"});
     const url = window.URL.createObjectURL(blob);

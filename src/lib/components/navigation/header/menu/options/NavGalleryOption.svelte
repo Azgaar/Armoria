@@ -1,12 +1,12 @@
 <script lang="ts">
-  import {settingsStorage} from "$lib/data/storage";
+  import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
   import {t} from "svelte-i18n";
   import NavButton from "../../shared/NavButton.svelte";
   import NavItem from "../../shared/NavItem.svelte";
   import Lock from "../../shared/Lock.svelte";
-  import {sizes} from "$lib/config/options";
-  import {size} from "$lib/data/stores";
+  import {sizes} from "#lib/config/options.js";
+  import {size} from "#lib/data/stores.ts";
 
   const changeSize = (value: string | number) => {
     if (typeof value !== "number") return;

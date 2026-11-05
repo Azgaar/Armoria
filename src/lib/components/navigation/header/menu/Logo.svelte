@@ -1,6 +1,6 @@
 <script lang="ts">
   // @ts-check
-  import {iconedNav} from "$lib/data/stores";
+  import {iconedNav} from "#lib/data/stores.ts";
 
   const redirectToHome = () => {
     location.href = location.origin + location.pathname;

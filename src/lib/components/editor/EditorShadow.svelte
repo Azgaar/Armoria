@@ -1,10 +1,10 @@
 <script lang="ts">
   // @ts-check
   import {t} from "svelte-i18n";
-  import {tooltip} from "$lib/scripts/tooltip";
+  import {tooltip} from "#lib/scripts/tooltip.ts";
   import Switch from "./Switch.svelte";
 
-  import type {Shadow} from "$lib/types/coa";
+  import type {Shadow} from "#lib/types/coa.js";
   export let shadow: Shadow | undefined;
 
   let showShadow = !!shadow;

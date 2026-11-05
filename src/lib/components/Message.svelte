@@ -3,7 +3,7 @@
   import {onMount} from "svelte";
   import {fly, fade} from "svelte/transition";
   import {t} from "svelte-i18n";
-  import {message} from "$lib/data/stores";
+  import {message} from "#lib/data/stores.ts";
 
   const {text, type, timeout} = $message || {text: "", type: "info", timeout: 0};
 

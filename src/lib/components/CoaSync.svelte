@@ -2,12 +2,12 @@
   // @ts-check
   // Keeps the edited coat of arms outside this page current: the `coa` URL parameter, so a reload or a shared
   // link shows it as it is, and Fantasy Map Generator when it opened the emblem here
-  import {changes, colors, shield, state} from "$lib/data/stores";
-  import {getSvgForMap} from "$lib/scripts/download";
-  import {resolveCoa} from "$lib/scripts/coa";
-  import {onDestroy} from "svelte";
-  import {afterNavigate, replaceState} from "$app/navigation";
-  import {page} from "$app/stores";
+  import {changes, colors, shield, state as editorState} from "#lib/data/stores.ts";
+  import {getSvgForMap} from "#lib/scripts/download.js";
+  import {resolveCoa} from "#lib/scripts/coa.ts";
+  import {onDestroy, untrack} from "svelte";
+  import {afterNavigate, goto} from "$app/navigation";
+  import {page} from "$app/state";
 
   const parameters = new URLSearchParams(location.search);
   const session = parameters.get("from") === "FMG" ? parameters.get("session") : null;
@@ -17,14 +17,22 @@
   let sent: string | null = null; // the coat of arms the map shows; the first one is the emblem as it came
   let timer: number;
   let revision = 0;
-  let routerReady = false;
+  let routerReady = $state(false);
   afterNavigate(() => {
     routerReady = true;
   });
 
-  $: current = $state.edit && $changes[0] ? JSON.stringify(resolveCoa($changes[0] as string, $colors, $shield)) : null;
-  $: if (routerReady) syncUrl(current, $state.edit || $state.view);
-  $: if (session && returnOrigin) scheduleSend(current);
+  const current = $derived(
+    $editorState.edit && $changes[0] ? JSON.stringify(resolveCoa($changes[0] as string, $colors, $shield)) : null
+  );
+  $effect(() => {
+    const coa = current;
+    const open = $editorState.edit || $editorState.view;
+    if (routerReady) untrack(() => syncUrl(coa, open));
+  });
+  $effect(() => {
+    if (session && returnOrigin) scheduleSend(current);
+  });
 
   onDestroy(() => {
     revision++;
@@ -41,7 +49,9 @@
       url.searchParams.delete("coa");
       url.searchParams.delete("seed");
     }
-    if (url.href !== location.href) replaceState(url, $page.state);
+    // The URL is copied from location.href; only its query changes, so it already includes the base path.
+    // eslint-disable-next-line svelte/no-navigation-without-resolve
+    if (url.href !== location.href) void goto(url, {shallow: true, replaceState: true, state: page.state});
   }
 
   function scheduleSend(coa: string | null) {

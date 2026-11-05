@@ -14,12 +14,12 @@ before(async () => {
     logLevel: "silent",
     server: {middlewareMode: true, hmr: false, watch: null},
     optimizeDeps: {noDiscovery: true, include: []},
-    resolve: {alias: {$lib: root + "src/lib"}},
+    resolve: {alias: {"#lib": root + "src/lib"}},
     plugins: [
       {
         name: "generation-environment",
         resolveId(id) {
-          if (id === "$app/environment") return "\0generation-environment";
+          if (id === "$app/env") return "\0generation-environment";
         },
         load(id) {
           if (id === "\0generation-environment") return "export const browser = false;";

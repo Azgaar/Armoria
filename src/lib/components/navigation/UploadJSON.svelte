@@ -1,10 +1,10 @@
 <script lang="ts">
   // @ts-check
   import {t} from "svelte-i18n";
-  import {changes, colors, fonts, history, matrices, matrix, message, state, uploaded} from "$lib/data/stores";
+  import {changes, colors, fonts, history, matrices, matrix, message, state, uploaded} from "#lib/data/stores.ts";
 
-  import {IMPORT_LIMITS, parseCoaImport} from "$lib/coa/validation";
-  import {RequestLimitError} from "$lib/coa/errors";
+  import {IMPORT_LIMITS, parseCoaImport} from "#lib/coa/validation.ts";
+  import {RequestLimitError} from "#lib/coa/errors.ts";
 
   let dragging = false;
 

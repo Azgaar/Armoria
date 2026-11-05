@@ -2,13 +2,13 @@
   // @ts-check
   import {t} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
-  import {shieldSets, shieldTypes} from "$lib/data/dataModel";
-  import {shield as defaultShield} from "$lib/data/stores";
+  import {shieldSets, shieldTypes} from "#lib/data/dataModel.js";
+  import {shield as defaultShield} from "#lib/data/stores.ts";
 
   export let shield: string | undefined = undefined;
   export let t1: string;
 
-  let shieldsData: (import("$lib/types/coa").Coa & {shield: string})[] = [];
+  let shieldsData: (import("#lib/types/coa.js").Coa & {shield: string})[] = [];
   let query: string;
   let queryOld: string;
   let type = getShieldType(shield || $defaultShield);

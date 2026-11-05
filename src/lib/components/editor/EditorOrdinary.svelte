@@ -2,7 +2,7 @@
   // @ts-check
   import {t} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
-  import {ordinaries} from "$lib/data/dataModel";
+  import {ordinaries} from "#lib/data/dataModel.js";
 
   export let ordinary: string;
   export let line: string;

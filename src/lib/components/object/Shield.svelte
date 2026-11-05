@@ -3,9 +3,9 @@
   import Ordinary from "./Ordinary.svelte";
   import Charge from "./Charge.svelte";
   import Inscription from "./Inscription.svelte";
-  import {divisions, shields} from "$lib/data/dataModel";
-  import {getTemplate, addPattern, addCharge, patternId} from "$lib/scripts/getters";
-  import type {Coa} from "$lib/types/coa";
+  import {divisions, shields} from "#lib/data/dataModel.js";
+  import {getTemplate, addPattern, addCharge, patternId} from "#lib/scripts/getters.js";
+  import type {Coa} from "#lib/types/coa.js";
 
   export let palette: Record<string, string>;
   export let defaultShield: string;

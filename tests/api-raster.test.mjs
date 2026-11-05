@@ -16,9 +16,9 @@ const launch = {
   args: process.env.PUPPETEER_NO_SANDBOX ? ["--no-sandbox"] : []
 };
 const mocks = {
-  "$app/environment": "export const browser = false;",
+  "$app/env": "export const browser = false;",
   "$app/server": `import {readFileSync} from 'node:fs'; export function read(url) {return new Response(readFileSync(${JSON.stringify(root)} + url.replace(/^\\//, '')));}`,
-  [root + "src/lib/api/claims"]: `export async function getClaim() {throw new Error('Unexpected database lookup');}`,
+  [root + "src/lib/api/claims.ts"]: `export async function getClaim() {throw new Error('Unexpected database lookup');}`,
   "@sparticuz/chromium-min": 'export default {args: [], executablePath: async () => "unused-server-browser"};',
   "convert-svg-to-png": 'export const createConverter = () => globalThis.armoriaRasterFixture("png");',
   "convert-svg-to-jpeg": 'export const createConverter = () => globalThis.armoriaRasterFixture("jpeg");'
@@ -38,7 +38,7 @@ before(
       logLevel: "silent",
       server: {middlewareMode: true, hmr: false, watch: null},
       optimizeDeps: {noDiscovery: true, include: []},
-      resolve: {alias: {$lib: root + "src/lib"}},
+      resolve: {alias: {"#lib": root + "src/lib"}},
       ssr: {noExternal: ["@sparticuz/chromium-min", "convert-svg-to-png", "convert-svg-to-jpeg"]},
       plugins: [
         {

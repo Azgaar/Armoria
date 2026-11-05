@@ -1,4 +1,4 @@
-import {DEFAULT_COLORS} from "$lib/config/defaults";
+import {DEFAULT_COLORS} from "#lib/config/defaults.ts";
 
 export const README_URL = "https://github.com/Azgaar/armoria#readme";
 

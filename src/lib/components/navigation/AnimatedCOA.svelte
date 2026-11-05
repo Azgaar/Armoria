@@ -1,8 +1,8 @@
 <script lang="ts">
   // @ts-check
-  import {colors} from "$lib/data//stores";
-  import {DEFAULT_SHIELD_BOX, shields} from "$lib/data/dataModel";
-  import {rw} from "$lib/scripts/utils";
+  import {colors} from "#lib/data//stores.ts";
+  import {DEFAULT_SHIELD_BOX, shields} from "#lib/data/dataModel.js";
+  import {rw} from "#lib/scripts/utils.ts";
   import {draw, fade} from "svelte/transition";
 
   export let duration: number;

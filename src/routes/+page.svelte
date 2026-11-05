@@ -1,7 +1,7 @@
 <script lang="ts">
-  import {settingsStorage, reportSettingsRecovery} from "$lib/data/storage";
+  import {settingsStorage, reportSettingsRecovery} from "#lib/data/storage.ts";
   // @ts-check
-  import {charges, shields, shieldSets} from "$lib/data/dataModel";
+  import {charges, shields, shieldSets} from "#lib/data/dataModel.js";
   import {
     background,
     colors,
@@ -15,28 +15,28 @@
     size,
     state,
     uploaded
-  } from "$lib/data/stores";
-  import {parseCoa} from "$lib/coa/validation";
-  import {RequestLimitError} from "$lib/coa/errors";
-  import {registerCharge} from "$lib/data/charges";
-  import "$lib/scripts/i18n";
-  import {rw} from "$lib/scripts/utils";
+  } from "#lib/data/stores.ts";
+  import {parseCoa} from "#lib/coa/validation.ts";
+  import {RequestLimitError} from "#lib/coa/errors.ts";
+  import {registerCharge} from "#lib/data/charges.js";
+  import "#lib/scripts/i18n.ts";
+  import {rw} from "#lib/scripts/utils.ts";
   import {locale} from "svelte-i18n";
-  import StorageNotice from "$lib/components/StorageNotice.svelte";
-  import Message from "$lib/components/Message.svelte";
-  import WindowEvents from "$lib/components/WindowEvents.svelte";
-  import Editor from "$lib/components/editor/Editor.svelte";
-  import About from "$lib/components/navigation/About.svelte";
-  import Fonts from "$lib/components/navigation/Fonts.svelte";
-  import Gallery from "$lib/components/navigation/Gallery.svelte";
-  import License from "$lib/components/navigation/License.svelte";
-  import Tinctures from "$lib/components/navigation/Tinctures.svelte";
-  import UploadJSON from "$lib/components/navigation/UploadJSON.svelte";
-  import UploadRaster from "$lib/components/navigation/UploadRaster.svelte";
-  import UploadVector from "$lib/components/navigation/UploadVector.svelte";
-  import Viewer from "$lib/components/navigation/Viewer.svelte";
-  import Navbar from "$lib/components/navigation/header/Navbar.svelte";
-  import CoaSync from "$lib/components/CoaSync.svelte";
+  import StorageNotice from "#lib/components/StorageNotice.svelte";
+  import Message from "#lib/components/Message.svelte";
+  import WindowEvents from "#lib/components/WindowEvents.svelte";
+  import Editor from "#lib/components/editor/Editor.svelte";
+  import About from "#lib/components/navigation/About.svelte";
+  import Fonts from "#lib/components/navigation/Fonts.svelte";
+  import Gallery from "#lib/components/navigation/Gallery.svelte";
+  import License from "#lib/components/navigation/License.svelte";
+  import Tinctures from "#lib/components/navigation/Tinctures.svelte";
+  import UploadJSON from "#lib/components/navigation/UploadJSON.svelte";
+  import UploadRaster from "#lib/components/navigation/UploadRaster.svelte";
+  import UploadVector from "#lib/components/navigation/UploadVector.svelte";
+  import Viewer from "#lib/components/navigation/Viewer.svelte";
+  import Navbar from "#lib/components/navigation/header/Navbar.svelte";
+  import CoaSync from "#lib/components/CoaSync.svelte";
 
   let quantity: number;
   let width: number;

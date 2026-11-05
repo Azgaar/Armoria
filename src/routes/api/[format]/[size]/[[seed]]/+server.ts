@@ -1,6 +1,6 @@
 import type {RequestHandler} from "./$types";
-import {validateImageQuery, validateImageRequest} from "$lib/api/limits";
-import {apiError} from "$lib/api/responses";
+import {validateImageQuery, validateImageRequest} from "#lib/api/limits.ts";
+import {apiError} from "#lib/api/responses.ts";
 
 export const GET: RequestHandler = async ({params, url}) => {
   try {

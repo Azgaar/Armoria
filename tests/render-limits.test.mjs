@@ -8,14 +8,14 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 let server, image, claims, generator, assets, png, jpeg, chromium, limits, validation, renderer;
 const previousVercel = process.env.VERCEL;
 const mocks = {
-  "$app/environment": "export const browser = false;",
-  [root + "src/lib/api/claims"]: `
+  "$app/env": "export const browser = false;",
+  [root + "src/lib/api/claims.ts"]: `
     export let calls = 0, stored = null;
     export function reset() { calls = 0; stored = null; }
     export function setStored(value) { stored = {coa:value}; }
     export async function getClaim() { calls++; return stored; }
   `,
-  [root + "src/lib/scripts/generator"]: `
+  [root + "src/lib/scripts/generator.js"]: `
     export let calls = 0;
     export function reset() { calls = 0; }
     export function generate() { calls++; return {t1:'or'}; }
@@ -49,7 +49,7 @@ before(async () => {
     server: {middlewareMode: true, hmr: false, watch: null},
     optimizeDeps: {noDiscovery: true, include: []},
     ssr: {noExternal: ["@sparticuz/chromium-min", "convert-svg-to-png", "convert-svg-to-jpeg"]},
-    resolve: {alias: {$lib: root + "src/lib"}},
+    resolve: {alias: {"#lib": root + "src/lib"}},
     plugins: [
       {
         name: "limits-test-services",
@@ -65,8 +65,8 @@ before(async () => {
     ]
   });
   image = (await server.ssrLoadModule("/src/routes/api/+server.ts")).GET;
-  claims = await server.ssrLoadModule(root + "src/lib/api/claims");
-  generator = await server.ssrLoadModule(root + "src/lib/scripts/generator");
+  claims = await server.ssrLoadModule(root + "src/lib/api/claims.ts");
+  generator = await server.ssrLoadModule(root + "src/lib/scripts/generator.js");
   assets = await server.ssrLoadModule("$app/server");
   png = await server.ssrLoadModule("convert-svg-to-png");
   jpeg = await server.ssrLoadModule("convert-svg-to-jpeg");
@@ -263,8 +263,8 @@ test("repeated inscriptions load each configured font only once", async () => {
 });
 
 test("a deterministic sample of generated COAs stays within the limits", async () => {
-  // Explicit .js bypasses only the route's generation spy; exercise the real generator.
-  const {generate} = await server.ssrLoadModule("/src/lib/scripts/generator.js");
+  // A query bypasses only the route's generation spy; exercise the real generator.
+  const {generate} = await server.ssrLoadModule("/src/lib/scripts/generator.js?actual");
   const random = Math.random;
   try {
     let nontrivial = 0;

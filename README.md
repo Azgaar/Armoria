@@ -35,14 +35,14 @@ To create an optimised version run `npm run build`.
 
 ### Toolchain modernization
 
-The first #237 upgrade uses the following mutually compatible pinned framework/rendering versions. Node 24 is declared in `.node-version` and `package.json`, and the Vercel adapter explicitly emits `nodejs24.x` functions.
+The #237 upgrades use the following mutually compatible pinned framework/rendering versions. Node 24 is declared in `.node-version` and `package.json`, and the Vercel adapter explicitly emits `nodejs24.x` functions.
 
 | Package | Version |
 | --- | --- |
 | Svelte | 5.57.3 |
-| SvelteKit | 2.70.3 |
+| SvelteKit | 3.1.1 |
 | Vite / Svelte plugin | 8.3.5 / 7.3.1 |
-| Vercel adapter | 6.3.4 |
+| Vercel adapter | 7.0.2 |
 | TypeScript | 6.0.3 |
 | Puppeteer / puppeteer-core | 24.43.1 |
 | Server Chromium package | 148.0.0 |
@@ -53,9 +53,9 @@ Puppeteer 24.43.1 targets Chrome 148; the server Chromium package and download U
 
 After `npm run build`, run `npm run test:production` for the service-worker update/offline regression against the actual production preview. CI runs this after the normal tests and build. Browser launch overrides work as documented below; no service credentials are required. A proxy changes only local deployment markers in HTML/worker scripts to exercise worker replacement, fresh online HTML and the latest cached offline view.
 
-The dependency audit still reports 35 advisories (4 low, 18 moderate, 13 high), including the retained Puppeteer/converter graph and older framework/tooling majors. These are not resolved by this first step; track their replacements and verification under #237 rather than using `npm audit fix --force`.
+The dependency audit after the SvelteKit 3 and ESLint 10 updates reports 31 advisories (3 low, 15 moderate, 13 high). This includes propagated findings through the retained Puppeteer/converter graph, `deepmerge`, `svelte-i18n`'s CLI-only esbuild, and the glob/minimatch versions used by build/lint dependencies. Current `deepmerge` (4.3.1) and `extract-zip` (2.0.1) have no patched release. The converters still require Puppeteer 24; Puppeteer 25.16.0 targets Chromium 156 while the latest server Chromium package provides 153. These need a separate browser/converter replacement and deployment verification rather than unsupported major overrides or `npm audit fix --force`. The retained patches are still needed and tested. #237 remains open for this dependency remediation.
 
-The SvelteKit 3 migration remains a separate #237 step: its removal of `$app/stores`, configuration/API changes and `#lib` migration require another review boundary. Component-by-component runes migration can then proceed without mixing it with this compiler/renderer upgrade. Guidance: [Svelte 5 migration](https://svelte.dev/docs/svelte/v5-migration-guide), [SvelteKit 3 migration](https://svelte.dev/docs/kit/migrating-to-sveltekit-3), [Vite 8 migration](https://vite.dev/guide/migration), [Vite supported releases](https://vite.dev/releases).
+The second #237 step upgrades SvelteKit to 3.1.1 and adapter-vercel to 7.0.2. Configuration now lives in `vite.config.ts`; `#lib` subpath imports include file extensions. URL synchronization uses shallow `goto` with `$app/state`. Private service variables are declared optional in `src/env.ts` and remain runtime values, so credential-free builds and procedural rendering still work. The service worker uses the new manifest/environment modules and has its own checked TypeScript project. Existing editor, image and production update/offline regressions validate the migration. `CoaSync` is the first component migrated to Svelte 5 runes, with FMG race and URL/undo regressions retained; other components continue in supported legacy mode. ESLint 10.14.0, typescript-eslint 8.72.1 and eslint-plugin-svelte 3.24.0 form the maintained lint toolchain, with `@eslint/js` declared directly. The existing repository-wide lint/format command is not a clean validation gate; CI uses strict type checks, regressions and the production build. Guidance: [SvelteKit 3 migration](https://svelte.dev/docs/kit/migrating-to-sveltekit-3).
 
 ### Branches, deployment and validation
 

@@ -1,15 +1,15 @@
 <script lang="ts">
   // @ts-check
-  import {DEFAULT_ZOOM} from "$lib/config/defaults";
-  import {DEFAULT_SHIELD_BOX, shields} from "$lib/data/shields";
-  import {border, borderWidth, colors, shield, grad, diaper} from "$lib/data/stores";
-  import {resolveCoa} from "$lib/scripts/coa";
+  import {DEFAULT_ZOOM} from "#lib/config/defaults.ts";
+  import {DEFAULT_SHIELD_BOX, shields} from "#lib/data/shields.ts";
+  import {border, borderWidth, colors, shield, grad, diaper} from "#lib/data/stores.ts";
+  import {resolveCoa} from "#lib/scripts/coa.ts";
   import Grid from "./../editor/Grid.svelte";
   import Positions from "./../editor/Positions.svelte";
   import Shield from "./Shield.svelte";
-  import type {Coa} from "$lib/types/coa";
+  import type {Coa} from "#lib/types/coa.js";
 
-  import type {RenderOptions} from "$lib/types/render";
+  import type {RenderOptions} from "#lib/types/render.js";
 
   export let renderOptions: RenderOptions | undefined = undefined;
   export let coa: Coa;

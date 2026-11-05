@@ -1,4 +1,4 @@
-import type {Coa} from "$lib/types/coa";
+import type {Coa} from "#lib/types/coa.js";
 import {writable} from "svelte/store";
 import {readSavedSettings} from "./settings";
 

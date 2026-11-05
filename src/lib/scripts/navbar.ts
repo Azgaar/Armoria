@@ -1,5 +1,5 @@
 import {get} from "svelte/store";
-import {iconedNav} from "$lib/data/stores";
+import {iconedNav} from "#lib/data/stores.ts";
 
 const MIN_WIDTH = 1132;
 

@@ -1,12 +1,12 @@
 <script lang="ts">
-  import {settingsStorage} from "$lib/data/storage";
+  import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
   import {t} from "svelte-i18n";
   import NavButton from "../../shared/NavButton.svelte";
   import NavItem from "../../shared/NavItem.svelte";
   import Lock from "../../shared/Lock.svelte";
-  import {diapers} from "$lib/config/options";
-  import {diaper} from "$lib/data/stores";
+  import {diapers} from "#lib/config/options.js";
+  import {diaper} from "#lib/data/stores.ts";
 
   const changeDamasking = (value: string) => {
     diaper.set(value);

@@ -1,6 +1,6 @@
 <script lang="ts">
   // @ts-check
-  import {iconedNav, isTextReady, state} from "$lib/data/stores";
+  import {iconedNav, isTextReady, state} from "#lib/data/stores.ts";
   import Logo from "./menu/Logo.svelte";
   import Options from "./menu/options/Options.svelte";
   import Rollback from "./menu/Rollback.svelte";

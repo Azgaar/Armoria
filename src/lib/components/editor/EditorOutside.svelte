@@ -2,8 +2,8 @@
   // @ts-check
   import {t} from "svelte-i18n";
   import Switch from "./Switch.svelte";
-  import {charges} from "$lib/data/dataModel";
-  import {tooltip} from "$lib/scripts/tooltip";
+  import {charges} from "#lib/data/dataModel.js";
+  import {tooltip} from "#lib/scripts/tooltip.ts";
 
   export let charge: string;
   export let outside: "" | "above" | "below" | "around";

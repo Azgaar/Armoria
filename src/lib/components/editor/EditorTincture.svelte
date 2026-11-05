@@ -1,11 +1,11 @@
 <script lang="ts">
-  import {settingsStorage} from "$lib/data/storage";
+  import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
   import {t, dictionary, locale} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
-  import {colors, tinctures} from "$lib/data/stores";
-  import {tooltip} from "$lib/scripts/tooltip";
-  import {DEFAULT_COLORS as defaults} from "$lib/config/defaults";
+  import {colors, tinctures} from "#lib/data/stores.ts";
+  import {tooltip} from "#lib/scripts/tooltip.ts";
+  import {DEFAULT_COLORS as defaults} from "#lib/config/defaults.ts";
 
   export let t1: string | undefined = undefined;
   export let shield: string | undefined = undefined;

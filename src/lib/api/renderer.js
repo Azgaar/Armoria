@@ -1,10 +1,10 @@
 import {read} from "$app/server";
 import {render as renderComponent} from "svelte/server";
-import COA from "$lib/components/object/COA.svelte";
-import {DEFAULT_FONTS, DEFAULT_DIAPER, DEFAULT_BORDER, DEFAULT_BORDER_WIDTH} from "$lib/config/defaults";
-import {divisions, patterns, shields} from "$lib/data/dataModel";
-import {getSizeMod, getTemplate, patternId, semy} from "$lib/scripts/getters";
-import {capitalize} from "$lib/scripts/utils";
+import COA from "#lib/components/object/COA.svelte";
+import {DEFAULT_FONTS, DEFAULT_DIAPER, DEFAULT_BORDER, DEFAULT_BORDER_WIDTH} from "#lib/config/defaults.ts";
+import {divisions, patterns, shields} from "#lib/data/dataModel.js";
+import {getSizeMod, getTemplate, patternId, semy} from "#lib/scripts/getters.js";
+import {capitalize} from "#lib/scripts/utils.ts";
 import {parse} from "node-html-parser";
 import {createHash} from "node:crypto";
 import {escapeMarkup, InvalidCoaError} from "./responses";
@@ -57,7 +57,7 @@ export async function render(input, size, colors) {
     .background {display: var(--background)}
   </style>`;
 
-  /** @type {import("$lib/types/render").RenderOptions} */
+  /** @type {import("#lib/types/render.js").RenderOptions} */
   const renderOptions = {
     colors,
     shield: SHIELD_DEFAULT,
@@ -103,7 +103,7 @@ function resolveChargeId(charge, shield) {
   return charge === "inescutcheon" ? charge + capitalize(shield) : charge;
 }
 
-/** @param {import("$lib/types/coa").Coa & {shield: string}} coa */
+/** @param {import("#lib/types/coa.js").Coa & {shield: string}} coa */
 function collectDependencies(coa) {
   const tinctures = [
     coa.t1,
@@ -153,7 +153,7 @@ async function fetchCharge(charge) {
   return g.outerHTML;
 }
 
-/** @param {import("$lib/types/coa").Coa} coa */
+/** @param {import("#lib/types/coa.js").Coa} coa */
 async function getFonts(coa) {
   if (!coa.inscriptions) return "";
 

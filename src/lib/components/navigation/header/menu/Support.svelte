@@ -2,7 +2,7 @@
   // @ts-check
   import {t} from "svelte-i18n";
   import NavButton from "../shared/NavButton.svelte";
-  import {openURL} from "$lib/scripts/utils";
+  import {openURL} from "#lib/scripts/utils.ts";
 
   const openPatreon = () => {
     openURL("https://www.patreon.com/azgaar");

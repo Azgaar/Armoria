@@ -1,7 +1,7 @@
-import {charges, chargeSets, divisions, lines, ordinaries, patterns, patternSize, shields} from "$lib/data/dataModel";
-import {DEFAULT_COLORS, DEFAULT_FONTS} from "$lib/config/defaults";
-import {diapers} from "$lib/config/options";
-import type {Coa} from "$lib/types/coa";
+import {charges, chargeSets, divisions, lines, ordinaries, patterns, patternSize, shields} from "#lib/data/dataModel.js";
+import {DEFAULT_COLORS, DEFAULT_FONTS} from "#lib/config/defaults.ts";
+import {diapers} from "#lib/config/options.js";
+import type {Coa} from "#lib/types/coa.js";
 import {COA_LIMITS, limitText, validateCoaComplexity} from "./limits";
 import {InvalidCoaError, RequestLimitError} from "./errors";
 

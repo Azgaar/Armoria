@@ -1,4 +1,4 @@
-import {jsonError} from "$lib/api/responses";
+import {jsonError} from "#lib/api/responses.ts";
 import type {RequestHandler} from "./$types";
 
 // Do not redirect, reflect credentials, access the database, or mutate on GET/HEAD.

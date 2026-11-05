@@ -1,7 +1,7 @@
 <script lang="ts">
   // @ts-check
   import {t} from "svelte-i18n";
-  import {changes} from "$lib/data/stores";
+  import {changes} from "#lib/data/stores.ts";
   import NavButton from "../shared/NavButton.svelte";
 
   $: position = $changes[1];

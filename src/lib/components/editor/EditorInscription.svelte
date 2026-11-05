@@ -1,10 +1,10 @@
 <script lang="ts">
   // @ts-check
   import {t} from "svelte-i18n";
-  import {fonts, state} from "$lib/data/stores";
-  import {tooltip} from "$lib/scripts/tooltip";
+  import {fonts, state} from "#lib/data/stores.ts";
+  import {tooltip} from "#lib/scripts/tooltip.ts";
   import Switch from "./Switch.svelte";
-  import type {EditorInscription as Inscription} from "$lib/types/editor";
+  import type {EditorInscription as Inscription} from "#lib/types/editor.js";
 
   export let inscription: Inscription;
 </script>

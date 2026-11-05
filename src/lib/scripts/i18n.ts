@@ -1,5 +1,5 @@
-import {settingsStorage} from "$lib/data/storage";
-import {isTextReady} from "$lib/data/stores";
+import {settingsStorage} from "#lib/data/storage.ts";
+import {isTextReady} from "#lib/data/stores.ts";
 import {init, register} from "svelte-i18n";
 import {fetcher} from "./utils";
 
