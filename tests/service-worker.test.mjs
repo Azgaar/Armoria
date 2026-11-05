@@ -37,6 +37,7 @@ before(
       args: process.env.PUPPETEER_NO_SANDBOX ? ["--no-sandbox"] : []
     });
     page = await browser.newPage();
+    await page.setViewport({width: 1440, height: 1000});
     page.on("pageerror", error => errors.push(error.message));
     await page.setRequestInterception(true);
     page.on("request", request =>
@@ -56,6 +57,7 @@ after(async () => {
 
 test("production service-worker updates show the new deploy and retain its offline fallback", {timeout: 120000}, async () => {
   const url = origin + "/?" + new URLSearchParams({coa: JSON.stringify({t1: "or", shield: "heater"})});
+  await page.evaluateOnNewDocument(() => localStorage.setItem("locale", "fr"));
   await page.goto(url, {waitUntil: "networkidle0"});
   await page.waitForSelector("#coaEdit .field");
   assert.equal(await page.$eval('meta[name="deployment"]', node => node.content), "first");
@@ -79,5 +81,8 @@ test("production service-worker updates show the new deploy and retain its offli
   await page.waitForSelector("#coaEdit .field");
   assert.equal(await page.$eval('meta[name="deployment"]', node => node.content), "second");
   assert.equal(await page.$eval("#coaEdit .field", node => node.getAttribute("fill")), "#ffe066");
+  assert.ok(
+    await page.evaluate(() => [...document.querySelectorAll("li")].some(node => node.textContent.trim() === "Sauvegarder"))
+  );
   assert.deepEqual(errors, []);
 });

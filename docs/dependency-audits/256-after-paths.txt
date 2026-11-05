@@ -1,0 +1,9 @@
+armoria@1.1.0 /tmp/armoria-localization-deps
+├─┬ @sveltejs/vite-plugin-svelte@7.3.1
+│ └── deepmerge@4.3.1 overridden
+├─┬ svelte-i18n@4.0.1
+│ ├── deepmerge@4.3.1 deduped
+│ └── esbuild@0.28.2 overridden
+└─┬ vite@8.3.5
+  └── esbuild@0.28.2 deduped
+
