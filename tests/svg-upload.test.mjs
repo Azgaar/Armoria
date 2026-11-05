@@ -24,6 +24,13 @@ before(
     });
     page = await browser.newPage();
     page.on("pageerror", error => errors.push(error.message));
+    page.on("requestfailed", request => {
+      if (request.url().startsWith(origin)) console.error("Local request failed:", request.url(), request.failure());
+    });
+    page.on("response", response => {
+      if (response.url().startsWith(origin) && response.status() >= 400)
+        console.error("Local HTTP error:", response.status(), response.url());
+    });
     await page.setRequestInterception(true);
     page.on("request", request => {
       if (request.url().startsWith(origin) || /^(data|blob):/.test(request.url())) return request.continue();
