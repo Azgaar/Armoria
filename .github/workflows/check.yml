@@ -54,6 +54,8 @@ jobs:
         timeout-minutes: 3
       - run: npm run test:raster-lifecycle
         timeout-minutes: 3
+      - run: npm run test:dependency-security
+        timeout-minutes: 3
       - name: Editor, upload, export and rendering regressions
         run: npm run test:browser
       - name: Production build without service credentials

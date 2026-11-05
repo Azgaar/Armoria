@@ -14,7 +14,7 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
-    "postinstall": "patch-package",
+    "postinstall": "patch-package --error-on-fail",
     "test:claims": "svelte-kit sync && node --test --test-isolation=none tests/claims.test.mjs",
     "test:render-limits": "svelte-kit sync && node --test --test-isolation=none tests/render-limits.test.mjs",
     "test:svg-upload": "node --test --test-isolation=none tests/svg-upload.test.mjs",
@@ -28,13 +28,15 @@
     "test:generation": "node --test --test-isolation=none tests/generation.test.mjs",
     "test:files": "node --test --test-isolation=none tests/files.test.mjs",
     "test:database-startup": "svelte-kit sync && node --test --test-isolation=none tests/database-startup.test.mjs",
-    "test:services": "npm run test:discord && npm run test:api && npm run test:claims && npm run test:render-limits && npm run test:coa-validation && npm run test:settings && npm run test:generation && npm run test:files && npm run test:database-startup && npm run test:raster-lifecycle",
-    "test:browser": "npm run test:svg-upload && npm run test:exports && npm run test:copied-links && npm run test:coa-import && npm run test:pattern-rendering && npm run test:settings-browser && npm run test:fmg-sync && npm run test:api-raster",
+    "test:services": "npm run test:discord && npm run test:api && npm run test:claims && npm run test:render-limits && npm run test:coa-validation && npm run test:settings && npm run test:generation && npm run test:files && npm run test:database-startup && npm run test:raster-lifecycle && npm run test:dependency-security",
+    "test:browser": "npm run test:svg-upload && npm run test:exports && npm run test:copied-links && npm run test:coa-import && npm run test:pattern-rendering && npm run test:settings-browser && npm run test:fmg-sync && npm run test:api-raster && npm run test:localization",
     "test": "npm run test:services && npm run test:browser",
     "test:fmg-sync": "node --test --test-isolation=none tests/fmg-sync.test.mjs",
     "test:api-raster": "svelte-kit sync && node --test --test-isolation=none tests/api-raster.test.mjs",
     "test:production": "node --test --test-isolation=none tests/service-worker.test.mjs",
-    "test:raster-lifecycle": "svelte-kit sync && node --test --test-isolation=none tests/raster-lifecycle.test.mjs"
+    "test:raster-lifecycle": "svelte-kit sync && node --test --test-isolation=none tests/raster-lifecycle.test.mjs",
+    "test:dependency-security": "node --test --test-isolation=none tests/dependency-security.test.mjs",
+    "test:localization": "node --test --test-isolation=none tests/localization.test.mjs"
   },
   "repository": {
     "type": "git",
@@ -91,5 +93,11 @@
   },
   "imports": {
     "#lib/*": "./src/lib/*"
+  },
+  "overrides": {
+    "deepmerge": "4.3.1",
+    "svelte-i18n": {
+      "esbuild": "0.28.2"
+    }
   }
 }
