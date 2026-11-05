@@ -15,5 +15,8 @@ export default defineConfig({
       }
     })
   ],
+  // Kit includes nested dependency IDs, but its lazy client also imports these bare
+  // IDs. Optimize both up front to avoid invalidating in-flight client modules.
+  optimizeDeps: {include: ["devalue", "esm-env"]},
   define: {"process.env.NODE_ENV": '\"production\"'}
 });
