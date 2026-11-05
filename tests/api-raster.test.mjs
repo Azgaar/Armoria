@@ -13,7 +13,7 @@ const rasterBrowsers = [],
 const previousVercel = process.env.VERCEL;
 const launch = {
   headless: true,
-  executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || puppeteer.executablePath(),
+  executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || (await puppeteer.executablePath()),
   args: process.env.PUPPETEER_NO_SANDBOX ? ["--no-sandbox"] : []
 };
 const mocks = {
