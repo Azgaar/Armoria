@@ -28,12 +28,13 @@
     "test:generation": "node --test --test-isolation=none tests/generation.test.mjs",
     "test:files": "node --test --test-isolation=none tests/files.test.mjs",
     "test:database-startup": "svelte-kit sync && node --test --test-isolation=none tests/database-startup.test.mjs",
-    "test:services": "npm run test:discord && npm run test:api && npm run test:claims && npm run test:render-limits && npm run test:coa-validation && npm run test:settings && npm run test:generation && npm run test:files && npm run test:database-startup",
+    "test:services": "npm run test:discord && npm run test:api && npm run test:claims && npm run test:render-limits && npm run test:coa-validation && npm run test:settings && npm run test:generation && npm run test:files && npm run test:database-startup && npm run test:raster-lifecycle",
     "test:browser": "npm run test:svg-upload && npm run test:exports && npm run test:copied-links && npm run test:coa-import && npm run test:pattern-rendering && npm run test:settings-browser && npm run test:fmg-sync && npm run test:api-raster",
     "test": "npm run test:services && npm run test:browser",
     "test:fmg-sync": "node --test --test-isolation=none tests/fmg-sync.test.mjs",
     "test:api-raster": "svelte-kit sync && node --test --test-isolation=none tests/api-raster.test.mjs",
-    "test:production": "node --test --test-isolation=none tests/service-worker.test.mjs"
+    "test:production": "node --test --test-isolation=none tests/service-worker.test.mjs",
+    "test:raster-lifecycle": "svelte-kit sync && node --test --test-isolation=none tests/raster-lifecycle.test.mjs"
   },
   "repository": {
     "type": "git",
@@ -49,15 +50,13 @@
     "url": "https://github.com/Azgaar/Armoria/issues"
   },
   "dependencies": {
-    "@sparticuz/chromium-min": "148.0.0",
-    "convert-svg-to-jpeg": "^0.7.1",
-    "convert-svg-to-png": "^0.7.1",
+    "@sparticuz/chromium-min": "153.0.0",
     "dompurify": "^3.4.17",
     "minify-xml": "^4.5.2",
     "mongodb": "^6.17.0",
     "node-html-parser": "^7.0.1",
     "path-data-polyfill": "^1.0.10",
-    "puppeteer-core": "24.43.1"
+    "puppeteer-core": "25.11.0"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
@@ -65,6 +64,7 @@
     "@sveltejs/kit": "3.1.1",
     "@sveltejs/vite-plugin-svelte": "7.3.1",
     "@types/eslint": "^9.6.1",
+    "@types/node": "^24.19.2",
     "eslint": "10.14.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-svelte": "3.24.0",
@@ -72,7 +72,7 @@
     "patch-package": "^8.0.1",
     "prettier": "^3.6.2",
     "prettier-plugin-svelte": "^3.4.0",
-    "puppeteer": "24.43.1",
+    "puppeteer": "25.11.0",
     "svelte": "5.57.3",
     "svelte-check": "4.7.8",
     "svelte-i18n": "^4.0.1",

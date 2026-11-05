@@ -50,11 +50,10 @@ const mocks = {
       return new Response(readFileSync(${JSON.stringify(root)} + url.replace(/^\\//, '')));
     }
   `,
-  "@sparticuz/chromium-min": 'export default {args: [], executablePath: async () => "unused-test-browser"};',
-  "convert-svg-to-png":
-    'export let calls = 0; export async function createConverter() { return {convert: async () => {calls++; throw new Error("private conversion failure");}}; }',
-  "convert-svg-to-jpeg":
-    'export let calls = 0; export async function createConverter() { return {convert: async () => {calls++; throw new Error("private conversion failure");}}; }'
+  [root + "src/lib/api/raster.ts"]: `
+    export let calls = 0;
+    export const rasterizer = {async convert() {calls++; throw new Error("private conversion failure");}};
+  `
 };
 
 before(async () => {
@@ -62,7 +61,6 @@ before(async () => {
     root,
     configFile: false,
     logLevel: "silent",
-    ssr: {noExternal: ["@sparticuz/chromium-min", "convert-svg-to-png", "convert-svg-to-jpeg"]},
     server: {middlewareMode: true, hmr: false, watch: null},
     optimizeDeps: {noDiscovery: true, include: []},
     resolve: {alias: {"#lib": root + "src/lib"}},
@@ -161,7 +159,7 @@ test("unexpected database, asset, and conversion failures return generic 500 JSO
   assets.setUnavailable(true);
   await expectError(await image(imageEvent({t1: "or", charges: [{charge: "eagle", t: "gules", p: "e"}]})), 500);
   assets.setUnavailable(false);
-  const png = await server.ssrLoadModule("convert-svg-to-png");
+  const png = await server.ssrLoadModule(root + "src/lib/api/raster.ts");
   const previousCalls = png.calls;
   await expectError(await image(imageEvent({t1: "or"}, {format: "png"})), 500);
   assert.equal(png.calls, previousCalls + 1, "the converter fixture must handle raster failures without launching Chrome");
