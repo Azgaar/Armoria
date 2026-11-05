@@ -15,8 +15,21 @@ export default defineConfig({
       }
     })
   ],
-  // Kit includes nested dependency IDs, but its lazy client also imports these bare
-  // IDs. Optimize both up front to avoid invalidating in-flight client modules.
-  optimizeDeps: {include: ["devalue", "esm-env"]},
+  // Keep the dev dependency graph stable while Kit's lazy client and service worker
+  // load concurrently. Late optimizer runs otherwise invalidate in-flight modules.
+  optimizeDeps: {
+    noDiscovery: true,
+    include: [
+      "devalue",
+      "esm-env",
+      "path-data-polyfill",
+      "svelte-i18n",
+      "dompurify",
+      "workbox-core",
+      "workbox-precaching",
+      "workbox-routing",
+      "workbox-strategies"
+    ]
+  },
   define: {"process.env.NODE_ENV": '\"production\"'}
 });
