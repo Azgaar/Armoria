@@ -1,7 +1,7 @@
 <script>
   import COA from "./../object/COA.svelte";
-  import {history, tinctures} from "$lib/data//stores";
-  import {generate} from "$lib/scripts/generator";
+  import {history, tinctures} from "#lib/data//stores.ts";
+  import {generate} from "#lib/scripts/generator.js";
   export let c, seed, coaSize;
 
   let coa = $history[c] || generate(seed || undefined, $tinctures); // on load

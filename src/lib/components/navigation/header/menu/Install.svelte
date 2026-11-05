@@ -1,7 +1,7 @@
 <script lang="ts">
   // @ts-check
   import {t} from "svelte-i18n";
-  import {message} from "$lib/data/stores";
+  import {message} from "#lib/data/stores.ts";
   import NavButton from "../shared/NavButton.svelte";
 
   let installable = false;

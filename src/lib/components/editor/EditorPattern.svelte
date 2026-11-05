@@ -2,7 +2,7 @@
   // @ts-check
   import {t} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
-  import {DEFAULT_TINCTURES} from "$lib/config/defaults";
+  import {DEFAULT_TINCTURES} from "#lib/config/defaults.ts";
 
   export let pattern: string;
   export let t1: string;

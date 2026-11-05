@@ -1,9 +1,9 @@
 <script lang="ts">
   // @ts-check
   import {t} from "svelte-i18n";
-  import {grid, showGrid, state} from "$lib/data/stores";
-  import {analyzePath, buildPath} from "$lib/scripts/getters";
-  import {tooltip} from "$lib/scripts/tooltip";
+  import {grid, showGrid, state} from "#lib/data/stores.ts";
+  import {analyzePath, buildPath} from "#lib/scripts/getters.js";
+  import {tooltip} from "#lib/scripts/tooltip.ts";
   import Switch from "./Switch.svelte";
 
   export let path: string;

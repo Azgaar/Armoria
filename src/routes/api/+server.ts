@@ -1,10 +1,10 @@
-import {getClaim} from "$lib/api/claims";
-import {render} from "$lib/api/renderer";
-import {generateSeed, parseColors, parseSeed} from "$lib/api/utils";
-import {apiError} from "$lib/api/responses";
-import {parseCoa} from "$lib/api/validation";
-import {validateImageRequest} from "$lib/api/limits";
-import {generate} from "$lib/scripts/generator";
+import {getClaim} from "#lib/api/claims.ts";
+import {render} from "#lib/api/renderer.js";
+import {generateSeed, parseColors, parseSeed} from "#lib/api/utils.ts";
+import {apiError} from "#lib/api/responses.ts";
+import {parseCoa} from "#lib/api/validation.ts";
+import {validateImageRequest} from "#lib/api/limits.ts";
+import {generate} from "#lib/scripts/generator.js";
 import {minify} from "minify-xml";
 import type {RequestHandler} from "./$types";
 import chromium from "@sparticuz/chromium-min";

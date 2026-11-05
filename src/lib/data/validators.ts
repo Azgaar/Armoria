@@ -1,5 +1,5 @@
-import {DEFAULT_COLORS, DEFAULT_TINCTURES} from "$lib/config/defaults";
-import type {Tinctures} from "$lib/types/tinctures";
+import {DEFAULT_COLORS, DEFAULT_TINCTURES} from "#lib/config/defaults.ts";
+import type {Tinctures} from "#lib/types/tinctures.js";
 
 /** Validate generator inputs before rw() constructs weighted arrays. */
 export function validateTinctures(value: unknown, colors: Record<string, string> = DEFAULT_COLORS): value is Tinctures {

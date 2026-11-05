@@ -1,11 +1,11 @@
 <script lang="ts">
-  import type {Coa, Ordinary} from "$lib/types/coa";
+  import type {Coa, Ordinary} from "#lib/types/coa.js";
   import "path-data-polyfill";
-  import {ordinaries, shields} from "$lib/data/dataModel";
-  import {shield} from "$lib/data/stores";
-  import {drag, transform} from "$lib/scripts/drag";
-  import {getTemplate} from "$lib/scripts/getters";
-  import {highlight, lowlight} from "$lib/scripts/highlight";
+  import {ordinaries, shields} from "#lib/data/dataModel.js";
+  import {shield} from "#lib/data/stores.ts";
+  import {drag, transform} from "#lib/scripts/drag.js";
+  import {getTemplate} from "#lib/scripts/getters.js";
+  import {highlight, lowlight} from "#lib/scripts/highlight.js";
   export let coa: Coa;
   export let ordinary: Ordinary;
   export let i: number;

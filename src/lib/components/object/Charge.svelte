@@ -1,10 +1,10 @@
 <script lang="ts">
   // @ts-check
-  import {shields} from "$lib/data/dataModel";
-  import {shield} from "$lib/data/stores";
-  import {drag, transform, getElTransform} from "$lib/scripts/drag";
-  import {highlight, lowlight} from "$lib/scripts/highlight";
-  import type {Coa, Charge} from "$lib/types/coa";
+  import {shields} from "#lib/data/dataModel.js";
+  import {shield} from "#lib/data/stores.ts";
+  import {drag, transform, getElTransform} from "#lib/scripts/drag.js";
+  import {highlight, lowlight} from "#lib/scripts/highlight.js";
+  import type {Coa, Charge} from "#lib/types/coa.js";
 
   export let coa: Coa;
   export let charge: Charge;

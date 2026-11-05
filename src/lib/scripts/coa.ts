@@ -1,4 +1,4 @@
-import {DEFAULT_COLORS} from "$lib/config/defaults";
+import {DEFAULT_COLORS} from "#lib/config/defaults.ts";
 
 /** the tinctures recoloured or added in this browser, which elsewhere would draw in their default shades */
 export function customColors(palette: Record<string, string>): Record<string, string> {

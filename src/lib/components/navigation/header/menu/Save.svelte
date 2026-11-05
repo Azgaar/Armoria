@@ -1,9 +1,9 @@
 <script lang="ts">
   // @ts-check
   import {t} from "svelte-i18n";
-  import {download} from "$lib/scripts/download";
-  import {resolveCoa} from "$lib/scripts/coa";
-  import {changes, colors, history, matrices, matrix, message, shield, state} from "$lib/data/stores";
+  import {download} from "#lib/scripts/download.js";
+  import {resolveCoa} from "#lib/scripts/coa.ts";
+  import {changes, colors, history, matrices, matrix, message, shield, state} from "#lib/data/stores.ts";
   import NavButton from "../shared/NavButton.svelte";
   import NavItem from "../shared/NavItem.svelte";
 

@@ -10,9 +10,8 @@ let server, image, mutations, db, runtime;
 // Compile the actual routes/components, replacing only external services and Kit's asset reader.
 // No Mongo credentials, Chromium downloads, network listener, or live claims are needed.
 const mocks = {
-  "$app/environment": "export const browser = false;",
-  "$env/static/private": 'export const MASTER_KEY = "test-master";',
-  "$env/dynamic/private": "export const env = {};",
+  "$app/env": "export const browser = false;",
+  [root + "src/lib/server/env.ts"]: "export const env = {};",
   mongodb: `
     export const state = {created: 0, connects: 0, closes: 0, failConnect: false, failRead: false, options: null, uri: null};
     export class MongoClient {
@@ -49,7 +48,7 @@ before(async () => {
     ssr: {noExternal: ["mongodb"]},
     server: {middlewareMode: true, hmr: false, watch: null},
     optimizeDeps: {noDiscovery: true, include: []},
-    resolve: {alias: {$lib: root + "src/lib"}},
+    resolve: {alias: {"#lib": root + "src/lib"}},
     plugins: [
       {
         name: "api-test-services",
@@ -67,7 +66,7 @@ before(async () => {
   image = (await server.ssrLoadModule("/src/routes/api/+server.ts")).GET;
   mutations = await server.ssrLoadModule("/src/routes/api/claims/[name]/+server.ts");
   db = (await server.ssrLoadModule("mongodb")).state;
-  runtime = (await server.ssrLoadModule("$env/dynamic/private")).env;
+  runtime = (await server.ssrLoadModule(root + "src/lib/server/env.ts")).env;
 });
 after(async () => server?.close());
 

@@ -1,7 +1,7 @@
 <script lang="ts">
   // @ts-check
   import {t} from "svelte-i18n";
-  import {state} from "$lib/data/stores";
+  import {state} from "#lib/data/stores.ts";
   import Lock from "../../shared/Lock.svelte";
   import NavButton from "../../shared/NavButton.svelte";
 

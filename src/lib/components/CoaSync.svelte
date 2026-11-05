@@ -2,12 +2,12 @@
   // @ts-check
   // Keeps the edited coat of arms outside this page current: the `coa` URL parameter, so a reload or a shared
   // link shows it as it is, and Fantasy Map Generator when it opened the emblem here
-  import {changes, colors, shield, state} from "$lib/data/stores";
-  import {getSvgForMap} from "$lib/scripts/download";
-  import {resolveCoa} from "$lib/scripts/coa";
+  import {changes, colors, shield, state} from "#lib/data/stores.ts";
+  import {getSvgForMap} from "#lib/scripts/download.js";
+  import {resolveCoa} from "#lib/scripts/coa.ts";
   import {onDestroy} from "svelte";
-  import {afterNavigate, replaceState} from "$app/navigation";
-  import {page} from "$app/stores";
+  import {afterNavigate, goto} from "$app/navigation";
+  import {page} from "$app/state";
 
   const parameters = new URLSearchParams(location.search);
   const session = parameters.get("from") === "FMG" ? parameters.get("session") : null;
@@ -41,7 +41,7 @@
       url.searchParams.delete("coa");
       url.searchParams.delete("seed");
     }
-    if (url.href !== location.href) replaceState(url, $page.state);
+    if (url.href !== location.href) void goto(url, {shallow: true, replaceState: true, state: page.state});
   }
 
   function scheduleSend(coa: string | null) {

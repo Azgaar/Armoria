@@ -1,8 +1,8 @@
-import {env} from "$env/dynamic/private";
+import {env} from "#lib/server/env.ts";
 import {ClaimsUnavailableError} from "./claimErrors";
 import {MongoDBConnector} from "./dbConnector";
-import type {Coa} from "$lib/types/coa";
-import type {ClaimProtection} from "$lib/server/claimPasswords";
+import type {Coa} from "#lib/types/coa.js";
+import type {ClaimProtection} from "#lib/server/claimPasswords.ts";
 
 let connection: Promise<MongoDBConnector> | undefined;
 

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import {state, matrix, changes, history, message} from "$lib/data/stores";
-  import {download} from "$lib/scripts/download";
-  import {checkForIconedNav} from "$lib/scripts/navbar";
+  import {state, matrix, changes, history, message} from "#lib/data/stores.ts";
+  import {download} from "#lib/scripts/download.js";
+  import {checkForIconedNav} from "#lib/scripts/navbar.ts";
 
   let touch = {startX: 0, startY: 0};
 

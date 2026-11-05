@@ -1,8 +1,8 @@
 <script lang="ts">
-  import {settingsStorage} from "$lib/data/storage";
+  import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
   import {t} from "svelte-i18n";
-  import {tooltip} from "$lib/scripts/tooltip";
+  import {tooltip} from "#lib/scripts/tooltip.ts";
   export let key: string;
 
   $: locked = settingsStorage.getItem(key);

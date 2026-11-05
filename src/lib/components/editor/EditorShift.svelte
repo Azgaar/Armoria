@@ -2,8 +2,8 @@
   // @ts-check
   import {t} from "svelte-i18n";
   import Switch from "./Switch.svelte";
-  import {grid, showGrid, state} from "$lib/data/stores";
-  import {tooltip} from "$lib/scripts/tooltip";
+  import {grid, showGrid, state} from "#lib/data/stores.ts";
+  import {tooltip} from "#lib/scripts/tooltip.ts";
 
   interface IElement {
     size: number;

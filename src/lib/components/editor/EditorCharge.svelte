@@ -1,13 +1,13 @@
 <script lang="ts">
-  import {settingsStorage} from "$lib/data/storage";
+  import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
   import {t, dictionary, locale} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
-  import {charges, chargeSets} from "$lib/data/dataModel";
-  import {unregisterCharge} from "$lib/data/charges";
-  import {uploaded} from "$lib/data/stores";
-  import {removeCharge} from "$lib/scripts/getters";
-  import {tooltip} from "$lib/scripts/tooltip";
+  import {charges, chargeSets} from "#lib/data/dataModel.js";
+  import {unregisterCharge} from "#lib/data/charges.js";
+  import {uploaded} from "#lib/data/stores.ts";
+  import {removeCharge} from "#lib/scripts/getters.js";
+  import {tooltip} from "#lib/scripts/tooltip.ts";
 
   export let charge: string;
   export let type: string;
@@ -22,7 +22,7 @@
   export let division = false;
   export let shield: string | undefined = undefined;
 
-  let chargesData: (import("$lib/types/coa").Coa & {charge: string})[] = [];
+  let chargesData: (import("#lib/types/coa.js").Coa & {charge: string})[] = [];
   let query: string;
   let queryOld: string;
 

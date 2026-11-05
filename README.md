@@ -40,9 +40,9 @@ The first #237 upgrade uses the following mutually compatible pinned framework/r
 | Package | Version |
 | --- | --- |
 | Svelte | 5.57.3 |
-| SvelteKit | 2.70.3 |
+| SvelteKit | 3.1.1 |
 | Vite / Svelte plugin | 8.3.5 / 7.3.1 |
-| Vercel adapter | 6.3.4 |
+| Vercel adapter | 7.0.2 |
 | TypeScript | 6.0.3 |
 | Puppeteer / puppeteer-core | 24.43.1 |
 | Server Chromium package | 148.0.0 |
@@ -55,7 +55,7 @@ After `npm run build`, run `npm run test:production` for the service-worker upda
 
 The dependency audit still reports 35 advisories (4 low, 18 moderate, 13 high), including the retained Puppeteer/converter graph and older framework/tooling majors. These are not resolved by this first step; track their replacements and verification under #237 rather than using `npm audit fix --force`.
 
-The SvelteKit 3 migration remains a separate #237 step: its removal of `$app/stores`, configuration/API changes and `#lib` migration require another review boundary. Component-by-component runes migration can then proceed without mixing it with this compiler/renderer upgrade. Guidance: [Svelte 5 migration](https://svelte.dev/docs/svelte/v5-migration-guide), [SvelteKit 3 migration](https://svelte.dev/docs/kit/migrating-to-sveltekit-3), [Vite 8 migration](https://vite.dev/guide/migration), [Vite supported releases](https://vite.dev/releases).
+The second #237 step upgrades SvelteKit to 3.1.1 and adapter-vercel to 7.0.2. Configuration now lives in `vite.config.ts`; `#lib` subpath imports include file extensions. URL synchronization uses shallow `goto` with `$app/state`. Private service variables are declared optional in `src/env.ts` and remain runtime values, so credential-free builds and procedural rendering still work. The service worker uses the new manifest/environment modules and has its own checked TypeScript project. Existing editor, image and production update/offline regressions validate the migration. Components continue in supported Svelte 5 legacy mode and can migrate to runes incrementally. Guidance: [SvelteKit 3 migration](https://svelte.dev/docs/kit/migrating-to-sveltekit-3).
 
 ### Branches, deployment and validation
 

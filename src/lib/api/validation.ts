@@ -1,5 +1,5 @@
-import type {Coa} from "$lib/types/coa";
-import * as shared from "$lib/coa/validation";
+import type {Coa} from "#lib/types/coa.js";
+import * as shared from "#lib/coa/validation.ts";
 
 // The API uses the same schema, with no local browser resources or DOM-only effects.
 export function validateCoa(value: unknown): void {

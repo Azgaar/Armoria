@@ -1,10 +1,10 @@
 <script lang="ts">
-  import {settingsStorage} from "$lib/data/storage";
+  import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
   import {t} from "svelte-i18n";
   import NavItem from "../../shared/NavItem.svelte";
   import RangeInput from "../../../../shared/RangeInput.svelte";
-  import {scale} from "$lib/data/stores";
+  import {scale} from "#lib/data/stores.ts";
 
   const handleInput = (value: number) => {
     scale.set(value);

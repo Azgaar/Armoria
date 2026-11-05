@@ -1,8 +1,8 @@
-import * as defaults from "$lib/config/defaults";
-import {diapers, gradients} from "$lib/config/options";
-import {charges, chargeSets} from "$lib/data/dataModel";
+import * as defaults from "#lib/config/defaults.ts";
+import {diapers, gradients} from "#lib/config/options.js";
+import {charges, chargeSets} from "#lib/data/dataModel.js";
 import {shields, shieldSets} from "./shields";
-import {ra, rw} from "$lib/scripts/utils";
+import {ra, rw} from "#lib/scripts/utils.ts";
 import {settingsStorage, reportSettingsRecovery} from "./storage";
 import {validateTinctures} from "./validators";
 

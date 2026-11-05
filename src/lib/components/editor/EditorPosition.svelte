@@ -2,12 +2,12 @@
   // @ts-check
   import {t} from "svelte-i18n";
   import Switch from "./Switch.svelte";
-  import {state} from "$lib/data/stores";
-  import {positionsSelect} from "$lib/data/dataModel";
-  import {getSize} from "$lib/scripts/generator";
-  import {tooltip} from "$lib/scripts/tooltip";
+  import {state} from "#lib/data/stores.ts";
+  import {positionsSelect} from "#lib/data/dataModel.js";
+  import {getSize} from "#lib/scripts/generator.js";
+  import {tooltip} from "#lib/scripts/tooltip.ts";
 
-  import type {EditorCharge} from "$lib/types/editor";
+  import type {EditorCharge} from "#lib/types/editor.js";
   export let charge: EditorCharge;
 
   function showPositions() {

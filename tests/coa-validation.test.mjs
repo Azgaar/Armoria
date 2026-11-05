@@ -12,7 +12,7 @@ before(async () => {
     logLevel: "silent",
     server: {middlewareMode: true, hmr: false, watch: null},
     optimizeDeps: {noDiscovery: true, include: []},
-    resolve: {alias: {$lib: root + "src/lib"}}
+    resolve: {alias: {"#lib": root + "src/lib"}}
   });
   schema = await server.ssrLoadModule("/src/lib/coa/validation.ts");
   api = await server.ssrLoadModule("/src/lib/api/validation.ts");

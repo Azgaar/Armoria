@@ -1,12 +1,12 @@
 <script lang="ts">
-  import {settingsStorage} from "$lib/data/storage";
+  import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
   import {t} from "svelte-i18n";
   import NavButton from "../../shared/NavButton.svelte";
   import NavItem from "../../shared/NavItem.svelte";
   import Lock from "../../shared/Lock.svelte";
-  import {gradients} from "$lib/config/options";
-  import {grad} from "$lib/data/stores";
+  import {gradients} from "#lib/config/options.js";
+  import {grad} from "#lib/data/stores.ts";
 
   const changeGradient = (value: string) => {
     grad.set(value);

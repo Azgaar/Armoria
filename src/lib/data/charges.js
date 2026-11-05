@@ -1,4 +1,4 @@
-/** @type {Record<string, import("$lib/types/data").ChargeData>} */
+/** @type {Record<string, import("#lib/types/data.js").ChargeData>} */
 const chargeData = {
   agnusDei: {
     colors: 2,

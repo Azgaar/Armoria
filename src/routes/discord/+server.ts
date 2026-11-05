@@ -1,5 +1,5 @@
-import {env} from "$env/dynamic/private";
-import {handleDiscord} from "$lib/server/discord";
+import {env} from "#lib/server/env.ts";
+import {handleDiscord} from "#lib/server/discord.ts";
 import type {Config} from "@sveltejs/adapter-vercel";
 import type {RequestHandler} from "./$types";
 

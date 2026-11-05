@@ -22,12 +22,12 @@ beforeEach(async () => {
     logLevel: "silent",
     server: {middlewareMode: true, hmr: false, watch: null},
     optimizeDeps: {noDiscovery: true, include: []},
-    resolve: {alias: {$lib: root + "src/lib"}},
+    resolve: {alias: {"#lib": root + "src/lib"}},
     plugins: [
       {
         name: "settings-browser",
         resolveId(id) {
-          if (id === "$app/environment") return "\0settings-browser";
+          if (id === "$app/env") return "\0settings-browser";
         },
         load(id) {
           if (id === "\0settings-browser") return "export const browser = true;";

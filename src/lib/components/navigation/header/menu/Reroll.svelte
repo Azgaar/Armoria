@@ -1,7 +1,7 @@
 <script lang="ts">
   // @ts-check
   import {t} from "svelte-i18n";
-  import {state, matrix} from "$lib/data/stores";
+  import {state, matrix} from "#lib/data/stores.ts";
   import NavButton from "../shared/NavButton.svelte";
 
   const reroll = () => {

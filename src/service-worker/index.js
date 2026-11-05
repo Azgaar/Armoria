@@ -1,4 +1,7 @@
-import {build, files, prerendered, version} from "$service-worker";
+import {self} from "$app/service-worker";
+import {version} from "$app/env";
+import {immutable, assets, prerendered} from "$app/manifest";
+import {resolve} from "$app/paths";
 import {clientsClaim} from "workbox-core";
 import {cleanupOutdatedCaches, precacheAndRoute} from "workbox-precaching";
 import {registerRoute} from "workbox-routing";
@@ -18,4 +21,5 @@ registerRoute(
   new NetworkFirst({cacheName: "armoria-app", networkTimeoutSeconds: 3})
 );
 
-precacheAndRoute([...build, ...files, ...prerendered].map(file => ({url: file, revision: version})));
+const base = resolve("");
+precacheAndRoute([...immutable, ...assets, ...prerendered].map(({path}) => ({url: base + path, revision: version})));

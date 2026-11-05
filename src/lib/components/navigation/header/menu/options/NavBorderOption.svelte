@@ -1,11 +1,11 @@
 <script lang="ts">
-  import {settingsStorage} from "$lib/data/storage";
+  import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
   import {t} from "svelte-i18n";
   import NavItem from "../../shared/NavItem.svelte";
   import IconButton from "../../shared/IconButton.svelte";
-  import {border, borderWidth} from "$lib/data/stores";
-  import {DEFAULT_BORDER, DEFAULT_BORDER_WIDTH} from "$lib/config/defaults";
+  import {border, borderWidth} from "#lib/data/stores.ts";
+  import {DEFAULT_BORDER, DEFAULT_BORDER_WIDTH} from "#lib/config/defaults.ts";
   import ColorInput from "../../../../shared/ColorInput.svelte";
   import NumberInput from "../../../../shared/NumberInput.svelte";
 

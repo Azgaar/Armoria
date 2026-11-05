@@ -11,9 +11,9 @@ let server, image, legacyImage, claim, unclaim, claims, assets;
 // Compile the actual routes/components, replacing only external services and Kit's asset reader.
 // No Mongo credentials, Chromium downloads, network listener, or live claims are needed.
 const mocks = {
-  "$app/environment": "export const browser = false;",
-  "$env/static/private": 'export const MASTER_KEY = "test-master";',
-  [root + "src/lib/api/claims"]: `
+  "$app/env": "export const browser = false;",
+  [root + "src/lib/server/env.ts"]: 'export const env = {MASTER_KEY: "test-master"};',
+  [root + "src/lib/api/claims.ts"]: `
     export const records = new Map();
     export const mutations = [];
     export let unavailable = false;
@@ -65,7 +65,7 @@ before(async () => {
     ssr: {noExternal: ["@sparticuz/chromium-min", "convert-svg-to-png", "convert-svg-to-jpeg"]},
     server: {middlewareMode: true, hmr: false, watch: null},
     optimizeDeps: {noDiscovery: true, include: []},
-    resolve: {alias: {$lib: root + "src/lib"}},
+    resolve: {alias: {"#lib": root + "src/lib"}},
     plugins: [
       {
         name: "api-test-services",
@@ -84,7 +84,7 @@ before(async () => {
   legacyImage = (await server.ssrLoadModule("/src/routes/api/[format]/[size]/[[seed]]/+server.ts")).GET;
   claim = (await server.ssrLoadModule("/src/routes/api/claim/[name]/[coa]/[[key]]/+server.ts")).GET;
   unclaim = (await server.ssrLoadModule("/src/routes/api/unclaim/[name]/[[key]]/+server.ts")).GET;
-  claims = await server.ssrLoadModule(root + "src/lib/api/claims");
+  claims = await server.ssrLoadModule(root + "src/lib/api/claims.ts");
   assets = await server.ssrLoadModule("$app/server");
 });
 

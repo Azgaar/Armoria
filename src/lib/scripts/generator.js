@@ -1,9 +1,9 @@
-import {charges, chargeSets, divisions, lines, ordinaries, patternSize, positions} from "$lib/data/dataModel";
-import {DEFAULT_TINCTURES} from "$lib/config/defaults";
+import {charges, chargeSets, divisions, lines, ordinaries, patternSize, positions} from "#lib/data/dataModel.js";
+import {DEFAULT_TINCTURES} from "#lib/config/defaults.ts";
 import {aleaPRNG} from "./alea";
 import {randomChoices} from "./utils";
 
-/** @param {import("$lib/types/tinctures").Tinctures} [tData] @param {() => number} [random] @returns {import("$lib/types/generator").GenerationConfig} */
+/** @param {import("#lib/types/tinctures.js").Tinctures} [tData] @param {() => number} [random] @returns {import("#lib/types/generator.js").GenerationConfig} */
 export const createConfig = (tData = DEFAULT_TINCTURES, random = Math.random) => ({
   random,
   usedPattern: null,
@@ -14,12 +14,12 @@ export const createConfig = (tData = DEFAULT_TINCTURES, random = Math.random) =>
 });
 
 // main generation routine
-/** @param {string | number} [providedSeed] @param {import("$lib/types/tinctures").Tinctures} [tData] @returns {import("$lib/types/coa").Coa} */
+/** @param {string | number} [providedSeed] @param {import("#lib/types/tinctures.js").Tinctures} [tData] @returns {import("#lib/types/coa.js").Coa} */
 export const generate = function (providedSeed, tData = DEFAULT_TINCTURES) {
   const seed = providedSeed || Math.floor(Math.random() * 1e9);
   const config = createConfig(tData, aleaPRNG(seed));
   const {P, rw} = randomChoices(config.random);
-  /** @type {import("$lib/types/coa").Coa} */
+  /** @type {import("#lib/types/coa.js").Coa} */
   const coa = {seed, t1: getTincture(config, "field")};
 
   const addCharge = P(config.usedPattern ? 0.5 : 0.93); // 80% for charge
@@ -96,7 +96,7 @@ export const generate = function (providedSeed, tData = DEFAULT_TINCTURES) {
 
     if (chargeData.natural && chargeData.natural !== t && chargeData.natural !== tOrdinary) t = chargeData.natural;
 
-    /** @type {import("$lib/types/coa").Charge} */
+    /** @type {import("#lib/types/coa.js").Charge} */
     const item = {charge: charge, t, p};
     const colors = chargeData.colors || 1;
     if (colors > 1) item.t2 = P(0.25) ? getTincture(config, "charge", config.usedTinctures, coa.t1) : t;
@@ -175,7 +175,7 @@ export const getSize = (p, o = null, d = null) => {
   return 0.7; // 1, 2
 };
 
-/** @param {import("$lib/types/generator").GenerationConfig} config @param {string | null} division @param {import("$lib/types/coa").Charge} c */
+/** @param {import("#lib/types/generator.js").GenerationConfig} config @param {string | null} division @param {import("#lib/types/coa.js").Charge} c */
 function defineChargeAttributes(config, division, c) {
   const {P} = randomChoices(config.random);
   // define size
@@ -189,14 +189,14 @@ function defineChargeAttributes(config, division, c) {
   if (P(0.02) && charges.data[c.charge]?.reversed) c.reversed = 1;
 }
 
-/** @param {import("$lib/types/generator").GenerationConfig} config @param {Record<string, number>} set */
+/** @param {import("#lib/types/generator.js").GenerationConfig} config @param {Record<string, number>} set */
 function selectCharge(config, set) {
   const {rw} = randomChoices(config.random);
   const type = rw(set);
   return type === "inescutcheon" ? "inescutcheon" : rw(chargeSets[type]);
 }
 
-/** @param {import("$lib/types/generator").GenerationConfig} config @param {string} tincture */
+/** @param {import("#lib/types/generator.js").GenerationConfig} config @param {string} tincture */
 function replaceTincture(config, tincture) {
   const {rw} = randomChoices(config.random);
   const type = getType(config, tincture);
@@ -214,7 +214,7 @@ function replaceTincture(config, tincture) {
   return rw(candidateTinctures, false);
 }
 
-/** @param {import("$lib/types/generator").GenerationConfig} config @param {string} t */
+/** @param {import("#lib/types/generator.js").GenerationConfig} config @param {string} t */
 function getType(config, t) {
   const tincture = getBaseTincture(t);
   if (Object.keys(config.tData.metals).includes(tincture)) return "metals";
@@ -223,7 +223,7 @@ function getType(config, t) {
   throw new Error(`Unknown tincture type: ${t}`);
 }
 
-/** @param {import("$lib/types/generator").GenerationConfig} config @param {string} patternName @param {"field" | "division" | "charge"} element */
+/** @param {import("#lib/types/generator.js").GenerationConfig} config @param {string} patternName @param {"field" | "division" | "charge"} element */
 function definePattern(config, patternName, element) {
   const {P, rw} = randomChoices(config.random);
   let t1 = null;
@@ -335,10 +335,10 @@ function excludeTinctures(typeTinctures, usedTinctures) {
 }
 
 // select tincture: element type (field, division, charge), used field tinctures, field type to follow RoT
-/** @param {import("$lib/types/generator").GenerationConfig} config @param {"field" | "division" | "charge"} element @param {string[]} [fields] @param {string | null} [RoT] */
+/** @param {import("#lib/types/generator.js").GenerationConfig} config @param {"field" | "division" | "charge"} element @param {string[]} [fields] @param {string | null} [RoT] */
 export function getTincture(config, element, fields = [], RoT) {
   const {rw} = randomChoices(config.random);
-  let type = /** @type {keyof import("$lib/types/tinctures").TinctureTypeChances} */ (rw(config.tData[element])); // random type
+  let type = /** @type {keyof import("#lib/types/tinctures.js").TinctureTypeChances} */ (rw(config.tData[element])); // random type
 
   if (type === "patterns") {
     const patternName = rw(config.tData[type]);

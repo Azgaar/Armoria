@@ -1,11 +1,11 @@
 <script lang="ts">
-  import {settingsStorage} from "$lib/data/storage";
+  import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
   import {t} from "svelte-i18n";
   import NavItem from "../../shared/NavItem.svelte";
   import IconButton from "../../shared/IconButton.svelte";
-  import {background} from "$lib/data/stores";
-  import {DEFAULT_BACKGROUND} from "$lib/config/defaults";
+  import {background} from "#lib/data/stores.ts";
+  import {DEFAULT_BACKGROUND} from "#lib/config/defaults.ts";
   import ColorInput from "../../../../shared/ColorInput.svelte";
 
   const restoreDefaultBackground = () => {

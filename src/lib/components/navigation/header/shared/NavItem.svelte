@@ -1,7 +1,7 @@
 <script lang="ts">
   // @ts-check
-  import {tooltip} from "$lib/scripts/tooltip";
-  import {iconedNav} from "$lib/data/stores";
+  import {tooltip} from "#lib/scripts/tooltip.ts";
+  import {iconedNav} from "#lib/data/stores.ts";
   import NavLabel from "./NavLabel.svelte";
 
   export let value: string | undefined = undefined;

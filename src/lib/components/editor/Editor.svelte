@@ -1,22 +1,22 @@
 <script lang="ts">
-  import type {Coa, Charge, Ordinary, Inscription} from "$lib/types/coa";
+  import type {Coa, Charge, Ordinary, Inscription} from "#lib/types/coa.js";
   import type {
     Field,
     EditorMenu,
     EditorCharge as ChargeMenu,
     EditorOrdinary as OrdinaryMenu,
     EditorInscription as InscriptionMenu
-  } from "$lib/types/editor";
-  import {settingsStorage} from "$lib/data/storage";
+  } from "#lib/types/editor.js";
+  import {settingsStorage} from "#lib/data/storage.ts";
   import {tick} from "svelte";
   import {t, dictionary, locale} from "svelte-i18n";
   import {fade, fly, slide} from "svelte/transition";
-  import {DEFAULT_ZOOM} from "$lib/config/defaults";
-  import {changes, grid, history, isTextReady, message, shield, showGrid, state, tinctures, uploaded} from "$lib/data/stores";
-  import {charges, chargeSets, divisions, ordinaries, shields, shieldSets} from "$lib/data/dataModel";
-  import {createConfig, generate, getTincture} from "$lib/scripts/generator";
-  import {highlight, lowlight} from "$lib/scripts/highlight";
-  import {P, ra, rw} from "$lib/scripts/utils";
+  import {DEFAULT_ZOOM} from "#lib/config/defaults.ts";
+  import {changes, grid, history, isTextReady, message, shield, showGrid, state, tinctures, uploaded} from "#lib/data/stores.ts";
+  import {charges, chargeSets, divisions, ordinaries, shields, shieldSets} from "#lib/data/dataModel.js";
+  import {createConfig, generate, getTincture} from "#lib/scripts/generator.js";
+  import {highlight, lowlight} from "#lib/scripts/highlight.js";
+  import {P, ra, rw} from "#lib/scripts/utils.ts";
   import COA from "./../object/COA.svelte";
   import EditorAbove from "./EditorAbove.svelte";
   import EditorCharge from "./EditorCharge.svelte";

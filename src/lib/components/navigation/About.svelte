@@ -2,7 +2,7 @@
   // @ts-check
   import {t} from "svelte-i18n";
   import AnimatedCOA from "./AnimatedCOA.svelte";
-  import {state} from "$lib/data//stores";
+  import {state} from "#lib/data//stores.ts";
   import {fade, fly} from "svelte/transition";
 
   const duration = 1000;

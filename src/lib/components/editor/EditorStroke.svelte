@@ -2,7 +2,7 @@
   // @ts-check
   import {t} from "svelte-i18n";
   import Switch from "./Switch.svelte";
-  import {tooltip} from "$lib/scripts/tooltip";
+  import {tooltip} from "#lib/scripts/tooltip.ts";
 
   interface IElement {
     showStroke: boolean;

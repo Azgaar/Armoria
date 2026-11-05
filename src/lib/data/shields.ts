@@ -1,6 +1,6 @@
 export const DEFAULT_SHIELD_BOX = "0 0 200 200";
 
-import type {ShieldData} from "$lib/types/data";
+import type {ShieldData} from "#lib/types/data.js";
 
 export const shields = {
   types: {basic: 10, regional: 2, historical: 1, specific: 1, banner: 1, simple: 2, middleEarth: 0, fantasy: 1},

@@ -1,11 +1,11 @@
 <script lang="ts">
   // @ts-check
   import {fade} from "svelte/transition";
-  import {state} from "$lib/data/stores";
-  import {drag} from "$lib/scripts/drag";
-  import {analyzePath, buildPath} from "$lib/scripts/getters";
-  import {highlight, lowlight} from "$lib/scripts/highlight";
-  import type {Coa, Inscription} from "$lib/types/coa";
+  import {state} from "#lib/data/stores.ts";
+  import {drag} from "#lib/scripts/drag.js";
+  import {analyzePath, buildPath} from "#lib/scripts/getters.js";
+  import {highlight, lowlight} from "#lib/scripts/highlight.js";
+  import type {Coa, Inscription} from "#lib/types/coa.js";
 
   export let coa: Coa;
   export let inscription: Inscription;

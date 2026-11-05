@@ -1,7 +1,7 @@
 <script lang="ts">
   // @ts-check
-  import {state} from "$lib/data/stores";
-  import {shields} from "$lib/data/dataModel";
+  import {state} from "#lib/data/stores.ts";
+  import {shields} from "#lib/data/dataModel.js";
   import {fade} from "svelte/transition";
 
   export let shield: string;

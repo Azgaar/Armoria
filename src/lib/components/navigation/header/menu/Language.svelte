@@ -1,8 +1,8 @@
 <script lang="ts">
-  import {settingsStorage} from "$lib/data/storage";
+  import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
   import {locale, locales, t} from "svelte-i18n";
-  import {capitalize} from "$lib/scripts/utils";
+  import {capitalize} from "#lib/scripts/utils.ts";
   import NavButton from "../shared/NavButton.svelte";
   import NavItem from "../shared/NavItem.svelte";
 

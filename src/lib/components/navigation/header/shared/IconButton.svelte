@@ -1,6 +1,6 @@
 <script lang="ts">
   // @ts-check
-  import {tooltip} from "$lib/scripts/tooltip";
+  import {tooltip} from "#lib/scripts/tooltip.ts";
 
   export let icon: string;
   export let tip: string | undefined = undefined;

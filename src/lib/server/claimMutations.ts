@@ -1,11 +1,11 @@
-import {getClaim, reclaim, setClaim, unclaim} from "$lib/api/claims";
-import {render} from "$lib/api/renderer";
-import {parseColors, parseSeed} from "$lib/api/utils";
-import {InvalidCoaError, RequestLimitError, jsonError} from "$lib/api/responses";
-import {normalizeCoa} from "$lib/api/validation";
+import {getClaim, reclaim, setClaim, unclaim} from "#lib/api/claims.ts";
+import {render} from "#lib/api/renderer.js";
+import {parseColors, parseSeed} from "#lib/api/utils.ts";
+import {InvalidCoaError, RequestLimitError, jsonError} from "#lib/api/responses.ts";
+import {normalizeCoa} from "#lib/api/validation.ts";
 import {hashClaimPassword, isProtected, mayMutateClaim} from "./claimPasswords";
 
-import {ClaimsUnavailableError} from "$lib/api/claimErrors";
+import {ClaimsUnavailableError} from "#lib/api/claimErrors.ts";
 
 const MAX_BODY = 64 * 1024;
 class RequestError extends Error {

@@ -1,8 +1,8 @@
 <script lang="ts">
   // @ts-check
-  import {DEFAULT_SHIELD_BOX} from "$lib/data/dataModel";
-  import {tooltip} from "$lib/scripts/tooltip";
-  import {colors, shield, grad, diaper} from "$lib/data/stores";
+  import {DEFAULT_SHIELD_BOX} from "#lib/data/dataModel.js";
+  import {tooltip} from "#lib/scripts/tooltip.ts";
+  import {colors, shield, grad, diaper} from "#lib/data/stores.ts";
   import Shield from "./../object/Shield.svelte";
 
   export let coa: any;
