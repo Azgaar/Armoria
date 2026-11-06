@@ -1,6 +1,5 @@
 <script lang="ts">
   import type {Coa, Ordinary} from "#lib/types/coa.js";
-  import "path-data-polyfill";
   import {ordinaries, shields} from "#lib/data/dataModel.js";
   import {shield} from "#lib/data/stores.ts";
   import {drag, transform} from "#lib/scripts/drag.js";

@@ -56,11 +56,24 @@ after(async () => {
 });
 
 test("production service-worker updates show the new deploy and retain its offline fallback", {timeout: 120000}, async () => {
-  const url = origin + "/?" + new URLSearchParams({coa: JSON.stringify({t1: "or", shield: "heater"})});
+  const coa = {
+    t1: "or",
+    shield: "heater",
+    ordinaries: [{ordinary: "bordure", t: "gules", t2: "argent", compony: 12}]
+  };
+  const url = origin + "/?" + new URLSearchParams({coa: JSON.stringify(coa)});
+  // Verify client initialization in production and again on an offline reload.
+  await page.evaluateOnNewDocument(() => {
+    delete SVGPathElement.prototype.getPathData;
+    delete SVGPathElement.prototype.setPathData;
+  });
   await page.evaluateOnNewDocument(() => localStorage.setItem("locale", "fr"));
   await page.goto(url, {waitUntil: "networkidle0"});
   await page.waitForSelector("#coaEdit .field");
   assert.equal(await page.$eval('meta[name="deployment"]', node => node.content), "first");
+  const dashes = await page.$eval("#coaEdit .ordinary [stroke-dasharray]", node => node.getAttribute("stroke-dasharray"));
+  assert.ok(dashes.split(" ").length > 2);
+  assert.ok(dashes.split(" ").every(value => Number.isFinite(Number(value)) && Number(value) >= 0));
   await page.evaluate(async () => {
     await navigator.serviceWorker.ready;
     if (!navigator.serviceWorker.controller)
@@ -84,5 +97,6 @@ test("production service-worker updates show the new deploy and retain its offli
   assert.ok(
     await page.evaluate(() => [...document.querySelectorAll("li")].some(node => node.textContent.trim() === "Sauvegarder"))
   );
+  assert.equal(await page.$eval("#coaEdit .ordinary [stroke-dasharray]", node => node.getAttribute("stroke-dasharray")), dashes);
   assert.deepEqual(errors, []);
 });
