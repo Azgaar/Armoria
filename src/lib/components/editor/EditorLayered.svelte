@@ -4,7 +4,7 @@
   import Switch from "./Switch.svelte";
   import {tooltip} from "#lib/scripts/tooltip.ts";
 
-  export let layered: boolean;
+  let {layered = $bindable()}: {layered: boolean} = $props();
 </script>
 
 <span data-tooltip={$t("tooltip.layered")} use:tooltip>

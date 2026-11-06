@@ -2,7 +2,7 @@
   // @ts-check
   import {t} from "svelte-i18n";
 
-  export let size: string;
+  let {size = $bindable()}: {size: string} = $props();
 </script>
 
 <span style="margin-left: 1em">{$t("editor.size")}:</span>

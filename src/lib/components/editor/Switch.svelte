@@ -1,5 +1,5 @@
-<script>
-  export let checked = false;
+<script lang="ts">
+  let {checked = $bindable(false)}: {checked?: boolean} = $props();
   const id = "switch" + Math.floor(1e6 * Math.random());
 </script>
 

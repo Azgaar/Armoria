@@ -4,7 +4,7 @@
   import Switch from "./Switch.svelte";
   import {tooltip} from "#lib/scripts/tooltip.ts";
 
-  export let above: boolean;
+  let {above = $bindable()}: {above: boolean} = $props();
 </script>
 
 <span data-tooltip={$t("tooltip.aboveCharges")} use:tooltip>

@@ -3,11 +3,13 @@
   import {t} from "svelte-i18n";
   import {tooltip} from "#lib/scripts/tooltip.ts";
 
-  export let componySize = 0;
-  export let gyronnyNumber = 0;
-  export let striped = "";
+  let {
+    componySize = $bindable(0),
+    gyronnyNumber = $bindable(0),
+    striped = $bindable("")
+  }: {componySize?: number; gyronnyNumber?: number; striped?: string} = $props();
 
-  function changeStriped(e: Event) {
+  function changeStriped() {
     componySize = 0;
     gyronnyNumber = 0;
     if (striped === "compony") {
@@ -19,7 +21,7 @@
 </script>
 
 <span>{$t("editor.striped")}:</span>
-<select bind:value={striped} on:change={changeStriped}>
+<select bind:value={striped} onchange={changeStriped}>
   <option value="">{$t("editor.notStriped")}</option>
   <option value="compony">{$t("editor.compony")}</option>
   <option value="gyronny">{$t("editor.gyronny")}</option>
