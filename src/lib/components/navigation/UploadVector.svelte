@@ -2,9 +2,11 @@
   import {getFilesFromDropEvent, getFilesFromInputEvent} from "#lib/scripts/files.ts";
   import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
-  import {t} from "svelte-i18n";
+  import {untrack} from "svelte";
+  import {onDestroy} from "svelte";
+  import type {Snippet} from "svelte";
   import LicenseList from "./LicenseList.svelte";
-  import {state, colors, tinctures, message, shield, uploaded} from "#lib/data/stores.ts";
+  import {state as editorState, colors, tinctures, message, shield, uploaded} from "#lib/data/stores.ts";
   import {charges, chargeSets, DEFAULT_SHIELD_BOX, shields} from "#lib/data/dataModel.js";
   import {registerCharge} from "#lib/data/charges.js";
   import {updateCharge} from "#lib/scripts/getters.js";
@@ -12,55 +14,73 @@
   import {tooltip} from "#lib/scripts/tooltip.ts";
   import {parseUploadedSvg, sanitizeSvg} from "#lib/scripts/sanitizeSvg.ts";
 
-  let dragging = false;
-  let selected = false;
-  let svg = "";
-  let markup = "";
-  let transform = {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0};
-  let name: string;
-  let category = "uploaded";
-  let color = "#d7374a";
+  let {children}: {children?: Snippet<[{dragging: boolean}]>} = $props();
 
-  let source: string;
-  let license: string;
-  let author: string;
+  let dragging = $state(false);
+  let selected = $state(false);
+  let markup = $state("");
+  let transform = $state({a: 1, b: 0, c: 0, d: 1, e: 0, f: 0});
+  let name = $state<string>();
+  let category = $state("uploaded");
+  let color = $state("#d7374a");
+
+  let source = $state<string>();
+  let license = $state<string>();
+  let author = $state<string>();
 
   const tinctureList = (["metals", "colours", "stains"] as const).map(type => Object.keys($tinctures[type])).flat();
 
-  $: updateTransform(transform);
-  $: svg = sanitizeSvg(markup);
+  $effect.pre(() => {
+    const values = Object.values(transform);
+    // Markup edits sanitize the preview without resetting their own transform.
+    untrack(() => updateTransform(values));
+  });
+  const svg = $derived(sanitizeSvg(markup));
 
-  function updateTransform(transform: {[key: string]: number}) {
+  function updateTransform(values: number[]) {
     if (!markup) return; // on component load
 
     const g = parseUploadedSvg(markup).querySelector("g");
     if (!g) return;
-    const transformString = Object.values(transform).join(" ");
+    const transformString = values.join(" ");
     if (transformString === "1 0 0 1 0 0") g.removeAttribute("transform");
     else g.setAttribute("transform", "matrix(" + transformString + ")");
     markup = g.outerHTML;
   }
 
-  const onFile = <E extends Event>(getFilesFunction: (event: E) => File[]) => (event: E) => {
-    dragging = false;
-    const files = getFilesFunction(event);
-    const file = files[0];
-    if (!file) return;
+  let reader: FileReader | undefined;
+  function cancelRead() {
+    if (!reader) return;
+    reader.onload = null;
+    reader.onerror = null;
+    if (reader.readyState === 1) reader.abort();
+    reader = undefined;
+  }
+  onDestroy(cancelRead);
 
-    if (!file.type.match(/text.*|svg.*/)) {
-      message.error("error.notSvgOrText");
-      return;
-    }
+  const onFile =
+    <E extends Event>(getFilesFunction: (event: E) => File[]) =>
+    (event: E) => {
+      cancelRead();
+      dragging = false;
+      const files = getFilesFunction(event);
+      const file = files[0];
+      if (!file) return;
 
-    selected = true;
-    name = camelize(file.name);
-    loadImage(file);
-  };
+      if (!file.type.match(/text.*|svg.*/)) {
+        message.error("error.notSvgOrText");
+        return;
+      }
+
+      selected = true;
+      name = camelize(file.name);
+      loadImage(file);
+    };
 
   function loadImage(file: Blob) {
-    const reader = new FileReader();
-    reader.onload = function () {
-      const svgText = String(reader.result || "");
+    const activeReader = (reader = new FileReader());
+    activeReader.onload = function () {
+      const svgText = String(activeReader.result || "");
       const g = parseUploadedSvg(svgText).querySelector("g");
       if (!g) {
         message.error("error.incorrectSvg");
@@ -78,14 +98,19 @@
       g.removeAttribute("id");
       markup = g.outerHTML;
     };
-    reader.readAsText(file);
+    activeReader.readAsText(file);
+  }
+
+  function cancelSelection() {
+    cancelRead();
+    selected = false;
   }
 
   function addCharge() {
     const allCharges = Object.keys(charges.types)
       .map(type => Object.keys(chargeSets[type]))
       .flat();
-    name = camelize(name);
+    name = camelize(name || "");
 
     if (!name || document.getElementById(name) || allCharges.includes(name)) {
       message.error("error.notUniqueName");
@@ -118,7 +143,7 @@
     updateCharge(name); // for the case where charge was previously not found
 
     selected = false;
-    $state.vector = 0;
+    $editorState.vector = 0;
     message.success("success.chargeAdded");
   }
 
@@ -136,11 +161,20 @@
 
 <div
   id="vectorUpload"
-  on:drop|preventDefault={onFile(getFilesFromDropEvent)}
-  on:dragover|preventDefault={() => (dragging = true)}
-  on:dragleave|preventDefault={() => (dragging = false)}
+  ondrop={event => {
+    event.preventDefault();
+    onFile(getFilesFromDropEvent)(event);
+  }}
+  ondragover={event => {
+    event.preventDefault();
+    dragging = true;
+  }}
+  ondragleave={event => {
+    event.preventDefault();
+    dragging = false;
+  }}
 >
-  <span on:click={() => ($state.vector = 0)} class="close">&times;</span>
+  <span onclick={() => ($editorState.vector = 0)} class="close">&times;</span>
   <div class="container">
     {#if selected}
       <svg
@@ -184,7 +218,7 @@
         >
           <div class="label">Tincture:</div>
           <select bind:value={color}>
-            {#each tinctureList as tincture}
+            {#each tinctureList as tincture (tincture)}
               <option value={$colors[tincture]}>{tincture}</option>
             {/each}
           </select>
@@ -209,25 +243,27 @@
         <div data-tooltip="Category to put a charge" use:tooltip>
           <div class="label">Category:</div>
           <select bind:value={category}>
-            {#each Object.keys(charges.types) as c}
+            {#each Object.keys(charges.types) as c (c)}
               <option value={c}>{c}</option>
             {/each}
           </select>
         </div>
 
         <div class="buttons">
-          <button on:click={addCharge}>Upload</button>
-          <button on:click={() => (selected = false)}>Cancel</button>
+          <button onclick={addCharge}>Upload</button>
+          <button onclick={cancelSelection}>Cancel</button>
         </div>
       </div>
     {:else}
       <label class="dragging">
-        <slot {dragging}>
+        {#if children}
+          {@render children({dragging})}
+        {:else}
           <div>Drag &amp; Drop svg file here or <b>browse</b></div>
-        </slot>
-        <input type="file" accept=".svg" on:input={onFile(getFilesFromInputEvent)} />
+        {/if}
+        <input type="file" accept=".svg" oninput={onFile(getFilesFromInputEvent)} />
       </label>
-      <button class="template" on:click={downloadTemplate}>Download Template</button>
+      <button class="template" onclick={downloadTemplate}>Download Template</button>
     {/if}
   </div>
 </div>

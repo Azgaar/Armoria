@@ -1,53 +1,52 @@
 <script lang="ts">
   // @ts-check
-  import {t} from "svelte-i18n";
-  import {changes, colors, fonts, history, matrices, matrix, message, state, uploaded} from "#lib/data/stores.ts";
+  import {getFilesFromDropEvent, getFilesFromInputEvent} from "#lib/scripts/files.ts";
+  import {onDestroy} from "svelte";
+  import type {Snippet} from "svelte";
+  import {changes, colors, fonts, history, matrices, matrix, message, state as editorState, uploaded} from "#lib/data/stores.ts";
 
   import {IMPORT_LIMITS, parseCoaImport} from "#lib/coa/validation.ts";
   import {RequestLimitError} from "#lib/coa/errors.ts";
 
-  let dragging = false;
+  let {children}: {children?: Snippet<[{dragging: boolean}]>} = $props();
 
-  const onFile = (getFilesFunction: any) => (event: any) => {
-    dragging = false;
-    const files = getFilesFunction(event);
-    const file = files[0];
-    if (!file) return;
+  let dragging = $state(false);
 
-    if (!file.type.match(/text|json/) && !/\.json$/i.test(file.name)) {
-      message.error("error.notJsonOrText");
-      return;
-    }
-
-    loadCOA(file);
-  };
-
-  function getFilesFromDropEvent(event: DragEvent) {
-    const transfer = event.dataTransfer;
-    if (!transfer) return [];
-    return transfer.files.length
-      ? Array.from(transfer.files)
-      : Array.from(transfer.items)
-          .filter(item => item.kind === "file")
-          .map(item => item.getAsFile())
-          .filter(Boolean);
+  let reader: FileReader | undefined;
+  function cancelRead() {
+    if (!reader) return;
+    reader.onload = null;
+    reader.onerror = null;
+    if (reader.readyState === 1) reader.abort();
+    reader = undefined;
   }
+  onDestroy(cancelRead);
 
-  function getFilesFromInputEvent(event: Event) {
-    const target = event.target as HTMLInputElement;
-    const files = Array.from(target.files || []);
-    target.value = "";
-    return files;
-  }
+  const onFile =
+    <E extends Event>(getFilesFunction: (event: E) => File[]) =>
+    (event: E) => {
+      cancelRead();
+      dragging = false;
+      const files = getFilesFunction(event);
+      const file = files[0];
+      if (!file) return;
+
+      if (!file.type.match(/text|json/) && !/\.json$/i.test(file.name)) {
+        message.error("error.notJsonOrText");
+        return;
+      }
+
+      loadCOA(file);
+    };
 
   function loadCOA(file: Blob) {
     if (file.size > IMPORT_LIMITS.bytes) {
       message.error("error.coaImportTooLarge");
       return;
     }
-    const reader = new FileReader();
-    reader.onerror = () => message.error("error.loadingCoa");
-    reader.onload = function () {
+    const activeReader = (reader = new FileReader());
+    activeReader.onerror = () => message.error("error.loadingCoa");
+    activeReader.onload = function () {
       let coas;
       try {
         coas = parseCoaImport(String(this.result), {colors: $colors, fonts: $fonts, uploaded: $uploaded});
@@ -56,7 +55,7 @@
         return;
       }
 
-      if ($state.edit) {
+      if ($editorState.edit) {
         // Load a single COA
         changes.add(JSON.stringify(coas[0]));
       } else {
@@ -74,26 +73,37 @@
           $matrices[$matrix].push(l + i);
         }
       }
-      $state.import = 0;
+      $editorState.import = 0;
       message.success("success.coaLoaded");
     };
-    reader.readAsText(file);
+    activeReader.readAsText(file);
   }
 </script>
 
 <div
   id="jsonUpload"
-  on:drop|preventDefault={onFile(getFilesFromDropEvent)}
-  on:dragover|preventDefault={() => (dragging = true)}
-  on:dragleave|preventDefault={() => (dragging = false)}
+  ondrop={event => {
+    event.preventDefault();
+    onFile(getFilesFromDropEvent)(event);
+  }}
+  ondragover={event => {
+    event.preventDefault();
+    dragging = true;
+  }}
+  ondragleave={event => {
+    event.preventDefault();
+    dragging = false;
+  }}
 >
-  <span on:click={() => ($state.import = 0)} class="close">&times;</span>
+  <span onclick={() => ($editorState.import = 0)} class="close">&times;</span>
   <div class="container">
     <label class="dragging">
-      <slot {dragging}>
+      {#if children}
+        {@render children({dragging})}
+      {:else}
         <div>Drag &amp; Drop JSON file here or <b>browse</b></div>
-      </slot>
-      <input type="file" accept=".json" on:input={onFile(getFilesFromInputEvent)} />
+      {/if}
+      <input type="file" accept=".json" oninput={onFile(getFilesFromInputEvent)} />
     </label>
   </div>
 </div>

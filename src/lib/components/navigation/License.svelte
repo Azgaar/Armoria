@@ -1,8 +1,10 @@
+<svelte:options runes />
+
 <script lang="ts">
   // @ts-check
   import {t, dictionary, locale} from "svelte-i18n";
   import {fade} from "svelte/transition";
-  import {shield, state} from "#lib/data/stores.ts";
+  import {shield, state as editorState} from "#lib/data/stores.ts";
   import {attributionLink as link, attributionUrl, escapeHtml} from "#lib/scripts/attribution.ts";
 
   const wetaShield = (shield: string) => ["noldor", "gondor", "easterling", "ironHills", "urukHai", "moriaOrc"].includes(shield);
@@ -63,7 +65,7 @@
 </script>
 
 <div id="license" transition:fade>
-  <span on:click={() => ($state.license = 0)} class="close">&times;</span>
+  <span onclick={() => ($editorState.license = 0)} class="close">&times;</span>
 
   <div id="licenseContainer">
     <h1>{$t("license.armoriaLicense")}</h1>
@@ -77,7 +79,7 @@
       <h3>{chargeData.length > 1 ? $t("license.charges") : charge.charge}: {@html charge.license}, {@html charge.source}</h3>
     {:else}
       <div class="chargesList">
-        {#each chargeData as { charge, license, source }}
+        {#each chargeData as { charge, license, source }, i (i)}
           <div><span class="charge">{charge}</span>: {@html license}, {@html source}</div>
         {/each}
       </div>

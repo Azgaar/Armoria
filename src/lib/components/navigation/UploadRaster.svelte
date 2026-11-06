@@ -2,10 +2,11 @@
   import {getFilesFromDropEvent, getFilesFromInputEvent} from "#lib/scripts/files.ts";
   import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
-  import {t} from "svelte-i18n";
+  import {onDestroy} from "svelte";
+  import type {Snippet} from "svelte";
   import LicenseList from "./LicenseList.svelte";
   import {sanitizeSvg} from "#lib/scripts/sanitizeSvg.ts";
-  import {state, message, shield, uploaded} from "#lib/data/stores.ts";
+  import {state as editorState, message, shield, uploaded} from "#lib/data/stores.ts";
   import {charges, chargeSets, DEFAULT_SHIELD_BOX, shields} from "#lib/data/dataModel.js";
   import {registerCharge} from "#lib/data/charges.js";
   import {updateCharge} from "#lib/scripts/getters.js";
@@ -13,51 +14,71 @@
   import {camelize} from "#lib/scripts/utils.ts";
   import {query} from "#lib/scripts/aliases.ts";
 
-  let dragging = false;
-  let selected = false;
+  let {children}: {children?: Snippet<[{dragging: boolean}]>} = $props();
 
-  let size = 50;
-  let offsetX = 0;
-  let offsetY = 0;
+  let dragging = $state(false);
+  let selected = $state(false);
 
-  let name: string;
-  let category = "uploaded";
-  let source: string;
-  let license: string;
-  let author: string;
+  let size = $state(50);
+  let offsetX = $state(0);
+  let offsetY = $state(0);
 
-  const onFile = <E extends Event>(getFilesFunction: (event: E) => File[]) => (event: E) => {
-    dragging = false;
-    const files = getFilesFunction(event);
-    const file = files[0];
-    if (!file) return;
+  let name = $state<string>();
+  let category = $state("uploaded");
+  let source = $state<string>();
+  let license = $state<string>();
+  let author = $state<string>();
 
-    if (!/^image\/(png|jpeg|gif|webp|avif|bmp)$/.test(file.type)) {
-      message.error("error.notAnImage");
-      return;
-    }
+  let reader: FileReader | undefined;
+  function cancelRead() {
+    if (!reader) return;
+    reader.onload = null;
+    reader.onerror = null;
+    if (reader.readyState === 1) reader.abort();
+    reader = undefined;
+  }
+  onDestroy(cancelRead);
 
-    selected = true;
-    message.info("info.tipUploadImageSize");
-    name = camelize(file.name);
-    loadImage(file);
-  };
+  const onFile =
+    <E extends Event>(getFilesFunction: (event: E) => File[]) =>
+    (event: E) => {
+      cancelRead();
+      dragging = false;
+      const files = getFilesFunction(event);
+      const file = files[0];
+      if (!file) return;
+
+      if (!/^image\/(png|jpeg|gif|webp|avif|bmp)$/.test(file.type)) {
+        message.error("error.notAnImage");
+        return;
+      }
+
+      selected = true;
+      message.info("info.tipUploadImageSize");
+      name = camelize(file.name);
+      loadImage(file);
+    };
 
   function loadImage(file: Blob) {
-    const reader = new FileReader();
-    reader.onload = function () {
-      const dataURL = String(reader.result || "");
+    const activeReader = (reader = new FileReader());
+    activeReader.onload = function () {
+      const dataURL = String(activeReader.result || "");
       const image = document.getElementById("rasterUpload")?.querySelector("svg image");
       image?.setAttribute("href", dataURL);
     };
-    reader.readAsDataURL(file);
+    activeReader.readAsDataURL(file);
+  }
+
+  function cancelSelection() {
+    cancelRead();
+    selected = false;
   }
 
   function addCharge() {
     const allCharges = Object.keys(charges.types)
       .map(type => Object.keys(chargeSets[type]))
       .flat();
-    name = camelize(name);
+    name = camelize(name || "");
 
     if (!name || document.getElementById(name) || allCharges.includes(name)) {
       message.error("error.notUniqueName");
@@ -82,18 +103,27 @@
     updateCharge(name); // for the case where charge was previously not found
 
     selected = false;
-    $state.raster = 0;
+    $editorState.raster = 0;
     message.success("success.chargeAdded");
   }
 </script>
 
 <div
   id="rasterUpload"
-  on:drop|preventDefault={onFile(getFilesFromDropEvent)}
-  on:dragover|preventDefault={() => (dragging = true)}
-  on:dragleave|preventDefault={() => (dragging = false)}
+  ondrop={event => {
+    event.preventDefault();
+    onFile(getFilesFromDropEvent)(event);
+  }}
+  ondragover={event => {
+    event.preventDefault();
+    dragging = true;
+  }}
+  ondragleave={event => {
+    event.preventDefault();
+    dragging = false;
+  }}
 >
-  <span on:click={() => ($state.raster = 0)} class="close">&times;</span>
+  <span onclick={() => ($editorState.raster = 0)} class="close">&times;</span>
   <div class="container">
     {#if selected}
       <svg
@@ -150,25 +180,27 @@
         <div data-tooltip="Category to put a charge" use:tooltip>
           <div class="label">Category:</div>
           <select bind:value={category}>
-            {#each Object.keys(charges.types) as c}
+            {#each Object.keys(charges.types) as c (c)}
               <option value={c}>{c}</option>
             {/each}
           </select>
         </div>
         <div class="buttons">
-          <button on:click={addCharge}>Add</button>
-          <button on:click={() => (selected = false)}>Cancel</button>
+          <button onclick={addCharge}>Add</button>
+          <button onclick={cancelSelection}>Cancel</button>
         </div>
       </div>
     {:else}
       <label class="dragging">
-        <slot {dragging}>
+        {#if children}
+          {@render children({dragging})}
+        {:else}
           <div>Drag &amp; Drop image here or <b>browse</b></div>
-        </slot>
+        {/if}
         <input
           type="file"
           accept="image/png,image/jpeg,image/gif,image/webp,image/avif,image/bmp"
-          on:input={onFile(getFilesFromInputEvent)}
+          oninput={onFile(getFilesFromInputEvent)}
         />
       </label>
     {/if}
