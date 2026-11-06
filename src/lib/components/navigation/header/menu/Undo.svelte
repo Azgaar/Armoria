@@ -4,7 +4,7 @@
   import {changes} from "#lib/data/stores.ts";
   import NavButton from "../shared/NavButton.svelte";
 
-  $: position = $changes[1];
+  const position = $derived($changes[1]);
 </script>
 
 <NavButton

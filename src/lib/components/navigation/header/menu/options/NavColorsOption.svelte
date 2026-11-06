@@ -1,12 +1,14 @@
+<svelte:options runes />
+
 <script lang="ts">
   // @ts-check
   import {t} from "svelte-i18n";
-  import {state} from "#lib/data/stores.ts";
+  import {state as editorState} from "#lib/data/stores.ts";
   import Lock from "../../shared/Lock.svelte";
   import NavButton from "../../shared/NavButton.svelte";
 
   const showTinctures = () => {
-    $state.tinctures = 1;
+    $editorState.tinctures = 1;
   };
 </script>
 

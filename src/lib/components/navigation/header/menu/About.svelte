@@ -1,11 +1,13 @@
+<svelte:options runes />
+
 <script lang="ts">
   // @ts-check
   import {t} from "svelte-i18n";
-  import {state} from "#lib/data/stores.ts";
+  import {state as editorState} from "#lib/data/stores.ts";
   import NavButton from "../shared/NavButton.svelte";
 
   const showAbout = () => {
-    $state.about = 1;
+    $editorState.about = 1;
   };
 </script>
 

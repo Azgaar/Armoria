@@ -1,9 +1,11 @@
+<svelte:options runes />
+
 <script lang="ts">
   // @ts-check
   import {t} from "svelte-i18n";
   import {download} from "#lib/scripts/download.js";
   import {resolveCoa} from "#lib/scripts/coa.ts";
-  import {changes, colors, history, matrices, matrix, message, shield, state} from "#lib/data/stores.ts";
+  import {changes, colors, history, matrices, matrix, message, shield, state as editorState} from "#lib/data/stores.ts";
   import NavButton from "../shared/NavButton.svelte";
   import NavItem from "../shared/NavItem.svelte";
 
@@ -11,7 +13,7 @@
   const resolved = (coa: string) => resolveCoa(coa, $colors, $shield);
 
   function exportJSON() {
-    if ($state.edit) {
+    if ($editorState.edit) {
       download([resolved($changes[0])], "json");
     } else {
       const coas = ($matrices[$matrix] as number[]).map(index => resolved(JSON.stringify($history[index])));
@@ -39,8 +41,7 @@
   const coaString = () => JSON.stringify(resolved($changes[0] as string));
 
   function copyEditLink() {
-    const url = new URL(location.origin);
-    url.pathname = location.pathname;
+    const url = new URL(location.origin + location.pathname);
     url.searchParams.set("coa", coaString());
     copyToClipboard(url.href, "success.copyEditLink");
   }
@@ -73,7 +74,7 @@
     >
     <NavButton onclick={exportJSON} tip={$t("tooltip.exportJSON")}>{$t(`menu.exportJSON`)}</NavButton>
 
-    {#if $state.edit}
+    {#if $editorState.edit}
       <NavButton onclick={copyEditLink} tip={$t("tooltip.copyEditLink")}>{$t(`menu.copyEditLink`)}</NavButton>
       <NavButton onclick={copyApiLink} tip={$t("tooltip.copyApiLink")}>{$t(`menu.copyApiLink`)}</NavButton>
       <NavButton onclick={copyCoaString} tip={$t("tooltip.copyCoaString")}>{$t(`menu.copyCoaString`)}</NavButton>

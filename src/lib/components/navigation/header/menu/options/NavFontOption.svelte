@@ -1,3 +1,5 @@
+<svelte:options runes />
+
 <script lang="ts">
   import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
