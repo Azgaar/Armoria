@@ -1,0 +1,11 @@
+{
+  "command": "eslint . --ignore-pattern '.vercel/**' --format json",
+  "original_files": 168,
+  "before_errors": 139,
+  "after_original_errors": 139,
+  "warnings": 0,
+  "fatal_errors": 0,
+  "changed_original_diagnostics": [],
+  "prettier_existing_files": 24,
+  "prettier_after_original_files": 24
+}

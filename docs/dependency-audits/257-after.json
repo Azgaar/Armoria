@@ -1,0 +1,179 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "@sveltejs/adapter-vercel": {
+      "name": "@sveltejs/adapter-vercel",
+      "severity": "low",
+      "isDirect": true,
+      "via": ["@sveltejs/kit"],
+      "effects": [],
+      "range": ">=1.0.0-next.0",
+      "nodes": ["node_modules/@sveltejs/adapter-vercel"],
+      "fixAvailable": {
+        "name": "@sveltejs/adapter-vercel",
+        "version": "0.0.3",
+        "isSemVerMajor": true
+      }
+    },
+    "@sveltejs/kit": {
+      "name": "@sveltejs/kit",
+      "severity": "low",
+      "isDirect": true,
+      "via": ["@sveltejs/vite-plugin-svelte"],
+      "effects": ["@sveltejs/adapter-vercel"],
+      "range": ">=1.0.0-next.0",
+      "nodes": ["node_modules/@sveltejs/kit"],
+      "fixAvailable": {
+        "name": "@sveltejs/kit",
+        "version": "0.0.30",
+        "isSemVerMajor": true
+      }
+    },
+    "@sveltejs/vite-plugin-svelte": {
+      "name": "@sveltejs/vite-plugin-svelte",
+      "severity": "low",
+      "isDirect": true,
+      "via": ["deepmerge"],
+      "effects": ["@sveltejs/kit"],
+      "range": "*",
+      "nodes": ["node_modules/@sveltejs/vite-plugin-svelte"],
+      "fixAvailable": {
+        "name": "@sveltejs/kit",
+        "version": "0.0.30",
+        "isSemVerMajor": true
+      }
+    },
+    "chromium-bidi": {
+      "name": "chromium-bidi",
+      "severity": "high",
+      "isDirect": false,
+      "via": ["zod"],
+      "effects": ["puppeteer", "puppeteer-core"],
+      "range": "0.5.13 - 157.0.8081-0",
+      "nodes": ["node_modules/chromium-bidi"],
+      "fixAvailable": {
+        "name": "puppeteer",
+        "version": "25.16.0",
+        "isSemVerMajor": false
+      }
+    },
+    "deepmerge": {
+      "name": "deepmerge",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1243505,
+          "name": "deepmerge",
+          "dependency": "deepmerge",
+          "title": "deepmerge mergeObject() allows prototype poisoning of returned objects",
+          "url": "https://github.com/advisories/GHSA-gcqx-w48m-w2h4",
+          "severity": "low",
+          "cwe": ["CWE-1321"],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N"
+          },
+          "range": ">=4.2.0 <=4.3.1"
+        }
+      ],
+      "effects": ["@sveltejs/vite-plugin-svelte", "svelte-i18n"],
+      "range": ">=4.2.0",
+      "nodes": ["node_modules/deepmerge"],
+      "fixAvailable": {
+        "name": "svelte-i18n",
+        "version": "3.1.0",
+        "isSemVerMajor": true
+      }
+    },
+    "puppeteer": {
+      "name": "puppeteer",
+      "severity": "high",
+      "isDirect": true,
+      "via": ["chromium-bidi", "puppeteer-core"],
+      "effects": [],
+      "range": "22.5.0 - 25.12.0",
+      "nodes": ["node_modules/puppeteer"],
+      "fixAvailable": {
+        "name": "puppeteer",
+        "version": "25.16.0",
+        "isSemVerMajor": false
+      }
+    },
+    "puppeteer-core": {
+      "name": "puppeteer-core",
+      "severity": "high",
+      "isDirect": true,
+      "via": ["chromium-bidi"],
+      "effects": ["puppeteer"],
+      "range": "22.5.0 - 25.12.0",
+      "nodes": ["node_modules/puppeteer-core"],
+      "fixAvailable": {
+        "name": "puppeteer",
+        "version": "25.16.0",
+        "isSemVerMajor": false
+      }
+    },
+    "svelte-i18n": {
+      "name": "svelte-i18n",
+      "severity": "low",
+      "isDirect": true,
+      "via": ["deepmerge"],
+      "effects": [],
+      "range": "2.0.0-alpha.1 - 2.2.2 || >=3.2.0",
+      "nodes": ["node_modules/svelte-i18n"],
+      "fixAvailable": {
+        "name": "svelte-i18n",
+        "version": "3.1.0",
+        "isSemVerMajor": true
+      }
+    },
+    "zod": {
+      "name": "zod",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1243066,
+          "name": "zod",
+          "dependency": "zod",
+          "title": "Zod can exhaust memory while validating oversized constrained collections",
+          "url": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+          "severity": "high",
+          "cwe": ["CWE-770"],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<4.6.6"
+        }
+      ],
+      "effects": ["chromium-bidi"],
+      "range": "<4.6.6",
+      "nodes": ["node_modules/zod"],
+      "fixAvailable": {
+        "name": "puppeteer",
+        "version": "25.16.0",
+        "isSemVerMajor": false
+      }
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 5,
+      "moderate": 0,
+      "high": 4,
+      "critical": 0,
+      "total": 9
+    },
+    "dependencies": {
+      "prod": 88,
+      "dev": 328,
+      "optional": 54,
+      "peer": 0,
+      "peerOptional": 0,
+      "total": 416
+    }
+  }
+}
