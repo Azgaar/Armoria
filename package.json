@@ -33,9 +33,10 @@
     "test": "npm run test:services && npm run test:browser",
     "test:fmg-sync": "node --test --test-isolation=none tests/fmg-sync.test.mjs",
     "test:api-raster": "svelte-kit sync && node --test --test-isolation=none tests/api-raster.test.mjs",
-    "test:production": "node --test --test-isolation=none tests/service-worker.test.mjs",
+    "test:production": "npm run test:vercel-output && node --test --test-isolation=none tests/service-worker.test.mjs",
     "test:raster-lifecycle": "svelte-kit sync && node --test --test-isolation=none tests/raster-lifecycle.test.mjs",
-    "test:dependency-security": "node --test --test-isolation=none tests/dependency-security.test.mjs",
+    "test:dependency-security": "node --test --test-isolation=none tests/dependency-security.test.mjs tests/build-dependencies.test.mjs",
+    "test:vercel-output": "node --test --test-isolation=none tests/vercel-output.test.mjs",
     "test:localization": "node --test --test-isolation=none tests/localization.test.mjs"
   },
   "repository": {
@@ -98,6 +99,18 @@
     "deepmerge": "4.3.1",
     "svelte-i18n": {
       "esbuild": "0.28.2"
+    },
+    "@vercel/nft": {
+      "glob": "14.0.4"
+    },
+    "eslint": {
+      "minimatch": "11.0.5"
+    },
+    "@eslint/config-array": {
+      "minimatch": "11.0.5"
+    },
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "11.0.5"
     }
   }
 }

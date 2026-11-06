@@ -1,0 +1,13 @@
+armoria@1.1.0 /tmp/armoria-build-lint-deps
+├─┬ @sveltejs/adapter-vercel@7.0.2
+│ └─┬ @vercel/nft@1.11.0
+│   └─┬ glob@13.0.6
+│     └── minimatch@10.2.6 deduped
+├─┬ eslint@10.14.0
+│ ├─┬ @eslint/config-array@0.23.5
+│ │ └── minimatch@10.2.6 deduped
+│ └── minimatch@10.2.6
+└─┬ typescript-eslint@8.72.1
+  └─┬ @typescript-eslint/typescript-estree@8.72.1
+    └── minimatch@10.2.6 deduped
+

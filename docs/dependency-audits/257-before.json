@@ -1,0 +1,383 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "@eslint/config-array": {
+      "name": "@eslint/config-array",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": ["minimatch"],
+      "effects": ["eslint"],
+      "range": ">=0.23.0",
+      "nodes": ["node_modules/@eslint/config-array"],
+      "fixAvailable": {
+        "name": "eslint",
+        "version": "9.39.5",
+        "isSemVerMajor": true
+      }
+    },
+    "@eslint/js": {
+      "name": "@eslint/js",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": ["eslint"],
+      "effects": [],
+      "range": ">=10.0.1",
+      "nodes": ["node_modules/@eslint/js"],
+      "fixAvailable": {
+        "name": "@eslint/js",
+        "version": "9.39.5",
+        "isSemVerMajor": true
+      }
+    },
+    "@sveltejs/adapter-vercel": {
+      "name": "@sveltejs/adapter-vercel",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": ["@sveltejs/kit", "@vercel/nft"],
+      "effects": [],
+      "range": ">=1.0.0-next.0",
+      "nodes": ["node_modules/@sveltejs/adapter-vercel"],
+      "fixAvailable": {
+        "name": "@sveltejs/adapter-vercel",
+        "version": "5.6.2",
+        "isSemVerMajor": true
+      }
+    },
+    "@sveltejs/kit": {
+      "name": "@sveltejs/kit",
+      "severity": "low",
+      "isDirect": true,
+      "via": ["@sveltejs/vite-plugin-svelte"],
+      "effects": ["@sveltejs/adapter-vercel"],
+      "range": ">=1.0.0-next.0",
+      "nodes": ["node_modules/@sveltejs/kit"],
+      "fixAvailable": {
+        "name": "@sveltejs/kit",
+        "version": "0.0.30",
+        "isSemVerMajor": true
+      }
+    },
+    "@sveltejs/vite-plugin-svelte": {
+      "name": "@sveltejs/vite-plugin-svelte",
+      "severity": "low",
+      "isDirect": true,
+      "via": ["deepmerge"],
+      "effects": ["@sveltejs/kit"],
+      "range": "*",
+      "nodes": ["node_modules/@sveltejs/vite-plugin-svelte"],
+      "fixAvailable": {
+        "name": "@sveltejs/kit",
+        "version": "0.0.30",
+        "isSemVerMajor": true
+      }
+    },
+    "@typescript-eslint/eslint-plugin": {
+      "name": "@typescript-eslint/eslint-plugin",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": ["@typescript-eslint/parser", "@typescript-eslint/type-utils", "@typescript-eslint/utils"],
+      "effects": ["typescript-eslint"],
+      "range": ">=6.16.0",
+      "nodes": ["node_modules/@typescript-eslint/eslint-plugin"],
+      "fixAvailable": {
+        "name": "typescript-eslint",
+        "version": "8.36.0",
+        "isSemVerMajor": true
+      }
+    },
+    "@typescript-eslint/parser": {
+      "name": "@typescript-eslint/parser",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": ["@typescript-eslint/typescript-estree"],
+      "effects": ["@typescript-eslint/eslint-plugin", "typescript-eslint"],
+      "range": ">=6.16.0",
+      "nodes": ["node_modules/@typescript-eslint/parser"],
+      "fixAvailable": {
+        "name": "typescript-eslint",
+        "version": "8.36.0",
+        "isSemVerMajor": true
+      }
+    },
+    "@typescript-eslint/type-utils": {
+      "name": "@typescript-eslint/type-utils",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": ["@typescript-eslint/typescript-estree", "@typescript-eslint/utils"],
+      "effects": ["@typescript-eslint/eslint-plugin"],
+      "range": ">=6.16.0",
+      "nodes": ["node_modules/@typescript-eslint/type-utils"],
+      "fixAvailable": {
+        "name": "typescript-eslint",
+        "version": "8.36.0",
+        "isSemVerMajor": true
+      }
+    },
+    "@typescript-eslint/typescript-estree": {
+      "name": "@typescript-eslint/typescript-estree",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": ["minimatch"],
+      "effects": ["@typescript-eslint/parser", "@typescript-eslint/type-utils", "@typescript-eslint/utils", "typescript-eslint"],
+      "range": ">=6.16.0",
+      "nodes": ["node_modules/@typescript-eslint/typescript-estree"],
+      "fixAvailable": {
+        "name": "typescript-eslint",
+        "version": "8.36.0",
+        "isSemVerMajor": true
+      }
+    },
+    "@typescript-eslint/utils": {
+      "name": "@typescript-eslint/utils",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": ["@typescript-eslint/typescript-estree"],
+      "effects": ["@typescript-eslint/eslint-plugin", "@typescript-eslint/type-utils", "typescript-eslint"],
+      "range": ">=6.16.0",
+      "nodes": ["node_modules/@typescript-eslint/utils"],
+      "fixAvailable": {
+        "name": "typescript-eslint",
+        "version": "8.36.0",
+        "isSemVerMajor": true
+      }
+    },
+    "@vercel/nft": {
+      "name": "@vercel/nft",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": ["glob"],
+      "effects": ["@sveltejs/adapter-vercel"],
+      "range": ">=0.29.2",
+      "nodes": ["node_modules/@vercel/nft"],
+      "fixAvailable": {
+        "name": "@sveltejs/adapter-vercel",
+        "version": "5.6.2",
+        "isSemVerMajor": true
+      }
+    },
+    "chromium-bidi": {
+      "name": "chromium-bidi",
+      "severity": "high",
+      "isDirect": false,
+      "via": ["zod"],
+      "effects": ["puppeteer", "puppeteer-core"],
+      "range": "0.5.13 - 157.0.8081-0",
+      "nodes": ["node_modules/chromium-bidi"],
+      "fixAvailable": {
+        "name": "puppeteer",
+        "version": "25.16.0",
+        "isSemVerMajor": false
+      }
+    },
+    "deepmerge": {
+      "name": "deepmerge",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1243505,
+          "name": "deepmerge",
+          "dependency": "deepmerge",
+          "title": "deepmerge mergeObject() allows prototype poisoning of returned objects",
+          "url": "https://github.com/advisories/GHSA-gcqx-w48m-w2h4",
+          "severity": "low",
+          "cwe": ["CWE-1321"],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N"
+          },
+          "range": ">=4.2.0 <=4.3.1"
+        }
+      ],
+      "effects": ["@sveltejs/vite-plugin-svelte", "svelte-i18n"],
+      "range": ">=4.2.0",
+      "nodes": ["node_modules/deepmerge"],
+      "fixAvailable": {
+        "name": "@sveltejs/kit",
+        "version": "0.0.30",
+        "isSemVerMajor": true
+      }
+    },
+    "eslint": {
+      "name": "eslint",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": ["@eslint/config-array", "minimatch"],
+      "effects": ["@eslint/js"],
+      "range": ">=10.0.0-alpha.0",
+      "nodes": ["node_modules/eslint"],
+      "fixAvailable": {
+        "name": "eslint",
+        "version": "9.39.5",
+        "isSemVerMajor": true
+      }
+    },
+    "glob": {
+      "name": "glob",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1244013,
+          "name": "glob",
+          "dependency": "glob",
+          "title": "Glob: AbortSignal cancellation bypass allows post-timeout filesystem traversal",
+          "url": "https://github.com/advisories/GHSA-3g3m-2fjr-6pw4",
+          "severity": "moderate",
+          "cwe": ["CWE-400"],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": ">=9.0.0 <=14.0.1"
+        },
+        "minimatch"
+      ],
+      "effects": ["@vercel/nft"],
+      "range": "9.0.0 - 14.0.1",
+      "nodes": ["node_modules/glob"],
+      "fixAvailable": {
+        "name": "@sveltejs/adapter-vercel",
+        "version": "5.6.2",
+        "isSemVerMajor": true
+      }
+    },
+    "minimatch": {
+      "name": "minimatch",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1244623,
+          "name": "minimatch",
+          "dependency": "minimatch",
+          "title": "minimatch has potential denial of service via globparts amplification",
+          "url": "https://github.com/advisories/GHSA-g3hv-75wg-m249",
+          "severity": "moderate",
+          "cwe": ["CWE-405"],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": ">=7.0.0 <11.0.1"
+        }
+      ],
+      "effects": ["@eslint/config-array", "@typescript-eslint/typescript-estree", "eslint", "glob"],
+      "range": "7.0.0 - 11.0.0",
+      "nodes": ["node_modules/minimatch"],
+      "fixAvailable": {
+        "name": "eslint",
+        "version": "9.39.5",
+        "isSemVerMajor": true
+      }
+    },
+    "puppeteer": {
+      "name": "puppeteer",
+      "severity": "high",
+      "isDirect": true,
+      "via": ["chromium-bidi", "puppeteer-core"],
+      "effects": [],
+      "range": "22.5.0 - 25.12.0",
+      "nodes": ["node_modules/puppeteer"],
+      "fixAvailable": {
+        "name": "puppeteer",
+        "version": "25.16.0",
+        "isSemVerMajor": false
+      }
+    },
+    "puppeteer-core": {
+      "name": "puppeteer-core",
+      "severity": "high",
+      "isDirect": true,
+      "via": ["chromium-bidi"],
+      "effects": ["puppeteer"],
+      "range": "22.5.0 - 25.12.0",
+      "nodes": ["node_modules/puppeteer-core"],
+      "fixAvailable": {
+        "name": "puppeteer",
+        "version": "25.16.0",
+        "isSemVerMajor": false
+      }
+    },
+    "svelte-i18n": {
+      "name": "svelte-i18n",
+      "severity": "low",
+      "isDirect": true,
+      "via": ["deepmerge"],
+      "effects": [],
+      "range": "2.0.0-alpha.1 - 2.2.2 || >=3.2.0",
+      "nodes": ["node_modules/svelte-i18n"],
+      "fixAvailable": {
+        "name": "svelte-i18n",
+        "version": "3.1.0",
+        "isSemVerMajor": true
+      }
+    },
+    "typescript-eslint": {
+      "name": "typescript-eslint",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "@typescript-eslint/eslint-plugin",
+        "@typescript-eslint/parser",
+        "@typescript-eslint/typescript-estree",
+        "@typescript-eslint/utils"
+      ],
+      "effects": [],
+      "range": "*",
+      "nodes": ["node_modules/typescript-eslint"],
+      "fixAvailable": {
+        "name": "typescript-eslint",
+        "version": "8.36.0",
+        "isSemVerMajor": true
+      }
+    },
+    "zod": {
+      "name": "zod",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1243066,
+          "name": "zod",
+          "dependency": "zod",
+          "title": "Zod can exhaust memory while validating oversized constrained collections",
+          "url": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+          "severity": "high",
+          "cwe": ["CWE-770"],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<4.6.6"
+        }
+      ],
+      "effects": ["chromium-bidi"],
+      "range": "<4.6.6",
+      "nodes": ["node_modules/zod"],
+      "fixAvailable": {
+        "name": "puppeteer",
+        "version": "25.16.0",
+        "isSemVerMajor": false
+      }
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 4,
+      "moderate": 13,
+      "high": 4,
+      "critical": 0,
+      "total": 21
+    },
+    "dependencies": {
+      "prod": 88,
+      "dev": 327,
+      "optional": 54,
+      "peer": 0,
+      "peerOptional": 0,
+      "total": 415
+    }
+  }
+}
