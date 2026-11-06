@@ -2,29 +2,38 @@
   import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
   import {DEFAULT_FONTS} from "#lib/config/defaults.ts";
-  import {fonts, message, state} from "#lib/data/stores.ts";
+  import {fonts, message, state as editorState} from "#lib/data/stores.ts";
   import {markdown} from "#lib/scripts/i18n.ts";
   import {t} from "svelte-i18n";
+  import {onDestroy} from "svelte";
   import {fade, fly} from "svelte/transition";
 
-  let name = "";
-  let type: "local" | "web" = "local";
-  let url = "";
+  let name = $state("");
+  let type = $state<"local" | "web">("local");
+  let url = $state("");
+
+  let revision = 0;
+  onDestroy(() => revision++);
 
   function confirm() {
+    const version = ++revision;
     if (!name) return message.error($t("error.emptyName"));
     if ($fonts[name]) return message.error($t("error.notUniqueName"));
 
     if (type === "web") {
       if (!url) return message.error($t("error.emptyFontURL"));
 
-      const font = new FontFace(name, `url(${url})`);
+      const family = name;
+      const source = url;
+      const font = new FontFace(family, `url(${JSON.stringify(source)})`);
       font.load().then(
         () => {
+          if (version !== revision) return;
           document.fonts.add(font);
-          addFont(name, {url});
+          addFont(family, {url: source});
         },
         err => {
+          if (version !== revision) return;
           console.error(err);
           message.error($t("error.loadingFont"));
         }
@@ -43,17 +52,26 @@
   }
 
   function restoreDefaultFonts() {
+    revision++;
     $fonts = DEFAULT_FONTS;
     settingsStorage.removeItem("fonts");
   }
 
   function close() {
-    $state.fonts = 0;
+    revision++;
+    $editorState.fonts = 0;
   }
 </script>
 
 <div id="fonts">
-  <form name="add font" transition:fade|local on:submit|preventDefault={confirm}>
+  <form
+    name="add font"
+    transition:fade|local
+    onsubmit={event => {
+      event.preventDefault();
+      confirm();
+    }}
+  >
     <div class="input">
       <label for="fontType">{$t("fonts.type")}:</label>
       <select id="fontType" bind:value={type}>
@@ -79,11 +97,11 @@
 
     <div class="controls">
       <button type="submit">{$t("fonts.confirm")}</button>
-      <button type="button" on:click={close}>{$t("fonts.close")}</button>
+      <button type="button" onclick={close}>{$t("fonts.close")}</button>
     </div>
 
     {#if Object.keys($fonts).length !== Object.keys(DEFAULT_FONTS).length}
-      <button type="button" class="linkButton" on:click={restoreDefaultFonts}>{$t("fonts.restoreDefault")}</button>
+      <button type="button" class="linkButton" onclick={restoreDefaultFonts}>{$t("fonts.restoreDefault")}</button>
     {/if}
   </form>
 </div>

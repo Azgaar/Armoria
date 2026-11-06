@@ -2,15 +2,22 @@
   import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
   import {t} from "svelte-i18n";
+  import {untrack} from "svelte";
   import {fade} from "svelte/transition";
   import {flip} from "svelte/animate";
-  import {colors, tinctures, state, message} from "#lib/data/stores.ts";
+  import {colors, tinctures, state as editorState, message} from "#lib/data/stores.ts";
   import {camelize} from "#lib/scripts/utils.ts";
   import {tooltip} from "#lib/scripts/tooltip.ts";
   import {DEFAULT_COLORS, DEFAULT_TINCTURES} from "#lib/config/defaults.ts";
   import type {ChancesObject, Tinctures, TinctureTypeChances} from "#lib/types/tinctures.js";
 
-  const addLine = {show: false, name: "", type: "colours" as "metals" | "colours" | "stains", color: "#96C8FA", chance: 3};
+  const addLine = $state({
+    show: false,
+    name: "",
+    type: "colours" as "metals" | "colours" | "stains",
+    color: "#96C8FA",
+    chance: 3
+  });
   const mandatoryTypes = ["metals", "colours"];
 
   // remove stored weighted array
@@ -19,18 +26,24 @@
   const elements = ["field", "division", "charge"] as const;
   const tinctureTypes = ["metals", "colours", "stains", "patterns"] as const;
   const types = ["metals", "colours", "stains"] as const;
-  $: tData = types.map(type => Object.keys($tinctures[type]).map(tincture => ({t: tincture, type}))).flat();
+  const tData = $derived(types.flatMap(type => Object.keys($tinctures[type]).map(tincture => ({t: tincture, type}))));
 
-  $: lock("tinctures", $tinctures);
-  $: lock("colors", $colors);
+  // Don't persist defaults on mount, or relock them after Restore.
+  let loaded: string[] = [];
+  $effect.pre(() => {
+    const value = $tinctures;
+    untrack(() => lock("tinctures", value));
+  });
+  $effect.pre(() => {
+    const value = $colors;
+    untrack(() => lock("colors", value));
+  });
 
-  $: getTotalChance = (type: keyof Tinctures) => {
+  const getTotalChance = (type: keyof Tinctures) => {
     const chances = Object.values($tinctures[type] as ChancesObject);
     return chances.reduce((a, b) => a + b, 0);
   };
 
-  // don't lock options on load
-  let loaded: string[] = [];
   function lock(key: string, value: unknown) {
     if (loaded.includes(key)) settingsStorage.setItem(key, JSON.stringify(value));
     else loaded.push(key);
@@ -95,7 +108,7 @@
   }
 
   function closeTincturesScreen() {
-    $state.tinctures = 0;
+    $editorState.tinctures = 0;
   }
 
   function applyAddTincture() {
@@ -129,7 +142,7 @@
 </script>
 
 <div id="tinctures" transition:fade|local>
-  <span on:click={closeTincturesScreen} class="close">&times;</span>
+  <span onclick={closeTincturesScreen} class="close">&times;</span>
 
   <div id="left">
     <table>
@@ -153,7 +166,7 @@
                   max="100"
                   step="1"
                   value={$tinctures[element][type]}
-                  on:change={event => changeElementChance(element, type, event)}
+                  onchange={event => changeElementChance(element, type, event)}
                 />
                 <span class="totalChance">/ {getTotalChance(element)}</span>
               </td>
@@ -166,13 +179,13 @@
           <td></td>
           <td colspan="2">
             {#if addLine.show}
-              <button on:click={applyAddTincture}>{$t("tinctures.apply")}</button>
+              <button onclick={applyAddTincture}>{$t("tinctures.apply")}</button>
             {:else}
-              <button on:click={addTincture}>{$t("tinctures.add")}</button>
+              <button onclick={addTincture}>{$t("tinctures.add")}</button>
             {/if}
           </td>
           <td colspan="2">
-            <button on:click={restoreDefault}>{$t("tinctures.restore")}</button>
+            <button onclick={restoreDefault}>{$t("tinctures.restore")}</button>
           </td>
         </tr>
       </tfoot>
@@ -183,7 +196,7 @@
     <table id="tincturesTable">
       <thead>
         <tr>
-          {#each ["name", "type", "color", "chance", "remove"] as header}
+          {#each ["name", "type", "color", "chance", "remove"] as header (header)}
             <th>{$t(`tinctures.${header}`)}</th>
           {/each}
         </tr>
@@ -208,7 +221,7 @@
               <input type="number" min="0" max="100" step="1" bind:value={addLine.chance} />
             </td>
             <td>
-              <span class="actionButton" on:click={cancelAddTincture}>&times;</span>
+              <span class="actionButton" onclick={cancelAddTincture}>&times;</span>
             </td>
           </tr>
         {/if}
@@ -217,15 +230,10 @@
             <td>{getTinctureName(tinctureName)}</td>
             <td>{$t(`tinctures.${type}`)}</td>
             <td>
-              <input
-                type="color"
-                bind:value={$colors[tinctureName]}
-                data-tooltip={$t("tooltip.changeColor")}
-                use:tooltip
-              />
+              <input type="color" bind:value={$colors[tinctureName]} data-tooltip={$t("tooltip.changeColor")} use:tooltip />
               {#if DEFAULT_COLORS[tinctureName] && $colors[tinctureName] !== DEFAULT_COLORS[tinctureName]}
                 <svg
-                  on:click={() => ($colors[tinctureName] = DEFAULT_COLORS[tinctureName])}
+                  onclick={() => ($colors[tinctureName] = DEFAULT_COLORS[tinctureName])}
                   width="12"
                   height="12"
                   data-tooltip={$t("tooltip.undoColorChange")}
@@ -242,7 +250,7 @@
                 max="100"
                 step="1"
                 value={$tinctures[type][tinctureName]}
-                on:change={event => changeTinctureChance(type, tinctureName, event)}
+                onchange={event => changeTinctureChance(type, tinctureName, event)}
               />
               <span class="totalChance">/ {getTotalChance(type)}</span>
             </td>
@@ -250,7 +258,7 @@
               {#if DEFAULT_COLORS[tinctureName]}
                 <span class="disabledButton" data-tooltip={$t("tooltip.defaultColor")} use:tooltip>&times;</span>
               {:else}
-                <span class="actionButton" on:click={() => removeTincture(tinctureName, type)}>&times;</span>
+                <span class="actionButton" onclick={() => removeTincture(tinctureName, type)}>&times;</span>
               {/if}
             </td>
           </tr>

@@ -1,15 +1,17 @@
+<svelte:options runes />
+
 <script lang="ts">
   // @ts-check
   import {t} from "svelte-i18n";
   import AnimatedCOA from "./AnimatedCOA.svelte";
-  import {state} from "#lib/data//stores.ts";
+  import {state as editorState} from "#lib/data//stores.ts";
   import {fade, fly} from "svelte/transition";
 
   const duration = 1000;
 </script>
 
 <div id="about" transition:fade>
-  <span on:click={() => ($state.about = 0)} class="close">&times;</span>
+  <span onclick={() => ($editorState.about = 0)} class="close">&times;</span>
 
   <AnimatedCOA {duration} />
 

@@ -2,7 +2,7 @@
   // @ts-check
   import {t} from "svelte-i18n";
 
-  export let license: string;
+  let {license = $bindable()}: {license?: string} = $props();
 </script>
 
 <select bind:value={license} style="width: 10em">
