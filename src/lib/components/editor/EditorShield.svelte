@@ -1,41 +1,27 @@
 <script lang="ts">
   // @ts-check
+  import {untrack} from "svelte";
   import {t} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
   import {shieldSets, shieldTypes} from "#lib/data/dataModel.js";
   import {shield as defaultShield} from "#lib/data/stores.ts";
 
-  export let shield: string | undefined = undefined;
-  export let t1: string;
+  let {shield = $bindable(), t1}: {shield?: string; t1: string} = $props();
 
-  let shieldsData: (import("#lib/types/coa.js").Coa & {shield: string})[] = [];
-  let query: string;
-  let queryOld: string;
-  let type = getShieldType(shield || $defaultShield);
-
-  const allShields = shieldTypes.map(type => Object.keys(shieldSets[type || "basic"])).flat();
-  $: allShieldsTranslated = shieldTypes
-    .map(type => Object.keys(shieldSets[type || "basic"]).map(shield => $t(`shield.${type}.${shield}`)))
-    .flat();
-
-  $: update({type, t1});
-  $: filterShields(query);
-
-  function update(preview = {type, t1}) {
-    const shieldList = Object.keys(shieldSets[preview.type || "basic"]);
-    shieldsData = shieldList.map(shield => ({shield, t1: preview.t1}));
-  }
-
-  function filterShields(query: string) {
-    if (!query && query !== queryOld) update();
-
-    queryOld = query;
-    if (!query) return;
-
-    const regEx = new RegExp(query.replaceAll(" ", ""), "i");
-    const results = allShields.filter((_shield, index) => regEx.test(allShieldsTranslated[index]));
-    shieldsData = results.map(shield => ({shield, t1}));
-  }
+  let query = $state("");
+  // Keep the category selected when this panel opens; choosing a result does not reset it.
+  let type = $state(untrack(() => getShieldType(shield || $defaultShield)));
+  const allShields = shieldTypes.flatMap(type => Object.keys(shieldSets[type || "basic"]));
+  let allShieldsTranslated = $derived(
+    shieldTypes.flatMap(type => Object.keys(shieldSets[type || "basic"]).map(shield => $t(`shield.${type}.${shield}`)))
+  );
+  let shieldsData = $derived.by(() => {
+    const regEx = query ? new RegExp(query.replaceAll(" ", ""), "i") : null;
+    const results = regEx
+      ? allShields.filter((_shield, index) => regEx.test(allShieldsTranslated[index]))
+      : Object.keys(shieldSets[type || "basic"]);
+    return results.map(shield => ({shield, t1}));
+  });
 
   function resetQuery() {
     query = "";
@@ -53,8 +39,8 @@
 </script>
 
 <span class:indented={true}>{$t("editor.category")}:</span>
-<select bind:value={type} class:inactive={query} on:input={resetQuery}>
-  {#each shieldTypes as type}
+<select bind:value={type} class:inactive={query} oninput={resetQuery}>
+  {#each shieldTypes as type (type)}
     <option value={type}>{$t(`shield.types.${type}`)}</option>
   {/each}
 </select>
@@ -64,7 +50,7 @@
 
 <div class="items">
   {#each shieldsData as coa (coa)}
-    <div class="item" class:selected={shield === coa.shield} on:click={() => (shield = coa.shield)}>
+    <div class="item" class:selected={shield === coa.shield} onclick={() => (shield = coa.shield)}>
       <EditorItem {coa} tip={getTip(coa.shield)} />
     </div>
   {/each}
