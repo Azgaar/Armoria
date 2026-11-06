@@ -2,7 +2,7 @@
   // @ts-check
   import {t} from "svelte-i18n";
   import Switch from "./Switch.svelte";
-  import {grid, showGrid, state} from "#lib/data/stores.ts";
+  import {grid, showGrid, state as editorState} from "#lib/data/stores.ts";
   import {tooltip} from "#lib/scripts/tooltip.ts";
 
   interface IElement {
@@ -13,42 +13,59 @@
     y: number;
   }
 
-  export let element: IElement;
+  let {element = $bindable()}: {element: IElement} = $props();
+
+  function update<K extends keyof IElement>(key: K, value: IElement[K]) {
+    element = {...element, [key]: value};
+  }
 
   const handleSizeChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
-    element.size = parseInt(target.value) / 100;
+    update("size", parseInt(target.value) / 100);
   };
 
   const handleStretchChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
-    element.stretch = parseInt(target.value) / 100;
+    update("stretch", parseInt(target.value) / 100);
   };
 
   const updateGrid = () => {
-    $state.transform = `rotate(${element.angle || 0})`;
+    $editorState.transform = `rotate(${element.angle || 0})`;
   };
 </script>
 
 <span data-tooltip={$t("tooltip.size")} use:tooltip>
   {$t("editor.size")}:
-  <input type="number" min="1" max="500" step="1" value={Math.round(element.size * 100) | 0} on:input={handleSizeChange} />
+  <input type="number" min="1" max="500" step="1" value={Math.round(element.size * 100) | 0} oninput={handleSizeChange} />
 </span>
 
 <span data-tooltip={$t("tooltip.stretch")} use:tooltip>
   <span>{$t("editor.stretch")}:</span>
-  <input type="number" min="-1000" max="1000" step="1" value={Math.round(element.stretch * 100) | 0} on:input={handleStretchChange} />
+  <input
+    type="number"
+    min="-1000"
+    max="1000"
+    step="1"
+    value={Math.round(element.stretch * 100) | 0}
+    oninput={handleStretchChange}
+  />
 </span>
 
 <span data-tooltip={$t("tooltip.rotation")} use:tooltip>
   <span>{$t("editor.rotation")}:</span>
-  <input type="number" min="-180" max="180" bind:value={element.angle} on:change={updateGrid} />
+  <input
+    type="number"
+    min="-180"
+    max="180"
+    bind:value={() => element.angle, value => update("angle", value)}
+    onchange={updateGrid}
+  />
 </span>
 
 <span data-tooltip={$t("tooltip.shift")} use:tooltip>
   <span>{$t("editor.shift")}:</span>
-  <input type="number" min="-100" max="100" step={$grid} bind:value={element.x} />
-  <input type="number" min="-100" max="100" step={$grid} bind:value={element.y} />
+  <input type="number" min="-100" max="100" step={$grid} bind:value={() => element.x, value => update("x", value)} />
+  <input type="number" min="-100" max="100" step={$grid} bind:value={() => element.y, value => update("y", value)} />
 </span>
 
 <span data-tooltip={$t("tooltip.step")} use:tooltip>

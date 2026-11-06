@@ -1,8 +1,8 @@
-<script>
-  import {state, grid, showGrid} from "#lib/data/stores.ts";
+<script lang="ts">
+  import {state as editorState, grid, showGrid} from "#lib/data/stores.ts";
   import {fade} from "svelte/transition";
 
-  $: transform = $state.transform || null;
+  let transform = $derived($editorState.transform || null);
 </script>
 
 {#if $showGrid}
