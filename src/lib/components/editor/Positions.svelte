@@ -1,13 +1,13 @@
 <script lang="ts">
   // @ts-check
-  import {state} from "#lib/data/stores.ts";
+  import {state as editorState} from "#lib/data/stores.ts";
   import {shields} from "#lib/data/dataModel.js";
   import {fade} from "svelte/transition";
 
-  export let shield: string;
+  let {shield}: {shield: string} = $props();
 
   // on shield change
-  $: points = Object.entries(shields.data[shield].positions || shields.data.spanish.positions || {});
+  let points = $derived(Object.entries(shields.data[shield].positions || shields.data.spanish.positions || {}));
 
   function getClass(p: string) {
     if ("abcdefghi".includes(p)) return "green";
@@ -17,13 +17,15 @@
   }
 </script>
 
-{#if $state.positions}
-  <g transform={$state.transform || null} transform-origin="center">
+{#if $editorState.positions}
+  <g transform={$editorState.transform || null} transform-origin="center">
     <g id="positions" transform="translate(100, 100)" transition:fade|local>
-      {#each points as p}
+      {#each points as p (p[0])}
         <g id={p[0]} class={getClass(p[0])}>
-          <circle cx={p[1][0]} cy={p[1][1]} r="3" class:active={$state.positions.includes(p[0])} />
-          <text style="dominant-baseline: central" x={p[1][0]} y={p[1][1]} class:active={$state.positions.includes(p[0])}>{p[0]}</text>
+          <circle cx={p[1][0]} cy={p[1][1]} r="3" class:active={$editorState.positions.includes(p[0])} />
+          <text style="dominant-baseline: central" x={p[1][0]} y={p[1][1]} class:active={$editorState.positions.includes(p[0])}
+            >{p[0]}</text
+          >
         </g>
       {/each}
     </g>
