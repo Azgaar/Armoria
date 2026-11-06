@@ -1,3 +1,5 @@
+<svelte:options runes />
+
 <script lang="ts">
   import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
@@ -20,7 +22,7 @@
 <div class="container">
   <NavItem value="language" label={$t(`menu.language`)} tip={$t("tooltip.language")} />
   <div class="dropdown level1">
-    {#each $locales as langCode}
+    {#each $locales as langCode (langCode)}
       <NavButton selected={$locale === langCode} label={getLocaleName(langCode)} onclick={changeLanguage(langCode)} />
     {/each}
   </div>

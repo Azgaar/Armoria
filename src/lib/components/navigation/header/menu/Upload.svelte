@@ -1,20 +1,22 @@
+<svelte:options runes />
+
 <script lang="ts">
   // @ts-check
   import {t} from "svelte-i18n";
-  import {state} from "#lib/data/stores.ts";
+  import {state as editorState} from "#lib/data/stores.ts";
   import NavButton from "../shared/NavButton.svelte";
   import NavItem from "../shared/NavItem.svelte";
 
   const showJSONUpload = () => {
-    $state.import = 1;
+    $editorState.import = 1;
   };
 
   const showRasterUpload = () => {
-    $state.raster = 1;
+    $editorState.raster = 1;
   };
 
   const showVectorUpload = () => {
-    $state.vector = 1;
+    $editorState.vector = 1;
   };
 </script>
 

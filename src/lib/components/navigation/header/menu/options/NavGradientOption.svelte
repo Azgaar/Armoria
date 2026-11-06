@@ -1,3 +1,5 @@
+<svelte:options runes />
+
 <script lang="ts">
   import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
@@ -16,7 +18,7 @@
 
 <div class="container">
   <div class="dropdown level2">
-    {#each gradients as gradient}
+    {#each gradients as gradient (gradient)}
       <NavButton selected={gradient === $grad} onclick={() => changeGradient(gradient)}>
         {$t(`gradient.${gradient}`)}
       </NavButton>

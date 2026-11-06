@@ -169,3 +169,185 @@ test("message replacement cancels the old timer and storage notices can be dismi
     return get(message) === null;
   });
 });
+
+async function clickMenu(page, key) {
+  await page.evaluate(async key => {
+    const {get, localization} = await import("/src/lib/testing/browser-runtime.ts");
+    const label = get(localization.t)(key);
+    const item =
+      [...document.querySelectorAll("nav li")].find(node => node.textContent.trim() === label) ||
+      document.querySelector(`nav use[href="#${key.slice(5)}-icon"]`)?.closest("li");
+    if (!item) throw new Error(`No menu item: ${key}`);
+    item.click();
+  }, key);
+}
+
+async function selectShield(page, name) {
+  await page.evaluate(async name => {
+    const {shields} = await import("/src/lib/data/shields.ts");
+    const path = [...document.querySelectorAll("nav svg path")].find(node => node.getAttribute("d") === shields.data[name].path);
+    path.closest("li").click();
+  }, name);
+  await page.waitForFunction(name => JSON.parse(document.querySelector("#coaEdit").dataset.coa).shield === name, {}, name);
+}
+
+async function historyButtons(page) {
+  return page.evaluate(() => ({
+    undo: !document.querySelector('nav li[data-hotkey="Z"]').classList.contains("disabled"),
+    redo: !document.querySelector('nav li[data-hotkey="X"]').classList.contains("disabled")
+  }));
+}
+
+test("shield menu edits update undo/redo availability and Back preserves the edited gallery entry", async t => {
+  const page = await session(t);
+  assert.deepEqual(await historyButtons(page), {undo: false, redo: false});
+  await selectShield(page, "oldFrench");
+  assert.deepEqual(await historyButtons(page), {undo: true, redo: false});
+  await clickMenu(page, "menu.undo");
+  await page.waitForFunction(() => JSON.parse(document.querySelector("#coaEdit").dataset.coa).shield === "heater");
+  assert.deepEqual(await historyButtons(page), {undo: false, redo: true});
+  await clickMenu(page, "menu.redo");
+  await page.waitForFunction(() => JSON.parse(document.querySelector("#coaEdit").dataset.coa).shield === "oldFrench");
+  assert.deepEqual(await historyButtons(page), {undo: true, redo: false});
+  await clickMenu(page, "menu.undo");
+  await selectShield(page, "round");
+  assert.deepEqual(await historyButtons(page), {undo: true, redo: false});
+  assert.equal(await page.evaluate(() => localStorage.getItem("shield")), "round");
+  await clickMenu(page, "menu.back");
+  await page.waitForFunction(() => !document.querySelector("#coaEdit") && !new URL(location.href).searchParams.has("coa"));
+  assert.equal(await page.$eval("main svg.coa", node => JSON.parse(node.dataset.coa).shield), "round");
+});
+
+test("saved-option menus retain selected values, locks and reload persistence", async t => {
+  const page = await session(t);
+  for (const key of ["gradient.spotlight", "diaper.nourse", "gallery.tiny"]) await clickMenu(page, key);
+  const settings = () =>
+    page.evaluate(async () => {
+      const {get} = await import("/src/lib/testing/browser-runtime.ts");
+      const {grad, diaper, size} = await import("/src/lib/data/stores.ts");
+      return {
+        grad: get(grad),
+        diaper: get(diaper),
+        size: get(size),
+        saved: ["grad", "diaper", "size"].map(key => localStorage.getItem(key))
+      };
+    });
+  const expected = {grad: "spotlight", diaper: "nourse", size: 400, saved: ["spotlight", "nourse", "400"]};
+  assert.deepEqual(await settings(), expected);
+  await page.reload({waitUntil: "networkidle0"});
+  await page.waitForSelector("#coaEdit .field");
+  assert.deepEqual(await settings(), expected);
+  for (const key of ["gradient.spotlight", "diaper.nourse", "gallery.tiny"]) {
+    assert.ok(
+      await page.evaluate(async key => {
+        const {get, localization} = await import("/src/lib/testing/browser-runtime.ts");
+        return [...document.querySelectorAll("nav li.selected")].some(
+          node => node.textContent.trim() === get(localization.t)(key)
+        );
+      }, key)
+    );
+  }
+  assert.ok(
+    await page.evaluate(() => [...document.querySelectorAll("nav span")].filter(node => node.textContent === "🔖").length >= 3)
+  );
+});
+
+test("compact Other snippets retain upload, information and color-menu actions", async t => {
+  const page = await session(t);
+  await page.setViewport({width: 800, height: 1000});
+  await page.waitForSelector('nav use[href="#other-icon"]');
+  for (const [key, selector] of [
+    ["menu.importJSON", "#jsonUpload"],
+    ["menu.rasterCharge", "#rasterUpload"],
+    ["menu.vectorCharge", "#vectorUpload"],
+    ["menu.license", "#license"],
+    ["menu.about", "#about"],
+    ["menu.colors", "#tinctures"]
+  ]) {
+    await clickMenu(page, key);
+    await page.waitForSelector(selector);
+    await page.$eval(selector + " .close", node => node.click());
+    await page.waitForFunction(selector => !document.querySelector(selector), {}, selector);
+    assert.ok(await page.$("#coaEdit"));
+  }
+});
+
+async function offerInstall(page, name) {
+  await page.evaluate(name => {
+    window.installFixtures ||= {};
+    const event = new Event("beforeinstallprompt");
+    const fixture = {calls: 0, receiver: false, choose: null};
+    event.prompt = function () {
+      fixture.calls++;
+      fixture.receiver = this === event;
+      return Promise.resolve();
+    };
+    event.userChoice = new Promise(resolve => (fixture.choose = resolve));
+    window.installFixtures[name] = fixture;
+    window.dispatchEvent(event);
+  }, name);
+  await page.waitForFunction(() => [...document.querySelectorAll("nav li")].some(node => node.textContent.trim() === "Install"));
+}
+
+test("install offers are single-use and an older choice cannot erase a new offer", async t => {
+  const page = await session(t);
+  await offerInstall(page, "first");
+  await clickMenu(page, "menu.install");
+  await page.waitForFunction(() => ![...document.querySelectorAll("nav li")].some(node => node.textContent.trim() === "Install"));
+  await offerInstall(page, "second");
+  await page.evaluate(async () => {
+    const {tick} = await import("/src/lib/testing/browser-runtime.ts");
+    window.installFixtures.first.choose({outcome: "dismissed", platform: "web"});
+    await tick();
+  });
+  await clickMenu(page, "menu.install");
+  assert.deepEqual(
+    await page.evaluate(() => Object.values(window.installFixtures).map(({calls, receiver}) => ({calls, receiver}))),
+    [
+      {calls: 1, receiver: true},
+      {calls: 1, receiver: true}
+    ]
+  );
+  await page.evaluate(() => window.installFixtures.second.choose({outcome: "accepted", platform: "web"}));
+});
+
+test("install listeners detach on unmount and remount once without retaining a stale offer", async t => {
+  const page = await session(t);
+  await offerInstall(page, "stale");
+  const duringUnmount = await page.evaluate(async () => {
+    const {get, tick} = await import("/src/lib/testing/browser-runtime.ts");
+    const {isTextReady, message} = await import("/src/lib/data/stores.ts");
+    message.clear();
+    for (let i = 0; i < 3; i++) {
+      isTextReady.set(false);
+      await tick();
+      window.dispatchEvent(new Event("appinstalled"));
+      if (get(message) !== null) return get(message);
+      isTextReady.set(true);
+      await tick();
+    }
+    return null;
+  });
+  assert.equal(duringUnmount, null);
+  assert.equal(
+    await page.evaluate(() => [...document.querySelectorAll("nav li")].some(node => node.textContent.trim() === "Install")),
+    false
+  );
+  await offerInstall(page, "fresh");
+  const installed = await page.evaluate(async () => {
+    const {tick} = await import("/src/lib/testing/browser-runtime.ts");
+    const {message} = await import("/src/lib/data/stores.ts");
+    let notifications = 0;
+    const unsubscribe = message.subscribe(value => {
+      if (value?.text === "success.install") notifications++;
+    });
+    window.dispatchEvent(new Event("appinstalled"));
+    await tick();
+    unsubscribe();
+    return {
+      notifications,
+      offerVisible: [...document.querySelectorAll("nav li")].some(node => node.textContent.trim() === "Install")
+    };
+  });
+  assert.deepEqual(installed, {notifications: 1, offerVisible: false});
+});

@@ -4,7 +4,7 @@
   import {changes} from "#lib/data/stores.ts";
   import NavButton from "../shared/NavButton.svelte";
 
-  $: redoable = $changes[1] < changes.length() - 1;
+  const redoable = $derived($changes[1] < changes.length() - 1);
 </script>
 
 <NavButton

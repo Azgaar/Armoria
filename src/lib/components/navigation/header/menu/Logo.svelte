@@ -1,3 +1,5 @@
+<svelte:options runes />
+
 <script lang="ts">
   // @ts-check
   import {iconedNav} from "#lib/data/stores.ts";
@@ -9,7 +11,7 @@
 
 {#if !$iconedNav}
   <li>
-    <svg on:click={redirectToHome} width="35" height="35" viewBox="-2 -1 55 55">
+    <svg onclick={redirectToHome} width="35" height="35" viewBox="-2 -1 55 55">
       <path
         fill="#fff"
         stroke="none"

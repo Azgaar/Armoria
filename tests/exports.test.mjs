@@ -105,6 +105,12 @@ async function download(format) {
   });
   try {
     await page.evaluate(async format => {
+      if (format === "json") {
+        const item = [...document.querySelectorAll("nav li")].find(node => node.textContent.trim() === "Export JSON");
+        if (!item) throw new Error("No JSON export menu item");
+        item.click();
+        return;
+      }
       const {download} = await import("/src/lib/scripts/download.js");
       await download("Edit", format);
     }, format);
@@ -272,5 +278,20 @@ test("inscription path controls update the rendered curve and exported SVG", asy
   assert.match(result.path, /Q/);
   assert.equal(result.rendered, result.path);
   assert.equal(result.dashes, source.dashes);
+  assert.deepEqual(errors, []);
+});
+
+test("header JSON export retains the edited artwork in editor and gallery modes", async () => {
+  await page.waitForFunction(() => JSON.parse(new URL(location.href).searchParams.get("coa")).inscriptions[0].path.includes("Q"));
+  const expected = JSON.parse(new URL(page.url()).searchParams.get("coa"));
+  assert.deepEqual(JSON.parse((await download("json")).toString()), [expected]);
+  await page.$eval('nav li[data-hotkey="Escape"]', node => node.click());
+  await page.waitForFunction(() => !document.querySelector("#coaEdit"));
+  await page.waitForSelector("main svg.coa");
+  const count = await page.$$eval("main svg.coa", nodes => nodes.length);
+  const exported = JSON.parse((await download("json")).toString());
+  assert.ok(count > 1);
+  assert.equal(exported.length, count);
+  assert.deepEqual(exported[0], expected);
   assert.deepEqual(errors, []);
 });

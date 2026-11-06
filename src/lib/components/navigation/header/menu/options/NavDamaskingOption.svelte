@@ -1,3 +1,5 @@
+<svelte:options runes />
+
 <script lang="ts">
   import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
@@ -16,7 +18,7 @@
 
 <div class="container">
   <div class="dropdown level2">
-    {#each diapers as d}
+    {#each diapers as d (d)}
       <NavButton selected={d === $diaper} onclick={() => changeDamasking(d)}>
         {$t(`diaper.${d}`)}
       </NavButton>

@@ -1,3 +1,5 @@
+<svelte:options runes />
+
 <script lang="ts">
   import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
@@ -18,7 +20,7 @@
 
 <div class="container">
   <div class="dropdown level2">
-    {#each sizes as [sizeNumber, sizeName]}
+    {#each sizes as [sizeNumber, sizeName] (sizeNumber)}
       <NavButton selected={sizeNumber === $size} onclick={() => changeSize(sizeNumber)}>
         {$t(`gallery.${sizeName}`)}
       </NavButton>

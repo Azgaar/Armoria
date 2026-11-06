@@ -1,12 +1,14 @@
+<svelte:options runes />
+
 <script>
   import {t} from "svelte-i18n";
-  import {changes, state, history} from "#lib/data/stores.ts";
+  import {changes, state as editorState, history} from "#lib/data/stores.ts";
   import NavButton from "../shared/NavButton.svelte";
 
   const exitEdit = () => {
-    $history[$state.c] = JSON.parse($changes[0]);
-    $state.edit = 0;
-    $state.selectedPath = -1;
+    $history[$editorState.c] = JSON.parse($changes[0]);
+    $editorState.edit = 0;
+    $editorState.selectedPath = -1;
   };
 </script>
 
