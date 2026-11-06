@@ -5,8 +5,7 @@
   import {colors, shield, grad, diaper} from "#lib/data/stores.ts";
   import Shield from "./../object/Shield.svelte";
 
-  export let coa: any;
-  export let tip: string;
+  let {coa, tip}: {coa: import("#lib/types/coa.js").Coa; tip: string} = $props();
 </script>
 
 <svg class="menuItem" width="100%" height="100%" viewBox={DEFAULT_SHIELD_BOX} data-tooltip={tip} use:tooltip>

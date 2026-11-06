@@ -9,45 +9,45 @@
   import {removeCharge} from "#lib/scripts/getters.js";
   import {tooltip} from "#lib/scripts/tooltip.ts";
 
-  export let charge: string;
-  export let type: string;
-  export let category: string;
-  export let t1: string;
-  export let t2: string;
-  export let t3: string | undefined = undefined;
-  export let t4: string | undefined = undefined;
-  export let size: string | null = null;
-  export let sinister = false;
-  export let reversed = false;
-  export let division = false;
-  export let shield: string | undefined = undefined;
+  let {
+    charge = $bindable(),
+    type,
+    category = $bindable(),
+    t1,
+    t2,
+    t3,
+    t4,
+    sinister = false,
+    reversed = false,
+    division = false,
+    shield
+  }: {
+    charge: string;
+    type: string;
+    category: string;
+    t1: string;
+    t2: string;
+    t3?: string;
+    t4?: string;
+    size?: string | null;
+    sinister?: boolean;
+    reversed?: boolean;
+    division?: boolean;
+    shield?: string;
+  } = $props();
 
-  let chargesData: (import("#lib/types/coa.js").Coa & {charge: string})[] = [];
-  let query: string;
-  let queryOld: string;
-
-  const categories = Object.keys(charges.types);
-  const allCharges = categories.map(category => Object.keys(chargeSets[category])).flat();
-  $: allChargesTranslated = allCharges.map(charge => $t(`charges.${charge}`));
-
-  $: update({category, t1, t2, t3, t4, size, sinister, reversed, shield});
-  $: filterCharges(query);
-
-  function update(preview = {category, t1, t2, t3, t4, size, sinister, reversed, shield}) {
-    const chargeList = Object.keys(chargeSets[preview.category]);
-    chargesData = chargeList.map(charge => ({charge, shield: preview.shield, t1: preview.t1, charges: getCharge(charge)}));
-  }
-
-  function filterCharges(query: string) {
-    if (!query && query !== queryOld) update();
-
-    queryOld = query;
-    if (!query) return;
-
-    const regEx = new RegExp(query.replaceAll(" ", ""), "i");
-    const results = allCharges.filter((_charge, index) => regEx.test(allChargesTranslated[index]));
-    chargesData = results.map(charge => ({charge, shield, t1, charges: getCharge(charge)}));
-  }
+  let query = $state("");
+  let categories = $derived([...new Set([...Object.keys(charges.types), ...Object.values($uploaded).map(c => c.category)])]);
+  let chargeLists = $derived(Object.fromEntries(categories.map(category => [category, Object.keys(chargeSets[category])])));
+  let allCharges = $derived(Object.values(chargeLists).flat());
+  let allChargesTranslated = $derived(allCharges.map(charge => $t(`charges.${charge}`, {default: charge})));
+  let chargesData = $derived.by(() => {
+    const regEx = query ? new RegExp(query.replaceAll(" ", ""), "i") : null;
+    const results = regEx
+      ? allCharges.filter((_charge, index) => regEx.test(allChargesTranslated[index]))
+      : chargeLists[category];
+    return results.map(charge => ({charge, shield, t1, charges: getCharge(charge)}));
+  });
 
   function resetQuery() {
     query = "";
@@ -72,16 +72,17 @@
   function removeUploaded(charge: string) {
     delete charges.data[charge];
     unregisterCharge(charge, $uploaded[charge].category);
-    update();
-    delete $uploaded[charge];
-    settingsStorage.setItem("uploaded", JSON.stringify($uploaded));
+    const remaining = {...$uploaded};
+    delete remaining[charge];
+    $uploaded = remaining;
+    settingsStorage.setItem("uploaded", JSON.stringify(remaining));
     removeCharge(charge);
   }
 </script>
 
 <span class:indented={division}>{$t("editor.category")}:</span>
-<select bind:value={category} class:inactive={query} on:input={resetQuery}>
-  {#each categories as category}
+<select bind:value={category} class:inactive={query} oninput={resetQuery}>
+  {#each categories as category (category)}
     <option value={category}>{$t(`categories.${category}`)}</option>
   {/each}
 </select>
@@ -92,12 +93,12 @@
 <div class="items">
   {#each chargesData as coa (coa)}
     <div class="wrapper">
-      <div class="item" class:selected={charge === coa.charge} on:click={() => (charge = coa.charge)}>
+      <div class="item" class:selected={charge === coa.charge} onclick={() => (charge = coa.charge)}>
         <EditorItem {coa} tip={getTip(coa.charge)} />
       </div>
       {#if $uploaded[coa.charge]}
         <div class="controls">
-          <svg class="remove" on:click={() => removeUploaded(coa.charge)} data-tooltip={$t("tooltip.removeUploaded")} use:tooltip>
+          <svg class="remove" onclick={() => removeUploaded(coa.charge)} data-tooltip={$t("tooltip.removeUploaded")} use:tooltip>
             <use href="#remove-icon" />
           </svg>
         </div>

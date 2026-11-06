@@ -1,31 +1,33 @@
 <script lang="ts">
   import {settingsStorage} from "#lib/data/storage.ts";
   // @ts-check
-  import {t, dictionary, locale} from "svelte-i18n";
+  import {t} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
   import {colors, tinctures} from "#lib/data/stores.ts";
   import {tooltip} from "#lib/scripts/tooltip.ts";
   import {DEFAULT_COLORS as defaults} from "#lib/config/defaults.ts";
 
-  export let t1: string | undefined = undefined;
-  export let shield: string | undefined = undefined;
+  let {t1 = $bindable(), shield}: {t1?: string; shield?: string} = $props();
 
   let savedColors = JSON.stringify($colors);
-  $: if (JSON.stringify($colors) !== savedColors) {
+  $effect(() => {
+    if (JSON.stringify($colors) === savedColors) return;
     savedColors = JSON.stringify($colors);
     settingsStorage.setItem("colors", savedColors);
-  }
-  $: colorChanged = (tincture: string) => defaults[tincture] && $colors[tincture] !== defaults[tincture];
+  });
+  const colorChanged = (tincture: string) => defaults[tincture] && $colors[tincture] !== defaults[tincture];
 
-  $: tincturesData = (["metals", "colours", "stains"] as const)
-    .map(type =>
-      Object.keys($tinctures[type]).map(tincture => {
-        const tinctureName = $t(`tinctures.${tincture}`, {default: tincture});
-        const typeName = $t(`editor.${type.slice(0, -1)}`);
-        return {coa: {t1: tincture, shield}, tip: `${typeName}: ${tinctureName}`};
-      })
-    )
-    .flat();
+  let tincturesData = $derived(
+    (["metals", "colours", "stains"] as const)
+      .map(type =>
+        Object.keys($tinctures[type]).map(tincture => {
+          const tinctureName = $t(`tinctures.${tincture}`, {default: tincture});
+          const typeName = $t(`editor.${type.slice(0, -1)}`);
+          return {coa: {t1: tincture, shield}, tip: `${typeName}: ${tinctureName}`};
+        })
+      )
+      .flat()
+  );
 
   const handleChange = (tincture: string) => {
     t1 = tincture;
@@ -45,22 +47,22 @@
 
 {$t("editor.tincture")}:
 <div class="items">
-  {#each tincturesData as { coa, tip }}
+  {#each tincturesData as { coa, tip } (coa.t1)}
     <div class="wrapper">
-      <div class="item" class:selected={t1 === coa.t1} on:click={() => handleChange(coa.t1)}>
+      <div class="item" class:selected={t1 === coa.t1} onclick={() => handleChange(coa.t1)}>
         <EditorItem {coa} {tip} />
       </div>
 
       <div class="controls">
         {#if colorChanged(coa.t1)}
-          <svg class="undo" on:click={() => restoreColor(coa.t1)} data-tooltip={$t("tooltip.undoColorChange")} use:tooltip>
+          <svg class="undo" onclick={() => restoreColor(coa.t1)} data-tooltip={$t("tooltip.undoColorChange")} use:tooltip>
             <use href="#undo-icon" />
           </svg>
         {/if}
 
         <div>
           <input type="color" bind:value={$colors[coa.t1]} />
-          <svg class="edit" on:click={openColorInput} data-tooltip={$t("tooltip.changeColor")} use:tooltip>
+          <svg class="edit" onclick={openColorInput} data-tooltip={$t("tooltip.changeColor")} use:tooltip>
             <use href="#pencil-icon" />
           </svg>
         </div>

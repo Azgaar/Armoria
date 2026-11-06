@@ -3,14 +3,16 @@
   import {t} from "svelte-i18n";
   import EditorItem from "./EditorItem.svelte";
   import {divisions} from "#lib/data/dataModel.js";
-  export let division: string;
-  export let t1: string;
-  export let t2: string;
-  export let line: string;
-  export let shield: string | undefined = undefined;
+  let {
+    division = $bindable(),
+    t1,
+    t2,
+    line,
+    shield
+  }: {division: string; t1: string; t2: string; line: string; shield?: string} = $props();
 
   const divisionList = ["no"].concat(Object.keys(divisions.variants));
-  $: divisionsData = divisionList.map(division => ({t1, shield, division: {division, t: t2, line}}));
+  let divisionsData = $derived(divisionList.map(division => ({t1, shield, division: {division, t: t2, line}})));
 
   const getTip = (division: string) => {
     const divisionName = $t(`divisions.${division}`);
@@ -24,7 +26,7 @@
 
 <div class="items">
   {#each divisionsData as coa (coa)}
-    <div class="item" class:selected={division === coa.division.division} on:click={handleChange(coa.division.division)}>
+    <div class="item" class:selected={division === coa.division.division} onclick={handleChange(coa.division.division)}>
       <EditorItem {coa} tip={getTip(coa.division.division)} />
     </div>
   {/each}
