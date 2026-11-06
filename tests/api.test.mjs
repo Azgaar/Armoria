@@ -57,6 +57,8 @@ const mocks = {
 };
 
 before(async () => {
+  assert.equal(typeof SVGPathElement, "undefined", "API imports must work without browser SVG globals");
+  assert.equal(typeof document, "undefined");
   server = await createServer({
     root,
     configFile: false,

@@ -54,6 +54,7 @@ test("Vercel traces image assets and server dependencies without including them 
 test("build and lint dependencies stay out of deployed functions and public files", async () => {
   for (const directory of [api, discord, join(output, "functions/![-]/catchall.func")]) {
     for (const file of await files(directory)) {
+      assert.doesNotMatch(file, /^node_modules\/path-data-polyfill\//, "the path polyfill belongs only in the browser");
       assert.doesNotMatch(file, /^node_modules\/(?:glob|minimatch|eslint|@vercel\/nft|@eslint|@typescript-eslint)(?:\/|$)/);
     }
   }

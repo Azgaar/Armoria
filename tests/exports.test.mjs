@@ -11,6 +11,7 @@ const errors = [];
 const coa = {
   t1: "chequy-or-azure",
   shield: "heater",
+  ordinaries: [{ordinary: "bordure", t: "gules", t2: "argent", compony: 12}],
   charges: [{charge: "eagle", t: "gules", p: "e"}],
   inscriptions: [{text: "  Élan & <shield>  |   |fin  ", font: "Arial", size: 12, color: "#000000", path: "M-80 60 L80 60"}]
 };
@@ -22,6 +23,9 @@ async function configure(target) {
     request.url().startsWith(origin) || /^(data|blob):/.test(request.url()) ? request.continue() : request.abort()
   );
   await target.evaluateOnNewDocument(() => {
+    // Exercise the shipped polyfill even when Chromium implements these APIs.
+    delete SVGPathElement.prototype.getPathData;
+    delete SVGPathElement.prototype.setPathData;
     Object.defineProperty(window, "XSLTProcessor", {value: undefined, configurable: true});
     localStorage.setItem("grad", "no");
     localStorage.setItem("diaper", "no");
@@ -41,6 +45,7 @@ async function inspectSVG(target, svg) {
       lines: [...doc.querySelectorAll("textPath tspan")].map(node => node.textContent),
       charge: !!doc.querySelector("defs #eagle path"),
       pattern: !!doc.querySelector("defs pattern"),
+      dashes: doc.querySelector(".ordinary [stroke-dasharray]")?.getAttribute("stroke-dasharray"),
       width: doc.documentElement.getAttribute("width"),
       height: doc.documentElement.getAttribute("height"),
       editorHandles: doc.querySelectorAll("#grid, #positions, .points").length
@@ -54,6 +59,7 @@ function assertSVG(result) {
   assert.ok(result.lines.includes("   "), "retain whitespace-only inscription lines");
   assert.equal(result.charge, true);
   assert.equal(result.pattern, true);
+  assert.equal(result.dashes, source.dashes);
   assert.equal(result.editorHandles, 0);
 }
 
@@ -75,6 +81,7 @@ before(
     await ready(page);
     source = await page.$eval("#coaEdit", svg => ({
       metadata: svg.dataset.coa,
+      dashes: svg.querySelector(".ordinary [stroke-dasharray]").getAttribute("stroke-dasharray"),
       lines: [...svg.querySelectorAll("textPath tspan")].map(node => node.textContent)
     }));
   },
@@ -110,7 +117,7 @@ async function download(format) {
 
 function pngMetadata(bytes) {
   assert.deepEqual([...bytes.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
-  for (let offset = 8; offset + 12 <= bytes.length; ) {
+  for (let offset = 8; offset + 12 <= bytes.length;) {
     const length = bytes.readUInt32BE(offset);
     const type = bytes.toString("ascii", offset + 4, offset + 8);
     const data = bytes.subarray(offset + 8, offset + 8 + length);
@@ -121,7 +128,7 @@ function pngMetadata(bytes) {
 }
 function jpegMetadata(bytes) {
   assert.equal(bytes.readUInt16BE(0), 0xffd8);
-  for (let offset = 2; offset + 4 <= bytes.length; ) {
+  for (let offset = 2; offset + 4 <= bytes.length;) {
     const marker = bytes.readUInt16BE(offset);
     if (marker === 0xffda || marker === 0xffd9) break;
     const length = bytes.readUInt16BE(offset + 2);
@@ -131,6 +138,30 @@ function jpegMetadata(bytes) {
   }
   throw new Error("No JPEG COA metadata");
 }
+
+test("client startup installs path APIs before the first compony border renders", async () => {
+  const dashes = source.dashes.split(" ").map(Number);
+  assert.ok(dashes.length > 2);
+  assert.equal(dashes.length % 2, 0);
+  assert.ok(dashes.every(value => Number.isFinite(value) && value >= 0));
+  const data = await page.evaluate(() => {
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", "M0 0 L40 0 Q60 20 40 40 Z");
+    const segments = path.getPathData();
+    const copy = document.createElementNS(path.namespaceURI, "path");
+    copy.setPathData(segments);
+    return {segments, copied: copy.getPathData(), length: copy.getTotalLength()};
+  });
+  assert.deepEqual(data.segments, [
+    {type: "M", values: [0, 0]},
+    {type: "L", values: [40, 0]},
+    {type: "Q", values: [60, 20, 40, 40]},
+    {type: "Z", values: []}
+  ]);
+  assert.deepEqual(data.copied, data.segments);
+  assert.ok(data.length > 100);
+  assert.deepEqual(errors, []);
+});
 
 test("FMG SVG serialization works without XSLT and retains inscription whitespace", async () => {
   assert.equal(await page.evaluate(() => typeof XSLTProcessor), "undefined");
@@ -218,4 +249,28 @@ test("live FMG edits deliver a usable SVG to the opener without XSLT", async () 
   } finally {
     await popup.close();
   }
+});
+
+test("inscription path controls update the rendered curve and exported SVG", async () => {
+  await page.click("#inscription_0");
+  const selector = "#inscription_0 + .panel .subsection:last-child select";
+  await page.waitForSelector(selector);
+  await page.select(selector, "curve");
+  await page.waitForFunction(() => JSON.parse(document.querySelector("#coaEdit").dataset.coa).inscriptions[0].path.includes("Q"));
+  const svg = await page.evaluate(async () => (await import("/src/lib/scripts/download.js")).getSvgForMap());
+  const result = await page.evaluate(svg => {
+    const doc = new DOMParser().parseFromString(svg, "image/svg+xml");
+    const path = JSON.parse(doc.querySelector("metadata.armoria-coa").textContent).inscriptions[0].path;
+    const textPath = doc.querySelector("textPath");
+    const id = (textPath.getAttribute("href") || textPath.getAttribute("xlink:href")).slice(1);
+    return {
+      path,
+      rendered: doc.getElementById(id).getAttribute("d"),
+      dashes: doc.querySelector(".ordinary [stroke-dasharray]").getAttribute("stroke-dasharray")
+    };
+  }, svg);
+  assert.match(result.path, /Q/);
+  assert.equal(result.rendered, result.path);
+  assert.equal(result.dashes, source.dashes);
+  assert.deepEqual(errors, []);
 });
