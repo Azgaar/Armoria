@@ -1,10 +1,18 @@
 <script lang="ts">
   // @ts-check
-  export let value: number;
-  export let oninput: (value: number) => void;
-  export let min: number = 0;
-  export let max: number = Infinity;
-  export let step: number = 1;
+  let {
+    value,
+    oninput,
+    min = 0,
+    max = Infinity,
+    step = 1
+  }: {
+    value: number;
+    oninput: (value: number) => void;
+    min?: number;
+    max?: number;
+    step?: number;
+  } = $props();
 
   const handleInput = (event: Event) => {
     const value = (event.target as HTMLInputElement).value;
@@ -12,8 +20,8 @@
   };
 </script>
 
-<input type="range" {min} {max} {step} {value} on:input={handleInput} />
-<input type="number" {min} {max} {step} {value} on:input={handleInput} />
+<input type="range" {min} {max} {step} {value} oninput={handleInput} />
+<input type="number" {min} {max} {step} {value} oninput={handleInput} />
 
 <style>
   input[type="range"] {

@@ -1,3 +1,5 @@
+<svelte:options runes />
+
 <script lang="ts">
   // @ts-check
   import {onMount} from "svelte";
@@ -5,19 +7,20 @@
   import {t} from "svelte-i18n";
   import {message} from "#lib/data/stores.ts";
 
-  const {text, type, timeout} = $message || {text: "", type: "info", timeout: 0};
+  const currentMessage = $message;
+  const {text, type, timeout} = currentMessage || {text: "", type: "info", timeout: 0};
 
   onMount(() => {
-    const textOnMount = $message?.text;
-
     const timer = setTimeout(() => {
-      if ($message?.text === textOnMount) message.clear();
+      // An outgoing transition may outlive its timer. Only clear this instance,
+      // even when the next message happens to have identical text.
+      if ($message === currentMessage) message.clear();
     }, timeout);
     return () => clearTimeout(timer);
   });
 </script>
 
-<div class={type} in:fly={{y: 200, duration: 500}} out:fade={{duration: 300}} on:click={() => message.clear()}>
+<div class={type} in:fly={{y: 200, duration: 500}} out:fade={{duration: 300}} onclick={() => message.clear()}>
   {$t(text)}
 </div>
 

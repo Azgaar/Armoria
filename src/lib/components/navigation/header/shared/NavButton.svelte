@@ -1,19 +1,35 @@
 <script lang="ts">
+  import type {Snippet} from "svelte";
   // @ts-check
   import {iconedNav} from "#lib/data/stores.ts";
   import {tooltip} from "#lib/scripts/tooltip.ts";
   import NavLabel from "./NavLabel.svelte";
 
-  export let value: string | undefined = undefined;
-  export let label: string | undefined = undefined;
-  export let tip: string | undefined = undefined;
-  export let gesture: string | undefined = undefined;
-  export let hotkey: string | undefined = undefined;
-  export let disabled: boolean = false;
-  export let selected: boolean = false;
-  export let flutter: boolean = false;
-  export let right: boolean = false;
-  export let onclick: () => void;
+  let {
+    value,
+    label,
+    tip,
+    gesture,
+    hotkey,
+    disabled = false,
+    selected = false,
+    flutter = false,
+    right = false,
+    onclick,
+    children
+  }: {
+    value?: string;
+    label?: string;
+    tip?: string;
+    gesture?: string;
+    hotkey?: string;
+    disabled?: boolean;
+    selected?: boolean;
+    flutter?: boolean;
+    right?: boolean;
+    onclick: () => void;
+    children?: Snippet;
+  } = $props();
 
   const handleClick = (event: Event) => {
     event.stopPropagation();
@@ -29,8 +45,8 @@
   data-tooltip={tip}
   data-gesture={gesture}
   data-hotkey={hotkey}
-  on:click={handleClick}
-  on:keydown={handleClick}
+  onclick={handleClick}
+  onkeydown={handleClick}
   use:tooltip
 >
   {#if value && $iconedNav}
@@ -40,7 +56,7 @@
   {:else}
     <NavLabel {label} />
   {/if}
-  <slot />
+  {@render children?.()}
 </li>
 
 <style>

@@ -29,7 +29,7 @@
     "test:files": "node --test --test-isolation=none tests/files.test.mjs",
     "test:database-startup": "svelte-kit sync && node --test --test-isolation=none tests/database-startup.test.mjs",
     "test:services": "npm run test:discord && npm run test:api && npm run test:claims && npm run test:render-limits && npm run test:coa-validation && npm run test:settings && npm run test:generation && npm run test:files && npm run test:database-startup && npm run test:raster-lifecycle && npm run test:dependency-security",
-    "test:browser": "npm run test:svg-upload && npm run test:exports && npm run test:copied-links && npm run test:coa-import && npm run test:pattern-rendering && npm run test:settings-browser && npm run test:fmg-sync && npm run test:api-raster && npm run test:localization",
+    "test:browser": "npm run test:svg-upload && npm run test:exports && npm run test:copied-links && npm run test:coa-import && npm run test:pattern-rendering && npm run test:settings-browser && npm run test:fmg-sync && npm run test:api-raster && npm run test:localization && npm run test:navigation",
     "test": "npm run test:services && npm run test:browser",
     "test:fmg-sync": "node --test --test-isolation=none tests/fmg-sync.test.mjs",
     "test:api-raster": "svelte-kit sync && node --test --test-isolation=none tests/api-raster.test.mjs",
@@ -37,7 +37,8 @@
     "test:raster-lifecycle": "svelte-kit sync && node --test --test-isolation=none tests/raster-lifecycle.test.mjs",
     "test:dependency-security": "node --test --test-isolation=none tests/dependency-security.test.mjs tests/build-dependencies.test.mjs",
     "test:vercel-output": "node --test --test-isolation=none tests/vercel-output.test.mjs",
-    "test:localization": "node --test --test-isolation=none tests/localization.test.mjs"
+    "test:localization": "node --test --test-isolation=none tests/localization.test.mjs",
+    "test:navigation": "node --test --test-isolation=none tests/navigation.test.mjs"
   },
   "repository": {
     "type": "git",

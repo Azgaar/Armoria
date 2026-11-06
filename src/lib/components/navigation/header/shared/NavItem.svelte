@@ -1,13 +1,23 @@
 <script lang="ts">
+  import type {Snippet} from "svelte";
   // @ts-check
   import {tooltip} from "#lib/scripts/tooltip.ts";
   import {iconedNav} from "#lib/data/stores.ts";
   import NavLabel from "./NavLabel.svelte";
 
-  export let value: string | undefined = undefined;
-  export let label: string | undefined = undefined;
-  export let tip: string | undefined = undefined;
-  export let wide: boolean = false;
+  let {
+    value,
+    label,
+    tip,
+    wide = false,
+    children
+  }: {
+    value?: string;
+    label?: string;
+    tip?: string;
+    wide?: boolean;
+    children?: Snippet;
+  } = $props();
 </script>
 
 <li class:wide data-tooltip={tip} use:tooltip>
@@ -19,7 +29,7 @@
     <NavLabel {label} />
   {/if}
 
-  <slot />
+  {@render children?.()}
 </li>
 
 <style>

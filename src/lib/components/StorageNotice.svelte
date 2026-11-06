@@ -2,13 +2,13 @@
   import {t} from "svelte-i18n";
   import {storageStatus} from "#lib/data/storage.ts";
 
-  let dismissed = false;
+  let dismissed = $state(false);
 </script>
 
 {#if !dismissed && ($storageStatus.recovered || $storageStatus.unavailable)}
   <aside role="status" data-settings-notice>
     <span>{$t($storageStatus.unavailable ? "info.storageUnavailable" : "info.settingsRecovered")}</span>
-    <button type="button" aria-label={$t("info.dismissSettingsNotice")} on:click={() => (dismissed = true)}>&times;</button>
+    <button type="button" aria-label={$t("info.dismissSettingsNotice")} onclick={() => (dismissed = true)}>&times;</button>
   </aside>
 {/if}
 

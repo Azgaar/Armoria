@@ -3,10 +3,10 @@
   // @ts-check
   import {t} from "svelte-i18n";
   import {tooltip} from "#lib/scripts/tooltip.ts";
-  export let key: string;
+  let {key}: {key: string} = $props();
 
-  $: locked = settingsStorage.getItem(key);
-  $: tip = $t(`tooltip.locked`);
+  let locked = $derived(settingsStorage.getItem(key));
+  const tip = $derived($t("tooltip.locked"));
 
   function unlock(event: Event) {
     event.stopPropagation();
@@ -16,7 +16,7 @@
 </script>
 
 {#if Boolean(locked)}
-  <span on:click={unlock} data-tooltip={tip} use:tooltip>🔖</span>
+  <span onclick={unlock} data-tooltip={tip} use:tooltip>🔖</span>
 {/if}
 
 <style>

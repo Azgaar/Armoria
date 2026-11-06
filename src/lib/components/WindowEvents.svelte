@@ -1,23 +1,32 @@
+<svelte:options runes />
+
 <script lang="ts">
-  import {state, matrix, changes, history, message} from "#lib/data/stores.ts";
+  import {onMount} from "svelte";
+  import {state as editorState, matrix, changes, history, message} from "#lib/data/stores.ts";
   import {download} from "#lib/scripts/download.js";
   import {checkForIconedNav} from "#lib/scripts/navbar.ts";
 
   let touch = {startX: 0, startY: 0};
 
-  // prevent unwanted refresh
-  if (location.host === "armoria.vercel.app" && !navigator.userAgent.includes("Electron")) {
-    window.onbeforeunload = () => "Are you sure you want to navigate away?";
-  }
+  // Restore the previous handler when the page unmounts.
+  onMount(() => {
+    if (location.host !== "armoria.vercel.app" || navigator.userAgent.includes("Electron")) return;
+    const previous = window.onbeforeunload;
+    const confirmLeave = () => "Are you sure you want to navigate away?";
+    window.onbeforeunload = confirmLeave;
+    return () => {
+      if (window.onbeforeunload === confirmLeave) window.onbeforeunload = previous;
+    };
+  });
 
   function close() {
-    if ($state.edit) {
+    if ($editorState.edit) {
       // save current edit to gallery history
-      $history[$state.c] = JSON.parse($changes[0]);
+      $history[$editorState.c] = JSON.parse($changes[0]);
     }
 
-    state.set({
-      ...$state,
+    editorState.set({
+      ...$editorState,
       about: 0,
       raster: 0,
       vector: 0,
@@ -36,15 +45,15 @@
     KeyS: ctrl => ctrl && download(null, "svg"),
     KeyP: ctrl => ctrl && download(null, "png"),
     KeyJ: ctrl => ctrl && download(null, "jpeg"),
-    F1: () => state.set({...$state, about: Number(!$state.about)}),
+    F1: () => editorState.set({...$editorState, about: Number(!$editorState.about)}),
     Escape: close // Close all windows
   };
 
   // keyboard shortcuts
   function handleKeydown(event: KeyboardEvent) {
-    const action = /^[a-z]$/i.test(event.key) ?
-      keybinding["Key" + event.key.toUpperCase()] : // for latin keyboards (including non-QWERTY)
-      keybinding[event.code]; // for non-latin keyboards
+    const action = /^[a-z]$/i.test(event.key)
+      ? keybinding["Key" + event.key.toUpperCase()] // for latin keyboards (including non-QWERTY)
+      : keybinding[event.code]; // for non-latin keyboards
     if (!action) return;
 
     const active = document.activeElement?.tagName;
@@ -78,12 +87,17 @@
 
     if (absDiff < 100) return; // ignore small movements
 
-    if (ratioX > ratioY) diffX >= 0 ? swipeRight() : swipeLeft();
-    else diffY >= 0 ? swipeDown() : swipeUp();
+    if (ratioX > ratioY) {
+      if (diffX >= 0) swipeRight();
+      else swipeLeft();
+    } else {
+      if (diffY >= 0) swipeDown();
+      else swipeUp();
+    }
   }
 
   function swipeRight() {
-    if ($state.edit) changes.redo();
+    if ($editorState.edit) changes.redo();
     else $matrix += 1;
   }
 
@@ -92,7 +106,7 @@
   }
 
   function swipeLeft() {
-    if ($state.edit) changes.undo();
+    if ($editorState.edit) changes.undo();
     else if ($matrix > 0) $matrix -= 1;
   }
 
@@ -101,4 +115,9 @@
   }
 </script>
 
-<svelte:window on:keydown={handleKeydown} on:touchstart={handleTouchStart} on:touchend={handleTouchEnd} on:resize={checkForIconedNav} />
+<svelte:window
+  onkeydown={handleKeydown}
+  ontouchstart={handleTouchStart}
+  ontouchend={handleTouchEnd}
+  onresize={checkForIconedNav}
+/>
