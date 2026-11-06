@@ -2,7 +2,7 @@
   // @ts-check
   import {t} from "svelte-i18n";
 
-  export let type: string;
+  let {type = $bindable()}: {type: string} = $props();
 </script>
 
 {$t("editor.type")}:

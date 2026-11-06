@@ -1,15 +1,13 @@
-<script lang="ts">
+<script lang="ts" generics="T">
   // @ts-check
   import {t} from "svelte-i18n";
   import {tooltip} from "#lib/scripts/tooltip.ts";
 
-  export let els: any[];
-  export let el: any;
-  export let i: number;
+  let {els = $bindable(), el, i}: {els: T[]; el: T; i: number} = $props();
 
   const remove = (event: Event) => {
     event.stopPropagation();
-    els = els.filter((e, n) => n !== i);
+    els = els.filter((_, n) => n !== i);
   };
 
   const clone = (event: Event) => {
@@ -28,28 +26,28 @@
     [els[i], els[i - 1]] = [els[i - 1], els[i]];
   };
 
-  const areDifferent = (a: any, b: any) => {
+  const areDifferent = (a: T, b: T) => {
     return JSON.stringify(a) !== JSON.stringify(b);
   };
 </script>
 
 <span>
-  <svg on:click={clone} data-tooltip={$t("editor.clone")} use:tooltip>
+  <svg onclick={clone} data-tooltip={$t("editor.clone")} use:tooltip>
     <use href="#clone-icon" />
   </svg>
   {#if els.length > 1}
     {#if i && areDifferent(el, els[i - 1])}
-      <svg on:click={backward} data-tooltip={$t("editor.backward")} use:tooltip>
+      <svg onclick={backward} data-tooltip={$t("editor.backward")} use:tooltip>
         <use href="#up-icon" />
       </svg>
     {/if}
     {#if i + 1 < els.length && areDifferent(el, els[i + 1])}
-      <svg on:click={forward} data-tooltip={$t("editor.forward")} use:tooltip>
+      <svg onclick={forward} data-tooltip={$t("editor.forward")} use:tooltip>
         <use href="#down-icon" />
       </svg>
     {/if}
   {/if}
-  <svg on:click={remove} data-tooltip={$t("editor.remove")} use:tooltip>
+  <svg onclick={remove} data-tooltip={$t("editor.remove")} use:tooltip>
     <use href="#remove-icon" />
   </svg>
 </span>

@@ -3,8 +3,7 @@
   import {t} from "svelte-i18n";
   import {tooltip} from "#lib/scripts/tooltip.ts";
 
-  export let name: string | undefined = undefined;
-  export let zoom: number;
+  let {name = $bindable(), zoom = $bindable()}: {name?: string; zoom: number} = $props();
 </script>
 
 <div class="subsection">

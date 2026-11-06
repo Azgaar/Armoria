@@ -2,8 +2,7 @@
   // @ts-check
   import {t} from "svelte-i18n";
 
-  export let divided: "" | "field" | "division" | "counter";
-  export let raster = false;
+  let {divided = $bindable(), raster = false}: {divided: "" | "field" | "division" | "counter"; raster?: boolean} = $props();
 </script>
 
 <span>{$t("editor.divided")}:</span>

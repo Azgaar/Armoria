@@ -1,12 +1,10 @@
 <script lang="ts">
   // @ts-check
   import {t} from "svelte-i18n";
-  import Switch from "./Switch.svelte";
   import {charges} from "#lib/data/dataModel.js";
   import {tooltip} from "#lib/scripts/tooltip.ts";
 
-  export let charge: string;
-  export let outside: "" | "above" | "below" | "around";
+  let {charge, outside = $bindable()}: {charge: string; outside: "" | "above" | "below" | "around"} = $props();
 </script>
 
 <span data-tooltip={$t("tooltip.outsideShield")} use:tooltip>
@@ -16,7 +14,7 @@
     <option value="above">{$t("editor.aboveShield")}</option>
     <option value="below">{$t("editor.belowShield")}</option>
     {#if charges.data[charge]?.layered}
-    <option value="around">{$t("editor.aroundShield")}</option>
+      <option value="around">{$t("editor.aroundShield")}</option>
     {/if}
   </select>
 </span>

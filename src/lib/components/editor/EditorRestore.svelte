@@ -3,7 +3,7 @@
   import {t} from "svelte-i18n";
   import {tooltip} from "#lib/scripts/tooltip.ts";
 
-  export let callback: () => void;
+  let {callback}: {callback: () => void} = $props();
 
   function restore(e: Event) {
     e.stopPropagation();
@@ -12,7 +12,7 @@
 </script>
 
 <span>
-  <svg on:click={restore} data-tooltip={$t("editor.default")} use:tooltip>
+  <svg onclick={restore} data-tooltip={$t("editor.default")} use:tooltip>
     <use href="#undo-icon" />
   </svg>
 </span>
