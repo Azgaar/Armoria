@@ -1,13 +1,14 @@
 <script lang="ts">
   // @ts-check
-  import {colors} from "#lib/data//stores.ts";
+  import {colors} from "#lib/data/stores.ts";
   import {DEFAULT_SHIELD_BOX, shields} from "#lib/data/dataModel.js";
   import {rw} from "#lib/scripts/utils.ts";
+  import {untrack} from "svelte";
   import {draw, fade} from "svelte/transition";
 
-  export let duration: number;
+  let {duration}: {duration: number} = $props();
 
-  const delay = duration * 2.6;
+  const delay = untrack(() => duration * 2.6);
   const tinctures = {metals: {argent: 3, or: 2}, colors: {gules: 5, sable: 3, azure: 4, vert: 2, purpure: 3}};
   const metal = Math.random() > 0.5;
   const t1 = metal ? rw(tinctures.metals) : rw(tinctures.colors);
@@ -48,8 +49,8 @@
     ]
   };
 
-  let size = window.innerWidth < 600 ? window.innerWidth * 0.9 : 500;
-  if (window.innerHeight < 600) size *= 0.5;
+  const width = window.innerWidth < 600 ? window.innerWidth * 0.9 : 500;
+  const size = window.innerHeight < 600 ? width * 0.5 : width;
 </script>
 
 <svg width={size} height={size} viewBox={DEFAULT_SHIELD_BOX}>

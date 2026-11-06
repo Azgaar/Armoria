@@ -13,7 +13,7 @@
     message,
     shield,
     size,
-    state,
+    state as editorState,
     uploaded
   } from "#lib/data/stores.ts";
   import {parseCoa} from "#lib/coa/validation.ts";
@@ -21,6 +21,7 @@
   import {registerCharge} from "#lib/data/charges.js";
   import "#lib/scripts/i18n.ts";
   import {rw} from "#lib/scripts/utils.ts";
+  import {untrack} from "svelte";
   import {locale} from "svelte-i18n";
   import StorageNotice from "#lib/components/StorageNotice.svelte";
   import Message from "#lib/components/Message.svelte";
@@ -38,12 +39,9 @@
   import Navbar from "#lib/components/navigation/header/Navbar.svelte";
   import CoaSync from "#lib/components/CoaSync.svelte";
 
-  let quantity: number;
-  let width: number;
-  let height: number;
-  let gallery: number[] = [];
-  let seed: string | undefined = undefined;
-  let coaSize = 200;
+  let gallery = $state.raw<number[]>([]);
+  let seed = $state<string>();
+  let coaSize = $state(200);
 
   $locale = "en"; // fallback locale
 
@@ -51,22 +49,28 @@
   loadCustomCharges();
   checkLoadParameters();
 
-  $: [quantity, width, height] = defineGallerySize($size);
-  $: handleMatrixChange($matrix, $size);
+  const dimensions = $derived(defineGallerySize($size));
+  const [, width, height] = $derived(dimensions);
+  $effect.pre(() => {
+    const currentMatrix = $matrix;
+    const count = dimensions[0];
+    // History/state writes belong to this transition, not to its dependencies.
+    untrack(() => handleMatrixChange(currentMatrix, count));
+  });
 
-  function handleMatrixChange(matrix: number, size: number) {
+  function handleMatrixChange(matrix: number, quantity: number) {
     const l = $history.length;
 
     // reroll is clicked
     if (!$matrices[matrix]) {
-      if ($state.edit) {
+      if ($editorState.edit) {
         // generate new coa
         $matrices[matrix] = $matrices[matrix - 1].slice();
-        $matrices[matrix][$state.i] = l;
+        $matrices[matrix][$editorState.i] = l;
         seed = undefined; // use once
       } else {
         // reroll gallery
-        $matrices[matrix] = Array.from({length: quantity}, (_, i) => l + i++);
+        $matrices[matrix] = Array.from({length: quantity}, (_, i) => l + i);
       }
 
       // change shield if it's not locked (manually selected)
@@ -83,7 +87,7 @@
     gallery = $matrices[matrix].slice(0, quantity); // trim gallery if size was bigger
 
     // on coa edit or view mode
-    if ($state.edit || $state.view) $state.c = $matrices[matrix][$state.i];
+    if ($editorState.edit || $editorState.view) $editorState.c = $matrices[matrix][$editorState.i];
   }
 
   function loadFonts() {
@@ -100,7 +104,7 @@
   }
 
   function loadCustomCharges() {
-    Object.entries($uploaded).forEach(([name, {category, type, data, content}]) => {
+    Object.entries($uploaded).forEach(([name, {category, data}]) => {
       registerCharge(name, category, 5);
       if (data) {
         charges.data[name] = data;
@@ -140,9 +144,9 @@
 
       if (viewParam) {
         if (sizeParam) coaSize = sizeParam;
-        $state.view = 1; // open in view only mode
+        $editorState.view = 1; // open in view only mode
       } else {
-        $state.edit = 1; // open in edit mode
+        $editorState.edit = 1; // open in edit mode
       }
     }
   }
@@ -161,24 +165,24 @@
   }
 </script>
 
-{#if $state.view}
-  <Viewer c={$state.c} {seed} {coaSize} />
+{#if $editorState.view}
+  <Viewer c={$editorState.c} {seed} {coaSize} />
 {:else}
   <div style="background-color: {$background}">
     <header>
       <Navbar />
     </header>
 
-    {#if $state.edit}<Editor historyId={$state.c} {seed} />
+    {#if $editorState.edit}<Editor historyId={$editorState.c} {seed} />
     {:else}<Gallery {gallery} {width} {height} />{/if}
 
-    {#if $state.about}<About />{/if}
-    {#if $state.license}<License />{/if}
-    {#if $state.import}<UploadJSON />{/if}
-    {#if $state.raster}<UploadRaster />{/if}
-    {#if $state.vector}<UploadVector />{/if}
-    {#if $state.tinctures}<Tinctures />{/if}
-    {#if $state.fonts}<Fonts />{/if}
+    {#if $editorState.about}<About />{/if}
+    {#if $editorState.license}<License />{/if}
+    {#if $editorState.import}<UploadJSON />{/if}
+    {#if $editorState.raster}<UploadRaster />{/if}
+    {#if $editorState.vector}<UploadVector />{/if}
+    {#if $editorState.tinctures}<Tinctures />{/if}
+    {#if $editorState.fonts}<Fonts />{/if}
 
     {#if $message && $isTextReady}{#key $message}<Message />{/key}{/if}
   </div>
