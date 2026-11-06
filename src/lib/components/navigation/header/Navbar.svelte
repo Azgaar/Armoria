@@ -1,6 +1,8 @@
+<svelte:options runes />
+
 <script lang="ts">
   // @ts-check
-  import {iconedNav, isTextReady, state} from "#lib/data/stores.ts";
+  import {iconedNav, isTextReady, state as editorState} from "#lib/data/stores.ts";
   import Logo from "./menu/Logo.svelte";
   import Options from "./menu/options/Options.svelte";
   import Rollback from "./menu/Rollback.svelte";
@@ -27,7 +29,7 @@
     <Save />
 
     {#if $iconedNav}
-      {#if $state.edit}
+      {#if $editorState.edit}
         <Other>
           <Upload />
           <Language />
@@ -54,7 +56,7 @@
 
     <Install />
 
-    {#if $state.edit}
+    {#if $editorState.edit}
       <Undo />
       <Redo />
       <Back />

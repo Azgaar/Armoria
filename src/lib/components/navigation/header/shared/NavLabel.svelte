@@ -2,7 +2,7 @@
   // @ts-check
   import {fade} from "svelte/transition";
 
-  export let label: string | undefined = undefined;
+  let {label}: {label?: string} = $props();
 </script>
 
 {#if label}

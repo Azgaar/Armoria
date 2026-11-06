@@ -2,9 +2,7 @@
   // @ts-check
   import {tooltip} from "#lib/scripts/tooltip.ts";
 
-  export let icon: string;
-  export let tip: string | undefined = undefined;
-  export let onclick: () => void;
+  let {icon, tip, onclick}: {icon: string; tip?: string; onclick: () => void} = $props();
 
   const handleClick = (event: Event) => {
     event.stopPropagation();
@@ -12,7 +10,7 @@
   };
 </script>
 
-<svg on:click={handleClick} data-tooltip={tip} use:tooltip>
+<svg onclick={handleClick} data-tooltip={tip} use:tooltip>
   <use href="#{icon}-icon" />
 </svg>
 

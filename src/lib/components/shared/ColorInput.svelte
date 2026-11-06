@@ -1,7 +1,6 @@
 <script lang="ts">
   // @ts-check
-  export let value: string;
-  export let oninput: (value: string) => void;
+  let {value, oninput}: {value: string; oninput: (value: string) => void} = $props();
 
   const handleInput = (event: Event) => {
     const value = (event.target as HTMLInputElement).value;
@@ -9,7 +8,7 @@
   };
 </script>
 
-<input type="color" {value} on:input={handleInput} />
+<input type="color" {value} oninput={handleInput} />
 
 <style>
   input[type="color"] {
