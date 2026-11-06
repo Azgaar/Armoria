@@ -1,10 +1,13 @@
-<script>
+<script lang="ts">
   import COA from "./../object/COA.svelte";
-  import {history, tinctures} from "#lib/data//stores.ts";
+  import {history, tinctures} from "#lib/data/stores.ts";
   import {generate} from "#lib/scripts/generator.js";
-  export let c, seed, coaSize;
+  import {untrack} from "svelte";
 
-  let coa = $history[c] || generate(seed || undefined, $tinctures); // on load
+  let {c, seed, coaSize}: {c: number; seed?: string; coaSize: number} = $props();
+
+  // Viewing captures the initial artwork, even if gallery stores later change.
+  const coa = untrack(() => $history[c] || generate(seed || undefined, $tinctures));
 
   function edit() {
     const searchParams = new URLSearchParams(window.location.search);
@@ -15,6 +18,6 @@
   }
 </script>
 
-<div id="viewer" on:click={edit}>
+<div id="viewer" onclick={edit}>
   <COA {coa} i="View" width={coaSize} height={coaSize} />
 </div>

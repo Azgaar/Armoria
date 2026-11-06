@@ -1,48 +1,57 @@
 <script lang="ts">
   // @ts-check
-  import {fontColor, tinctures, history, matrices, matrix, state} from "#lib/data/stores.ts";
+  import {fontColor, tinctures, history, matrices, matrix, state as editorState} from "#lib/data/stores.ts";
   import {download} from "#lib/scripts/download.js";
   import {generate} from "#lib/scripts/generator.js";
   import {minmax} from "#lib/scripts/utils.ts";
+  import {untrack} from "svelte";
+  import type {Coa} from "#lib/types/coa.js";
   import {fade} from "svelte/transition";
   import COA from "./../object/COA.svelte";
 
-  export let gallery: number[];
-  export let width: number;
-  export let height: number;
+  let {gallery, width, height}: {gallery: number[]; width: number; height: number} = $props();
 
-  $: fontSize = minmax(width / 20, 6, 12);
+  const fontSize = $derived(minmax(width / 20, 6, 12));
+  let coas = $state.raw<Coa[]>([]);
 
-  $: coas = gallery.map(c => {
-    if (!$history[c]) $history[c] = generate(undefined, $tinctures);
-    return $history[c];
+  $effect.pre(() => {
+    const indices = gallery;
+    const saved = $history;
+    const palette = $tinctures;
+    // Generate only missing entries; reading existing history must not reroll it.
+    untrack(() => {
+      coas = indices.map(c => {
+        if (!saved[c]) $history[c] = generate(undefined, palette);
+        return saved[c];
+      });
+    });
   });
 
   function regenerate(i: number) {
-    $state.i = i;
+    $editorState.i = i;
     $matrix++;
     $matrices[$matrix] = $matrices[$matrix - 1].slice();
-    $matrices[$matrix][$state.i] = $history.length;
+    $matrices[$matrix][$editorState.i] = $history.length;
   }
 
   function editCOA(i: number) {
-    $state.edit = 1;
-    $state.c = gallery[i];
-    $state.i = i;
+    $editorState.edit = 1;
+    $editorState.c = gallery[i];
+    $editorState.i = i;
   }
 </script>
 
 <main style="color: {$fontColor}; font-size: {fontSize}px" transition:fade={{duration: 500}}>
-  {#each coas as coa, i}
+  {#each coas as coa, i (i)}
     <div>
       <div class="name">{coa.name || ""}</div>
       {#key coa}
         <COA {coa} {i} {width} {height} />
       {/key}
       <div class="control">
-        <svg on:click={() => regenerate(i)}><use href="#dice-icon" /></svg>
-        <svg on:click={() => editCOA(i)}><use href="#pencil-icon" /></svg>
-        <svg on:click={() => download(i)}><use href="#download-icon" /></svg>
+        <svg onclick={() => regenerate(i)}><use href="#dice-icon" /></svg>
+        <svg onclick={() => editCOA(i)}><use href="#pencil-icon" /></svg>
+        <svg onclick={() => download(i)}><use href="#download-icon" /></svg>
       </div>
     </div>
   {/each}
