@@ -5,10 +5,12 @@ on:
     branches:
       - master
     paths:
-      - "static/locales/*"
+      - "static/locales/**"
   workflow_dispatch:
-    branches:
-      - master
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   build:

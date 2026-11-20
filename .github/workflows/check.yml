@@ -2,9 +2,9 @@ name: SvelteKit validation
 
 on:
   pull_request:
-    branches: [sveltekit]
+    branches: [sveltekit, master]
   push:
-    branches: [sveltekit]
+    branches: [sveltekit, master]
 
 permissions:
   contents: read

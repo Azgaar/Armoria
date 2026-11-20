@@ -22,7 +22,7 @@
       <a target="_blank" href="https://github.com/Azgaar/Armoria/wiki/Armoria-Tutorial">{$t("about.tutorial")}</a>
       <a target="_blank" href="https://discord.com/invite/X7E84HU">{$t("about.discord")}</a>
       <a target="_blank" href="https://github.com/Azgaar/Armoria">{$t("about.gitHub")}</a>
-      <a target="_blank" href="https://github.com/Azgaar/armoria-api#readme"> {$t("about.api")}</a>
+      <a target="_blank" href="https://github.com/Azgaar/Armoria#api"> {$t("about.api")}</a>
       <a target="_blank" href="https://www.patreon.com/azgaar"> {$t("about.patreon")}</a>
     </div>
   </div>

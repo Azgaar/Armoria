@@ -20,12 +20,12 @@ Pull requests are welcomed.
 
 ### Installation
 
-Clone the repository and install the dependencies, then run `dev` to build and start the application in dev mode:
+Use Node 24. Clone the repository and install the dependencies, then run `dev` to build and start the application in dev mode:
 
 ```
 git clone https://github.com/Azgaar/Armoria.git
 cd Armoria
-npm install
+PUPPETEER_SKIP_DOWNLOAD=true npm ci
 npm run dev
 ```
 
@@ -37,17 +37,17 @@ To create an optimised version run `npm run build`.
 
 The #237 upgrades use the following mutually compatible pinned framework/rendering versions. Node 24 is declared in `.node-version` and `package.json`, and the Vercel adapter explicitly emits `nodejs24.x` functions.
 
-| Package | Version |
-| --- | --- |
-| Svelte | 5.57.3 |
-| SvelteKit | 3.1.1 |
-| Vite / Svelte plugin | 8.3.5 / 7.3.1 |
-| Vercel adapter | 7.0.2 |
-| TypeScript | 6.0.3 |
-| Puppeteer / puppeteer-core | 25.11.0 |
-| Server Chromium package | 153.0.0 |
+| Package                    | Version       |
+| -------------------------- | ------------- |
+| Svelte                     | 5.57.3        |
+| SvelteKit                  | 3.1.1         |
+| Vite / Svelte plugin       | 8.3.5 / 7.3.1 |
+| Vercel adapter             | 7.0.2         |
+| TypeScript                 | 6.0.3         |
+| Puppeteer / puppeteer-core | 25.11.0       |
+| Server Chromium package    | 153.0.0       |
 
-The browser and API renderer share the existing components in Svelte 5 legacy mode. The API now uses `render` from `svelte/server`; assets explicitly remain file URLs for Kit's server asset reader. Test helpers import public Svelte/store APIs rather than internal runtime paths. Existing event/accessibility warning filters use the renamed Svelte 5 codes; the 92 accessibility warnings remain visible in `npm run check`.
+The browser and API renderer share SVG components in supported Svelte 5 legacy mode (#261). The shared UI and all 29 editor components use runes. The API now uses `render` from `svelte/server`; assets explicitly remain file URLs for Kit's server asset reader. Test helpers import public Svelte/store APIs rather than internal runtime paths. Existing event/accessibility warning filters use the renamed Svelte 5 codes; the 92 accessibility warnings remain visible in `npm run check`.
 
 The #255 raster stack pairs Puppeteer/puppeteer-core 25.11.0 with Sparticuz Chromium 153.0.0 and its matching server archive. Puppeteer's pinned Chrome revision is 153.0.8010.36 ([supported browser mapping](https://pptr.dev/supported-browsers)). Keep these versions, the archive URL in `src/lib/api/raster.ts` and the CI browser installer aligned when upgrading. Node 24 remains the supported runtime.
 
@@ -57,11 +57,11 @@ PNG/JPEG/JPG API rendering now uses Puppeteer directly over CDP. One lazy browse
 
 After `npm run build`, run `npm run test:production` for the service-worker update/offline regression against the actual production preview. CI runs this after the normal tests and build. Browser launch overrides work as documented below; no service credentials are required. A proxy changes only local deployment markers in HTML/worker scripts to exercise worker replacement, fresh online HTML and the latest cached offline view.
 
-The #255 audit reports 22 advisories (3 low, 15 moderate, 4 high), down from 31 (3 low, 15 moderate, 13 high). The old extract-zip and proxy/basic-ftp paths are removed. The four remaining high entries propagate from one Zod advisory through `chromium-bidi 17.0.2 → zod 3.25.76`; Armoria explicitly uses CDP, not BiDi's Zod validation. The affected dependency remains installed, so the audit is not clean. #262 tracks adopting a compatible patched browser graph: Puppeteer 25.16.0 targets Chromium 156 while the current Sparticuz release provides 153. No unsupported Zod-major override is used. The other dependency groups remain under #256 (shared deepmerge/localization) and #257 (build/lint glob/minimatch), with overall progress tracked by #237.
+The 2026-11-20 audit reports four high package entries, all propagated from one Zod advisory through `chromium-bidi 17.0.2 → zod 3.25.76`. Armoria explicitly uses CDP, not BiDi's Zod validation; the affected dependency remains installed and the audit is not clean. #262 tracks a supported patched browser pairing. The latest Puppeteer 25.18.1 targets Chromium 157, while Sparticuz still provides 153. No unsupported Zod-major override is used. The [cutover checklist](docs/deployment/master-cutover.md) records the current release assessment; historical audit counts are retained in their individual reviews.
 
 The #256 mitigation guards both consumers of deepmerge 4.3.1 with a shared patch and pins svelte-i18n's esbuild dependency to 0.28.2. Install with lifecycle scripts enabled: `npm ci` applies the patches and fails if they cannot be applied. `patch-package` is required for the merge guard. The audit still reports 21 affected packages (4 low, 13 moderate, 4 high), including version-based deepmerge findings despite the local guard. See the [dependency review and before/after evidence](docs/dependency-audits/256.md) for reachability, upstream blockers and residual work. `test:dependency-security` and `test:localization` run in the service/browser suites; the latter uses an empty optimizer cache and verifies multiple locales, persistence, interpolation and storage recovery. The production offline check also verifies French translations.
 
-The #257 build/lint update moves NFT to 1.11.1 and uses scoped overrides for glob 14.0.4 and minimatch 11.0.5 while their parents retain older major ranges. Matching, cancellation, tracing and lint-configuration regressions run in `test:dependency-security`; `test:production` also checks the emitted Vercel functions and assets. The [build/lint dependency review](docs/dependency-audits/257.md) records compatibility evidence and identical before/after deployment inventories. The audit drops to 9 affected package entries (5 low, 4 high), with no glob/minimatch findings; remaining deepmerge and BiDi/Zod work is tracked in #264 and #262. The existing 139 lint errors and 24 formatting failures remain separate from this update.
+The #257 build/lint update moves NFT to 1.11.1 and uses scoped overrides for glob 14.0.4 and minimatch 11.0.5 while their parents retain older major ranges. Matching, cancellation, tracing and lint-configuration regressions run in `test:dependency-security`; `test:production` also checks the emitted Vercel functions and assets. The [build/lint dependency review](docs/dependency-audits/257.md) records compatibility evidence and identical before/after deployment inventories. At that review the audit dropped to 9 affected package entries (5 low, 4 high); the current audit snapshot is recorded above. Remaining upstream cleanup and BiDi/Zod work is tracked in #264 and #262. The existing 139 lint errors and 24 formatting failures remain separate from this update.
 
 Shared and navigation components are migrating to Svelte 5 runes in reviewable batches under #259. The [migration checklist](docs/modernization/259.md) records the converted controls/notices and header menus, plus remaining page and dialog work. `test:navigation` checks responsive menus, nested controls, keyboard/touch behavior and message/notice lifecycle through `test:browser`.
 
@@ -69,7 +69,9 @@ The second #237 step upgrades SvelteKit to 3.1.1 and adapter-vercel to 7.0.2. Co
 
 ### Branches, deployment and validation
 
-The public Vercel app at https://armoria.vercel.app uses `sveltekit`, including the editor, image/claims API and Discord endpoint. The repository default branch remains `master`: it contains the legacy Rollup app and publishes `public` to `gh-pages` through its own master-only workflow. Keep changes to the Vercel application on `sveltekit`; do not use the legacy Pages deploy command for this branch. The open migration PR #188 tracks the branch transition.
+The combined editor, image/claims API and Discord endpoint are served at https://armoria.vercel.app. This branch prepares the SvelteKit application's transition into the existing default branch, `master`; it does not rename that branch to `main`. Follow the [cutover checklist](docs/deployment/master-cutover.md) to coordinate the merge and Vercel's production branch/domain configuration. The old migration PR #188 was closed without merging.
+
+The Rollup-to-Pages deployment workflow is removed. Existing `gh-pages` output remains available at https://azgaar.github.io/Armoria/ during the transition; this merge neither overwrites it nor redirects old links. Browser-local resources belong to the old origin, and older FMG sessions expect that origin for return messages. New project and FMG links should use Vercel; retire the old site only after handling these compatibility needs.
 
 Use Node 24 (declared in `.node-version`) and `npm ci`. No service credentials are needed for validation:
 
@@ -84,11 +86,11 @@ npm run test:production
 
 The browser installation command downloads Puppeteer's matching Chrome. On Linux, install any missing system libraries first; Puppeteer's `--install-deps` option requires root privileges. CI runs that installation through `sudo`, with an explicit shared browser cache, then runs all tests as the normal runner user. To use an existing Chromium installation instead, set `PUPPETEER_EXECUTABLE_PATH`. Restricted Linux containers may also require `PUPPETEER_NO_SANDBOX=1`; CI sets this only for its isolated test browser. `npm run test:services` runs API, claim/password, Discord, validation, settings, generation, file, lazy-database and raster lifecycle regressions. `npm run test:browser` runs SVG uploads, SVG/PNG/JPEG exports, copied links, imports/undo, rendering parity and saved-settings browser tests. `npm test` runs both groups sequentially so browser suites do not contend for shared development-server build caches. Individual `test:*` commands remain available below.
 
-The SvelteKit validation workflow runs this check, complete regression suite and production build on pull requests and pushes to `sveltekit`, using `npm ci` and the declared Node version. It needs no repository secrets, database or Discord registration. Service tests use fake external services and browser tests use local assets and block external requests. Keep real credentials out of test environments.
+The SvelteKit validation workflow runs this check, complete regression suite and production build on pull requests and pushes to both `sveltekit` and `master`, using `npm ci` and the declared Node version. It needs no repository secrets, database or Discord registration. Service tests use fake external services and browser tests use local assets and block external requests. Keep real credentials out of test environments.
 
-Vercel's existing Git integration deploys upstream `sveltekit` commits. No environment variables are required for a basic build or procedural/explicit-COA image rendering. Runtime claims optionally require both `MONGO_ID` and `MONGO_PASS`; `MASTER_KEY` enables claim administrator access. `DISCORD_PUBLIC_KEY` enables signed Discord interactions; `ARMORIA_API_URL` optionally changes their image URL. Local command registration uses `DISCORD_APPLICATION_ID`, `DISCORD_BOT_TOKEN` and optionally `DISCORD_GUILD_ID`, and is never run in CI or a deployment build. See `.env.example` and the feature sections below.
+Before cutover, Vercel's Git integration deploys upstream `sveltekit` commits. Changing the production branch to `master` requires project access and is not performed by a Git merge. No environment variables are required for a basic build or procedural/explicit-COA image rendering. Runtime claims optionally require both `MONGO_ID` and `MONGO_PASS`; `MASTER_KEY` enables claim administrator access. `DISCORD_PUBLIC_KEY` enables signed Discord interactions; `ARMORIA_API_URL` optionally changes their image URL. Local command registration uses `DISCORD_APPLICATION_ID`, `DISCORD_BOT_TOKEN` and optionally `DISCORD_GUILD_ID`, and is never run in CI or a deployment build. See `.env.example` and the feature sections below.
 
-After merging, inspect the upstream merge commit's Vercel deployment and compare the public domain's HTML/hashed assets with its successful deployment URL before closing the issue and updating #238. A fork preview may require maintainer authorization even when a later upstream deployment succeeds. GitHub currently labels these Vercel deployments Preview although the public domain serves them; the private domain/branch configuration remains unverified. This workflow validates the app and does not change hosting configuration. Because `sveltekit` is not the default branch, completed issues must be closed explicitly after verification.
+After merging, inspect the upstream merge commit's Vercel deployment and compare the public domain's HTML/hashed assets with its successful deployment URL before closing the issue and updating #238. A fork preview may require maintainer authorization even when a later upstream deployment succeeds. GitHub currently labels these Vercel deployments Preview although the public domain serves them; the private domain/branch configuration remains unverified. This workflow validates the app and does not change hosting configuration. Do not close #161, #237 or #238 merely because this branch merges; their remaining scope and deployment checks are listed in the cutover checklist.
 
 ### Type checking
 
@@ -187,16 +189,16 @@ For example, `/api/svg/200px/123?gules=123456` redirects to `/api?gules=123456&f
 
 Limits apply to submitted, stored, and generated COAs, including COAs submitted to the claim endpoint:
 
-| Input | Limit |
-| --- | --- |
-| Encoded request URL | 64 KiB (hosting infrastructure may impose a lower limit) |
-| Seed | 200 characters, matching claim-name length |
-| COA JSON | 32 KiB UTF-8, checked before parsing and again after normalization |
-| Structure | Depth 8 (root at 0), 2048 values, 64 properties per object, 64 items per array |
-| Collections | 32 charges, 16 ordinaries, 16 inscriptions |
-| Charge positions | 64 bytes per position string, 256 total distinct positions across charges |
-| Fonts | 8 distinct inscription font names; repeated fonts are fetched once |
-| Text | 4096 UTF-8 bytes per generic string/path, 1024 per inscription, 256 per identifier/tincture/name, 128 per font/property name |
+| Input               | Limit                                                                                                                        |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Encoded request URL | 64 KiB (hosting infrastructure may impose a lower limit)                                                                     |
+| Seed                | 200 characters, matching claim-name length                                                                                   |
+| COA JSON            | 32 KiB UTF-8, checked before parsing and again after normalization                                                           |
+| Structure           | Depth 8 (root at 0), 2048 values, 64 properties per object, 64 items per array                                               |
+| Collections         | 32 charges, 16 ordinaries, 16 inscriptions                                                                                   |
+| Charge positions    | 64 bytes per position string, 256 total distinct positions across charges                                                    |
+| Fonts               | 8 distinct inscription font names; repeated fonts are fetched once                                                           |
+| Text                | 4096 UTF-8 bytes per generic string/path, 1024 per inscription, 256 per identifier/tincture/name, 128 per font/property name |
 
 Render-driving numeric fields must be finite numbers: zoom 0.1–1; charge/ordinary size 0.01–5, stretch −10–10, x/y −1000–1000, angle −360–360, stroke width 0–100; inscription size 1–100, spacing −10–100; shadow x/y −100–100 and blur 0–10. Gyronny is zero (disabled) or an even integer from 4–100. Nonzero compony ordinaries are rejected: that existing effect requires browser SVG geometry APIs and is not supported by the server renderer.
 
@@ -270,7 +272,6 @@ Seeds must contain 1–100 characters without spaces; they are URL-encoded. The 
 Run `npm run test:discord` with Node 24 to verify signatures, request handling, URL encoding and command registration without credentials or a database. Registration is never run as part of a deployment build.
 
 References: [Discord interactions](https://docs.discord.com/developers/interactions/overview) and [application commands](https://docs.discord.com/developers/interactions/application-commands).
-
 
 ## License
 
