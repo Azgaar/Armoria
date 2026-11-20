@@ -448,3 +448,93 @@ test("inscription and endpoint dragging retain selected path, snapped points and
   await page.waitForFunction(() => !document.querySelector("#coaEdit .points"));
   assert.equal((await state(page)).selectedPath, -1);
 });
+
+// Each action settles without an intervening undo/redo. Those operations used
+// to clear a stale restoration flag and hide lost consecutive history entries.
+async function consecutiveEdit(page, action, verify) {
+  const before = await snapshot(page);
+  await action();
+  const after = await snapshot(page);
+  verify(after.coa);
+  assert.equal(after.index, before.index + 1, "each fresh edit adds an undo step");
+  assert.equal(after.length, before.index + 2);
+  return after;
+}
+
+test("consecutive shadow edits each retain their own undo step and allow a new branch", async t => {
+  const page = await session(t);
+  await expand(page, "#inscription_0");
+  const p = panel("inscription_0");
+  const initial = await snapshot(page);
+  const enabled = await consecutiveEdit(
+    page,
+    () => page.$eval(`${p} ${tip("tooltip.inscriptions.shadow")} .switch-label`, n => n.click()),
+    coa => assert.equal(coa.inscriptions[0].shadow.x, 1)
+  );
+  const shifted = await consecutiveEdit(
+    page,
+    () => input(page, `${p} > .subsection:nth-child(2) ${tip("tooltip.shift")} input:nth-of-type(1)`, "3"),
+    coa => assert.equal(coa.inscriptions[0].shadow.x, 3)
+  );
+  const blurred = await consecutiveEdit(
+    page,
+    () => input(page, `${p} ${tip("tooltip.inscriptions.shadowBlur")} input`, "2"),
+    coa => assert.equal(coa.inscriptions[0].shadow.blur, 2)
+  );
+  for (const expected of [shifted, enabled, initial]) assert.deepEqual((await history(page, "Z")).coa, expected.coa);
+  for (const expected of [enabled, shifted, blurred]) assert.deepEqual((await history(page, "X")).coa, expected.coa);
+  await history(page, "Z");
+  const branched = await consecutiveEdit(
+    page,
+    () => input(page, `${p} ${tip("tooltip.inscriptions.shadowColor")} input`, "#123456"),
+    coa => assert.equal(coa.inscriptions[0].shadow.color, "#123456")
+  );
+  assert.equal(branched.coa.inscriptions[0].shadow.blur, 0);
+  assert.deepEqual((await history(page, "X")).coa, branched.coa);
+});
+
+test("consecutive edits across layers preserve every history entry", async t => {
+  const page = await session(t);
+  await expand(page, "#ordinary_0");
+  await expand(page, "#charge_0");
+  await expand(page, "#inscription_0");
+  const entries = [await snapshot(page)];
+  for (const [selector, value, verify] of [
+    [`${panel("ordinary_0")} ${tip("tooltip.size")} input`, "125", coa => assert.equal(coa.ordinaries[0].size, 1.25)],
+    [`${panel("charge_0")} ${tip("tooltip.stretch")} input`, "30", coa => assert.equal(coa.charges[0].stretch, 0.3)],
+    [
+      `${panel("inscription_0")} ${tip("tooltip.inscriptions.text")} input`,
+      "Consecutive & crest",
+      coa => assert.equal(coa.inscriptions[0].text, "Consecutive & crest")
+    ]
+  ])
+    entries.push(await consecutiveEdit(page, () => input(page, selector, value), verify));
+  for (const expected of entries.slice(0, -1).reverse()) assert.deepEqual((await history(page, "Z")).coa, expected.coa);
+  for (const expected of entries.slice(1)) assert.deepEqual((await history(page, "X")).coa, expected.coa);
+});
+
+test("restored legacy defaults stay in one step before consecutive fresh edits", async t => {
+  const page = await session(t);
+  const initial = await snapshot(page);
+  await page.evaluate(async () => {
+    const {changes} = await import("/src/lib/data/stores.ts");
+    changes.add(JSON.stringify({t1: "or", inscriptions: [{text: "Legacy", font: "Arial", size: 12}]}));
+  });
+  const restored = await snapshot(page);
+  assert.equal(restored.index, initial.index + 1);
+  assert.equal(restored.coa.inscriptions[0].path, "M-50 0 L50 0");
+  await expand(page, "#inscription_0");
+  const selector = `${panel("inscription_0")} ${tip("tooltip.inscriptions.text")} input`;
+  const first = await consecutiveEdit(
+    page,
+    () => input(page, selector, "First"),
+    coa => assert.equal(coa.inscriptions[0].text, "First")
+  );
+  const second = await consecutiveEdit(
+    page,
+    () => input(page, selector, "Second"),
+    coa => assert.equal(coa.inscriptions[0].text, "Second")
+  );
+  for (const expected of [first, restored, initial]) assert.deepEqual((await history(page, "Z")).coa, expected.coa);
+  for (const expected of [restored, first, second]) assert.deepEqual((await history(page, "X")).coa, expected.coa);
+});
