@@ -8,11 +8,21 @@
     EditorInscription as InscriptionMenu
   } from "#lib/types/editor.js";
   import {settingsStorage} from "#lib/data/storage.ts";
-  import {tick} from "svelte";
+  import {tick, untrack} from "svelte";
   import {t, dictionary, locale} from "svelte-i18n";
   import {fade, fly, slide} from "svelte/transition";
   import {DEFAULT_ZOOM} from "#lib/config/defaults.ts";
-  import {changes, grid, history, isTextReady, message, shield, showGrid, state, tinctures, uploaded} from "#lib/data/stores.ts";
+  import {
+    changes,
+    grid,
+    history,
+    isTextReady,
+    message,
+    showGrid,
+    state as editorState,
+    tinctures,
+    uploaded
+  } from "#lib/data/stores.ts";
   import {charges, chargeSets, divisions, ordinaries, shields, shieldSets} from "#lib/data/dataModel.js";
   import {createConfig, generate, getTincture} from "#lib/scripts/generator.js";
   import {highlight, lowlight} from "#lib/scripts/highlight.js";
@@ -39,11 +49,9 @@
   import EditorStriped from "./EditorStriped.svelte";
   import EditorStroke from "./EditorStroke.svelte";
   import EditorTincture from "./EditorTincture.svelte";
-  export let historyId: number;
-  export let seed: string | number | undefined;
+  let {historyId, seed}: {historyId: number; seed: string | number | undefined} = $props();
 
-  let restoring = false;
-  let section = {
+  let section = $state({
     shield: false,
     general: false,
     field: false,
@@ -51,43 +59,78 @@
     ordinary: [] as boolean[],
     charge: [] as boolean[],
     inscription: [] as boolean[]
-  };
+  });
   const isLandscape = innerWidth > innerHeight;
 
-  $state.transform = null;
-  $state.positions = null;
+  $editorState.transform = null;
+  $editorState.positions = null;
 
-  let coa = $history[historyId] || generate(seed || undefined, $tinctures); // on load
-  let menu: EditorMenu;
-  $: restore($changes); // on undo/redo
-  $: reroll(historyId); // on reroll
-  $: update(menu, $uploaded); // on menu update and charge upload
-  $: edit(coa); // on edit
+  let coa = $state.raw<Coa>(untrack(() => $history[historyId] || generate(seed || undefined, $tinctures)));
+  let menu = $state<EditorMenu>(untrack(defineMenuState));
+  // Our own history publication must not be interpreted as undo/redo. Otherwise
+  // a restoration flag can leak into the next user edit and replace its entry.
+  let published = "";
+  let activeHistoryId: number | undefined;
+
+  $effect.pre(() => {
+    const id = historyId;
+    untrack(() => {
+      if (id === activeHistoryId) return;
+      activeHistoryId = id;
+      reroll(id);
+    });
+  });
+  $effect.pre(() => {
+    const [value] = $changes;
+    untrack(() => {
+      if (value && value !== published) restore(value);
+    });
+  });
+  $effect.pre(() => {
+    // Track every bound menu property, but keep normalization and history
+    // writes outside this effect's dependencies. Uploaded charge data can also
+    // change which tincture fields are supported.
+    JSON.stringify(menu);
+    void $uploaded;
+    untrack(() => commitMenu(false));
+  });
+
   // Persist changes, not recovered defaults during initial rendering.
   let savedGrid = $grid;
   let savedShowGrid = $showGrid;
-  $: if ($grid !== savedGrid) {
-    settingsStorage.setItem("grid", $grid);
-    savedGrid = $grid;
-  }
-  $: if ($showGrid !== savedShowGrid) {
-    settingsStorage.setItem("showGrid", $showGrid);
-    savedShowGrid = $showGrid;
-  }
+  $effect(() => {
+    if ($grid !== savedGrid) {
+      settingsStorage.setItem("grid", $grid);
+      savedGrid = $grid;
+    }
+  });
+  $effect(() => {
+    if ($showGrid !== savedShowGrid) {
+      settingsStorage.setItem("showGrid", $showGrid);
+      savedShowGrid = $showGrid;
+    }
+  });
 
   function reroll(historyId: number) {
-    restoring = false;
     coa = $history[historyId] || generate(seed || undefined, $tinctures);
     if (!$history[historyId]) $history.push(coa);
     changes.reset();
     menu = defineMenuState();
+    commitMenu(false);
   }
 
-  function edit(coa: Coa) {
-    const value = JSON.stringify(coa);
+  function commitMenu(restoring: boolean) {
+    const originalMenu = JSON.stringify(menu);
+    const normalizedMenu: EditorMenu = JSON.parse(originalMenu);
+    const next = update(normalizedMenu);
+    if (JSON.stringify(normalizedMenu) !== originalMenu) menu = normalizedMenu;
+    const value = JSON.stringify(next);
+    // A plain, detached COA keeps the legacy SVG renderer and drag handlers
+    // independent of the menu proxy, and only remounts artwork on real changes.
+    if (JSON.stringify(coa) !== value) coa = JSON.parse(value);
+    published = value;
     if (restoring) changes.replace(value);
     else changes.add(value);
-    restoring = false;
   }
 
   const toggleSection = (name: keyof typeof section, index?: number) => async () => {
@@ -105,9 +148,10 @@
   };
 
   // get coa from menu on menu change
-  function update(_menu: EditorMenu, _uploaded: unknown) {
+  function update(menu: EditorMenu): Coa {
+    const next = {...coa};
     // remove seed reference as it would be confusing
-    delete coa.seed;
+    delete next.seed;
 
     function getTinctureFromField(field: Field) {
       if (field.type === "tincture") return field.t1;
@@ -118,39 +162,39 @@
     }
 
     // shield attribute changed
-    coa.shield = menu.shield;
+    next.shield = menu.shield;
 
     // name attribute changed
     if (menu.name) {
-      coa.name = menu.name;
+      next.name = menu.name;
     } else {
-      delete coa.name;
+      delete next.name;
     }
 
     // zoom attribute changed
     if (menu.zoom !== DEFAULT_ZOOM) {
-      coa.zoom = menu.zoom;
+      next.zoom = menu.zoom;
     } else {
-      delete coa.zoom;
+      delete next.zoom;
     }
 
     // field attributes changed
-    coa.t1 = getTinctureFromField(menu.field);
+    next.t1 = getTinctureFromField(menu.field);
 
     // division attributes changed
     if (menu.division.division && menu.division.division !== "no") {
-      coa.division = {division: menu.division.division, t: getTinctureFromField(menu.division)};
-      if (divisions.data[menu.division.division].templateLined) coa.division.line = menu.division.line;
-      coa.division.t = getTinctureFromField(menu.division);
+      next.division = {division: menu.division.division, t: getTinctureFromField(menu.division)};
+      if (divisions.data[menu.division.division].templateLined) next.division.line = menu.division.line;
+      next.division.t = getTinctureFromField(menu.division);
     } else {
-      delete coa.division;
+      delete next.division;
       menu.charges.forEach(c => (c.divided = ""));
       menu.ordinaries.forEach(o => (o.divided = ""));
     }
 
     // ordinary attributes changed
     if (menu.ordinaries.length) {
-      coa.ordinaries = menu.ordinaries.map(o => {
+      next.ordinaries = menu.ordinaries.map(o => {
         if (o.striped) {
           o.t2 ||= selectSecondTincture(o.field.t1);
         } else {
@@ -158,7 +202,7 @@
         }
         const item: Ordinary = {ordinary: o.ordinary, t: getTinctureFromField(o.field)};
         if (ordinaries.lined[o.ordinary]) item.line = o.line;
-        if (coa.division && o.divided) item.divided = o.divided;
+        if (next.division && o.divided) item.divided = o.divided;
         if (o.showStroke) item.stroke = o.stroke;
         if (o.showStroke && o.strokeWidth !== 1) item.strokeWidth = o.strokeWidth;
         if (o.size && o.size !== 1) item.size = o.size;
@@ -177,11 +221,11 @@
         }
         return item;
       });
-    } else delete coa.ordinaries;
+    } else delete next.ordinaries;
 
     // charges attributes changed
     if (menu.charges.length) {
-      coa.charges = menu.charges.map(c => {
+      next.charges = menu.charges.map(c => {
         updateFields(c);
         const item: Charge = {charge: c.charge, t: getTinctureFromField(c.field1), p: c.p, size: c.size};
         if ((charges.data[c.charge]?.colors || 1) > 1 && c.field2) {
@@ -207,11 +251,11 @@
         if (c.angle) item.angle = c.angle;
         return item;
       });
-    } else delete coa.charges;
+    } else delete next.charges;
 
     // inscriptions attributes changed
     if (menu.inscriptions.length) {
-      coa.inscriptions = menu.inscriptions.map(i => {
+      next.inscriptions = menu.inscriptions.map(i => {
         const item: Inscription = {text: i.text, font: i.font, size: i.size, path: i.path};
         if (i.bold) item.bold = 1;
         if (i.italic) item.italic = 1;
@@ -220,14 +264,16 @@
         if (i.shadow) item.shadow = i.shadow;
         return item;
       });
-    } else delete coa.inscriptions;
+    } else delete next.inscriptions;
+    return next;
   }
 
-  function restore(_changes: [string, number]) {
-    if (!changes.length()) return;
-    restoring = true;
-    coa = JSON.parse($changes[0]);
+  function restore(value: string) {
+    coa = JSON.parse(value);
     menu = defineMenuState();
+    // Normalize imported/legacy defaults synchronously in the restored entry.
+    // No restoration state survives into the next menu edit.
+    commitMenu(true);
   }
 
   function getField(fieldStr: string): Field {
@@ -303,7 +349,7 @@
         const striped = o.compony ? "compony" : o.gyronny ? "gyronny" : "";
         const componySize = o.compony || 0;
         const gyronnyNumber = o.gyronny || 0;
-        if (angle) $state.transform = `rotate(${angle})`;
+        if (angle) $editorState.transform = `rotate(${angle})`;
         const ordinaryObj: OrdinaryMenu = {
           ordinary,
           field,
@@ -347,7 +393,7 @@
         const x = c.x || 0;
         const y = c.y || 0;
         const angle = c.angle || 0;
-        if (angle) $state.transform = `rotate(${angle})`;
+        if (angle) $editorState.transform = `rotate(${angle})`;
         const chargeObj: ChargeMenu = {
           charge,
           type,
@@ -498,20 +544,22 @@
     menu.inscriptions = [...menu.inscriptions, i];
   }
 
-  if (!("ontouchstart" in window) && (coa.ordinaries || coa.charges)) {
-    if (!$message) message.info("info.tipEditControls");
-  }
+  untrack(() => {
+    if (!("ontouchstart" in window) && (coa.ordinaries || coa.charges)) {
+      if (!$message) message.info("info.tipEditControls");
+    }
+  });
 
   function isRaster(charge: string) {
     const el = document.getElementById(charge);
     return el ? el.tagName === "image" : false;
   }
 
-  $: translateSafely = (group: string, key: string) => {
+  function translateSafely(group: string, key: string) {
     const messages = $dictionary[$locale || ""]?.[group];
     const isInDictionary = messages && typeof messages === "object" && !Array.isArray(messages) && key in messages;
     return isInDictionary ? $t(`${group}.${key}`) : key;
-  };
+  }
 </script>
 
 <main out:fade>
@@ -520,16 +568,16 @@
       <COA {coa} i="Edit" />
     {/key}
 
-    {#if $state.selectedPath !== -1}
+    {#if $editorState.selectedPath !== -1}
       <div class="bottom" transition:fly={{y: 1000, duration: 400}}>
-        <button on:click={() => ($state.selectedPath = -1)}>{$t("editor.unselect")}</button>
+        <button onclick={() => ($editorState.selectedPath = -1)}>{$t("editor.unselect")}</button>
       </div>
     {/if}
   </div>
 
   <div id="menu" in:fly={{x: isLandscape ? 1000 : 0, y: isLandscape ? 0 : 1000, duration: 1000}}>
     <!-- General -->
-    <div class="section" class:expanded={section.general} on:click={toggleSection("general")}>
+    <div class="section" class:expanded={section.general} onclick={toggleSection("general")}>
       {#if $isTextReady}
         {$t("editor.general")}
       {/if}
@@ -541,7 +589,7 @@
     {/if}
 
     <!-- Shield -->
-    <div class="section" class:expanded={section.shield} on:click={toggleSection("shield")}>
+    <div class="section" class:expanded={section.shield} onclick={toggleSection("shield")}>
       {#if $isTextReady}
         {$t("editor.shield")}: {coa.shield ? $t(`shield.${getShieldType(coa.shield)}.${coa.shield}`) : $t("editor.default")}
         {#if coa.shield}
@@ -558,7 +606,7 @@
     {/if}
 
     <!-- Field -->
-    <div class="section" class:expanded={section.field} on:click={toggleSection("field")}>
+    <div class="section" class:expanded={section.field} onclick={toggleSection("field")}>
       {#if $isTextReady}
         {$t("tinctures.field")}
       {/if}
@@ -570,7 +618,7 @@
     {/if}
 
     <!-- Division -->
-    <div class="section" class:expanded={section.division} on:click={toggleSection("division")}>
+    <div class="section" class:expanded={section.division} onclick={toggleSection("division")}>
       {#if $isTextReady}
         {$t("tinctures.division")}: {translateSafely("divisions", menu.division.division)}
       {/if}
@@ -606,15 +654,15 @@
     {/if}
 
     <!-- Ordinaries -->
-    {#each menu.ordinaries as o, i}
+    {#each menu.ordinaries as o, i (i)}
       <div
         id="ordinary_{i}"
         class="section"
         transition:slide
         class:expanded={section.ordinary[i]}
-        on:click={toggleSection("ordinary", i)}
-        on:mouseenter={highlight("shield", "ordinary", i)}
-        on:mouseleave={lowlight("shield", "ordinary", i)}
+        onclick={toggleSection("ordinary", i)}
+        onmouseenter={highlight("shield", "ordinary", i)}
+        onmouseleave={lowlight("shield", "ordinary", i)}
       >
         {#if $isTextReady}
           {$t("editor.ordinary")}{menu.ordinaries.length > 1 ? ` ${i + 1}` : ""}: {translateSafely("ordinaries", o.ordinary)}
@@ -665,28 +713,28 @@
 
           <div class="subsection">
             {#if !["bordure", "orle"].includes(o.ordinary)}
-              <EditorStroke bind:element={o} />
+              <EditorStroke bind:element={menu.ordinaries[i]} />
             {/if}
             <EditorAbove bind:above={o.above} />
           </div>
 
           <div class="subsection">
-            <EditorShift bind:element={o} />
+            <EditorShift bind:element={menu.ordinaries[i]} />
           </div>
         </div>
       {/if}
     {/each}
 
     <!-- Charges -->
-    {#each menu.charges as charge, i}
+    {#each menu.charges as charge, i (i)}
       <div
         id="charge_{i}"
         class="section"
         transition:slide
         class:expanded={section.charge[i]}
-        on:click={toggleSection("charge", i)}
-        on:mouseenter={highlight("shield", "charge", i)}
-        on:mouseleave={lowlight("shield", "charge", i)}
+        onclick={toggleSection("charge", i)}
+        onmouseenter={highlight("shield", "charge", i)}
+        onmouseleave={lowlight("shield", "charge", i)}
       >
         {#if $isTextReady}
           {$t("tinctures.charge")}{menu.charges.length > 1 ? ` ${i + 1}` : ""}: {translateSafely("charges", charge.charge)}
@@ -743,11 +791,11 @@
           {/if}
 
           <div class="subsection">
-            <EditorStroke bind:element={charge} />
+            <EditorStroke bind:element={menu.charges[i]} />
           </div>
 
           <div class="subsection">
-            <EditorPosition bind:charge />
+            <EditorPosition bind:charge={menu.charges[i]} />
             {#if charges.data[charge.charge]?.layered && charge.outside !== "around"}
               <EditorLayered bind:layered={charge.layered} />
             {/if}
@@ -757,22 +805,22 @@
           </div>
 
           <div class="subsection">
-            <EditorShift bind:element={charge} />
+            <EditorShift bind:element={menu.charges[i]} />
           </div>
         </div>
       {/if}
     {/each}
 
     <!-- Inscriptions -->
-    {#each menu.inscriptions as inscription, i}
+    {#each menu.inscriptions as inscription, i (i)}
       <div
         id="inscription_{i}"
         class="section"
         transition:slide
         class:expanded={section.inscription[i]}
-        on:click={toggleSection("inscription", i)}
-        on:mouseenter={highlight("shield", "inscription", i)}
-        on:mouseleave={lowlight("shield", "inscription", i)}
+        onclick={toggleSection("inscription", i)}
+        onmouseenter={highlight("shield", "inscription", i)}
+        onmouseleave={lowlight("shield", "inscription", i)}
       >
         {#if $isTextReady}
           {$t("editor.inscription")}{menu.inscriptions.length > 1 ? ` ${i + 1}` : ""}: {inscription.text}
@@ -782,7 +830,7 @@
       {#if section.inscription[i]}
         <div class="panel" transition:slide>
           <div class="subsection">
-            <EditorInscription bind:inscription />
+            <EditorInscription bind:inscription={menu.inscriptions[i]} />
           </div>
 
           <div class="subsection">
@@ -797,9 +845,9 @@
     {/each}
 
     {#if $isTextReady}
-      <div class="buttonLine" on:click={addOrdinary}>{$t("editor.addOrdinary")}</div>
-      <div class="buttonLine" on:click={addCharge}>{$t("editor.addCharge")}</div>
-      <div class="buttonLine" on:click={addInscription}>{$t("editor.addInscription")}</div>
+      <div class="buttonLine" onclick={addOrdinary}>{$t("editor.addOrdinary")}</div>
+      <div class="buttonLine" onclick={addCharge}>{$t("editor.addCharge")}</div>
+      <div class="buttonLine" onclick={addInscription}>{$t("editor.addInscription")}</div>
     {/if}
   </div>
 </main>
