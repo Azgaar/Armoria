@@ -219,7 +219,11 @@
     "emptyFontURL": "L'URL est vide !",
     "loadingFont": "Impossible de charger la police !",
     "notJsonOrText": "Le fichier doit être du texte ou JSON !",
-    "loadingCoa": "Impossible de charger le blason !"
+    "loadingCoa": "Impossible de charger le blason !",
+    "invalidCoa": "Cannot load this coat of arms. Check its fields, supported elements and numeric values.",
+    "invalidCoaImport": "Cannot import this file. Use a non-empty JSON array of valid coats of arms. Your artwork has not changed.",
+    "coaTooLarge": "This coat of arms exceeds the size or complexity limits. Reduce its elements or text and try again.",
+    "coaImportTooLarge": "Import exceeds the size or complexity limits (64 coats of arms, 2 MiB total, 32 KiB each). Your artwork has not changed."
   },
   "success": {
     "copyEditLink": "Le lien de l'armoirie est copié dans votre presse-papiers",
@@ -232,6 +236,9 @@
     "coaLoaded": "Blason chargé"
   },
   "info": {
+    "settingsRecovered": "Some saved settings were invalid and were replaced with defaults for this session. Valid settings and uploaded charges were kept.",
+    "storageUnavailable": "Browser storage could not be accessed. You can keep editing, but changes may not persist after reloading.",
+    "dismissSettingsNotice": "Dismiss settings notice",
     "tipFromFmg": "Configurez l'emblème, enregistrez-le au format SVG et rechargez le générateur de carte fantaisie",
     "tipFromFmgLive": "Your changes show on the Fantasy Map Generator map as you edit",
     "tipEditControls": "Faites glisser pour bouger, maintenez la touche MAJ et faites glisser verticalement pour redimensionner, maintenez la touche CTRL et faites glisser horizontalement pour faire pivoter",

@@ -219,7 +219,11 @@
     "emptyFontURL": "Το URL είναι κενό!",
     "loadingFont": "Η γραμματοσειρά δεν μπορεί να φορτωθεί!",
     "notJsonOrText": "File must be text or JSON!",
-    "loadingCoa": "COA cannot be loaded!"
+    "loadingCoa": "COA cannot be loaded!",
+    "invalidCoa": "Cannot load this coat of arms. Check its fields, supported elements and numeric values.",
+    "invalidCoaImport": "Cannot import this file. Use a non-empty JSON array of valid coats of arms. Your artwork has not changed.",
+    "coaTooLarge": "This coat of arms exceeds the size or complexity limits. Reduce its elements or text and try again.",
+    "coaImportTooLarge": "Import exceeds the size or complexity limits (64 coats of arms, 2 MiB total, 32 KiB each). Your artwork has not changed."
   },
   "success": {
     "copyEditLink": "Σύνδεσμος Οικοσήμου Αντιγράφηκε",
@@ -232,6 +236,9 @@
     "coaLoaded": "COA is loaded"
   },
   "info": {
+    "settingsRecovered": "Some saved settings were invalid and were replaced with defaults for this session. Valid settings and uploaded charges were kept.",
+    "storageUnavailable": "Browser storage could not be accessed. You can keep editing, but changes may not persist after reloading.",
+    "dismissSettingsNotice": "Dismiss settings notice",
     "tipFromFmg": "Ρυθμίστε το έμβλημα, αποθηκεύστε το σε μορφή SVG και στη συνέχεια φορτώστε το μέσα στο Fantasy Map Generator",
     "tipFromFmgLive": "Your changes show on the Fantasy Map Generator map as you edit",
     "tipEditControls": "Σύρετε για μετακίνηση, κρατήστε το SHIFT και σύρετε κάθετα για αλλαγή μεγέθους, κρατήστε το CONTROL και σύρετε οριζόντια για περιστροφή",
