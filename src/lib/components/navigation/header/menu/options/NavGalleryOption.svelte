@@ -1,0 +1,36 @@
+<svelte:options runes />
+
+<script lang="ts">
+  import {settingsStorage} from "#lib/data/storage.ts";
+  // @ts-check
+  import {t} from "svelte-i18n";
+  import NavButton from "../../shared/NavButton.svelte";
+  import NavItem from "../../shared/NavItem.svelte";
+  import Lock from "../../shared/Lock.svelte";
+  import {sizes} from "#lib/config/options.js";
+  import {size} from "#lib/data/stores.ts";
+
+  const changeSize = (value: string | number) => {
+    if (typeof value !== "number") return;
+
+    size.set(value);
+    settingsStorage.setItem("size", String(value));
+  };
+</script>
+
+<div class="container">
+  <div class="dropdown level2">
+    {#each sizes as [sizeNumber, sizeName] (sizeNumber)}
+      <NavButton selected={sizeNumber === $size} onclick={() => changeSize(sizeNumber)}>
+        {$t(`gallery.${sizeName}`)}
+      </NavButton>
+    {/each}
+  </div>
+
+  {#key $size}
+    <NavItem tip={$t("tooltip.gallery")}>
+      <Lock key="size" />
+      {$t(`menu.gallery`)}
+    </NavItem>
+  {/key}
+</div>

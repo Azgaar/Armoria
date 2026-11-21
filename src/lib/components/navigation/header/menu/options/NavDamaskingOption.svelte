@@ -1,0 +1,34 @@
+<svelte:options runes />
+
+<script lang="ts">
+  import {settingsStorage} from "#lib/data/storage.ts";
+  // @ts-check
+  import {t} from "svelte-i18n";
+  import NavButton from "../../shared/NavButton.svelte";
+  import NavItem from "../../shared/NavItem.svelte";
+  import Lock from "../../shared/Lock.svelte";
+  import {diapers} from "#lib/config/options.js";
+  import {diaper} from "#lib/data/stores.ts";
+
+  const changeDamasking = (value: string) => {
+    diaper.set(value);
+    settingsStorage.setItem("diaper", value);
+  };
+</script>
+
+<div class="container">
+  <div class="dropdown level2">
+    {#each diapers as d (d)}
+      <NavButton selected={d === $diaper} onclick={() => changeDamasking(d)}>
+        {$t(`diaper.${d}`)}
+      </NavButton>
+    {/each}
+  </div>
+
+  {#key $diaper}
+    <NavItem tip={$t("tooltip.damasking")}>
+      <Lock key="diaper" />
+      {$t(`menu.damasking`)}
+    </NavItem>
+  {/key}
+</div>

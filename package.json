@@ -4,10 +4,46 @@
   "version": "1.1.0",
   "author": "Azgaar <azgaar.fmg@yandex.com>",
   "scripts": {
-    "dev": "rollup -c -w",
-    "start": "sirv public",
-    "build": "rollup -c",
-    "deploy": "gh-pages -d public"
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:discord": "node --experimental-strip-types --test --test-isolation=none tests/discord.test.mjs",
+    "test:api": "svelte-kit sync && node --test --test-isolation=none tests/api.test.mjs",
+    "discord:register": "node --env-file-if-exists=.env scripts/register-discord.mjs",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && tsc -p src/service-worker/tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "lint": "prettier --check . && eslint .",
+    "format": "prettier --write .",
+    "postinstall": "patch-package --error-on-fail",
+    "test:claims": "svelte-kit sync && node --test --test-isolation=none tests/claims.test.mjs",
+    "test:render-limits": "svelte-kit sync && node --test --test-isolation=none tests/render-limits.test.mjs",
+    "test:svg-upload": "node --test --test-isolation=none tests/svg-upload.test.mjs",
+    "test:exports": "node --test --test-isolation=none tests/exports.test.mjs",
+    "test:copied-links": "node --test --test-isolation=none tests/copied-links.test.mjs",
+    "test:coa-validation": "svelte-kit sync && node --test --test-isolation=none tests/coa-validation.test.mjs",
+    "test:coa-import": "node --test --test-isolation=none tests/coa-import.test.mjs",
+    "test:pattern-rendering": "node --test --test-isolation=none tests/pattern-rendering.test.mjs",
+    "test:settings": "node --test --test-isolation=none tests/settings.test.mjs",
+    "test:settings-browser": "node --test --test-isolation=none tests/settings-browser.test.mjs",
+    "test:generation": "node --test --test-isolation=none tests/generation.test.mjs",
+    "test:files": "node --test --test-isolation=none tests/files.test.mjs",
+    "test:database-startup": "svelte-kit sync && node --test --test-isolation=none tests/database-startup.test.mjs",
+    "test:services": "npm run test:discord && npm run test:api && npm run test:claims && npm run test:render-limits && npm run test:coa-validation && npm run test:settings && npm run test:generation && npm run test:files && npm run test:database-startup && npm run test:raster-lifecycle && npm run test:dependency-security",
+    "test:browser": "npm run test:svg-upload && npm run test:exports && npm run test:copied-links && npm run test:coa-import && npm run test:pattern-rendering && npm run test:settings-browser && npm run test:fmg-sync && npm run test:api-raster && npm run test:localization && npm run test:navigation && npm run test:gallery && npm run test:resource-dialogs && npm run test:editor-controls && npm run test:editor-selection && npm run test:editor-geometry",
+    "test": "npm run test:services && npm run test:browser",
+    "test:fmg-sync": "node --test --test-isolation=none tests/fmg-sync.test.mjs",
+    "test:api-raster": "svelte-kit sync && node --test --test-isolation=none tests/api-raster.test.mjs",
+    "test:production": "npm run test:vercel-output && node --test --test-isolation=none tests/service-worker.test.mjs",
+    "test:raster-lifecycle": "svelte-kit sync && node --test --test-isolation=none tests/raster-lifecycle.test.mjs",
+    "test:dependency-security": "node --test --test-isolation=none tests/dependency-security.test.mjs tests/build-dependencies.test.mjs",
+    "test:vercel-output": "node --test --test-isolation=none tests/vercel-output.test.mjs",
+    "test:localization": "node --test --test-isolation=none tests/localization.test.mjs",
+    "test:navigation": "node --test --test-isolation=none tests/navigation.test.mjs",
+    "test:gallery": "node --test --test-isolation=none tests/gallery.test.mjs",
+    "test:resource-dialogs": "node --test --test-isolation=none tests/resource-dialogs.test.mjs",
+    "test:editor-controls": "node --test --test-isolation=none tests/editor-controls.test.mjs",
+    "test:editor-selection": "node --test --test-isolation=none tests/editor-selection.test.mjs",
+    "test:editor-geometry": "node --test --test-isolation=none tests/editor-geometry.test.mjs"
   },
   "repository": {
     "type": "git",
@@ -22,29 +58,65 @@
   "bugs": {
     "url": "https://github.com/Azgaar/Armoria/issues"
   },
-  "main": "./src/main.js",
   "dependencies": {
-    "path-data-polyfill": "^1.0.10"
+    "@sparticuz/chromium-min": "153.0.0",
+    "dompurify": "^3.4.17",
+    "minify-xml": "^4.5.2",
+    "mongodb": "^6.17.0",
+    "node-html-parser": "^7.0.1",
+    "path-data-polyfill": "^1.0.10",
+    "puppeteer-core": "25.11.0"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^14.0.0",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^8.0.0",
-    "@rollup/plugin-replace": "^3.0.0",
-    "@rollup/plugin-typescript": "^8.3.0",
-    "@tsconfig/svelte": "^2.0.1",
-    "gh-pages": "^3.1.0",
-    "rollup": "^2.3.4",
-    "rollup-plugin-livereload": "^2.0.0",
-    "rollup-plugin-svelte": "^6.1.1",
-    "rollup-plugin-terser": "^7.0.0",
-    "rollup-plugin-workbox": "^6.1.1",
-    "sirv-cli": "^1.0.0",
-    "svelte": "^3.44.2",
-    "svelte-check": "^2.2.10",
-    "svelte-i18n": "^3.3.13",
-    "svelte-preprocess": "^4.9.8",
-    "tslib": "^2.3.1",
-    "typescript": "^4.5.2"
+    "@eslint/js": "10.0.1",
+    "@sveltejs/adapter-vercel": "7.0.2",
+    "@sveltejs/kit": "3.1.1",
+    "@sveltejs/vite-plugin-svelte": "7.3.1",
+    "@types/eslint": "^9.6.1",
+    "@types/node": "^24.19.2",
+    "eslint": "10.14.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-svelte": "3.24.0",
+    "globals": "^16.3.0",
+    "patch-package": "^8.0.1",
+    "prettier": "^3.6.2",
+    "prettier-plugin-svelte": "^3.4.0",
+    "puppeteer": "25.11.0",
+    "svelte": "5.57.3",
+    "svelte-check": "4.7.8",
+    "svelte-i18n": "^4.0.1",
+    "tslib": "^2.8.1",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.1",
+    "vite": "8.3.5",
+    "workbox-core": "^7.3.0",
+    "workbox-precaching": "^7.3.0",
+    "workbox-routing": "^7.3.0",
+    "workbox-strategies": "^7.3.0"
+  },
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "imports": {
+    "#lib/*": "./src/lib/*"
+  },
+  "overrides": {
+    "deepmerge": "4.3.1",
+    "svelte-i18n": {
+      "esbuild": "0.28.2"
+    },
+    "@vercel/nft": {
+      "glob": "14.0.4"
+    },
+    "eslint": {
+      "minimatch": "11.0.5"
+    },
+    "@eslint/config-array": {
+      "minimatch": "11.0.5"
+    },
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "11.0.5"
+    }
   }
 }

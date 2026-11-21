@@ -1,0 +1,126 @@
+{
+  "routes": [
+    {
+      "src": ".*",
+      "continue": true,
+      "transforms": [
+        {
+          "type": "request.query",
+          "op": "delete",
+          "target": {
+            "key": "__pathname"
+          }
+        }
+      ]
+    },
+    {
+      "src": "/_app/immutable/.+",
+      "headers": {
+        "cache-control": "public, immutable, max-age=31536000"
+      }
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/_app/immutable/.+",
+      "status": 404,
+      "headers": {
+        "cache-control": "no-store"
+      },
+      "continue": false
+    },
+    {
+      "src": "^/api/?(?:/__data.json)?$",
+      "dest": "/api"
+    },
+    {
+      "src": "^/api/claims/([^/]+?)/?(?:/__data.json)?$",
+      "dest": "/api/claims/[name]"
+    },
+    {
+      "src": "^/api/claim/([^/]+?)/([^/]+?)(?:/([^/]+))?/?(?:/__data.json)?$",
+      "dest": "/api/claim/[name]/[coa]/[[key]]"
+    },
+    {
+      "src": "^/api/unclaim/([^/]+?)(?:/([^/]+))?/?(?:/__data.json)?$",
+      "dest": "/api/unclaim/[name]/[[key]]"
+    },
+    {
+      "src": "^/api/([^/]+?)/([^/]+?)(?:/([^/]+))?/?(?:/__data.json)?$",
+      "dest": "/api/[format]/[size]/[[seed]]"
+    },
+    {
+      "src": "^/discord/?(?:/__data.json)?$",
+      "dest": "/discord"
+    },
+    {
+      "src": "/.*",
+      "dest": "/![-]/catchall"
+    }
+  ],
+  "functions": {
+    "api": {
+      "config": {
+        "runtime": "nodejs24.x",
+        "handler": ".svelte-kit/vercel-tmp/index.js",
+        "launcherType": "Nodejs",
+        "experimentalResponseStreaming": true,
+        "framework": {
+          "slug": "sveltekit",
+          "version": "3.1.1"
+        }
+      },
+      "files": 1135,
+      "dependency_files": 748,
+      "dependency_digest": "3f91b3365d62321cb954a600cbbd6cc583a4ca6eb8fceb0341c7e13014eaa6c0",
+      "asset_files": 354,
+      "asset_digest": "c6709155dce3558be89d660ebd06fdb478e2a448b83da6bbfec898d28f0abee4",
+      "endpoints": [
+        ".svelte-kit/output/server/entries/endpoints/api/_format_/_size_/__seed__/_server.ts.js",
+        ".svelte-kit/output/server/entries/endpoints/api/_server.ts.js",
+        ".svelte-kit/output/server/entries/endpoints/api/claim/_name_/_coa_/__key__/_server.ts.js",
+        ".svelte-kit/output/server/entries/endpoints/api/claims/_name_/_server.ts.js",
+        ".svelte-kit/output/server/entries/endpoints/api/unclaim/_name_/__key__/_server.ts.js"
+      ]
+    },
+    "discord": {
+      "config": {
+        "runtime": "nodejs24.x",
+        "handler": ".svelte-kit/vercel-tmp/index.js",
+        "launcherType": "Nodejs",
+        "experimentalResponseStreaming": true,
+        "framework": {
+          "slug": "sveltekit",
+          "version": "3.1.1"
+        }
+      },
+      "files": 64,
+      "dependency_files": 43,
+      "dependency_digest": "384d51658ddc883d8140cd2d88ca918333be148037ad51cbcdcd20732c914c5b",
+      "asset_files": 0,
+      "asset_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "endpoints": [
+        ".svelte-kit/output/server/entries/endpoints/discord/_server.ts.js"
+      ]
+    },
+    "![-]/catchall": {
+      "config": {
+        "runtime": "nodejs24.x",
+        "handler": ".svelte-kit/vercel-tmp/index.js",
+        "launcherType": "Nodejs",
+        "experimentalResponseStreaming": true,
+        "framework": {
+          "slug": "sveltekit",
+          "version": "3.1.1"
+        }
+      },
+      "files": 63,
+      "dependency_files": 44,
+      "dependency_digest": "fde1ce58d0990fd90e6dee1845b001d95b77f4e74510c87ab4089e21f94d00b6",
+      "asset_files": 0,
+      "asset_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "endpoints": []
+    }
+  }
+}

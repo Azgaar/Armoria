@@ -1,0 +1,79 @@
+<script lang="ts">
+  // @ts-check
+  // Keeps the edited coat of arms outside this page current: the `coa` URL parameter, so a reload or a shared
+  // link shows it as it is, and Fantasy Map Generator when it opened the emblem here
+  import {changes, colors, shield, state as editorState} from "#lib/data/stores.ts";
+  import {getSvgForMap} from "#lib/scripts/download.js";
+  import {resolveCoa} from "#lib/scripts/coa.ts";
+  import {onDestroy, untrack} from "svelte";
+  import {afterNavigate, goto} from "$app/navigation";
+  import {page} from "$app/state";
+
+  const parameters = new URLSearchParams(location.search);
+  const session = parameters.get("from") === "FMG" ? parameters.get("session") : null;
+  const returnOrigin = parameters.get("returnOrigin");
+
+  const SEND_DELAY = 500;
+  let sent: string | null = null; // the coat of arms the map shows; the first one is the emblem as it came
+  let timer: number;
+  let revision = 0;
+  let routerReady = $state(false);
+  afterNavigate(() => {
+    routerReady = true;
+  });
+
+  const current = $derived(
+    $editorState.edit && $changes[0] ? JSON.stringify(resolveCoa($changes[0] as string, $colors, $shield)) : null
+  );
+  $effect(() => {
+    const coa = current;
+    const open = $editorState.edit || $editorState.view;
+    if (routerReady) untrack(() => syncUrl(coa, open));
+  });
+  $effect(() => {
+    if (session && returnOrigin) scheduleSend(current);
+  });
+
+  onDestroy(() => {
+    revision++;
+    window.clearTimeout(timer);
+  });
+
+  /** the URL names the coat of arms being edited, and none once the gallery is back */
+  function syncUrl(coa: string | null, open: number) {
+    const url = new URL(location.href);
+    if (coa) {
+      url.searchParams.set("coa", coa);
+      url.searchParams.delete("seed"); // the coat of arms supersedes the seed it was generated from
+    } else if (!open) {
+      url.searchParams.delete("coa");
+      url.searchParams.delete("seed");
+    }
+    // The URL is copied from location.href; only its query changes, so it already includes the base path.
+    // eslint-disable-next-line svelte/no-navigation-without-resolve
+    if (url.href !== location.href) void goto(url, {shallow: true, replaceState: true, state: page.state});
+  }
+
+  function scheduleSend(coa: string | null) {
+    // Invalidate in-flight exports even when undo returns to the already-sent
+    // original or the editor closes, neither of which requires a new message.
+    const version = ++revision;
+    if (sent === null && coa) sent = coa;
+    window.clearTimeout(timer);
+    if (coa && coa !== sent) timer = window.setTimeout(() => sendToMap(coa, version), SEND_DELAY);
+  }
+
+  async function sendToMap(coa: string, version: number) {
+    if (!window.opener || window.opener.closed) return;
+    let svg = "";
+    try {
+      svg = await getSvgForMap();
+    } catch (error) {
+      console.error(error); // the map still draws a coat of arms it knows; only its picture fallback is lost
+    }
+    // Asset/font export can finish after newer edits, undo or the map closing.
+    if (version !== revision || !window.opener || window.opener.closed) return;
+    window.opener.postMessage({type: "armoria:coa", version: 1, session, coa: JSON.parse(coa), svg}, returnOrigin);
+    sent = coa;
+  }
+</script>

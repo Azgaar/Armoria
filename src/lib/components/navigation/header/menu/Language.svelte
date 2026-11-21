@@ -1,0 +1,29 @@
+<svelte:options runes />
+
+<script lang="ts">
+  import {settingsStorage} from "#lib/data/storage.ts";
+  // @ts-check
+  import {locale, locales, t} from "svelte-i18n";
+  import {capitalize} from "#lib/scripts/utils.ts";
+  import NavButton from "../shared/NavButton.svelte";
+  import NavItem from "../shared/NavItem.svelte";
+
+  const changeLanguage = (newLocale: string) => () => {
+    locale.set(newLocale);
+    settingsStorage.setItem("locale", newLocale);
+  };
+
+  const getLocaleName = (locale: string) => {
+    const languageName = new Intl.DisplayNames([locale], {type: "language"});
+    return capitalize(languageName.of(locale) || locale);
+  };
+</script>
+
+<div class="container">
+  <NavItem value="language" label={$t(`menu.language`)} tip={$t("tooltip.language")} />
+  <div class="dropdown level1">
+    {#each $locales as langCode (langCode)}
+      <NavButton selected={$locale === langCode} label={getLocaleName(langCode)} onclick={changeLanguage(langCode)} />
+    {/each}
+  </div>
+</div>

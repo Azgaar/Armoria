@@ -1,11 +1,17 @@
 {
-  "extends": "@tsconfig/svelte/tsconfig.json",
+  "extends": "$app/tsconfig",
   "compilerOptions": {
-    "baseUrl": "src",
-    "target": "es2020",
-    "module": "esnext",
-    "resolveJsonModule": true
+    "allowJs": true,
+    "checkJs": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "moduleResolution": "bundler",
+    "types": ["$app/types", "node"]
   },
-  "include": ["src/**/*", "src/node_modules"],
-  "exclude": ["node_modules/*", "__sapper__/*", "public/*"]
+  "include": ["src", "*.ts", "*.js"],
+  "exclude": ["src/service-worker"]
 }

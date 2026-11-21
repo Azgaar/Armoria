@@ -1,0 +1,123 @@
+<svelte:options runes />
+
+<script lang="ts">
+  import {onMount} from "svelte";
+  import {state as editorState, matrix, changes, history, message} from "#lib/data/stores.ts";
+  import {download} from "#lib/scripts/download.js";
+  import {checkForIconedNav} from "#lib/scripts/navbar.ts";
+
+  let touch = {startX: 0, startY: 0};
+
+  // Restore the previous handler when the page unmounts.
+  onMount(() => {
+    if (location.host !== "armoria.vercel.app" || navigator.userAgent.includes("Electron")) return;
+    const previous = window.onbeforeunload;
+    const confirmLeave = () => "Are you sure you want to navigate away?";
+    window.onbeforeunload = confirmLeave;
+    return () => {
+      if (window.onbeforeunload === confirmLeave) window.onbeforeunload = previous;
+    };
+  });
+
+  function close() {
+    if ($editorState.edit) {
+      // save current edit to gallery history
+      $history[$editorState.c] = JSON.parse($changes[0]);
+    }
+
+    editorState.set({
+      ...$editorState,
+      about: 0,
+      raster: 0,
+      vector: 0,
+      tinctures: 0,
+      edit: 0,
+      selectedPath: -1
+    });
+    message.clear();
+  }
+
+  const keybinding: Record<string, (ctrl: boolean) => unknown> = {
+    Backspace: () => $matrix > 0 && matrix.set($matrix - 1), // Rollback
+    Enter: () => matrix.set(($matrix += 1)), // Reroll
+    KeyZ: changes.undo,
+    KeyX: changes.redo,
+    KeyS: ctrl => ctrl && download(null, "svg"),
+    KeyP: ctrl => ctrl && download(null, "png"),
+    KeyJ: ctrl => ctrl && download(null, "jpeg"),
+    F1: () => editorState.set({...$editorState, about: Number(!$editorState.about)}),
+    Escape: close // Close all windows
+  };
+
+  // keyboard shortcuts
+  function handleKeydown(event: KeyboardEvent) {
+    const action = /^[a-z]$/i.test(event.key)
+      ? keybinding["Key" + event.key.toUpperCase()] // for latin keyboards (including non-QWERTY)
+      : keybinding[event.code]; // for non-latin keyboards
+    if (!action) return;
+
+    const active = document.activeElement?.tagName;
+    if (active === "INPUT" || active === "SELECT" || active === "TEXTAREA") return;
+
+    event.preventDefault();
+    action(event.ctrlKey);
+  }
+
+  function handleTouchStart(event: TouchEvent) {
+    const {screenX, screenY} = event.changedTouches[0];
+    touch.startX = screenX;
+    touch.startY = screenY;
+  }
+
+  function handleTouchEnd(event: TouchEvent) {
+    if (!(event.target instanceof Node)) return;
+    const menu = document.getElementById("menu");
+    const navbar = document.getElementById("navbar");
+    if (menu?.contains(event.target)) return; // cancel touch event if start area is menu
+    if (navbar?.contains(event.target)) return; // cancel touch event if start area is nav bar
+
+    const {screenX, screenY} = event.changedTouches[0];
+    const {startX, startY} = touch;
+
+    const diffX = screenX - startX;
+    const diffY = screenY - startY;
+    const ratioX = Math.abs(diffX / diffY);
+    const ratioY = Math.abs(diffY / diffX);
+    const absDiff = Math.abs(ratioX > ratioY ? diffX : diffY);
+
+    if (absDiff < 100) return; // ignore small movements
+
+    if (ratioX > ratioY) {
+      if (diffX >= 0) swipeRight();
+      else swipeLeft();
+    } else {
+      if (diffY >= 0) swipeDown();
+      else swipeUp();
+    }
+  }
+
+  function swipeRight() {
+    if ($editorState.edit) changes.redo();
+    else $matrix += 1;
+  }
+
+  function swipeDown() {
+    $matrix += 1;
+  }
+
+  function swipeLeft() {
+    if ($editorState.edit) changes.undo();
+    else if ($matrix > 0) $matrix -= 1;
+  }
+
+  function swipeUp() {
+    if ($matrix > 0) $matrix -= 1;
+  }
+</script>
+
+<svelte:window
+  onkeydown={handleKeydown}
+  ontouchstart={handleTouchStart}
+  ontouchend={handleTouchEnd}
+  onresize={checkForIconedNav}
+/>
